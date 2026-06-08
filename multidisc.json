@@ -62,7 +62,7 @@
 },
 {
 "title": "Rage",
-"title_id": "425307F5",
+"title_id": "425307EC",
 "regions": ["NTSC-U", "PAL"],
 "disc_count": 3,
 "disc_layout": [
@@ -78,15 +78,14 @@
 "title": "Max Payne 3",
 "title_id": "5454082C",
 "regions": ["NTSC-U", "PAL"],
-"disc_count": 3,
+"disc_count": 2,
 "disc_layout": [
 "Disc 1 - Story",
-"Disc 2 - Story Continuation",
-"Disc 3 - Multiplayer / Install Content"
+"Disc 2 - Story Continuation"
 ],
 "disc_type": "hybrid_story_content",
 "xenia_disc_swap_required": true,
-"notes": "Single-player spans first two discs"
+"notes": "Single-player spans two discs"
 },
 {
 "title": "Wolfenstein (2009)",
@@ -103,7 +102,7 @@
 },
 {
 "title": "Wolfenstein: The New Order",
-"title_id": "425307F9",
+"title_id": "425307F5",
 "regions": ["NTSC-U", "PAL"],
 "disc_count": 4,
 "disc_layout": [

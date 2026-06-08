@@ -18,7 +18,7 @@ def init_db():
 
         con.execute("""
         CREATE TABLE IF NOT EXISTS games (
-            game_id TEXT PRIMARY KEY,
+            game_id TEXT,
             title TEXT NOT NULL,
             file_path TEXT,
             favourite INTEGER DEFAULT 0,
@@ -120,7 +120,7 @@ def import_games_json(json_path):
             )
 
             con.execute("""
-            INSERT OR REPLACE INTO games
+            INSERT INTO games
             (
                 game_id,
                 title,

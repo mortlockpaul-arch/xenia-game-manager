@@ -15,7 +15,7 @@ from utils import star
 class GameTableModel(QAbstractTableModel):
 
     HEADERS = [
-        "⭐",
+        "Favourite",
         "Title",
         "Game ID",
         "Discs",
