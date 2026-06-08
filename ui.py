@@ -16,7 +16,7 @@ from PySide6.QtWidgets import (
 )
 
 from model import GameTableModel
-from db import get_db, init_db, import_games_json, export_titles_to_json
+from db import get_db, init_db, import_games_json, export_titles_to_json, import_multidisc_json
 from utils import smart_title_case
 
 
@@ -31,6 +31,10 @@ class GameLauncher(QWidget):
     def __init__(self):
         super().__init__()
 
+        self.import_btn = None
+        self.fix_titles_btn = None
+        self.search = None
+        self.table = None
         self.setWindowTitle(
             "Xenia SQLite Launcher"
         )
@@ -73,7 +77,7 @@ class GameLauncher(QWidget):
         )
 
         self.import_btn = QPushButton(
-            "Import games.json"
+            "Import Xenia Manager Game List"
         )
 
         self.import_btn.clicked.connect(
@@ -85,7 +89,7 @@ class GameLauncher(QWidget):
         )
 
         self.export_btn = QPushButton(
-            "Update games.json"
+            "Update Xenia Manager Game List"
         )
 
         self.export_btn.clicked.connect(
@@ -129,9 +133,20 @@ class GameLauncher(QWidget):
             self.table_clicked
         )
 
-        self.table.horizontalHeader().setSectionResizeMode(
-            QHeaderView.Stretch
+        header = self.table.horizontalHeader()
+
+        header.setSectionResizeMode(
+            QHeaderView.ResizeMode.Interactive
         )
+
+        header.setStretchLastSection(True)
+
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)  # Game Title
+        header.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
+
+        self.search.setClearButtonEnabled(True)
+        self.table.verticalHeader().hide()
 
         layout.addWidget(self.table)
 
