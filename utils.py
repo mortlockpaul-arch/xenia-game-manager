@@ -14,7 +14,7 @@ import re
 KEEP_UPPER = {
     "DLC", "HD", "XBLA", "USA", "PAL",
     "NTSC", "GTA", "NBA", "NHL", "UFC",
-    "FIFA", "MX", "ATV","II","III"
+    "FIFA", "MX", "ATV","II","III","UGC","NFS"
 }
 
 

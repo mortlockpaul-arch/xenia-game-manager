@@ -41,6 +41,7 @@ class GameTableModel(QAbstractTableModel):
                         game_id,
                         title,
                         file_path,
+                        config_path,
                         favourite,
                         last_played,
                         play_count,
@@ -60,6 +61,7 @@ class GameTableModel(QAbstractTableModel):
                         game_id,
                         title,
                         file_path,
+                        config_path,
                         favourite,
                         last_played,
                         play_count,
@@ -97,6 +99,11 @@ class GameTableModel(QAbstractTableModel):
             return None
 
         row = self.games[index.row()]
+
+        if role == Qt.ToolTipRole:
+
+            if index.column() == 1:
+                return row["file_path"]
 
         if role == Qt.DisplayRole:
 
@@ -171,6 +178,9 @@ class GameTableModel(QAbstractTableModel):
 
         return self.games[row_index]["game_id"]
 
+    def get_config_path(self, row_index):
+        return self.games[row_index]["config_path"]
+
     def sort(
         self,
         column,
@@ -203,6 +213,7 @@ class GameTableModel(QAbstractTableModel):
                     game_id,
                     title,
                     file_path,
+                    config_path,
                     favourite,
                     last_played,
                     play_count,
