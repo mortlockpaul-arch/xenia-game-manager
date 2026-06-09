@@ -20,7 +20,7 @@ def main():
 
     if game_count() == 0:
         import_games_json(
-            GAMES_JSON
+            GAMES_JSON, log_callback=GameLauncher.log
         )
     app = QApplication(sys.argv)
 

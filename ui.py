@@ -1,7 +1,9 @@
 # ui.py
-
+import shutil
 import subprocess
 from pathlib import Path
+
+from datetime import datetime
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
@@ -12,7 +14,7 @@ from PySide6.QtWidgets import (
     QPushButton,
     QTableView,
     QMessageBox,
-    QHeaderView,
+    QHeaderView, QPlainTextEdit,
 )
 
 from model import GameTableModel
@@ -150,7 +152,26 @@ class GameLauncher(QWidget):
 
         layout.addWidget(self.table)
 
+        self.console = QPlainTextEdit()
+
+        self.console.setReadOnly(True)
+
+        self.console.setMaximumHeight(100)
+
+        self.console.setPlaceholderText(
+            "Application log..."
+        )
+
+        layout.addWidget(self.console)
+
         self.apply_style()
+
+    def log(self, message):
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        self.console.appendPlainText(
+            f"[{timestamp}] {message}"
+        )
+        return None
 
     # -------------------------
     # Search
@@ -218,16 +239,13 @@ class GameLauncher(QWidget):
             init_db()
 
             # Import games
-            import_games_json(GAMES_JSON)
+            import_games_json(GAMES_JSON, log_callback=self.log)
 
             # Refresh table
             self.model.load()
 
-            QMessageBox.information(
-                self,
-                "Import Complete",
-                "games.json imported successfully."
-            )
+            message = "Import Complete. games.json imported successfully."
+            self.log(message)
 
         except Exception as e:
 
@@ -252,6 +270,23 @@ class GameLauncher(QWidget):
         game_id = self.model.get_game_id(
             row
         )
+        from pathlib import Path
+
+        BASE_DIR = Path(
+            r"D:\RetroBat\emulators\xenia-manager"
+        )
+        config = self.model.get_config_path(
+            row
+        )
+        if config:
+            config = str(
+                BASE_DIR / config
+            )
+        print([
+            XENIA_EXE,
+            path,
+            config
+        ])
 
         if not path:
 
@@ -261,6 +296,13 @@ class GameLauncher(QWidget):
                 "No game file path stored."
             )
             return
+        from pathlib import Path
+
+        if config and not Path(config).exists():
+            print("Config missing:", config)
+
+        active = Path(XENIA_EXE).parent / "xenia-canary.config.toml"
+        shutil.copy(config, active)
 
         try:
 
