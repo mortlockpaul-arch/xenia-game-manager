@@ -2,6 +2,7 @@
 
 from datetime import datetime
 
+from typing import cast, Any
 from PySide6.QtCore import (
     Qt,
     QAbstractTableModel,
@@ -11,6 +12,8 @@ from PySide6.QtCore import (
 from db import get_db
 from utils import star
 
+DisplayRole = Qt.ItemDataRole.DisplayRole
+ToolTipRole = Qt.ItemDataRole.ToolTipRole
 
 class GameTableModel(QAbstractTableModel):
 
@@ -18,138 +21,131 @@ class GameTableModel(QAbstractTableModel):
         "Favourite",
         "Title",
         "Game ID",
+        "Media ID",
         "Discs",
         "Type",
         "Last Played",
         "Play Count"
     ]
 
+    COLUMNS = [
+        ("favourite", "Fav"),
+        ("title", "Title"),
+        ("game_id", "Game ID"),
+        ("media_id", "Media ID"),
+        ("disc_count", "Discs"),
+        ("disc_type", "Type"),
+        ("last_played", "Last Played"),
+        ("play_count", "Plays"),
+    ]
+
     def __init__(self):
         super().__init__()
 
-        self.games = []
+        from typing import Any
+
+        self.games: list[dict[str, Any]] = []
         self.load()
 
     def load(self, search_text=""):
 
         with get_db() as con:
+            query = """
+                SELECT
+                    game_id,
+                    media_id,
+                    title,
+                    file_path,
+                    config_path,
+                    favourite,
+                    last_played,
+                    play_count,
+                    disc_count,
+                    disc_type
+                FROM games
+            """
+
+            params = ()
 
             if search_text:
+                query += " WHERE title LIKE ?"
+                params = (f"%{search_text}%",)
 
-                self.games = con.execute("""
-                    SELECT
-                        game_id,
-                        title,
-                        file_path,
-                        config_path,
-                        favourite,
-                        last_played,
-                        play_count,
-                        disc_count,
-                        disc_type
-                    FROM games
-                    WHERE title LIKE ?
-                    ORDER BY title
-                """, (
-                    f"%{search_text}%",
-                )).fetchall()
+            query += " ORDER BY title"
 
-            else:
-
-                self.games = con.execute("""
-                    SELECT
-                        game_id,
-                        title,
-                        file_path,
-                        config_path,
-                        favourite,
-                        last_played,
-                        play_count,
-                        disc_count,
-                        disc_type
-                    FROM games
-                    ORDER BY title
-                """).fetchall()
-
+            self.games = cast(
+                list[dict[str, Any]],
+                [dict(row) for row in con.execute(query, params)]
+            )
         self.layoutChanged.emit()
 
     def rowCount(self, parent=QModelIndex()):
         return len(self.games)
 
-    def columnCount(self, parent=QModelIndex()):
-        return len(self.HEADERS)
+    def columnCount(self, parent=None):
+        return len(self.COLUMNS)
 
-    def headerData(
-        self,
-        section,
-        orientation,
-        role
-    ):
-        if (
-            role == Qt.DisplayRole
-            and orientation == Qt.Horizontal
-        ):
-            return self.HEADERS[section]
+    def headerData(self, section, orientation, role=Qt.ItemDataRole.DisplayRole):
+        if role != Qt.ItemDataRole.DisplayRole:
+            return None
 
-        return None
+        if orientation == Qt.Orientation.Horizontal:
+            return self.COLUMNS[section][1]
 
-    def data(self, index, role):
+        return section + 1
+
+    def data(self, index, role=Qt.ItemDataRole.DisplayRole):
 
         if not index.isValid():
             return None
 
         row = self.games[index.row()]
+        key = self.COLUMNS[index.column()][0]
 
-        if role == Qt.ToolTipRole:
+        if role == Qt.ItemDataRole.DisplayRole:
 
-            if index.column() == 1:
-                return row["file_path"]
+            value = row.get(key, None)
 
-        if role == Qt.DisplayRole:
+            if key == "favourite":
+                return star(int(value or 0))
 
-            col = index.column()
+            if key == "disc_type":
+                return value or "Single Disc"
 
-            if col == 0:
-                return star(row["favourite"])
+            if key == "last_played":
+                return value or ""
 
-            if col == 1:
-                return row["title"]
+            return value if value is not None else ""
 
-            if col == 2:
-                return row["game_id"]
-
-            if col == 3:
-                return row["disc_count"]
-
-            if col == 4:
-                return row["disc_type"] or "Single Disc"
-
-            if col == 5:
-                return row["last_played"] or ""
-
-            if col == 6:
-                return row["play_count"]
+        if role == Qt.ItemDataRole.ToolTipRole:
+            if key == "title":
+                return row.get("file_path", "")
 
         return None
 
     def toggle_favourite(self, row_index):
 
-        row = self.games[row_index]
+        if row_index < 0 or row_index >= len(self.games):
+            return
 
-        new_value = 0 if row["favourite"] else 1
+        row = self.games[row_index]
+        game_id = row["game_id"]
+
+        new_value = 0 if int(row.get("favourite", 0)) else 1
 
         with get_db() as con:
-
             con.execute("""
                 UPDATE games
                 SET favourite = ?
                 WHERE game_id = ?
-            """, (
-                new_value,
-                row["game_id"]
-            ))
+            """, (new_value, game_id))
 
-        self.load()
+        # update memory
+        row["favourite"] = new_value
+
+        # notify Qt properly
+        index = self.index(row_index, 0)
+        self.dataChanged.emit(index, index, [Qt.ItemDataRole.DisplayRole])
 
     def mark_played(self, game_id):
 
@@ -171,34 +167,31 @@ class GameTableModel(QAbstractTableModel):
             ))
 
     def get_game_path(self, row_index):
-
-        return self.games[row_index]["file_path"]
+        return self.games[row_index].get("file_path", "")
 
     def get_game_id(self, row_index):
+        return self.games[row_index].get("game_id", "")
 
-        return self.games[row_index]["game_id"]
+    def get_media_id(self, row_index):
+        return self.games[row_index].get("media_id", "")
 
     def get_config_path(self, row_index):
-        return self.games[row_index]["config_path"]
+        return self.games[row_index].get("config_path", "")
 
-    def sort(
-        self,
-        column,
-        order=Qt.AscendingOrder
-    ):
+    def sort(self, column, order=Qt.SortOrder.AscendingOrder):
 
-        reverse = (
-            order == Qt.DescendingOrder
-        )
+        reverse = (order == Qt.SortOrder.DescendingOrder)
 
         mapping = {
             0: "favourite",
             1: "title",
             2: "game_id",
-            3: "disc_count",
-            4: "disc_type",
-            5: "last_played",
-            6: "play_count",
+            3: "media_id",
+            4: "disc_count",
+            5: "disc_type",
+            6: "last_played",
+            7: "play_count",
+            8: "media_id",  # if you added it, include it here
         }
 
         field = mapping.get(column)
@@ -207,10 +200,10 @@ class GameTableModel(QAbstractTableModel):
             return
 
         with get_db() as con:
-
-            self.games = con.execute(f"""
+            query = (f"""
                 SELECT
                     game_id,
+                    media_id,
                     title,
                     file_path,
                     config_path,
@@ -220,8 +213,11 @@ class GameTableModel(QAbstractTableModel):
                     disc_count,
                     disc_type
                 FROM games
-                ORDER BY {field}
-                {"DESC" if reverse else "ASC"}
-            """).fetchall()
-
+                ORDER BY {field} {"DESC" if reverse else "ASC"}
+            """)
+            params = ()
+            self.games = cast(
+                list[dict[str, Any]],
+                [dict(row) for row in con.execute(query, params)]
+            )
         self.layoutChanged.emit()

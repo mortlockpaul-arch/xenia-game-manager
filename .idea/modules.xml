@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Xenia Game Manager.iml" filepath="$PROJECT_DIR$/.idea/Xenia Game Manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../X360-TU-Manager/.idea/X360-TU-Manager.iml" filepath="$PROJECT_DIR$/../X360-TU-Manager/.idea/X360-TU-Manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/pythonproject.iml" filepath="$PROJECT_DIR$/.idea/pythonproject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../x360db/.idea/x360db.iml" filepath="$PROJECT_DIR$/../x360db/.idea/x360db.iml" />
     </modules>
   </component>
 </project>

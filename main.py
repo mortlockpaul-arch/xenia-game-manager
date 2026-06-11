@@ -18,10 +18,6 @@ def game_count():
 def main():
     init_db()
 
-    if game_count() == 0:
-        import_games_json(
-            GAMES_JSON, log_callback=GameLauncher.log
-        )
     app = QApplication(sys.argv)
 
     window = GameLauncher()

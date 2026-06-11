@@ -14,7 +14,7 @@ import re
 KEEP_UPPER = {
     "DLC", "HD", "XBLA", "USA", "PAL",
     "NTSC", "GTA", "NBA", "NHL", "UFC",
-    "FIFA", "MX", "ATV","II","III","UGC","NFS"
+    "FIFA", "MX", "ATV","II","III","UGC","NFS", "IL"
 }
 
 
@@ -140,10 +140,11 @@ def format_disc_type(disc_type: str):
         disc_type or "Single Disc"
     )
 
-
 def star(value):
-    return "⭐" if value else "☆"
-
+    try:
+        return "⭐" if int(value) == 1 else "☆"
+    except Exception:
+        return "☆"
 
 def format_play_count(count):
     try:
