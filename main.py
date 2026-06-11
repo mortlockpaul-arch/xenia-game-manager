@@ -6,7 +6,7 @@ from pathlib import Path
 from PySide6.QtWidgets import QApplication
 
 from db import init_db, get_db, import_games_json
-from ui import GameLauncher, GAMES_JSON
+from ui import GameLauncher
 
 
 def game_count():

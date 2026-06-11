@@ -135,7 +135,7 @@ class XboxTUMApp(QMainWindow):
 
         layout = QVBoxLayout(central)
 
-        # ================= LOGIN + FTP =================
+        # ================= LOGIN =================
         top = QHBoxLayout()
 
         login_box = QGroupBox("Login XboxUnity / API Key")
