@@ -5,7 +5,7 @@ from pathlib import Path
 
 from datetime import datetime
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QEasingCurve, QPropertyAnimation, QRect
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -14,27 +14,40 @@ from PySide6.QtWidgets import (
     QPushButton,
     QTableView,
     QMessageBox,
-    QHeaderView, QPlainTextEdit,
+    QHeaderView, QPlainTextEdit, QGroupBox, QLabel, QSizePolicy, QMainWindow, QFormLayout, QToolButton, QFileDialog,
+    QFrame, QGraphicsDropShadowEffect,
 )
 from PySide6.QtWidgets import QMenu
 from PySide6.QtGui import QGuiApplication
 
+from config import save_config, load_config, XENIA_EXE, GAMES_JSON, XENIA_BASE_DIR
 from model import GameTableModel
 from db import get_db, init_db, import_games_json, export_titles_to_json, import_multidisc_json
 from utils import smart_title_case
-
-XENIA_EXE = (
-    r"D:\RetroBat\emulators\xenia-manager\Emulators\Xenia Canary\xenia_canary.exe"
-)
-
-GAMES_JSON = r"D:\RetroBat\emulators\xenia-manager\Config\games.json"
+from xboxunity_api import login_xboxunity, probar_conectividad
 
 
-class GameLauncher(QWidget):
+class ClickOverlay(QWidget):
+    def __init__(self, launcher):
+        super().__init__(launcher)
+        self.launcher = launcher
+
+    def mousePressEvent(self, event):
+        self.launcher.close_drawer()
+
+class GameLauncher(QMainWindow):
 
     def __init__(self):
         super().__init__()
-
+        self.xenia_canary_path = None
+        self.export_btn = None
+        self.xenia_path = None
+        self.settings_panel = None
+        self.settings_btn = None
+        self.drawer_open = False
+        self.drawer_anim = None
+        self.overlay = None
+        self.settings_drawer = None
         self.import_btn = None
         self.fix_titles_btn = None
         self.search = None
@@ -48,74 +61,259 @@ class GameLauncher(QWidget):
         self.model = GameTableModel()
 
         self.build_ui()
+        self.load_saved_config()
+
+    def create_settings_drawer(self):
+
+        self.overlay = ClickOverlay(self)
+        self.overlay.setStyleSheet("background-color: rgba(0,0,0,120);")
+        self.overlay.hide()
+
+        self.settings_drawer = QFrame(self)
+        self.settings_drawer.setObjectName("settingsDrawer")
+        self.settings_drawer.setFixedWidth(420)
+
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(40)
+        shadow.setOffset(-5, 0)
+        self.settings_drawer.setGraphicsEffect(shadow)
+
+        self.settings_drawer.setStyleSheet("""
+            QFrame#settingsDrawer {
+                background-color: #1b1b1b;
+                border-left: 1px solid #333;
+            }
+        """)
+
+        layout = QVBoxLayout(self.settings_drawer)
+
+        title = QLabel("Settings")
+        layout.addWidget(title)
+
+        # ---------------- LOGIN BOX ----------------
+        login_box = QGroupBox("Login XboxUnity / API Key")
+        login_box.setMaximumWidth(380)
+
+        login_form = QFormLayout()
+
+        self.entry_user = QLineEdit()
+        self.entry_pass = QLineEdit()
+        self.entry_pass.setEchoMode(QLineEdit.EchoMode.Password)
+        self.entry_apikey = QLineEdit()
+
+        self.entry_user.setPlaceholderText("Username")
+        self.entry_pass.setPlaceholderText("Password")
+        self.entry_apikey.setPlaceholderText("API Key")
+
+        login_form.addRow("Username", self.entry_user)
+        login_form.addRow("Password", self.entry_pass)
+        login_form.addRow("API Key", self.entry_apikey)
+
+        self.login_btn = QPushButton("Login")
+        self.login_btn.clicked.connect(self.login)
+        login_form.addRow(self.login_btn)
+
+        login_box.setLayout(login_form)
+
+        login_box.setSizePolicy(
+            QSizePolicy.Policy.Fixed,
+            QSizePolicy.Policy.Fixed
+        )
+
+        layout.addWidget(
+            login_box,
+            alignment=Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop
+        )
+
+        # ---------------- XENIA PATH ----------------
+        layout.addWidget(QLabel("Xenia Manager Folder"))
+
+        xenia_row = QHBoxLayout()
+        self.xenia_path = QLineEdit()
+        self.xenia_path.setPlaceholderText("Xenia Manager location...")
+
+        browse_btn_xenia = QPushButton("Browse")
+        browse_btn_xenia.clicked.connect(self.pick_xenia_path)
+
+        xenia_row.addWidget(self.xenia_path)
+        xenia_row.addWidget(browse_btn_xenia)
+
+        layout.addLayout(xenia_row)
+
+        # ---------------- XENIA CANARY PATH ----------------
+        layout.addWidget(QLabel("Xenia Canary Folder"))
+
+        canary_row = QHBoxLayout()
+        self.xenia_canary_path = QLineEdit()
+        self.xenia_canary_path.setPlaceholderText("Xenia Canary location...")
+
+        browse_btn_canary = QPushButton("Browse")
+        browse_btn_canary.clicked.connect(self.pick_xenia_canary_path)
+
+        canary_row.addWidget(self.xenia_canary_path)
+        canary_row.addWidget(browse_btn_canary)
+
+        layout.addLayout(canary_row)
+
+        # -----------------------
+        # Tools
+        # -----------------------
+
+        tools_box = QGroupBox("Tools")
+
+        tools_layout = QVBoxLayout()
+
+
+        self.fix_titles_btn = QPushButton("Fix Titles")
+        self.fix_titles_btn.clicked.connect(self.fix_titles)
+        tools_layout.addWidget(self.fix_titles_btn)
+
+        self.import_btn = QPushButton("Import Xenia Manager Game List")
+        self.import_btn.clicked.connect(self.import_games)
+        tools_layout.addWidget(self.import_btn)
+
+        self.export_btn = QPushButton("Update Xenia Manager Game List")
+        self.export_btn.clicked.connect(self.export_titles)
+        tools_layout.addWidget(self.export_btn)
+
+        self.refresh_btn = QPushButton("Refresh")
+        self.refresh_btn.clicked.connect(self.refresh)
+        tools_layout.addWidget(self.refresh_btn)
+        
+        tools_layout.addWidget(self.fix_titles_btn)
+        tools_layout.addWidget(self.import_btn)
+        tools_layout.addWidget(self.export_btn)
+        tools_layout.addWidget(self.refresh_btn)
+
+        tools_box.setLayout(tools_layout)
+
+        layout.addWidget(tools_box)
+
+        layout.addStretch()
+
+        self.settings_drawer.hide()
+
+    def toggle_drawer(self):
+        if self.drawer_open:
+            self.close_drawer()
+        else:
+            self.open_drawer()
+
+    def open_drawer(self):
+
+        self.drawer_open = True
+
+        self.overlay.setGeometry(self.rect())
+        self.overlay.show()
+
+        self.settings_drawer.show()
+
+        start = QRect(
+            self.width(),
+            0,
+            self.settings_drawer.width(),
+            self.height()
+        )
+
+        end = QRect(
+            self.width() - self.settings_drawer.width(),
+            0,
+            self.settings_drawer.width(),
+            self.height()
+        )
+
+        self.drawer_anim = QPropertyAnimation(
+            self.settings_drawer,
+            b"geometry"
+        )
+
+        self.drawer_anim.setDuration(250)
+        self.drawer_anim.setEasingCurve(
+            QEasingCurve.Type.OutCubic
+        )
+        self.drawer_anim.setStartValue(start)
+        self.drawer_anim.setEndValue(end)
+        self.drawer_anim.start()
+
+    def close_drawer(self):
+
+        self.drawer_open = False
+
+        start = self.settings_drawer.geometry()
+
+        end = QRect(
+            self.width(),
+            0,
+            self.settings_drawer.width(),
+            self.height()
+        )
+
+        self.drawer_anim = QPropertyAnimation(
+            self.settings_drawer,
+            b"geometry"
+        )
+
+        self.drawer_anim.setDuration(200)
+        self.drawer_anim.setEasingCurve(
+            QEasingCurve.Type.InCubic
+        )
+        self.drawer_anim.setStartValue(start)
+        self.drawer_anim.setEndValue(end)
+
+        self.drawer_anim.finished.connect(
+            self.settings_drawer.hide
+        )
+
+        self.drawer_anim.finished.connect(
+            self.overlay.hide
+        )
+
+        self.drawer_anim.start()
+
+    def resizeEvent(self, event):
+
+        super().resizeEvent(event)
+
+        if self.overlay:
+            self.overlay.setGeometry(self.rect())
+
+        if self.drawer_open:
+            self.settings_drawer.setGeometry(
+                self.width() - self.settings_drawer.width(),
+                0,
+                self.settings_drawer.width(),
+                self.height()
+            )
 
     def build_ui(self):
+        central = QWidget()
+        self.setCentralWidget(central)
+        self.create_settings_drawer()
+        main_layout = QVBoxLayout(central)
+        main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        layout = QVBoxLayout(self)
+        # ================= LOGIN =================
+        from PySide6.QtWidgets import QFormLayout
 
-        # -------------------------
-        # Toolbar
-        # -------------------------
 
+        # ================= TOOLBAR =================
         toolbar = QHBoxLayout()
 
-        self.search = QLineEdit()
-        self.search.setPlaceholderText(
-            "Search games..."
-        )
-        self.search.textChanged.connect(
-            self.search_changed
-        )
+        self.settings_btn = QToolButton()
+        self.settings_btn.setText("⚙")
+        self.settings_btn.setCheckable(True)
+        self.settings_btn.setChecked(False)
+        self.settings_btn.clicked.connect(self.toggle_drawer)
+        toolbar.addWidget(self.settings_btn)
 
+        self.search = QLineEdit()
+        self.search.setPlaceholderText("Search games...")
+        self.search.textChanged.connect(self.search_changed)
         toolbar.addWidget(self.search)
 
-        self.fix_titles_btn = QPushButton(
-            "Fix Titles"
-        )
-        self.fix_titles_btn.clicked.connect(
-            self.fix_titles
-        )
 
-        toolbar.addWidget(
-            self.fix_titles_btn
-        )
-
-        self.import_btn = QPushButton(
-            "Import Xenia Manager Game List"
-        )
-
-        self.import_btn.clicked.connect(
-            self.import_games
-        )
-
-        toolbar.addWidget(
-            self.import_btn
-        )
-
-        self.export_btn = QPushButton(
-            "Update Xenia Manager Game List"
-        )
-
-        self.export_btn.clicked.connect(
-            self.export_titles
-        )
-
-        toolbar.addWidget(
-            self.export_btn
-        )
-
-        self.refresh_btn = QPushButton(
-            "Refresh"
-        )
-        self.refresh_btn.clicked.connect(
-            self.refresh
-        )
-
-        toolbar.addWidget(
-            self.refresh_btn
-        )
-
-        layout.addLayout(toolbar)
+        # 🔥 IMPORTANT: attach toolbar to main layout
+        main_layout.addLayout(toolbar)
 
         # -------------------------
         # Table
@@ -152,7 +350,7 @@ class GameLauncher(QWidget):
         self.search.setClearButtonEnabled(True)
         self.table.verticalHeader().hide()
 
-        layout.addWidget(self.table)
+        main_layout.addWidget(self.table)
 
         self.console = QPlainTextEdit()
 
@@ -164,12 +362,112 @@ class GameLauncher(QWidget):
             "Application log..."
         )
 
-        layout.addWidget(self.console)
+        main_layout.addWidget(self.console)
 
         self.table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.table.customContextMenuRequested.connect(self.show_table_menu)
 
         self.apply_style()
+
+    def toggle_settings(self):
+        self.settings_panel.setVisible(self.settings_btn.isChecked())
+
+    def pick_xenia_path(self):
+        folder = QFileDialog.getExistingDirectory(
+            self,
+            "Select Xenia Manager Folder"
+        )
+
+        if folder:
+            self.xenia_path.setText(folder)
+            config = load_config()
+            config["xenia_path"] = folder
+            save_config(config)
+
+    def pick_xenia_canary_path(self):
+        folder = QFileDialog.getExistingDirectory(
+            self,
+            "Select Xenia Canary Folder"
+        )
+
+        if folder:
+            self.xenia_canary_path.setText(folder)
+            config = load_config()
+            config["xenia_canary_path"] = folder
+            save_config(config)
+
+    def load_saved_config(self):
+        config = load_config()
+
+        self.entry_user.setText(config.get("username", ""))
+        self.entry_pass.setText(config.get("password", ""))
+        self.entry_apikey.setText(config.get("api_key", ""))
+        self.xenia_path.setText(config.get("xenia_path", ""))
+        self.xenia_canary_path.setText(config.get("xenia_canary_path", ""))
+
+        if config.get("api_key"):
+            self.api_key = config["api_key"]
+
+    def login(self):
+        username = self.entry_user.text().strip()
+        password = self.entry_pass.text().strip()
+        api_key = self.entry_apikey.text().strip()
+
+        config = load_config()
+
+        # Save API key mode (preferred)
+        if api_key:
+            config["api_key"] = api_key
+            config["username"] = username
+            config["password"] = password
+            save_config(config)
+
+            self.api_key = api_key
+            self.log("API Key saved.")
+
+            # optional connectivity check
+            try:
+                if probar_conectividad():
+                    self.log("XboxUnity connectivity OK.")
+                else:
+                    self.log("WARNING: XboxUnity connectivity issue.")
+            except Exception as e:
+                self.log(f"Connectivity error: {e}")
+
+            return
+
+        # Username/password login
+        if not username or not password:
+            self.log("Login Error: Enter username/password or API key")
+            return
+
+        self.log("Checking XboxUnity...")
+
+        try:
+            if not probar_conectividad():
+                self.log("Error: Cannot reach XboxUnity")
+                return
+        except Exception as e:
+            self.log(str(e))
+            return
+
+        self.log("Logging in...")
+
+        token = login_xboxunity(username, password)
+
+        if token:
+            self.token = token
+            self.api_key = None
+
+            config["username"] = username
+            config["password"] = password
+            config.pop("api_key", None)
+
+            save_config(config)
+
+            self.log("Login successful.")
+        else:
+            self.log("Login Failed: Invalid credentials")
 
     def show_table_menu(self, pos):
         index = self.table.indexAt(pos)
@@ -324,15 +622,13 @@ class GameLauncher(QWidget):
         )
         from pathlib import Path
 
-        BASE_DIR = Path(
-            r"D:\RetroBat\emulators\xenia-manager"
-        )
+
         config = self.model.get_config_path(
             row
         )
         if config:
             config = str(
-                BASE_DIR / config
+                XENIA_BASE_DIR / config
             )
         print([
             XENIA_EXE,
@@ -457,5 +753,56 @@ class GameLauncher(QWidget):
             background: #3c4043;
             padding: 6px;
             border: 1px solid #555;
+        }
+        
+        QGroupBox {
+            font-size: 14px;
+            font-weight: bold;
+            color: #e5e5e5;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            margin-top: 12px;
+            padding: 10px;
+            background-color: #1e1e1e;
+        }
+        
+        QGroupBox::title {
+            subcontrol-origin: margin;
+            left: 10px;
+            padding: 0 5px;
+        }
+        
+        QLabel {
+            color: #cfcfcf;
+            font-size: 12px;
+        }
+        
+        QLineEdit {
+            background-color: #2b2b2b;
+            border: 1px solid #3a3a3a;
+            border-radius: 6px;
+            padding: 6px 10px;
+            color: #ffffff;
+            selection-background-color: #0078d7;
+        }
+        
+        QLineEdit:focus {
+            border: 1px solid #0078d7;
+        }
+        
+        QPushButton {
+            background-color: #2d2d2d;
+            border: 1px solid #3a3a3a;
+            padding: 6px;
+            border-radius: 6px;
+            color: #ffffff;
+        }
+        
+        QPushButton:hover {
+            background-color: #3a3a3a;
+        }
+        
+        QPushButton:pressed {
+            background-color: #0078d7;
         }
         """)

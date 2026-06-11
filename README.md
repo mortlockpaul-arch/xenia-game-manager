@@ -297,6 +297,7 @@ Click any column heading.
 - RetroBat integration
 - Compatibility status import
 - Automatic title database lookups
+- Download Title Updates from xboxunity.net for games in the list
 
 ---
 
