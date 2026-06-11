@@ -69,42 +69,37 @@ def import_multidisc_json(json_path, log_callback=None):
     if log_callback:
         log_callback(message)
 
-
 def get_game_discs(title_id):
-    """
-    Return disc information for UI detail panel.
-    """
 
     with get_db() as con:
-        return con.execute(
-            """
-            SELECT
-                disc_index,
-                label,
-                file_path
-            FROM discs
-            WHERE title_id = ?
-            ORDER BY disc_index
-            """,
-            (title_id,),
-        ).fetchall()
-
-
+        return [
+            dict(row)
+            for row in con.execute("""
+                SELECT
+                    disc_index,
+                    label,
+                    file_path
+                FROM discs
+                WHERE title_id = ?
+                ORDER BY disc_index
+            """, (title_id,))
+        ]
 def get_multidisc_games():
-    with get_db() as con:
-        return con.execute(
-            """
-            SELECT
-                game_id,
-                title,
-                disc_count,
-                disc_type
-            FROM games
-            WHERE disc_count > 1
-            ORDER BY title
-            """
-        ).fetchall()
 
+    with get_db() as con:
+        return [
+            dict(row)
+            for row in con.execute("""
+                SELECT
+                    game_id,
+                    title,
+                    disc_count,
+                    disc_type
+                FROM games
+                WHERE disc_count > 1
+                ORDER BY title
+            """)
+        ]
 
 def get_db():
     con = sqlite3.connect(DB_PATH)
@@ -127,6 +122,7 @@ def init_db():
         con.execute("""
         CREATE TABLE IF NOT EXISTS games (
             game_id TEXT,
+            media_id TEXT,
             title TEXT NOT NULL,
             file_path TEXT,
             config_path TEXT,
@@ -224,6 +220,7 @@ def import_games_json(json_path, log_callback=None):
         for game in games:
             game_id = game.get("game_id")
             title = game.get("title")
+            media_id = game.get("media_id")
 
             file_path = (
                 game.get("file_locations", {})
@@ -237,13 +234,15 @@ def import_games_json(json_path, log_callback=None):
             INSERT INTO games
             (
                 game_id,
+                media_id,
                 title,
                 file_path,
                 config_path
             )
-            VALUES (?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?)
             """, (
                 game_id,
+                media_id,
                 title,
                 file_path,
                 config_path
@@ -257,24 +256,23 @@ def import_games_json(json_path, log_callback=None):
         r"multidisc.json", log_callback=log_callback
     )
 
-
 def search_games(search_text=""):
     with get_db() as con:
-        if search_text:
-            return con.execute("""
-            SELECT *
-            FROM games
-            WHERE title LIKE ?
-            ORDER BY title
-            """, (
-                f"%{search_text}%",
-            )).fetchall()
 
-        return con.execute("""
+        query = """
         SELECT *
         FROM games
-        ORDER BY title
-        """).fetchall()
+        """
+
+        params = ()
+
+        if search_text:
+            query += " WHERE title LIKE ?"
+            params = (f"%{search_text}%",)
+
+        query += " ORDER BY title"
+
+        return [dict(row) for row in con.execute(query, params)]
 
 
 def get_discs(title_id):

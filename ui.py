@@ -16,17 +16,19 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QHeaderView, QPlainTextEdit,
 )
+from PySide6.QtWidgets import QMenu
+from PySide6.QtGui import QGuiApplication
 
 from model import GameTableModel
 from db import get_db, init_db, import_games_json, export_titles_to_json, import_multidisc_json
 from utils import smart_title_case
-
 
 XENIA_EXE = (
     r"D:\RetroBat\emulators\xenia-manager\Emulators\Xenia Canary\xenia_canary.exe"
 )
 
 GAMES_JSON = r"D:\RetroBat\emulators\xenia-manager\Config\games.json"
+
 
 class GameLauncher(QWidget):
 
@@ -164,7 +166,58 @@ class GameLauncher(QWidget):
 
         layout.addWidget(self.console)
 
+        self.table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.table.customContextMenuRequested.connect(self.show_table_menu)
+
         self.apply_style()
+
+    def show_table_menu(self, pos):
+        index = self.table.indexAt(pos)
+        if not index.isValid():
+            return
+
+        menu = QMenu(self)
+
+        copy_cell_action = menu.addAction("Copy Cell")
+        copy_row_action = menu.addAction("Copy Row")
+        copy_column_action = menu.addAction("Copy Column")
+
+        action = menu.exec(self.table.viewport().mapToGlobal(pos))
+
+        if not action:
+            return
+
+        model = self.table.model()
+        clipboard = QGuiApplication.clipboard()
+
+        # -------------------------
+        # Copy Cell
+        # -------------------------
+        if action == copy_cell_action:
+            clipboard.setText(
+                str(model.data(index, Qt.ItemDataRole.DisplayRole))
+            )
+        # -------------------------
+        # Copy Row
+        # -------------------------
+        elif action == copy_row_action:
+            row = index.row()
+            values = [
+                str(model.index(row, col).data())
+                for col in range(model.columnCount())
+            ]
+            clipboard.setText("\t".join(values))
+
+        # -------------------------
+        # Copy Column
+        # -------------------------
+        elif action == copy_column_action:
+            col = index.column()
+            values = [
+                str(model.index(row, col).data())
+                for row in range(model.rowCount())
+            ]
+            clipboard.setText("\n".join(values))
 
     def log(self, message):
         timestamp = datetime.now().strftime("%H:%M:%S")
@@ -223,7 +276,6 @@ class GameLauncher(QWidget):
             )
 
     def import_games(self):
-
 
         try:
 
@@ -289,7 +341,6 @@ class GameLauncher(QWidget):
         ])
 
         if not path:
-
             QMessageBox.warning(
                 self,
                 "Missing Path",
@@ -348,7 +399,6 @@ class GameLauncher(QWidget):
                 )
 
                 if cleaned != row["title"]:
-
                     con.execute("""
                         UPDATE games
                         SET title = ?
