@@ -1,11 +1,8 @@
 # main.py
-import json
 import sys
-from pathlib import Path
-
 from PySide6.QtWidgets import QApplication
 
-from db import init_db, get_db, import_games_json
+from db import init_db, get_db
 from ui import GameLauncher
 
 

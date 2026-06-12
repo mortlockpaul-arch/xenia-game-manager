@@ -15,17 +15,18 @@ from PySide6.QtWidgets import (
     QTableView,
     QMessageBox,
     QHeaderView, QPlainTextEdit, QGroupBox, QLabel, QSizePolicy, QMainWindow, QFormLayout, QToolButton, QFileDialog,
-    QFrame, QGraphicsDropShadowEffect,
+    QFrame, QGraphicsDropShadowEffect, QProgressBar,
 )
 from PySide6.QtWidgets import QMenu
 from PySide6.QtGui import QGuiApplication
 
+import xboxtupdater
 from config import save_config, load_config, XENIA_EXE, GAMES_JSON, XENIA_BASE_DIR
 from model import GameTableModel
 from db import get_db, init_db, import_games_json, export_titles_to_json, import_multidisc_json
 from utils import smart_title_case
-from xboxunity_api import login_xboxunity, probar_conectividad
-
+from xboxtupdater import XboxTUMApp
+from xboxunity_api import login_xboxunity, test_connectivity
 
 class ClickOverlay(QWidget):
     def __init__(self, launcher):
@@ -39,6 +40,12 @@ class GameLauncher(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.token = None
+        self.progress = None
+        self.login_btn = None
+        self.entry_apikey = None
+        self.entry_pass = None
+        self.entry_user = None
         self.xenia_canary_path = None
         self.export_btn = None
         self.xenia_path = None
@@ -311,6 +318,18 @@ class GameLauncher(QMainWindow):
         self.search.textChanged.connect(self.search_changed)
         toolbar.addWidget(self.search)
 
+        self.btn_folder = QPushButton("Select Games Folder")
+        self.btn_folder.clicked.connect(self.select_folder)
+
+        self.btn_tu = QPushButton("Search & Download TUs")
+        self.btn_tu.clicked.connect(self.search_and_download_tus)
+
+        toolbar.addWidget(self.btn_folder)
+        toolbar.addWidget(self.btn_tu)
+
+        # ================= PROGRESS =================
+        self.progress = QProgressBar()
+        toolbar.addWidget(self.progress)
 
         # 🔥 IMPORTANT: attach toolbar to main layout
         main_layout.addLayout(toolbar)
@@ -384,6 +403,49 @@ class GameLauncher(QMainWindow):
             config["xenia_path"] = folder
             save_config(config)
 
+    def select_folder(self):
+        folder = QFileDialog.getExistingDirectory(self, "Select Games Folder")
+        if folder:
+            self._log(f"Selected: {folder}")
+
+    def search_and_download_tus(self):
+        if not self.model.games:
+            self._err("Error", "No games loaded")
+            return
+        folder = QFileDialog.getExistingDirectory(self, "Select output folder")
+        if not folder:
+            return
+        self.worker = xboxtupdater.TUDownloadWorker(
+            games=self.model.games,
+            token=self.token,
+            api_key=self.api_key,
+            output_folder=folder
+        )
+        self.worker.log.connect(self.log)
+        self.worker.progress.connect(self.update_file_progress)
+        self.worker.game_progress.connect(self.update_game_progress)
+        self.worker.finished.connect(self.download_finished)
+
+        self.worker.start()
+
+    def update_file_progress(self, done, total):
+        if total > 0:
+            self.progress.setMaximum(total)
+            self.progress.setValue(done)
+
+
+    def update_game_progress(self, current, total):
+        self.log(f"Game progress: {current}/{total}")
+
+    def download_finished(self, stats):
+        self.log("\n=== SUMMARY ===")
+        self.log(f"Games: {stats['games_total']}")
+        self.log(f"With TUs: {stats['games_with_tu']}")
+        self.log(f"Downloaded: {stats['tus_downloaded']}")
+        self.log(f"Errors: {stats['errors']}")
+
+        self.log("Done: TU download completed")
+        
     def pick_xenia_canary_path(self):
         folder = QFileDialog.getExistingDirectory(
             self,
@@ -427,7 +489,7 @@ class GameLauncher(QMainWindow):
 
             # optional connectivity check
             try:
-                if probar_conectividad():
+                if test_connectivity():
                     self.log("XboxUnity connectivity OK.")
                 else:
                     self.log("WARNING: XboxUnity connectivity issue.")
@@ -444,7 +506,7 @@ class GameLauncher(QMainWindow):
         self.log("Checking XboxUnity...")
 
         try:
-            if not probar_conectividad():
+            if not test_connectivity():
                 self.log("Error: Cannot reach XboxUnity")
                 return
         except Exception as e:
