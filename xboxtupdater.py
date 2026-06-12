@@ -9,29 +9,32 @@ from PySide6.QtWidgets import (
     QProgressBar
 )
 from PySide6.QtCore import Qt
-
 from config import save_config, load_config
-from xboxunity_api import login_xboxunity, buscar_tus, probar_conectividad
+
+from xboxunity_api import (
+    login_xboxunity,
+    search_tus,
+    download_tu,
+    test_connectivity
+)
 
 from PySide6.QtCore import QThread, Signal
-from xboxunity_api import buscar_tus, descargar_tu
-
 
 class TUDownloadWorker(QThread):
     log = Signal(str)
-    progress = Signal(int, int)  # current, total
-    game_progress = Signal(int, int)  # game index, total games
+    progress = Signal(int, int)          # current, total
+    game_progress = Signal(int, int)     # game index, total games
     finished = Signal(dict)
 
-    def __init__(self, juegos, token=None, api_key=None, output_folder=""):
+    def __init__(self, games, token=None, api_key=None, output_folder=""):
         super().__init__()
-        self.juegos = juegos
+        self.games = games
         self.token = token
         self.api_key = api_key
         self.output_folder = output_folder
 
     def run(self):
-        total_games = len(self.juegos)
+        total_games = len(self.games)
 
         stats = {
             "games_total": total_games,
@@ -42,17 +45,17 @@ class TUDownloadWorker(QThread):
 
         self.log.emit("Starting TU download process...\n")
 
-        for i, juego in enumerate(self.juegos, 1):
-            nombre = juego.get("nombre")
-            media_id = juego.get("media_id")
-            title_id = juego.get("title_id")
+        for game_index, game in enumerate(self.games, 1):
+            game_name = game.get("title")
+            media_id = game.get("media_id")
+            title_id = game.get("game_id")
 
-            self.game_progress.emit(i, total_games)
+            self.game_progress.emit(game_index, total_games)
 
-            self.log.emit(f"Searching TUs for: {nombre}")
+            self.log.emit(f"Searching TUs for: {game_name}")
 
             try:
-                tus = buscar_tus(
+                tus = search_tus(
                     media_id=media_id,
                     title_id=title_id,
                     token=self.token,
@@ -64,35 +67,35 @@ class TUDownloadWorker(QThread):
                 continue
 
             if not tus:
-                self.log.emit(f"No TUs found for {nombre}")
+                self.log.emit(f"No TUs found for {game_name}")
                 continue
 
             stats["games_with_tu"] += 1
 
             game_folder = os.path.join(
                 self.output_folder,
-                self._safe_name(nombre)
+                self._safe_name(game_name)
             )
             os.makedirs(game_folder, exist_ok=True)
 
-            self.log.emit(f"Found {len(tus)} TUs for {nombre}")
+            self.log.emit(f"Found {len(tus)} TUs for {game_name}")
 
             for tu in tus:
                 filename = tu.get("fileName")
-                url = tu.get("downloadUrl")
+                download_url = tu.get("downloadUrl")
 
-                destino = os.path.join(game_folder, filename)
+                destination = os.path.join(game_folder, filename)
 
                 self.log.emit(f"Downloading {filename}")
 
                 try:
-                    ok, original = descargar_tu(
-                        url,
-                        destino,
-                        progreso_callback=self._progress_callback
+                    success, original_file = download_tu(
+                        download_url,
+                        destination,
+                        progress_callback=self._progress_callback
                     )
 
-                    if ok:
+                    if success:
                         stats["tus_downloaded"] += 1
                         self.log.emit(f"Downloaded: {filename}")
                     else:
@@ -106,9 +109,9 @@ class TUDownloadWorker(QThread):
         self.log.emit("TU download completed.")
         self.finished.emit(stats)
 
-    def _progress_callback(self, done, total):
+    def _progress_callback(self, completed, total):
         if total > 0:
-            self.progress.emit(done, total)
+            self.progress.emit(completed, total)
 
     def _safe_name(self, name):
         import re
@@ -176,7 +179,7 @@ class XboxTUMApp(QMainWindow):
         self.btn_folder.clicked.connect(self.select_folder)
 
         self.btn_tu = QPushButton("Search & Download TUs")
-        self.btn_tu.clicked.connect(self.buscar_y_descargar_tus)
+        self.btn_tu.clicked.connect(self.search_and_download_tus)
 
         btn_row.addWidget(self.btn_folder)
         btn_row.addWidget(self.btn_tu)
@@ -284,22 +287,19 @@ class XboxTUMApp(QMainWindow):
         if folder:
             self._log(f"Selected: {folder}")
 
-    def buscar_y_descargar_tus(self):
-        if not self.juegos:
+    def search_and_download_tus(self):
+        if not self.games:
             self._err("Error", "No games loaded")
             return
-
         folder = QFileDialog.getExistingDirectory(self, "Select output folder")
         if not folder:
             return
-
         self.worker = TUDownloadWorker(
-            juegos=self.juegos,
+            games=self.games,
             token=self.token,
             api_key=self.api_key,
             output_folder=folder
         )
-
         self.worker.log.connect(self._log)
         self.worker.progress.connect(self.update_file_progress)
         self.worker.game_progress.connect(self.update_game_progress)
