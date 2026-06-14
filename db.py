@@ -121,6 +121,7 @@ def init_db():
     with get_db() as con:
         con.execute("""
         CREATE TABLE IF NOT EXISTS games (
+            game_no INTEGER PRIMARY KEY AUTOINCREMENT,
             game_id TEXT,
             media_id TEXT,
             title TEXT NOT NULL,
@@ -129,6 +130,7 @@ def init_db():
             favourite INTEGER DEFAULT 0,
             last_played TEXT,
             play_count INTEGER DEFAULT 0,
+            play_time INTEGER DEFAULT 0,
             disc_count INTEGER DEFAULT 1,
             disc_type TEXT,
             xenia_disc_swap_required INTEGER DEFAULT 0
@@ -200,7 +202,7 @@ def export_titles_to_json(json_path):
     return updated
 
 
-def import_games_json(json_path, log_callback=None):
+def import_games_json(json_path, games, log_callback=None):
     """
     Import Xenia Manager games.json
     """
@@ -211,50 +213,56 @@ def import_games_json(json_path, log_callback=None):
         raise FileNotFoundError(json_path)
 
     with open(json_path, "r", encoding="utf-8") as f:
-        games = json.load(f)
+        xenia_manager_games = json.load(f)
 
-    clear_db()
+    if len(xenia_manager_games) != len(games):
+        clear_db()
 
-    with get_db() as con:
+        with get_db() as con:
 
-        for game in games:
-            game_id = game.get("game_id")
-            title = game.get("title")
-            media_id = game.get("media_id")
+            for game in xenia_manager_games:
+                game_id = game.get("game_id")
+                title = game.get("title")
+                media_id = game.get("media_id")
 
-            file_path = (
-                game.get("file_locations", {})
-                .get("game")
-            )
-            config_path = (
-                game.get("file_locations", {})
-                .get("config")
-            )
-            con.execute("""
-            INSERT INTO games
-            (
-                game_id,
-                media_id,
-                title,
-                file_path,
-                config_path
-            )
-            VALUES (?, ?, ?, ?, ?)
-            """, (
-                game_id,
-                media_id,
-                title,
-                file_path,
-                config_path
-            ))
+                file_path = (
+                    game.get("file_locations", {})
+                    .get("game")
+                )
+                config_path = (
+                    game.get("file_locations", {})
+                    .get("config")
+                )
+                play_time = (game.get("playtime"))
+                con.execute("""
+                INSERT INTO games
+                (
+                    game_id,
+                    media_id,
+                    title,
+                    file_path,
+                    config_path,
+                    play_time
+                )
+                VALUES (?, ?, ?, ?, ?, ?)
+                """, (
+                    game_id,
+                    media_id,
+                    title,
+                    file_path,
+                    config_path,
+                    play_time
+                ))
 
-    message = f"Imported {len(games)} games"
+        message = f"Imported {len(xenia_manager_games)} games"
+        import_multidisc_json(
+            r"multidisc.json", log_callback=log_callback
+        )
+    else:
+        message = f"Import Not Required {len(xenia_manager_games)} games"
+
     if log_callback:
         log_callback(message)
-
-    import_multidisc_json(
-        r"multidisc.json", log_callback=log_callback
-    )
 
 def search_games(search_text=""):
     with get_db() as con:

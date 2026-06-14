@@ -13,15 +13,11 @@ def game_count():
         ).fetchone()[0]
 
 def main():
-    init_db()
-
     app = QApplication(sys.argv)
-
     window = GameLauncher()
+    window.import_games()
     window.show()
-
     sys.exit(app.exec())
-
 
 if __name__ == "__main__":
     main()

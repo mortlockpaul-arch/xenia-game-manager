@@ -1,9 +1,11 @@
 # ui.py
 import shutil
 import subprocess
+import threading
+from datetime import datetime
 from pathlib import Path
 
-from datetime import datetime
+import time
 
 from PySide6.QtCore import Qt, QEasingCurve, QPropertyAnimation, QRect
 from PySide6.QtWidgets import (
@@ -23,7 +25,7 @@ from PySide6.QtGui import QGuiApplication
 import xboxtupdater
 from config import save_config, load_config, XENIA_EXE, GAMES_JSON, XENIA_BASE_DIR
 from model import GameTableModel
-from db import get_db, init_db, import_games_json, export_titles_to_json, import_multidisc_json
+from db import get_db, init_db, import_games_json, export_titles_to_json, import_multidisc_json, clear_db
 from utils import smart_title_case
 from xboxtupdater import XboxTUMApp
 from xboxunity_api import login_xboxunity, test_connectivity
@@ -40,6 +42,8 @@ class GameLauncher(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.process = None
+        self.start_time = None
         self.token = None
         self.progress = None
         self.login_btn = None
@@ -651,7 +655,7 @@ class GameLauncher(QMainWindow):
             init_db()
 
             # Import games
-            import_games_json(GAMES_JSON, log_callback=self.log)
+            import_games_json(GAMES_JSON, self.model.games, log_callback=self.log)
 
             # Refresh table
             self.model.load()
@@ -714,16 +718,16 @@ class GameLauncher(QMainWindow):
         shutil.copy(config, active)
 
         try:
+            import subprocess
+            import time
+            self.start_time = time.time()
+            self.process = subprocess.Popen([XENIA_EXE, path])
 
-            subprocess.Popen(
-                [XENIA_EXE, path]
-            )
-
-            self.model.mark_played(
-                game_id
-            )
-
-            self.model.load()
+            threading.Thread(
+                target=self.monitor_game,
+                args=(game_id,),
+                daemon=True
+            ).start()
 
         except Exception as e:
 
@@ -733,6 +737,18 @@ class GameLauncher(QMainWindow):
                 str(e)
             )
 
+    import time
+
+    def monitor_game(self, game_id):
+        while self.process.poll() is None:
+            time.sleep(1)  # don’t burn CPU
+
+        end_time = time.time()
+        minutes = int((end_time - self.start_time) / 60)
+
+        self.model.add_play_time(game_id, minutes)
+        self.model.mark_played(game_id)
+        self.model.load()
     # -------------------------
     # Fix Titles
     # -------------------------

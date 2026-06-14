@@ -18,6 +18,7 @@ ToolTipRole = Qt.ItemDataRole.ToolTipRole
 class GameTableModel(QAbstractTableModel):
 
     HEADERS = [
+        "Game No."
         "Favourite",
         "Title",
         "Game ID",
@@ -30,6 +31,7 @@ class GameTableModel(QAbstractTableModel):
 
     COLUMNS = [
         ("favourite", "Fav"),
+        ("game_no", "Game No."),
         ("title", "Title"),
         ("game_id", "Game ID"),
         ("media_id", "Media ID"),
@@ -37,6 +39,7 @@ class GameTableModel(QAbstractTableModel):
         ("disc_type", "Type"),
         ("last_played", "Last Played"),
         ("play_count", "Plays"),
+        ("play_time", "Play Time")
     ]
 
     def __init__(self):
@@ -52,6 +55,7 @@ class GameTableModel(QAbstractTableModel):
         with get_db() as con:
             query = """
                 SELECT
+                    game_no,
                     game_id,
                     media_id,
                     title,
@@ -61,7 +65,8 @@ class GameTableModel(QAbstractTableModel):
                     last_played,
                     play_count,
                     disc_count,
-                    disc_type
+                    disc_type,
+                    play_time
                 FROM games
             """
 
@@ -115,6 +120,24 @@ class GameTableModel(QAbstractTableModel):
             if key == "last_played":
                 return value or ""
 
+            if key == "play_time":
+                if value is None:
+                    return ""
+
+                play_time: float = float(value)
+
+                if play_time <= 0:
+                    return "Never Played"
+
+                play_time_int = int(play_time)
+
+                hours, minutes = divmod(play_time_int, 60)
+
+                if hours:
+                    return f"{hours}h {minutes}m"
+
+                return f"{minutes}m"
+
             return value if value is not None else ""
 
         if role == Qt.ItemDataRole.ToolTipRole:
@@ -146,6 +169,14 @@ class GameTableModel(QAbstractTableModel):
         # notify Qt properly
         index = self.index(row_index, 0)
         self.dataChanged.emit(index, index, [Qt.ItemDataRole.DisplayRole])
+
+    def add_play_time(self, game_id, minutes):
+        with get_db() as con:
+            con.execute("""
+                UPDATE games
+                SET play_time = COALESCE(play_time, 0) + ?
+                WHERE game_id = ?
+            """, (minutes, game_id))
 
     def mark_played(self, game_id):
 
@@ -184,14 +215,15 @@ class GameTableModel(QAbstractTableModel):
 
         mapping = {
             0: "favourite",
-            1: "title",
-            2: "game_id",
-            3: "media_id",
-            4: "disc_count",
-            5: "disc_type",
-            6: "last_played",
-            7: "play_count",
-            8: "media_id",  # if you added it, include it here
+            1: "game_no",
+            2: "title",
+            3: "game_id",
+            4: "media_id",
+            5: "disc_count",
+            6: "disc_type",
+            7: "last_played",
+            8: "play_count",
+            9: "play_time"
         }
 
         field = mapping.get(column)
@@ -202,6 +234,7 @@ class GameTableModel(QAbstractTableModel):
         with get_db() as con:
             query = (f"""
                 SELECT
+                    game_no,
                     game_id,
                     media_id,
                     title,
@@ -211,7 +244,8 @@ class GameTableModel(QAbstractTableModel):
                     last_played,
                     play_count,
                     disc_count,
-                    disc_type
+                    disc_type,
+                    play_time
                 FROM games
                 ORDER BY {field} {"DESC" if reverse else "ASC"}
             """)
