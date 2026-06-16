@@ -15,7 +15,6 @@ def game_count():
 def main():
     app = QApplication(sys.argv)
     window = GameLauncher()
-    window.import_games()
     window.show()
     sys.exit(app.exec())
 

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../X360-TU-Manager/.idea/X360-TU-Manager.iml" filepath="$PROJECT_DIR$/../X360-TU-Manager/.idea/X360-TU-Manager.iml" />
+      <module fileurl="file://$USER_HOME$/Documents/GitHub/optimized-settings/.idea/optimized-settings.iml" filepath="$USER_HOME$/Documents/GitHub/optimized-settings/.idea/optimized-settings.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/pythonproject.iml" filepath="$PROJECT_DIR$/.idea/pythonproject.iml" />
       <module fileurl="file://$PROJECT_DIR$/../x360db/.idea/x360db.iml" filepath="$PROJECT_DIR$/../x360db/.idea/x360db.iml" />
     </modules>

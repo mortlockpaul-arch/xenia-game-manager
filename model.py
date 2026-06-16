@@ -10,7 +10,7 @@ from PySide6.QtCore import (
 )
 
 from db import get_db
-from utils import star
+from utils import star, format_disc_type
 
 DisplayRole = Qt.ItemDataRole.DisplayRole
 ToolTipRole = Qt.ItemDataRole.ToolTipRole
@@ -31,15 +31,18 @@ class GameTableModel(QAbstractTableModel):
 
     COLUMNS = [
         ("favourite", "Fav"),
-        ("game_no", "Game No."),
+        ("game_no", "No."),
         ("title", "Title"),
-        ("game_id", "Game ID"),
+        ("game_id", "Title ID"),
         ("media_id", "Media ID"),
         ("disc_count", "Discs"),
         ("disc_type", "Type"),
         ("last_played", "Last Played"),
         ("play_count", "Plays"),
-        ("play_time", "Play Time")
+        ("play_time", "Play Time"),
+        ("disc_number", "Disc"),
+        ("disc_type", "Disc Type"),
+        ("label", "Label")
     ]
 
     def __init__(self):
@@ -66,8 +69,10 @@ class GameTableModel(QAbstractTableModel):
                     play_count,
                     disc_count,
                     disc_type,
-                    play_time
-                FROM games
+                    play_time,
+                    disc_number,
+                    label
+                FROM games LEFT JOIN discs ON discs.disc_index = games.disc_number AND discs.title_id = games.game_id
             """
 
             params = ()
@@ -114,9 +119,6 @@ class GameTableModel(QAbstractTableModel):
             if key == "favourite":
                 return star(int(value or 0))
 
-            if key == "disc_type":
-                return value or "Single Disc"
-
             if key == "last_played":
                 return value or ""
 
@@ -124,7 +126,7 @@ class GameTableModel(QAbstractTableModel):
                 if value is None:
                     return ""
 
-                play_time: float = float(value)
+                play_time: float = cast(float,value)
 
                 if play_time <= 0:
                     return "Never Played"
@@ -137,6 +139,10 @@ class GameTableModel(QAbstractTableModel):
                     return f"{hours}h {minutes}m"
 
                 return f"{minutes}m"
+
+            if key == "disc_type":
+                disc_type: str = cast(str, value)
+                return format_disc_type(disc_type) or None
 
             return value if value is not None else ""
 
@@ -223,7 +229,8 @@ class GameTableModel(QAbstractTableModel):
             6: "disc_type",
             7: "last_played",
             8: "play_count",
-            9: "play_time"
+            9: "play_time",
+            10: "disc_number"
         }
 
         field = mapping.get(column)
@@ -245,8 +252,10 @@ class GameTableModel(QAbstractTableModel):
                     play_count,
                     disc_count,
                     disc_type,
-                    play_time
-                FROM games
+                    play_time,
+                    disc_number,
+                    label
+                FROM games LEFT JOIN discs ON discs.disc_index = games.disc_number AND discs.title_id = games.game_id
                 ORDER BY {field} {"DESC" if reverse else "ASC"}
             """)
             params = ()
