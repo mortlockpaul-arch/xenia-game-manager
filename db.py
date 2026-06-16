@@ -4,6 +4,8 @@ import sqlite3
 import json
 from pathlib import Path
 
+from utils import detect_disc_number
+
 DB_PATH = "games.db"
 
 
@@ -114,6 +116,9 @@ def clear_db():
         con.execute(
             "DELETE FROM sqlite_sequence WHERE name='discs'"
         )
+        con.execute(
+            "DELETE FROM sqlite_sequence WHERE name='games'"
+        )
         con.commit()
 
 
@@ -133,7 +138,8 @@ def init_db():
             play_time INTEGER DEFAULT 0,
             disc_count INTEGER DEFAULT 1,
             disc_type TEXT,
-            xenia_disc_swap_required INTEGER DEFAULT 0
+            xenia_disc_swap_required INTEGER DEFAULT 0,
+            disc_number INTEGER DEFAULT 0
         )
         """)
 
@@ -143,7 +149,6 @@ def init_db():
             title_id TEXT NOT NULL,
             disc_index INTEGER,
             label TEXT,
-            file_path TEXT,
             FOREIGN KEY(title_id) REFERENCES games(game_id)
         )
         """)
@@ -242,16 +247,18 @@ def import_games_json(json_path, games, log_callback=None):
                     title,
                     file_path,
                     config_path,
-                    play_time
+                    play_time,
+                    disc_number
                 )
-                VALUES (?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
                 """, (
                     game_id,
                     media_id,
                     title,
                     file_path,
                     config_path,
-                    play_time
+                    play_time,
+                    detect_disc_number(file_path),
                 ))
 
         message = f"Imported {len(xenia_manager_games)} games"

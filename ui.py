@@ -66,12 +66,11 @@ class GameLauncher(QMainWindow):
         self.setWindowTitle(
             "Xenia SQLite Launcher"
         )
-
-        self.resize(1200, 700)
-
+        init_db()
         self.model = GameTableModel()
-
+        self.resize(1800, 700)
         self.build_ui()
+        self.import_games()
         self.load_saved_config()
 
     def create_settings_drawer(self):
@@ -651,14 +650,11 @@ class GameLauncher(QMainWindow):
                 )
                 return
 
-            # Ensure schema exists
-            init_db()
+            # Refresh table
+            self.model.load()
 
             # Import games
             import_games_json(GAMES_JSON, self.model.games, log_callback=self.log)
-
-            # Refresh table
-            self.model.load()
 
             message = "Import Complete. games.json imported successfully."
             self.log(message)
