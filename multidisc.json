@@ -73,6 +73,42 @@
 "disc_type": "hybrid_story_content",
 "xenia_disc_swap_required": true,
 "notes": "Disc 3 not required for campaign completion"
+}, {
+"title": "Red Dead Redemption - Game of the Year Edition",
+"title_id": "5454082B",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Red Dead Redemption Single Player",
+"Disc 2 - Red Dead Redemption - Undead Nightmare"
+],
+"disc_type": "hybrid_story_content",
+"xenia_disc_swap_required": false,
+"notes": ""
+}, {
+"title": "Deus Ex - Human Revolution - Director's Cut (Disc 1)",
+"title_id": "535107FA",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Campaign",
+"Disc 2 - Campaign Continuation"
+],
+"disc_type": "hybrid_story_content",
+"xenia_disc_swap_required": false,
+"notes": ""
+},{
+"title": "METAL GEAR SOLID V THE PHANTOM PAIN",
+"title_id": "4B4E085E",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Campaign",
+"Disc 2 - Campaign Continuation"
+],
+"disc_type": "hybrid_story_content",
+"xenia_disc_swap_required": false,
+"notes": ""
 },
 {
 "title": "Max Payne 3",

@@ -2,12 +2,6 @@
 
 import re
 
-DISC_PATTERNS = [
-    r"\bdisc\s*(\d+)\b",
-    r"\bdisk\s*(\d+)\b",
-    r"\bdvd\s*(\d+)\b",
-    r"\bcd\s*(\d+)\b",
-]
 
 import re
 
@@ -42,9 +36,12 @@ def smart_title_case(title):
     return " ".join(words)
 
 
+DISC_PATTERNS = [
+    r"\b(?:disc|disk|dvd|cd)\s*(\d+)\b",
+]
 def detect_disc_number(title: str):
     """
-    Returns disc number if found.
+    Returns disc number if found (Contains (Disc 1-4)
     """
 
     if not title:
