@@ -238,7 +238,7 @@ class XboxTUMApp(QMainWindow):
 
             # optional connectivity check
             try:
-                if probar_conectividad():
+                if test_connectivity():
                     self._log("XboxUnity connectivity OK.")
                 else:
                     self._log("WARNING: XboxUnity connectivity issue.")
@@ -255,7 +255,7 @@ class XboxTUMApp(QMainWindow):
         self._log("Checking XboxUnity...")
 
         try:
-            if not probar_conectividad():
+            if not test_connectivity():
                 self._err("Error", "Cannot reach XboxUnity")
                 return
         except Exception as e:
