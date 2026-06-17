@@ -6,7 +6,7 @@ from pathlib import Path
 
 from utils import detect_disc_number
 
-DB_PATH = "games.db"
+DB_PATH = "db/games.db"
 
 
 def import_multidisc_json(json_path, log_callback=None):
