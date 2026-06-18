@@ -1,0 +1,325 @@
+{
+"schema_version": "1.0",
+"platform": "Xbox 360",
+"dataset_type": "multi_disc_preservation_phase1",
+"entries": [
+{
+"title": "Lost Odyssey",
+"title_id": "4D5307FA",
+"regions": ["NTSC-U", "PAL", "NTSC-J"],
+"disc_count": 4,
+"disc_layout": [
+"Disc 1 - Story Start",
+"Disc 2 - Story Continuation",
+"Disc 3 - Story Continuation",
+"Disc 4 - Story End"
+],
+"disc_type": "story_swap",
+"xenia_disc_swap_required": true,
+"notes": "Classic sequential JRPG disc swapping"
+},
+{
+"title": "Blue Dragon",
+"title_id": "4D5307DF",
+"regions": ["NTSC-U", "PAL", "NTSC-J"],
+"disc_count": 3,
+"disc_layout": [
+"Disc 1 - Story Campaign",
+"Disc 2 - Story Campaign",
+"Disc 3 - Story Campaign"
+],
+"disc_type": "story_swap",
+"xenia_disc_swap_required": true,
+"notes": "Traditional JRPG multi-disc structure"
+},
+{
+"title": "Final Fantasy XIII",
+"title_id": "535107E9",
+"regions": ["NTSC-U", "PAL", "NTSC-J"],
+"disc_count": 3,
+"disc_layout": [
+"Disc 1 - Story (Early Game)",
+"Disc 2 - Story (Mid Game)",
+"Disc 3 - Story (Late Game / End)"
+],
+"disc_type": "story_swap",
+"xenia_disc_swap_required": true,
+"notes": "Linear chapter-based disc progression"
+},
+{
+"title": "L.A. Noire",
+"title_id": "545107D8",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 3,
+"disc_layout": [
+"Disc 1 - Patrol / Cases",
+"Disc 2 - Cases Continuation",
+"Disc 3 - Late Game Cases"
+],
+"disc_type": "story_swap",
+"xenia_disc_swap_required": true,
+"notes": "Open-world case-based structure split across discs"
+},
+{
+"title": "Rage",
+"title_id": "425307EC",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 3,
+"disc_layout": [
+"Disc 1 - Campaign",
+"Disc 2 - Campaign Continuation",
+"Disc 3 - Multiplayer / Data"
+],
+"disc_type": "hybrid_story_content",
+"xenia_disc_swap_required": true,
+"notes": "Disc 3 not required for campaign completion"
+}, {
+"title": "Red Dead Redemption - Game of the Year Edition",
+"title_id": "5454082B",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Red Dead Redemption Single Player",
+"Disc 2 - Red Dead Redemption - Undead Nightmare"
+],
+"disc_type": "hybrid_story_content",
+"xenia_disc_swap_required": false,
+"notes": ""
+}, {
+"title": "Deus Ex - Human Revolution - Director's Cut (Disc 1)",
+"title_id": "535107FA",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Campaign",
+"Disc 2 - Campaign Continuation"
+],
+"disc_type": "hybrid_story_content",
+"xenia_disc_swap_required": false,
+"notes": ""
+},{
+"title": "METAL GEAR SOLID V THE PHANTOM PAIN",
+"title_id": "4B4E085E",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Campaign",
+"Disc 2 - Campaign Continuation"
+],
+"disc_type": "hybrid_story_content",
+"xenia_disc_swap_required": false,
+"notes": ""
+},
+{
+"title": "Max Payne 3",
+"title_id": "5454082C",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Story",
+"Disc 2 - Story Continuation"
+],
+"disc_type": "hybrid_story_content",
+"xenia_disc_swap_required": true,
+"notes": "Single-player spans two discs"
+},
+{
+"title": "Wolfenstein (2009)",
+"title_id": "415607E8",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Campaign",
+"Disc 2 - Campaign Continuation"
+],
+"disc_type": "story_swap",
+"xenia_disc_swap_required": true,
+"notes": "Mid-campaign transition"
+},
+{
+"title": "Wolfenstein: The New Order",
+"title_id": "425307F5",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 4,
+"disc_layout": [
+"Disc 1 - Campaign Start",
+"Disc 2 - Campaign Continuation",
+"Disc 3 - Campaign Continuation",
+"Disc 4 - Campaign End / Additional Content"
+],
+"disc_type": "story_swap",
+"xenia_disc_swap_required": true,
+"notes": "Unusual 4-disc structure for late-gen release"
+},
+{
+"title": "Alien: Isolation",
+"title_id": "5345085E",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Campaign",
+"Disc 2 - Campaign Continuation"
+],
+"disc_type": "story_swap",
+"xenia_disc_swap_required": true,
+"notes": "Horror campaign split across discs"
+},
+{
+"title": "Mass Effect 2",
+"title_id": "454108CE",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Main Game",
+"Disc 2 - Side Content / Optional Data"
+],
+"disc_type": "story_swap",
+"xenia_disc_swap_required": true,
+"notes": "Disc swap occurs during progression depending on squad choices"
+},
+{
+"title": "Mass Effect 3",
+"title_id": "45410964",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Campaign Start",
+"Disc 2 - Campaign Endgame"
+],
+"disc_type": "story_swap",
+"xenia_disc_swap_required": true,
+"notes": "Late-game transition disc"
+},
+{
+"title": "The Witcher 2: Assassins of Kings",
+"title_id": "4E4D0855",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Act I & II",
+"Disc 2 - Act II & III"
+],
+"disc_type": "story_swap",
+"xenia_disc_swap_required": true,
+"notes": "Act-based structure"
+},
+{
+"title": "Dragon's Dogma",
+"title_id": "434307F6",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Install / Game Start",
+"Disc 2 - Game Continuation / Data"
+],
+"disc_type": "play_install",
+"xenia_disc_swap_required": false,
+"notes": "Second disc used primarily for installation/data"
+},
+{
+"title": "The Evil Within",
+"title_id": "425307F4",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Chapters 1–10",
+"Disc 2 - Chapters 11–15"
+],
+"disc_type": "story_swap",
+"xenia_disc_swap_required": true,
+"notes": "Mid-game forced swap"
+},
+{
+"title": "Grand Theft Auto V",
+"title_id": "545408A7",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Install Disc",
+"Disc 2 - Play Disc"
+],
+"disc_type": "install_play",
+"xenia_disc_swap_required": false,
+"notes": "Mandatory install before play"
+},
+{
+"title": "Battlefield 3",
+"title_id": "45410950",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Multiplayer / Install Data",
+"Disc 2 - Campaign"
+],
+"disc_type": "install_play",
+"xenia_disc_swap_required": false,
+"notes": "Campaign and multiplayer split"
+},
+{
+"title": "Battlefield 4",
+"title_id": "454109BA",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Campaign",
+"Disc 2 - Multiplayer / Install"
+],
+"disc_type": "install_play",
+"xenia_disc_swap_required": false,
+"notes": "Installation-heavy split design"
+},
+{
+"title": "Call of Duty: Advanced Warfare",
+"title_id": "41560914",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Campaign",
+"Disc 2 - Multiplayer / Install Data"
+],
+"disc_type": "install_play",
+"xenia_disc_swap_required": false,
+"notes": "Standard CoD split format"
+},
+{
+"title": "Halo 3: ODST",
+"title_id": "4D530877",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Campaign",
+"Disc 2 - Halo 3 Multiplayer"
+],
+"disc_type": "campaign_multiplayer",
+"xenia_disc_swap_required": false,
+"notes": "Separate multiplayer disc"
+},
+{
+"title": "Halo 4",
+"title_id": "4D530919",
+"regions": ["NTSC-U", "PAL"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Campaign",
+"Disc 2 - Multiplayer"
+],
+"disc_type": "campaign_multiplayer",
+"xenia_disc_swap_required": false,
+"notes": "Dedicated multiplayer disc"
+},
+{
+"title": "Star Ocean: The Last Hope",
+"title_id": "535107DD",
+"regions": ["NTSC-U", "PAL", "NTSC-J"],
+"disc_count": 3,
+"disc_layout": [
+"Disc 1 - Story Start",
+"Disc 2 - Story Mid",
+"Disc 3 - Story End"
+],
+"disc_type": "story_swap",
+"xenia_disc_swap_required": true,
+"notes": "Large JRPG spanning three discs"
+}
+]
+}
