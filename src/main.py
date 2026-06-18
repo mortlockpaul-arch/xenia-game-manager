@@ -2,8 +2,8 @@
 import sys
 from PySide6.QtWidgets import QApplication
 
-from src.db import get_db
-from src.ui import GameLauncher
+from db import get_db
+from ui import GameLauncher
 
 
 def game_count():
