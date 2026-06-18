@@ -263,7 +263,7 @@ def import_games_json(json_path, games, log_callback=None):
 
         message = f"Imported {len(xenia_manager_games)} games"
         import_multidisc_json(
-            r"multidisc.json", log_callback=log_callback
+            r"config/multidisc.json", log_callback=log_callback
         )
     else:
         message = f"Import Not Required {len(xenia_manager_games)} games"

@@ -1,6 +1,5 @@
 # ui.py
 import shutil
-import subprocess
 import threading
 from datetime import datetime
 from pathlib import Path
@@ -24,10 +23,9 @@ from PySide6.QtGui import QGuiApplication
 
 import xboxtupdater
 from config import save_config, load_config, XENIA_EXE, GAMES_JSON, XENIA_BASE_DIR
-from model import GameTableModel
-from db import get_db, init_db, import_games_json, export_titles_to_json, import_multidisc_json, clear_db
+from src.model import GameTableModel
+from db import get_db, init_db, import_games_json, export_titles_to_json
 from utils import smart_title_case
-from xboxtupdater import XboxTUMApp
 from xboxunity_api import login_xboxunity, test_connectivity
 
 class ClickOverlay(QWidget):
@@ -303,8 +301,6 @@ class GameLauncher(QMainWindow):
         main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         # ================= LOGIN =================
-        from PySide6.QtWidgets import QFormLayout
-
 
         # ================= TOOLBAR =================
         toolbar = QHBoxLayout()
@@ -682,8 +678,6 @@ class GameLauncher(QMainWindow):
         game_id = self.model.get_game_id(
             row
         )
-        from pathlib import Path
-
 
         config = self.model.get_config_path(
             row
@@ -732,8 +726,6 @@ class GameLauncher(QMainWindow):
                 "Launch Error",
                 str(e)
             )
-
-    import time
 
     def monitor_game(self, game_id):
         while self.process.poll() is None:

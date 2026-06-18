@@ -9,7 +9,7 @@ from PySide6.QtCore import (
     QModelIndex
 )
 
-from db import get_db
+from src.db import get_db
 from utils import star, format_disc_type
 
 DisplayRole = Qt.ItemDataRole.DisplayRole
