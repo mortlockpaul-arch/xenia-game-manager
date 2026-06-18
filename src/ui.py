@@ -23,7 +23,7 @@ from PySide6.QtGui import QGuiApplication
 
 import xboxtupdater
 from config import save_config, load_config, XENIA_EXE, GAMES_JSON, XENIA_BASE_DIR
-from src.model import GameTableModel
+from model import GameTableModel
 from db import get_db, init_db, import_games_json, export_titles_to_json
 from utils import smart_title_case
 from xboxunity_api import login_xboxunity, test_connectivity
@@ -62,7 +62,7 @@ class GameLauncher(QMainWindow):
         self.search = None
         self.table = None
         self.setWindowTitle(
-            "Xenia SQLite Launcher"
+            "Xenia Game Manager"
         )
         init_db()
         self.model = GameTableModel()
