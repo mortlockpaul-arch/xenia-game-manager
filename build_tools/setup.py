@@ -32,6 +32,7 @@ bdist_msi_options = {
     "upgrade_code": "{6B29FC40-CA47-1067-B31D-00DD010662DA}",
     "add_to_path": False,
     "initial_target_dir": r"[ProgramFilesFolder]\%s" % APP_NAME,
+    "output_name": "XeniaGameManager-win64.msi",
     "data": {
         "Icon": [
             ("IconId", str(ROOT / "assets" / "icons" / "app.ico")),
