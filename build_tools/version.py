@@ -1,14 +1,20 @@
+import subprocess
+
 def get_version():
-    import subprocess
+    try:
+        desc = subprocess.check_output(
+            ["git", "describe", "--tags", "--always", "--dirty"],
+            text=True
+        ).strip()
+    except Exception:
+        return "0.2.0"
 
-    desc = subprocess.check_output(
-        ["git", "describe", "--tags", "--dirty", "--always"],
-        text=True
-    ).strip()
+    parts = desc.split("-")
 
-    # 0.2-13-gbccbcea -> 0.2.13.post13+gbccbcea
-    if "-" in desc:
-        tag, commits, git = desc.split("-")
-        return f"{tag}.{commits}.post0+{git}"
+    if len(parts) >= 3:
+        tag = parts[0]
+        commits = parts[1]
+        git_hash = parts[2]
+        return f"{tag}.{commits}.post0+{git_hash}"
 
-    return desc
+    return parts[0]
