@@ -40,6 +40,11 @@ class GameLauncher(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.refresh_btn = None
+        self.worker = None
+        self.btn_tu = None
+        self.api_key = None
+        self.title_updates_path = None
         self.process = None
         self.start_time = None
         self.token = None
@@ -100,7 +105,7 @@ class GameLauncher(QMainWindow):
 
         # ---------------- LOGIN BOX ----------------
         login_box = QGroupBox("Login XboxUnity / API Key")
-        login_box.setFixedWidth(380)
+        login_box.setFixedWidth(520)
 
         login_form = QFormLayout()
 
@@ -162,7 +167,22 @@ class GameLauncher(QMainWindow):
         canary_row.addWidget(browse_btn_canary)
 
         layout.addLayout(canary_row)
+        
+        # ---------------- TITLE UPDATE PATH ----------------
+        layout.addWidget(QLabel("Title Updates Folder"))
 
+        canary_row = QHBoxLayout()
+        self.title_updates_path = QLineEdit()
+        self.title_updates_path.setPlaceholderText("Title Updates location...")
+
+        browse_btn_canary = QPushButton("Browse")
+        browse_btn_canary.clicked.connect(self.pick_xenia_canary_path)
+
+        canary_row.addWidget(self.title_updates_path)
+        canary_row.addWidget(browse_btn_canary)
+
+        layout.addLayout(canary_row)
+        
         # -----------------------
         # Tools
         # -----------------------
@@ -186,11 +206,6 @@ class GameLauncher(QMainWindow):
 
         self.refresh_btn = QPushButton("Refresh")
         self.refresh_btn.clicked.connect(self.refresh)
-        tools_layout.addWidget(self.refresh_btn)
-        
-        tools_layout.addWidget(self.fix_titles_btn)
-        tools_layout.addWidget(self.import_btn)
-        tools_layout.addWidget(self.export_btn)
         tools_layout.addWidget(self.refresh_btn)
 
         tools_box.setLayout(tools_layout)
@@ -317,13 +332,9 @@ class GameLauncher(QMainWindow):
         self.search.textChanged.connect(self.search_changed)
         toolbar.addWidget(self.search)
 
-        self.btn_folder = QPushButton("Select Games Folder")
-        self.btn_folder.clicked.connect(self.select_folder)
-
-        self.btn_tu = QPushButton("Search & Download TUs")
+        self.btn_tu = QPushButton("Search and Download TUs")
         self.btn_tu.clicked.connect(self.search_and_download_tus)
 
-        toolbar.addWidget(self.btn_folder)
         toolbar.addWidget(self.btn_tu)
 
         # ================= PROGRESS =================
@@ -411,8 +422,10 @@ class GameLauncher(QMainWindow):
         if not self.model.games:
             self.log("Error: No games loaded")
             return
-        folder = QFileDialog.getExistingDirectory(self, "Select output folder")
+        config = load_config()
+        folder = config["title_updates_path"]
         if not folder:
+            self.log("Error: No Folder Selected")
             return
         self.worker = xboxtupdater.TUDownloadWorker(
             games=self.model.games,
@@ -465,7 +478,7 @@ class GameLauncher(QMainWindow):
         self.entry_apikey.setText(config.get("api_key", ""))
         self.xenia_path.setText(config.get("xenia_manager_path", ""))
         self.xenia_canary_path.setText(config.get("xenia_canary_path", ""))
-
+        self.title_updates_path.setText(config.get("title_updates_path", ""))
         if config.get("api_key"):
             self.api_key = config["api_key"]
 
