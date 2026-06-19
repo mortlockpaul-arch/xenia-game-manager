@@ -1,9 +1,14 @@
-from subprocess import check_output
-
 def get_version():
-    try:
-        # latest tag like v0.3.1
-        version = check_output(["git", "describe", "--tags"]).decode().strip()
-        return version.lstrip("v")
-    except Exception:
-        return "0.0.0"
+    import subprocess
+
+    desc = subprocess.check_output(
+        ["git", "describe", "--tags", "--dirty", "--always"],
+        text=True
+    ).strip()
+
+    # 0.2-13-gbccbcea -> 0.2.13.post13+gbccbcea
+    if "-" in desc:
+        tag, commits, git = desc.split("-")
+        return f"{tag}.{commits}.post0+{git}"
+
+    return desc
