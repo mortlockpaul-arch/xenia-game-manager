@@ -7,11 +7,35 @@ build_exe_options = {
     "include_files": ["db"],
 }
 
+
+directory_table = [
+    ("ProgramMenuFolder", "TARGETDIR", "."),
+    ("MyProgramMenu", "ProgramMenuFolder", "MYPROG~1|My Program"),
+]
+
+msi_data = {
+    "Directory": directory_table,
+    "ProgId": [
+        ("Prog.Id", None, None, "This is a description", "IconId", None),
+    ],
+    "Icon": [
+        ("IconId", "Xenia_Game_Manager.ico"),
+    ],
+}
+
+bdist_msi_options = {
+    "add_to_path": True,
+    "data": msi_data,
+    "environment_variables": [
+        ("E_MYAPP_VAR", "=-*MYAPP_VAR", "1", "TARGETDIR")
+    ],
+    "upgrade_code": "{6B29FC40-CA47-1067-B31D-00DD010662DA}",
+}
+
 setup(
     name="Xenia Game Manager",
     version="0.1",
-    options={"build_exe": build_exe_options},
     description="Xenia Game Manager",
     executables=[{"script": "main.py", "base": "gui"}],
-
+    options={"build_exe": build_exe_options, "bdist_msi": bdist_msi_options},
 )
