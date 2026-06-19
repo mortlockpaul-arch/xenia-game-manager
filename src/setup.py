@@ -3,7 +3,7 @@ from cx_Freeze import setup
 # Dependencies are automatically detected, but they might need fine-tuning.
 build_exe_options = {
     "excludes": ["tkinter", "unittest"],
-    "zip_include_packages": ["encodings", "PySide6", "shiboken6"],
+    "zip_include_packages": [],
     "include_files": ["db"],
 }
 
@@ -26,15 +26,12 @@ msi_data = {
 bdist_msi_options = {
     "add_to_path": True,
     "data": msi_data,
-    "environment_variables": [
-        ("E_MYAPP_VAR", "=-*MYAPP_VAR", "1", "TARGETDIR")
-    ],
     "upgrade_code": "{6B29FC40-CA47-1067-B31D-00DD010662DA}",
 }
 
 setup(
     name="Xenia Game Manager",
-    version="0.1",
+    version="0.2",
     description="Xenia Game Manager",
     executables=[{"script": "main.py", "base": "gui"}],
     options={"build_exe": build_exe_options, "bdist_msi": bdist_msi_options},
