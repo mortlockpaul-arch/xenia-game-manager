@@ -4,7 +4,7 @@ from cx_Freeze import setup
 build_exe_options = {
     "excludes": ["tkinter", "unittest"],
     "zip_include_packages": [],
-    "include_files": ["db"],
+    "include_files": [("src/db", "db")],
 }
 
 
@@ -33,6 +33,6 @@ setup(
     name="Xenia Game Manager",
     version="0.2",
     description="Xenia Game Manager",
-    executables=[{"script": "main.py", "base": "gui"}],
+    executables=[{"script": "src/main.py", "base": "gui"}],
     options={"build_exe": build_exe_options, "bdist_msi": bdist_msi_options},
 )
