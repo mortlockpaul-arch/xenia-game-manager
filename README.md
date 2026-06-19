@@ -1,7 +1,6 @@
 # Xenia Game Launcher
 
 A lightweight PySide6 launcher for Xbox 360 games running through Xenia Canary and Xenia Manager.
-
 The launcher imports your Xenia Manager `games.json`, stores game metadata in SQLite, provides title cleanup tools, favourites, search, sorting, multi-disc support, play tracking and downloading title updates from xboxunity.net for games in the list.
 
 ---
@@ -15,6 +14,7 @@ The launcher imports your Xenia Manager `games.json`, stores game metadata in SQ
 - Search games
 - Sort by any column
 - Download Title Updates from xboxunity.net for games in the list
+- Check for updates to xenia game manager.
 
 ## Title Cleanup
 
@@ -105,69 +105,6 @@ Disc 2 - Multiplayer
 
 ---
 
-
-# Requirements
-
-Python 3.10+
-
-Install dependencies:
-
-```bash
-pip install pyside6
-```
-
-or
-
-```bash
-uv add pyside6
-```
-
----
-
-# Configuration
-
-Edit the paths in `ui.py`.
-
-## Xenia Canary
-
-```python
-XENIA_EXE = (
-    r"D:\RetroBat\emulators\Xenia Canary\xenia_canary.exe"
-)
-```
-
-## games.json
-
-```python
-GAMES_JSON = (
-    r"D:\RetroBat\emulators\xenia-manager\Config\games.json"
-)
-```
-
----
-
-# First Run
-
-Create database:
-
-```bash
-python main.py
-```
-
-Import library:
-
-```text
-Import games.json
-```
-
-The database will be populated from:
-
-```text
-D:\RetroBat\emulators\xenia-manager\Config\games.json
-```
-
----
-
 # Sidebar Functions
 
 ## Login to XboxUnity.Net
@@ -192,26 +129,6 @@ Cleans imported game names.
 Writes corrected titles back into Xenia Manager.
 
 ## Refresh
-
----
-
-# Usage
-
-## Launch a game
-
-Double-click a row.
-
-## Search
-
-Use the search box.
-
-## Favourite
-
-Click the ⭐ column.
-
-## Sort
-
-Click any column heading.
 
 ---
 
