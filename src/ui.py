@@ -1,9 +1,9 @@
 # ui.py
+import os
 import shutil
 import threading
 from datetime import datetime
 from pathlib import Path
-
 import time
 
 from PySide6.QtCore import Qt, QEasingCurve, QPropertyAnimation, QRect
@@ -22,7 +22,7 @@ from PySide6.QtWidgets import QMenu
 from PySide6.QtGui import QGuiApplication
 
 import xboxtupdater
-from config import save_config, load_config, XENIA_EXE, GAMES_JSON, XENIA_BASE_DIR
+from config import save_config, load_config
 from model import GameTableModel
 from db import get_db, init_db, import_games_json, export_titles_to_json
 from utils import smart_title_case
@@ -79,7 +79,7 @@ class GameLauncher(QMainWindow):
 
         self.settings_drawer = QFrame(self)
         self.settings_drawer.setObjectName("settingsDrawer")
-        self.settings_drawer.setFixedWidth(420)
+        self.settings_drawer.setFixedWidth(520)
 
         shadow = QGraphicsDropShadowEffect()
         shadow.setBlurRadius(40)
@@ -100,7 +100,7 @@ class GameLauncher(QMainWindow):
 
         # ---------------- LOGIN BOX ----------------
         login_box = QGroupBox("Login XboxUnity / API Key")
-        login_box.setMaximumWidth(380)
+        login_box.setFixedWidth(380)
 
         login_form = QFormLayout()
 
@@ -399,7 +399,7 @@ class GameLauncher(QMainWindow):
         if folder:
             self.xenia_path.setText(folder)
             config = load_config()
-            config["xenia_path"] = folder
+            config["xenia_manager_path"] = folder
             save_config(config)
 
     def select_folder(self):
@@ -409,7 +409,7 @@ class GameLauncher(QMainWindow):
 
     def search_and_download_tus(self):
         if not self.model.games:
-            self._err("Error", "No games loaded")
+            self.log("Error: No games loaded")
             return
         folder = QFileDialog.getExistingDirectory(self, "Select output folder")
         if not folder:
@@ -463,7 +463,7 @@ class GameLauncher(QMainWindow):
         self.entry_user.setText(config.get("username", ""))
         self.entry_pass.setText(config.get("password", ""))
         self.entry_apikey.setText(config.get("api_key", ""))
-        self.xenia_path.setText(config.get("xenia_path", ""))
+        self.xenia_path.setText(config.get("xenia_manager_path", ""))
         self.xenia_canary_path.setText(config.get("xenia_canary_path", ""))
 
         if config.get("api_key"):
@@ -634,15 +634,19 @@ class GameLauncher(QMainWindow):
                 index.row()
             )
 
-    def import_games(self):
 
+    def import_games(self):
+        games_json = Path("Config") / "games.json"
+        config = load_config()
+        xenia_manager_path = config["xenia_manager_path"]
+        games_json_path = Path(xenia_manager_path) / games_json
         try:
 
-            if not Path(GAMES_JSON).exists():
+            if not games_json_path.exists():
                 QMessageBox.warning(
                     self,
                     "Missing File",
-                    GAMES_JSON
+                    str(games_json_path)
                 )
                 return
 
@@ -650,7 +654,7 @@ class GameLauncher(QMainWindow):
             self.model.load()
 
             # Import games
-            import_games_json(GAMES_JSON, self.model.games, log_callback=self.log)
+            import_games_json(games_json_path, self.model.games, log_callback=self.log)
 
             message = "Import Complete. games.json imported successfully."
             self.log(message)
@@ -668,7 +672,12 @@ class GameLauncher(QMainWindow):
     # -------------------------
 
     def launch_game(self, index):
-
+        from pathlib import Path
+        xenia_exe = r"xenia_canary.exe"
+        config = load_config()
+        xenia_canary_path = config["xenia_canary_path"]
+        xenia_exe_path = Path(config["xenia_canary_path"],xenia_exe)
+        xenia_manager_path = Path(config["xenia_manager_path"])
         row = index.row()
 
         path = self.model.get_game_path(
@@ -679,17 +688,15 @@ class GameLauncher(QMainWindow):
             row
         )
 
-        config = self.model.get_config_path(
+        game_config = self.model.get_config_path(
             row
         )
-        if config:
-            config = str(
-                XENIA_BASE_DIR / config
-            )
+        if game_config:
+            game_config = Path(xenia_manager_path) / game_config
         print([
-            XENIA_EXE,
+            xenia_exe_path,
             path,
-            config
+            game_config
         ])
 
         if not path:
@@ -699,19 +706,19 @@ class GameLauncher(QMainWindow):
                 "No game file path stored."
             )
             return
-        from pathlib import Path
 
-        if config and not Path(config).exists():
-            print("Config missing:", config)
 
-        active = Path(XENIA_EXE).parent / "xenia-canary.config.toml"
-        shutil.copy(config, active)
+        if game_config and not Path(game_config).exists():
+            print("Config missing:", game_config)
+
+        active = Path(xenia_canary_path) / "xenia-canary.config.toml"
+        shutil.copy(game_config, active)
 
         try:
             import subprocess
             import time
             self.start_time = time.time()
-            self.process = subprocess.Popen([XENIA_EXE, path])
+            self.process = subprocess.Popen([xenia_exe_path, path])
 
             threading.Thread(
                 target=self.monitor_game,
