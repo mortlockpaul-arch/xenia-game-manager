@@ -2,6 +2,6 @@
     "username": "polomolo",
     "password": "69e3d02052ec9",
     "api_key": "0E3271AF6D5A6FB93F5CF29ED1E6F0AC",
-    "xenia_path": "D:\\RetroBat\\emulators\\xenia-manager",
-    "xenia_canary_path": "D:\\RetroBat\\emulators\\xenia-manager\\Emulators\\Xenia Canary\\xenia_canary.exe"
+    "xenia_manager_path": "D:\\RetroBat\\emulators\\xenia-manager",
+    "xenia_canary_path": "D:\\RetroBat\\emulators\\xenia-manager\\Emulators\\Xenia Canary\\"
 }
