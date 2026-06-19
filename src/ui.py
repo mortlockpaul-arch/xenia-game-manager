@@ -24,6 +24,7 @@ from download import TUDownloadWorker
 from src.config import save_config, load_config
 from src.model import GameTableModel
 from src.db import get_db, init_db, import_games_json, export_titles_to_json
+from updater import check_for_update
 from utils import smart_title_case
 from xboxunity_api import login_xboxunity, test_connectivity
 
@@ -35,7 +36,17 @@ class ClickOverlay(QWidget):
     def mousePressEvent(self, event):
         self.launcher.close_drawer()
 
+
+
 class GameLauncher(QMainWindow):
+
+    def check_for_updates(self):
+        result = check_for_update()
+        if result:
+            print("Updating XboxUnity...")
+            print(result)
+        else:
+            self.log("No update available")
 
     def __init__(self):
         super().__init__()
@@ -206,6 +217,11 @@ class GameLauncher(QMainWindow):
         self.refresh_btn = QPushButton("Refresh")
         self.refresh_btn.clicked.connect(self.refresh)
         tools_layout.addWidget(self.refresh_btn)
+
+
+        self.check_update_btn = QPushButton("Check for Updates")
+        self.check_update_btn.clicked.connect(self.check_for_updates)
+        tools_layout.addWidget(self.check_update_btn)
 
         tools_box.setLayout(tools_layout)
 
