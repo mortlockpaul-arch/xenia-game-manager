@@ -1,41 +1,52 @@
-name: Build Windows MSI
+name: Build MSI Installer
 
 on:
   push:
     tags:
-      - "v*"
+      - "v*.*.*"
+  workflow_dispatch:
 
 jobs:
-  build:
+  build-msi:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install cx_Freeze
+          pip install -r requirements.txt
 
       - name: Build MSI
         run: |
           python build_tools/setup.py bdist_msi
 
-      - name: Upload artifact
+      - name: Locate MSI
+        id: find_msi
+        shell: pwsh
+        run: |
+          $msi = Get-ChildItem -Recurse -Filter "*.msi" | Select-Object -First 1
+          echo "msi_path=$($msi.FullName)" >> $env:GITHUB_OUTPUT
+
+      - name: Upload MSI artifact
         uses: actions/upload-artifact@v4
         with:
-          name: msi
-          path: build/*.msi
+          name: msi-installer
+          path: ${{ steps.find_msi.outputs.msi_path }}
 
       - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: build/*.msi
+          files: ${{ steps.find_msi.outputs.msi_path }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
