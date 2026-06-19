@@ -1,5 +1,4 @@
 # ui.py
-import os
 import shutil
 import threading
 from datetime import datetime
@@ -21,10 +20,10 @@ from PySide6.QtWidgets import (
 from PySide6.QtWidgets import QMenu
 from PySide6.QtGui import QGuiApplication
 
-import xboxtupdater
-from config import save_config, load_config
-from model import GameTableModel
-from db import get_db, init_db, import_games_json, export_titles_to_json
+from download import TUDownloadWorker
+from src.config import save_config, load_config
+from src.model import GameTableModel
+from src.db import get_db, init_db, import_games_json, export_titles_to_json
 from utils import smart_title_case
 from xboxunity_api import login_xboxunity, test_connectivity
 
@@ -427,7 +426,7 @@ class GameLauncher(QMainWindow):
         if not folder:
             self.log("Error: No Folder Selected")
             return
-        self.worker = xboxtupdater.TUDownloadWorker(
+        self.worker = TUDownloadWorker(
             games=self.model.games,
             token=self.token,
             api_key=self.api_key,
@@ -649,7 +648,7 @@ class GameLauncher(QMainWindow):
 
 
     def import_games(self):
-        games_json = Path("Config") / "games.json"
+        games_json = Path("config") / "games.json"
         config = load_config()
         xenia_manager_path = config["xenia_manager_path"]
         games_json_path = Path(xenia_manager_path) / games_json
