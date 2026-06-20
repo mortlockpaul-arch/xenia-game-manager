@@ -28,6 +28,7 @@ from updater import check_for_update
 from utils import smart_title_case
 from xboxunity_api import login_xboxunity, test_connectivity
 
+
 class ClickOverlay(QWidget):
     def __init__(self, launcher):
         super().__init__(launcher)
@@ -35,7 +36,6 @@ class ClickOverlay(QWidget):
 
     def mousePressEvent(self, event):
         self.launcher.close_drawer()
-
 
 
 class GameLauncher(QMainWindow):
@@ -177,7 +177,7 @@ class GameLauncher(QMainWindow):
         canary_row.addWidget(browse_btn_canary)
 
         layout.addLayout(canary_row)
-        
+
         # ---------------- TITLE UPDATE PATH ----------------
         layout.addWidget(QLabel("Title Updates Folder"))
 
@@ -192,7 +192,7 @@ class GameLauncher(QMainWindow):
         canary_row.addWidget(browse_btn_canary)
 
         layout.addLayout(canary_row)
-        
+
         # -----------------------
         # Tools
         # -----------------------
@@ -200,7 +200,6 @@ class GameLauncher(QMainWindow):
         tools_box = QGroupBox("Tools")
 
         tools_layout = QVBoxLayout()
-
 
         self.fix_titles_btn = QPushButton("Fix Titles")
         self.fix_titles_btn.clicked.connect(self.fix_titles)
@@ -217,7 +216,6 @@ class GameLauncher(QMainWindow):
         self.refresh_btn = QPushButton("Refresh")
         self.refresh_btn.clicked.connect(self.refresh)
         tools_layout.addWidget(self.refresh_btn)
-
 
         self.check_update_btn = QPushButton("Check for Updates")
         self.check_update_btn.clicked.connect(self.check_for_updates)
@@ -460,7 +458,6 @@ class GameLauncher(QMainWindow):
             self.progress.setMaximum(total)
             self.progress.setValue(done)
 
-
     def update_game_progress(self, current, total):
         self.log(f"Game progress: {current}/{total}")
 
@@ -472,7 +469,7 @@ class GameLauncher(QMainWindow):
         self.log(f"Errors: {stats['errors']}")
 
         self.log("Done: TU download completed")
-        
+
     def pick_xenia_canary_path(self):
         folder = QFileDialog.getExistingDirectory(
             self,
@@ -662,7 +659,6 @@ class GameLauncher(QMainWindow):
                 index.row()
             )
 
-
     def import_games(self):
         games_json = Path("config") / "games.json"
         config = load_config()
@@ -704,7 +700,7 @@ class GameLauncher(QMainWindow):
         xenia_exe = r"xenia_canary.exe"
         config = load_config()
         xenia_canary_path = config["xenia_canary_path"]
-        xenia_exe_path = Path(config["xenia_canary_path"],xenia_exe)
+        xenia_exe_path = Path(config["xenia_canary_path"], xenia_exe)
         xenia_manager_path = Path(config["xenia_manager_path"])
         row = index.row()
 
@@ -734,7 +730,6 @@ class GameLauncher(QMainWindow):
                 "No game file path stored."
             )
             return
-
 
         if game_config and not Path(game_config).exists():
             print("Config missing:", game_config)
@@ -772,6 +767,7 @@ class GameLauncher(QMainWindow):
         self.model.add_play_time(game_id, minutes)
         self.model.mark_played(game_id)
         self.model.load()
+
     # -------------------------
     # Fix Titles
     # -------------------------
