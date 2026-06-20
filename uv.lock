@@ -403,7 +403,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "cx-freeze", specifier = ">=8.6.4" },
+    { name = "cx-freeze", specifier = "==8.6.4" },
     { name = "packaging", specifier = ">=26.2" },
     { name = "pyside6", specifier = ">=6.11.1" },
     { name = "requests", specifier = ">=2.34.2" },
