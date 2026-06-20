@@ -18,3 +18,7 @@ def get_version():
         return f"{tag}.{commits}.post0+{git_hash}"
 
     return parts[0]
+
+
+if __name__ == "__main__":
+    print(get_version())
