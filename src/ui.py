@@ -21,9 +21,9 @@ from PySide6.QtWidgets import QMenu
 from PySide6.QtGui import QGuiApplication
 
 from download import TUDownloadWorker
-from src.config import save_config, load_config
-from src.model import GameTableModel
-from src.db import get_db, init_db, import_games_json, export_titles_to_json
+from config import save_config, load_config
+from model import GameTableModel
+from db import get_db, init_db, import_games_json, export_titles_to_json
 from updater import check_for_update
 from utils import smart_title_case
 from xboxunity_api import login_xboxunity, test_connectivity

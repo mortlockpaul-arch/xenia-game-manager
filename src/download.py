@@ -1,22 +1,12 @@
 import os
-import sys
-from PySide6.QtWidgets import (
-    QApplication, QMainWindow, QWidget,
-    QVBoxLayout, QHBoxLayout, QGroupBox,
-    QLabel, QLineEdit, QPushButton,
-    QTreeWidget, QTextEdit, QFileDialog, QMessageBox,
-    QProgressBar
-)
-from src.config import save_config, load_config
-
-from src.xboxunity_api import (
-    login_xboxunity,
-    search_tus,
-    download_tu,
-    test_connectivity
-)
 
 from PySide6.QtCore import QThread, Signal
+
+from xboxunity_api import (
+    search_tus,
+    download_tu
+)
+
 
 class TUDownloadWorker(QThread):
     log = Signal(str)
