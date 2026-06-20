@@ -1,9 +1,13 @@
 import shutil
 import os
+import uuid
 import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+
+def generate_guid():
+    return str(uuid.uuid4())
 
 def zip_portable():
     build_dir = ROOT / "build" / "exe.win-amd64-3.14"
@@ -19,3 +23,4 @@ def zip_portable():
 
 if __name__ == "__main__":
     zip_portable()
+    print(generate_guid())
