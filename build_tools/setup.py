@@ -23,7 +23,7 @@ build_exe_options = {
     "excludes": ["tkinter", "unittest"],
     "include_files": [
         (str(ROOT / "src" / "db"), "db"),
-        (str(ROOT / "assets"), "assets"),
+        (str(ROOT / "src" / "config"), "config"),
     ],
     "optimize": 2,
 }
@@ -35,6 +35,8 @@ bdist_msi_options = {
     "initial_target_dir": r"[ProgramFilesFolder]\%s" % APP_NAME,
     "output_name": "XeniaGameManager-win64.msi",
     "product_name": "Xenia Game Manager",
+    "manufacturer": "Xenia Game Manager",
+    "product_version": VERSION,
     "data": {
         "Icon": [
             ("IconId", str(ROOT / "assets" / "icons" / "app.ico")),
