@@ -1,5 +1,3 @@
-import shutil
-import os
 import uuid
 import zipfile
 from pathlib import Path
