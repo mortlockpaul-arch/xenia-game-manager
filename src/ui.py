@@ -1,5 +1,7 @@
 # ui.py
+import os
 import shutil
+import sys
 import threading
 from datetime import datetime
 from pathlib import Path
@@ -18,7 +20,7 @@ from PySide6.QtWidgets import (
     QFrame, QGraphicsDropShadowEffect, QProgressBar,
 )
 from PySide6.QtWidgets import QMenu
-from PySide6.QtGui import QGuiApplication
+from PySide6.QtGui import QGuiApplication, QIcon
 
 from download import TUDownloadWorker
 from config import save_config, load_config
@@ -28,6 +30,14 @@ from updater import check_for_update
 from utils import smart_title_case
 from xboxunity_api import login_xboxunity, test_connectivity
 
+
+def resource_path(relative_path):
+    if getattr(sys, "frozen", False):
+        base_path = os.path.dirname(sys.executable)
+    else:
+        base_path = os.path.dirname(os.path.abspath(__file__))
+
+    return os.path.join(base_path, relative_path)
 
 class ClickOverlay(QWidget):
     def __init__(self, launcher):
@@ -79,12 +89,15 @@ class GameLauncher(QMainWindow):
         self.setWindowTitle(
             "Xenia Game Manager"
         )
+        icon_path = resource_path("assets/icons/app.ico")
+        self.setWindowIcon(QIcon(icon_path))
         init_db()
         self.model = GameTableModel()
         self.resize(1800, 700)
         self.build_ui()
         self.import_games()
         self.load_saved_config()
+
 
     def create_settings_drawer(self):
 
