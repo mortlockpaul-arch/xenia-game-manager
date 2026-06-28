@@ -2,18 +2,21 @@
 import sys
 from PySide6.QtWidgets import QApplication
 
-from db import get_db
+from db import Database
 from ui import GameLauncher
 
 
 def game_count():
-    with get_db() as con:
+    db = Database()
+    db.init_db()
+    with db.get_db() as con:
         return con.execute(
             "SELECT COUNT(*) FROM games"
         ).fetchone()[0]
 
 def main():
     app = QApplication(sys.argv)
+    print(game_count())
     window = GameLauncher()
     window.show()
     sys.exit(app.exec())

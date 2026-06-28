@@ -1,0 +1,5 @@
+# Title Name: Banjo Kazooie - Nuts & Bolts
+# Title ID: 4D5307ED
+
+[GPU]
+vsync = false # Unlocks framerate (Combined with framerate limit set to 0)

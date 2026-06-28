@@ -1,0 +1,5 @@
+# Title Name: The Darkness
+# Title ID: 545407EE
+
+[GPU]
+vsync = false # Unlocks framerate (Combined with framerate limit set to 0)

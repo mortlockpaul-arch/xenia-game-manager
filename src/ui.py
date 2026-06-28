@@ -1,6 +1,8 @@
 # ui.py
 import os
 import shutil
+from functools import partial
+
 import sys
 import threading
 from datetime import datetime
@@ -17,17 +19,17 @@ from PySide6.QtWidgets import (
     QTableView,
     QMessageBox,
     QHeaderView, QPlainTextEdit, QGroupBox, QLabel, QSizePolicy, QMainWindow, QFormLayout, QToolButton, QFileDialog,
-    QFrame, QGraphicsDropShadowEffect, QProgressBar,
+    QFrame, QGraphicsDropShadowEffect, QProgressBar, QCheckBox,
 )
 from PySide6.QtWidgets import QMenu
 from PySide6.QtGui import QGuiApplication, QIcon
 
 from download import TUDownloadWorker
-from config import save_config, load_config
+from config import save_config, load_config, load_xenia_manager_config, get_app_dir
 from model import GameTableModel
-from db import get_db, init_db, import_games_json, export_titles_to_json
+from db import Database
 from updater import check_for_update
-from utils import smart_title_case
+from utils import smart_title_case, xenia_edge_optimise_settings
 from xboxunity_api import login_xboxunity, test_connectivity
 
 
@@ -60,6 +62,13 @@ class GameLauncher(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.import_edge_btn = None
+        self.browse_btn_edge = None
+        self.xenia_edge_path = None
+        self.console = None
+        self.browse_btn_xenia = None
+        self.browse_btn_canary = None
+        self.xenia_manager_installed = None
         self.refresh_btn = None
         self.worker = None
         self.btn_tu = None
@@ -75,7 +84,7 @@ class GameLauncher(QMainWindow):
         self.entry_user = None
         self.xenia_canary_path = None
         self.export_btn = None
-        self.xenia_path = None
+        self.xenia_manager_path = None
         self.settings_panel = None
         self.settings_btn = None
         self.drawer_open = False
@@ -91,9 +100,10 @@ class GameLauncher(QMainWindow):
         )
         icon_path = resource_path("assets/icons/app.ico")
         self.setWindowIcon(QIcon(icon_path))
-        init_db()
+        self.db = Database()
+        self.db.init_db()
         self.model = GameTableModel()
-        self.resize(1800, 700)
+        self.resize(1800, 800)
         self.build_ui()
         self.import_games()
         self.load_saved_config()
@@ -165,14 +175,15 @@ class GameLauncher(QMainWindow):
         layout.addWidget(QLabel("Xenia Manager Folder"))
 
         xenia_row = QHBoxLayout()
-        self.xenia_path = QLineEdit()
-        self.xenia_path.setPlaceholderText("Xenia Manager location...")
-
-        browse_btn_xenia = QPushButton("Browse")
-        browse_btn_xenia.clicked.connect(self.pick_xenia_path)
-
-        xenia_row.addWidget(self.xenia_path)
-        xenia_row.addWidget(browse_btn_xenia)
+        self.xenia_manager_path = QLineEdit()
+        self.xenia_manager_path.setPlaceholderText("Xenia Manager location...")
+        self.xenia_manager_installed = QCheckBox()
+        self.xenia_manager_installed.stateChanged.connect(partial(self.checkbox_changed, checkbox_name="manager"))
+        self.browse_btn_xenia = QPushButton("Browse")
+        self.browse_btn_xenia.clicked.connect(self.pick_xenia_path)
+        xenia_row.addWidget(self.xenia_manager_installed)
+        xenia_row.addWidget(self.xenia_manager_path)
+        xenia_row.addWidget(self.browse_btn_xenia)
 
         layout.addLayout(xenia_row)
 
@@ -182,14 +193,31 @@ class GameLauncher(QMainWindow):
         canary_row = QHBoxLayout()
         self.xenia_canary_path = QLineEdit()
         self.xenia_canary_path.setPlaceholderText("Xenia Canary location...")
-
-        browse_btn_canary = QPushButton("Browse")
-        browse_btn_canary.clicked.connect(self.pick_xenia_canary_path)
-
+        self.xenia_canary_installed = QCheckBox()
+        self.xenia_canary_installed.stateChanged.connect(partial(self.checkbox_changed, checkbox_name="canary"))
+        self.browse_btn_canary = QPushButton("Browse")
+        self.browse_btn_canary.clicked.connect(self.pick_xenia_canary_path)
+        canary_row.addWidget(self.xenia_canary_installed)
         canary_row.addWidget(self.xenia_canary_path)
-        canary_row.addWidget(browse_btn_canary)
+        canary_row.addWidget(self.browse_btn_canary)
 
         layout.addLayout(canary_row)
+
+        # ---------------- XENIA EDGE PATH ----------------
+        layout.addWidget(QLabel("Xenia Edge Folder"))
+
+        edge_row = QHBoxLayout()
+        self.xenia_edge_path = QLineEdit()
+        self.xenia_edge_path.setPlaceholderText("Xenia Edge location...")
+        self.xenia_edge_installed = QCheckBox()
+        self.xenia_edge_installed.stateChanged.connect(partial(self.checkbox_changed, checkbox_name="edge"))
+        self.browse_btn_edge = QPushButton("Browse")
+        self.browse_btn_edge.clicked.connect(self.pick_xenia_edge_path)
+        edge_row.addWidget(self.xenia_edge_installed)
+        edge_row.addWidget(self.xenia_edge_path)
+        edge_row.addWidget(self.browse_btn_edge)
+
+        layout.addLayout(edge_row)
 
         # ---------------- TITLE UPDATE PATH ----------------
         layout.addWidget(QLabel("Title Updates Folder"))
@@ -206,6 +234,21 @@ class GameLauncher(QMainWindow):
 
         layout.addLayout(canary_row)
 
+        self.xenia_manager_installed.setToolTip(
+            "<b>Xenia Manager</b><br>"
+            "Enable this if <b>Xenia Manager</b> is installed.<br>"
+            "This allows the application to import your Xenia Manager Game List."
+        )
+        self.xenia_canary_installed.setToolTip(
+            "<b>Xenia Canary</b><br>"
+            "Enable this if <b>Xenia canary</b> is installed.<br>"
+            "This will launch the games using Xenia Canary."
+        )
+        self.xenia_edge_installed.setToolTip(
+            "<b>Xenia Edge</b><br>"
+            "Enable this if <b>Xenia edge</b> is installed.<br>"
+            "This will launch the games using Xenia Edge and allow you to import the Xenia Edge Game List."
+        )
         # -----------------------
         # Tools
         # -----------------------
@@ -222,6 +265,10 @@ class GameLauncher(QMainWindow):
         self.import_btn.clicked.connect(self.import_games)
         tools_layout.addWidget(self.import_btn)
 
+        self.import_edge_btn = QPushButton("Import Xenia Edge Game List")
+        self.import_edge_btn.clicked.connect(self.import_games)
+        tools_layout.addWidget(self.import_edge_btn)
+
         self.export_btn = QPushButton("Update Xenia Manager Game List")
         self.export_btn.clicked.connect(self.export_titles)
         tools_layout.addWidget(self.export_btn)
@@ -229,6 +276,11 @@ class GameLauncher(QMainWindow):
         self.refresh_btn = QPushButton("Refresh")
         self.refresh_btn.clicked.connect(self.refresh)
         tools_layout.addWidget(self.refresh_btn)
+
+
+        self.xenia_edge_optimise_btn = QPushButton("Create Xenia Edge Optimised Settings")
+        self.xenia_edge_optimise_btn.clicked.connect(self.on_optimize_xenia_clicked)
+        tools_layout.addWidget(self.xenia_edge_optimise_btn)
 
         self.check_update_btn = QPushButton("Check for Updates")
         self.check_update_btn.clicked.connect(self.check_for_updates)
@@ -241,6 +293,99 @@ class GameLauncher(QMainWindow):
         layout.addStretch()
 
         self.settings_drawer.hide()
+
+    def on_optimize_xenia_clicked(self):
+        xenia_edge_optimise_settings(self.log)
+
+    def set_checkbox(self, checkbox_name, checked, save=True):
+        config = load_config()
+
+        widgets = {
+            "manager": (
+                self.xenia_manager_installed,
+                self.xenia_manager_path,
+                self.browse_btn_xenia,
+                "Xenia Manager",
+                "xenia_manager_installed",
+            ),
+            "canary": (
+                self.xenia_canary_installed,
+                self.xenia_canary_path,
+                self.browse_btn_canary,
+                "Xenia Canary",
+                "xenia_canary_installed",
+            ),
+            "edge": (
+                self.xenia_edge_installed,
+                self.xenia_edge_path,
+                self.browse_btn_edge,
+                "Xenia Edge",
+                "xenia_edge_installed",
+            ),
+        }
+
+        checkbox, path, button, name, config_key = widgets[checkbox_name]
+
+        # Prevent stateChanged from firing again
+        checkbox.blockSignals(True)
+        checkbox.setChecked(checked)
+        checkbox.blockSignals(False)
+
+        if checked:
+            path.setPlaceholderText(f"{name} location...")
+            path.setEnabled(True)
+            button.setEnabled(True)
+        else:
+            path.setPlaceholderText(f"{name} Not Installed")
+            path.setEnabled(False)
+            button.setEnabled(False)
+
+        if save:
+            config[config_key] = checked
+            save_config(config)
+
+    def checkbox_changed(self, state, checkbox_name):
+        config = load_config()
+
+        widgets = {
+            "manager": (
+                self.xenia_manager_installed,
+                self.xenia_manager_path,
+                self.browse_btn_xenia,
+                "Xenia Manager",
+                "xenia_manager_installed",
+            ),
+            "canary": (
+                self.xenia_canary_installed,
+                self.xenia_canary_path,
+                self.browse_btn_canary,
+                "Xenia Canary",
+                "xenia_canary_installed",
+            ),
+            "edge": (
+                self.xenia_edge_installed,
+                self.xenia_edge_path,
+                self.browse_btn_edge,
+                "Xenia Edge",
+                "xenia_edge_installed",
+            ),
+        }
+
+        checkbox, path, button, name, config_key = widgets[checkbox_name]
+
+        checked = checkbox.isChecked()
+
+        if checked:
+            path.setPlaceholderText(f"{name} location...")
+            path.setEnabled(True)
+            button.setEnabled(True)
+        else:
+            path.setPlaceholderText(f"{name} Not Installed")
+            path.setEnabled(False)
+            button.setEnabled(False)
+
+        config[config_key] = checked
+        save_config(config)
 
     def toggle_drawer(self):
         if self.drawer_open:
@@ -358,9 +503,15 @@ class GameLauncher(QMainWindow):
         self.search.textChanged.connect(self.search_changed)
         toolbar.addWidget(self.search)
 
+        self.launch_canary = QPushButton("Launch with Canary")
+        self.launch_canary.clicked.connect(partial(self.launch_game, "canary"))
+        self.launch_edge = QPushButton("Launch with Edge")
+        self.launch_edge.clicked.connect(partial(self.launch_game, "edge"))
         self.btn_tu = QPushButton("Search and Download TUs")
         self.btn_tu.clicked.connect(self.search_and_download_tus)
 
+        toolbar.addWidget(self.launch_canary)
+        toolbar.addWidget(self.launch_edge)
         toolbar.addWidget(self.btn_tu)
 
         # ================= PROGRESS =================
@@ -434,7 +585,7 @@ class GameLauncher(QMainWindow):
         )
 
         if folder:
-            self.xenia_path.setText(folder)
+            self.xenia_manager_path.setText(folder)
             config = load_config()
             config["xenia_manager_path"] = folder
             save_config(config)
@@ -442,7 +593,7 @@ class GameLauncher(QMainWindow):
     def select_folder(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Games Folder")
         if folder:
-            self._log(f"Selected: {folder}")
+            self.log(f"Selected: {folder}")
 
     def search_and_download_tus(self):
         if not self.model.games:
@@ -483,6 +634,18 @@ class GameLauncher(QMainWindow):
 
         self.log("Done: TU download completed")
 
+    def pick_xenia_edge_path(self):
+        folder = QFileDialog.getExistingDirectory(
+            self,
+            "Select Xenia edge Folder"
+        )
+
+        if folder:
+            self.xenia_edge_path.setText(folder)
+            config = load_config()
+            config["xenia_edge_path"] = folder
+            save_config(config)
+
     def pick_xenia_canary_path(self):
         folder = QFileDialog.getExistingDirectory(
             self,
@@ -498,10 +661,13 @@ class GameLauncher(QMainWindow):
     def load_saved_config(self):
         config = load_config()
 
+        self.set_checkbox("manager", config.get("xenia_manager_installed", False), save=False)
+        self.set_checkbox("canary", config.get("xenia_canary_installed", False), save=False)
+        self.set_checkbox("edge", config.get("xenia_edge_installed", False), save=False)
         self.entry_user.setText(config.get("username", ""))
         self.entry_pass.setText(config.get("password", ""))
         self.entry_apikey.setText(config.get("api_key", ""))
-        self.xenia_path.setText(config.get("xenia_manager_path", ""))
+        self.xenia_manager_path.setText(config.get("xenia_manager_path", ""))
         self.xenia_canary_path.setText(config.get("xenia_canary_path", ""))
         self.title_updates_path.setText(config.get("title_updates_path", ""))
         if config.get("api_key"):
@@ -673,31 +839,18 @@ class GameLauncher(QMainWindow):
             )
 
     def import_games(self):
+        # Refresh table
+        self.model.load()
         games_json = Path("config") / "games.json"
         config = load_config()
         xenia_manager_path = config["xenia_manager_path"]
         games_json_path = Path(xenia_manager_path) / games_json
+        if not games_json_path.exists():
+            raise Exception("Missing File")
         try:
-
-            if not games_json_path.exists():
-                QMessageBox.warning(
-                    self,
-                    "Missing File",
-                    str(games_json_path)
-                )
-                return
-
-            # Refresh table
-            self.model.load()
-
             # Import games
-            import_games_json(games_json_path, self.model.games, log_callback=self.log)
-
-            message = "Import Complete. games.json imported successfully."
-            self.log(message)
-
+            self.db.import_games_from_edge_or_xeni_manager(games_json_path, self.model.games, log_callback=self.log)
         except Exception as e:
-
             QMessageBox.critical(
                 self,
                 "Import Failed",
@@ -708,35 +861,60 @@ class GameLauncher(QMainWindow):
     # Launch Game
     # -------------------------
 
-    def launch_game(self, index):
+    def get_selected_row(self):
+        index = self.table.selectionModel().currentIndex()
+        return index.row() if index.isValid() else None
+
+    def launch_game(self, xenia_version = None):
+        xenia_exe_configuration_location = ""
+        xenia_exe_path = ""
+        row = self.get_selected_row()
+        if row is None:
+            return
+        game = self.model.get_game_id(row)
+        game_path = self.model.get_game_path(row)
+        game_id = self.model.get_game_id(row)
+        game_config_source = self.model.get_config_path(row)
+        print(game, xenia_version)
         from pathlib import Path
-        xenia_exe = r"xenia_canary.exe"
         config = load_config()
+        xenia_canary_installed = config["xenia_canary_installed"]
+        xenia_edge_installed = config["xenia_edge_installed"]
+        xenia_manager_installed = config["xenia_manager_installed"]
+        xenia_edge_path = config["xenia_edge_path"]
         xenia_canary_path = config["xenia_canary_path"]
-        xenia_exe_path = Path(config["xenia_canary_path"], xenia_exe)
-        xenia_manager_path = Path(config["xenia_manager_path"])
-        row = index.row()
+        if xenia_manager_installed:
+            xenia_manager_path = Path(config["xenia_manager_path"])
+            xenia_manager_config = load_xenia_manager_config(xenia_manager_path)
+            configuration_location = xenia_manager_config["emulators"]["canary"]["configuration_location"]
+            xenia_emulator_location = Path(xenia_manager_config["emulators"]["canary"]["emulator_location"])
+            xenia_exe_location = Path(xenia_manager_config["emulators"]["canary"]["executable_location"])
+            xenia_exe_path = Path.joinpath(xenia_manager_path, xenia_exe_location)
+            game_config_source = Path(xenia_manager_path) / game_config_source
+            xenia_exe_configuration_location = Path.joinpath(xenia_manager_path, configuration_location)
+        if xenia_version == "canary":
+            if not xenia_canary_installed:
+                raise Exception("Canary not installed")
+            datadir = Path(get_app_dir())
+            config_dir = datadir / "assets" / "settings"
+            xenia_exe_path = Path(xenia_canary_path) / "xenia_canary.exe"
+            xenia_exe_configuration_location = Path(config_dir)
+            if game_config_source and Path(game_config_source).exists():
+                shutil.copy(game_config_source, xenia_exe_configuration_location)
 
-        path = self.model.get_game_path(
-            row
-        )
-
-        game_id = self.model.get_game_id(
-            row
-        )
-
-        game_config = self.model.get_config_path(
-            row
-        )
-        if game_config:
-            game_config = Path(xenia_manager_path) / game_config
+        if xenia_version == "edge":
+            if not xenia_edge_installed:
+                raise Exception("Edge not installed")
+            datadir = Path(get_app_dir())
+            xenia_exe_path = Path(xenia_edge_path) / "xenia_edge.exe"
+            xenia_exe_configuration_location = Path.home() / "Documents" / "Xenia" / "config"
         print([
             xenia_exe_path,
-            path,
-            game_config
+            game_path,
+            game_config_source
         ])
 
-        if not path:
+        if not game_path:
             QMessageBox.warning(
                 self,
                 "Missing Path",
@@ -744,17 +922,14 @@ class GameLauncher(QMainWindow):
             )
             return
 
-        if game_config and not Path(game_config).exists():
-            print("Config missing:", game_config)
-
-        active = Path(xenia_canary_path) / "xenia-canary.config.toml"
-        shutil.copy(game_config, active)
+        if game_config_source and not Path(game_config_source).exists():
+            print("Config missing:", game_config_source)
 
         try:
             import subprocess
             import time
             self.start_time = time.time()
-            self.process = subprocess.Popen([xenia_exe_path, path])
+            self.process = subprocess.Popen([xenia_exe_path, game_path])
 
             threading.Thread(
                 target=self.monitor_game,
