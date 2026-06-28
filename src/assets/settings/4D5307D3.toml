@@ -1,0 +1,5 @@
+# Title Name: Perfect Dark Zero
+# Title ID: 4D5307D3
+
+[GPU]
+framerate_limit = 120 # Caps the FPS to 60
