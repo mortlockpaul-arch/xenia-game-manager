@@ -1,0 +1,8 @@
+# Title Name: Metal Gear Solid HD Collection
+# Title ID: 4B4E0840
+
+[GPU]
+readback_resolve = "full" # Required for photos to render at the cost of performance
+
+[General]
+controller_hotkeys = true # Turn off Readback_Resolve with A + Guide Button after a few seconds

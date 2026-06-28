@@ -1,0 +1,6 @@
+# Title Name: Fable Heroes
+# Title ID: 58410B86
+
+[GPU]
+readback_resolve = "full" # Fixes brightness
+vsync = false # Unlocks framerate (Combined with framerate limit set to 0)

@@ -9,7 +9,7 @@ from PySide6.QtCore import (
     QModelIndex
 )
 
-from db import get_db
+from db import Database
 from utils import star, format_disc_type
 
 DisplayRole = Qt.ItemDataRole.DisplayRole
@@ -49,13 +49,13 @@ class GameTableModel(QAbstractTableModel):
         super().__init__()
 
         from typing import Any
-
+        self.db = Database()
         self.games: list[dict[str, Any]] = []
         self.load()
 
     def load(self, search_text=""):
 
-        with get_db() as con:
+        with self.db.get_db() as con:
             query = """
                 SELECT
                     game_no,
@@ -71,7 +71,8 @@ class GameTableModel(QAbstractTableModel):
                     disc_type,
                     play_time,
                     disc_number,
-                    label
+                    label,
+                    xenia_version
                 FROM games LEFT JOIN discs ON discs.disc_index = games.disc_number AND discs.title_id = games.game_id
             """
 
@@ -162,7 +163,7 @@ class GameTableModel(QAbstractTableModel):
 
         new_value = 0 if int(row.get("favourite", 0)) else 1
 
-        with get_db() as con:
+        with self.db.get_db() as con:
             con.execute("""
                 UPDATE games
                 SET favourite = ?
@@ -177,7 +178,7 @@ class GameTableModel(QAbstractTableModel):
         self.dataChanged.emit(index, index, [Qt.ItemDataRole.DisplayRole])
 
     def add_play_time(self, game_id, minutes):
-        with get_db() as con:
+        with self.db.get_db() as con:
             con.execute("""
                 UPDATE games
                 SET play_time = COALESCE(play_time, 0) + ?
@@ -190,7 +191,7 @@ class GameTableModel(QAbstractTableModel):
             "%Y-%m-%d %H:%M:%S"
         )
 
-        with get_db() as con:
+        with self.db.get_db() as con:
 
             con.execute("""
                 UPDATE games
@@ -238,7 +239,7 @@ class GameTableModel(QAbstractTableModel):
         if not field:
             return
 
-        with get_db() as con:
+        with self.db.get_db() as con:
             query = (f"""
                 SELECT
                     game_no,
