@@ -230,7 +230,7 @@ class Database:
             raise Exception("Xenia Manager Not Installed")
 
 
-    def import_games_from_edge_or_xeni_manager(self, json_path, games, log_callback=None):
+    def import_games_from_edge_or_xenia_manager(self, games, log_callback=None):
         """
         Import Xenia Manager games.json
         """
@@ -243,12 +243,11 @@ class Database:
             games_json_path = Path(xenia_manager_path) / games_json
             if not games_json_path.exists():
                 raise Exception("Missing File")
-            json_path = Path(json_path)
 
-            if not json_path.exists():
-                raise FileNotFoundError(json_path)
+            if not games_json_path.exists():
+                raise FileNotFoundError(games_json_path)
 
-            with open(json_path, "r", encoding="utf-8") as f:
+            with open(games_json_path, "r", encoding="utf-8") as f:
                 xenia_manager_games = json.load(f)
 
             if len(xenia_manager_games) == len(games):
@@ -275,6 +274,8 @@ class Database:
                         .get("config")
                     )
                     play_time = (game.get("playtime"))
+                    xenia_version = game.get("xenia_version")
+                    disc_number = detect_disc_number(file_path)
                     con.execute("""
                     INSERT INTO games
                     (
@@ -284,9 +285,10 @@ class Database:
                         file_path,
                         config_path,
                         play_time,
-                        disc_number
+                        disc_number,
+                        xenia_version
                     )
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                     """, (
                         game_id,
                         media_id,
@@ -294,14 +296,15 @@ class Database:
                         file_path,
                         config_path,
                         play_time,
-                        detect_disc_number(file_path),
+                        disc_number,
+                        xenia_version
                     ))
-                    self.import_multidisc_json(
-                        r"config/multidisc.json", log_callback=log_callback
-                    )
-                    message = f"Imported {len(xenia_manager_games)} games"
-                    log_callback(message)
-                    return
+                self.import_multidisc_json(
+                    r"config/multidisc.json", log_callback=log_callback
+                )
+                message = f"Imported {len(xenia_manager_games)} games"
+                log_callback(message)
+                return
         else:
             xenia_edge_installed = config["xenia_edge_installed"]
             xenia_edge_path = config["xenia_edge_path"]
