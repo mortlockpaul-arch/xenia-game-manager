@@ -77,9 +77,9 @@ def detect_disc_number(title: str):
             try:
                 return int(match.group(1))
             except ValueError:
-                return None
+                return 1
 
-    return None
+    return 1
 
 
 def strip_disc_suffix(title: str):
