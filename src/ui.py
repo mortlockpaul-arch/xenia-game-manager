@@ -105,7 +105,6 @@ class GameLauncher(QMainWindow):
         self.model = GameTableModel()
         self.resize(1800, 800)
         self.build_ui()
-        self.import_games()
         self.load_saved_config()
 
 
@@ -841,15 +840,10 @@ class GameLauncher(QMainWindow):
     def import_games(self):
         # Refresh table
         self.model.load()
-        games_json = Path("config") / "games.json"
-        config = load_config()
-        xenia_manager_path = config["xenia_manager_path"]
-        games_json_path = Path(xenia_manager_path) / games_json
-        if not games_json_path.exists():
-            raise Exception("Missing File")
+
         try:
             # Import games
-            self.db.import_games_from_edge_or_xeni_manager(games_json_path, self.model.games, log_callback=self.log)
+            self.db.import_games_from_edge_or_xenia_manager(self.model.games, log_callback=self.log)
         except Exception as e:
             QMessageBox.critical(
                 self,

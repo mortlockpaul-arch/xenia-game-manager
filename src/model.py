@@ -42,7 +42,8 @@ class GameTableModel(QAbstractTableModel):
         ("play_time", "Play Time"),
         ("disc_number", "Disc"),
         ("disc_type", "Disc Type"),
-        ("label", "Label")
+        ("label", "Label"),
+        ("xenia_version", "Xenia Version"),
     ]
 
     def __init__(self):
@@ -231,7 +232,9 @@ class GameTableModel(QAbstractTableModel):
             7: "last_played",
             8: "play_count",
             9: "play_time",
-            10: "disc_number"
+            10: "disc_number",
+            11: "label",
+            12: "xenia_version"
         }
 
         field = mapping.get(column)
@@ -255,7 +258,8 @@ class GameTableModel(QAbstractTableModel):
                     disc_type,
                     play_time,
                     disc_number,
-                    label
+                    label,
+                    xenia_version
                 FROM games LEFT JOIN discs ON discs.disc_index = games.disc_number AND discs.title_id = games.game_id
                 ORDER BY {field} {"DESC" if reverse else "ASC"}
             """)
