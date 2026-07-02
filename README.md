@@ -9,12 +9,11 @@ The launcher imports your Xenia Manager `games.json`, stores game metadata in SQ
 
 ## Library Management
 
-- Import games from Xenia Manager `games.json`
+- Import games from Xenia Manager `games.json` or Xenia Edge Game List
 - Identify Multi Disc games
-- Search games
-- Sort by any column
+- Add Favourites
 - Download Title Updates from xboxunity.net for games in the list
-- Check for updates to xenia game manager.
+- Optimize Xenia Edge Games 
 
 ## Title Cleanup
 
@@ -63,7 +62,7 @@ Click the ⭐ column to toggle favourites.
 
 ## Launching
 
-Double-click any game to launch it using Xenia Canary.
+Double-click any game to launch it using Xenia version stored.
 
 Tracks:
 
@@ -113,12 +112,14 @@ Disc 2 - Multiplayer
 1. **Register** at [XboxUnity.net](https://xboxunity.net)
 2. **Go to your profile settings**
 3. **Generate an API Key**
-4. **Copy and paste** into X360 TU Manager
 
 ## Import Xenia Manager library
 
 Imports the current Xenia Manager library.
 
+## Import Xenia Edge library
+
+Imports the current Xenia Edge library.
 
 ## Fix Titles
 
@@ -128,14 +129,10 @@ Cleans imported game names.
 
 Writes corrected titles back into Xenia Manager.
 
-## Refresh
 
 ---
-
 # License
-
 Personal use project.
-
 ## Third-Party Projects
 
 This software integrates with:
