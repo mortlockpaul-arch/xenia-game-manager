@@ -26,8 +26,9 @@ class Compatibility:
             "Accept": "application/vnd.github+json",
             "User-Agent": "XeniaGameManager"
         }
-
-        release = requests.get(API, headers=headers, timeout=30)
+        config = load_config()
+        api = config["github_api"]
+        release = requests.get(api, headers=headers, timeout=30)
         release.raise_for_status()
 
         release = release.json()
