@@ -13,6 +13,7 @@ def game_count():
         return con.execute(
             "SELECT COUNT(*) FROM games"
         ).fetchone()[0]
+
 def disc_count():
     db = Database()
     db.init_db()
@@ -20,6 +21,7 @@ def disc_count():
         return con.execute(
             "SELECT COUNT(*) FROM discs"
         ).fetchone()[0]
+
 def main():
     app = QApplication(sys.argv)
     print(game_count())

@@ -8,5 +8,7 @@
     "xenia_manager_installed": true,
     "xenia_edge_path": "D:/RetroBat/emulators/xenia-manager/Emulators/Xenia Edge",
     "xenia_edge_installed": true,
-    "xenia_canary_installed": true
+    "xenia_canary_installed": true,
+    "compatibility_url": "https://api.github.com/repos/xenia-canary/game-compatibility/releases/latest"
+
 }
