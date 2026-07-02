@@ -176,7 +176,6 @@ class GameTableModel(QAbstractTableModel):
         return None
 
     def toggle_favourite(self, row_index):
-
         if row_index < 0 or row_index >= len(self.games):
             return
 
@@ -187,15 +186,14 @@ class GameTableModel(QAbstractTableModel):
 
         with self.db.get_db() as con:
             con.execute("""
-                UPDATE favourites
-                SET favourite = ?
-                WHERE game_id = ?
-            """, (new_value, game_id))
+                INSERT INTO favourites (game_id, favourite)
+                VALUES (?, ?)
+                ON CONFLICT(game_id)
+                DO UPDATE SET favourite = excluded.favourite
+            """, (game_id, new_value))
 
-        # update memory
         row["favourite"] = new_value
 
-        # notify Qt properly
         index = self.index(row_index, 0)
         self.dataChanged.emit(index, index, [Qt.ItemDataRole.DisplayRole])
 
