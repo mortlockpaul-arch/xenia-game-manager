@@ -4,6 +4,7 @@ import sqlite3
 import json
 from pathlib import Path
 
+import requests
 from PySide6.QtWidgets import QMessageBox
 from cx_Freeze import exception
 
@@ -12,6 +13,81 @@ from config import load_config, load_xenia_manager_config
 from utils import detect_disc_number
 
 DB_PATH = "db/games.db"
+
+
+class Compatibility:
+
+    def __init__(self, db):
+        self.compatibility = None
+        self.db = db
+
+    def download_compatibility(self):
+        headers = {
+            "Accept": "application/vnd.github+json",
+            "User-Agent": "XeniaGameManager"
+        }
+
+        release = requests.get(API, headers=headers, timeout=30)
+        release.raise_for_status()
+
+        release = release.json()
+
+        print(release["tag_name"])
+
+        for asset in release["assets"]:
+            print(asset["name"], asset["browser_download_url"])
+
+        asset = next(
+            a for a in release["assets"]
+            if a["name"].endswith(".json")
+        )
+
+        download_url = asset["browser_download_url"]
+
+        response = requests.get(download_url, headers=headers, timeout=60)
+        response.raise_for_status()
+
+        self.compatibility = response.json()
+
+        with open("compatibility.json", "wb") as f:
+            f.write(response.content)
+
+    def update_compatibility(self):
+        if self.compatibility is None:
+            with open("compatibility.json", "r", encoding="utf-8") as f:
+                self.compatibility = json.load(f)
+
+        compat_by_title: dict[str, dict[str, Any]] = {
+            game["id"]: game
+            for game in self.compatibility
+        }
+
+        con = self.db.get_db()
+        rows = con.execute(
+            "SELECT game_id FROM games"
+        ).fetchall()
+
+        for row in rows:
+            compat = compat_by_title.get(row["game_id"].upper())
+            if compat is not None:
+                print(compat["state"])
+            if compat:
+                con.execute(
+                    """
+                    UPDATE games
+                    SET compatibility_rating = ?,
+                        compatibility_issue = ?,
+                        compatibility_updated = CURRENT_TIMESTAMP
+                    WHERE game_id = ?
+                    """,
+                    (
+                        compat["state"],
+                        compat.get("issue", ""),
+                        row["game_id"],
+                    ),
+                )
+
+        con.commit()
 
 class Database:
 
@@ -143,7 +219,6 @@ class Database:
                 title TEXT NOT NULL,
                 file_path TEXT,
                 config_path TEXT,
-                favourite INTEGER DEFAULT 0,
                 last_played TEXT,
                 play_count INTEGER DEFAULT 0,
                 play_time INTEGER DEFAULT 0,
@@ -151,7 +226,18 @@ class Database:
                 disc_type TEXT,
                 xenia_disc_swap_required INTEGER DEFAULT 0,
                 disc_number INTEGER DEFAULT 0,
-                xenia_version TEXT
+                xenia_version TEXT,
+                compatibility_rating TEXT,
+                compatibility_issue TEXT,
+                compatibility_updated CURRENT_TIMESTAMP
+            )
+            """)
+
+            con.execute("""
+            CREATE TABLE IF NOT EXISTS favourites (
+                game_id TEXT PRIMARY KEY ,
+                favourite INTEGER DEFAULT 0,
+                FOREIGN KEY(game_id) REFERENCES games(game_id)
             )
             """)
 
@@ -230,14 +316,15 @@ class Database:
             raise Exception("Xenia Manager Not Installed")
 
 
-    def import_games_from_edge_or_xenia_manager(self, games, log_callback=None):
-        """
-        Import Xenia Manager games.json
-        """
+    def import_games_from_edge_or_xenia_manager(self, xenia_version, games, log_callback=None):
+        print(xenia_version)
         from edge_import import import_edge_games
         config = load_config()
         xenia_manager_installed = config["xenia_manager_installed"]
-        if xenia_manager_installed:
+        xenia_edge_installed = config["xenia_edge_installed"]
+        if xenia_version == "xenia_manager":
+            if not  xenia_manager_installed:
+                raise Exception("Xenia Manager Not Installed")
             games_json = Path("config") / "games.json"
             xenia_manager_path = config["xenia_manager_path"]
             games_json_path = Path(xenia_manager_path) / games_json
@@ -304,58 +391,63 @@ class Database:
                 )
                 message = f"Imported {len(xenia_manager_games)} games"
                 log_callback(message)
+                compatibility = Compatibility(self)
+                compatibility.update_compatibility()
                 return
         else:
-            xenia_edge_installed = config["xenia_edge_installed"]
+            if xenia_version == "xenia_edge":
+                if not xenia_edge_installed:
+                    raise Exception("Xenia Edge Not Installed")
             xenia_edge_path = config["xenia_edge_path"]
-            if xenia_edge_installed:
-                xenia_edge_path = Path(xenia_edge_path)
-                xenia_edge_games = import_edge_games()
+            xenia_edge_path = Path(xenia_edge_path)
+            xenia_edge_games = import_edge_games()
 
-                if len(xenia_edge_games) == len(games):
-                    message = f"Import Not Required {len(xenia_edge_games)} games"
-                    if log_callback:
-                        log_callback(message)
-                        return
+            if len(xenia_edge_games) == len(games):
+                message = f"Import Not Required {len(xenia_edge_games)} games"
+                if log_callback:
+                    log_callback(message)
+                    return
 
-                self.clear_db()
+            self.clear_db()
 
-                with self.conn as con:
+            with self.conn as con:
 
-                    for game in xenia_edge_games:
-                        game_id = game.get("title_id")
-                        title = game.get("name")
-                        settings = Path(r"C:\Users\mortl\Documents\Xenia\config")
+                for game in xenia_edge_games:
+                    game_id = game.get("title_id")
+                    title = game.get("name")
+                    settings = Path(r"C:\Users\mortl\Documents\Xenia\config")
 
-                        file_path = game.get("default_path")  # or paths[0]
-                        config_path = str(settings / f"{game_id}.config.toml")
-                        print(game_id)
-                        print(title)
-                        print(file_path)
-                        print(config_path)
-                        con.execute("""
-                        INSERT INTO games
-                        (
-                            game_id,
-                            title,
-                            file_path,
-                            config_path,
-                            disc_number
-                        )
-                        VALUES (?, ?, ?, ?, ?)
-                        """, (
-                            game_id,
-                            title,
-                            file_path,
-                            config_path,
-                            detect_disc_number(file_path),
-                        ))
-                self.import_multidisc_json(
-                        r"config/multidisc.json", log_callback=log_callback
+                    file_path = game.get("default_path")  # or paths[0]
+                    config_path = str(settings / f"{game_id}.config.toml")
+                    print(game_id)
+                    print(title)
+                    print(file_path)
+                    print(config_path)
+                    con.execute("""
+                    INSERT INTO games
+                    (
+                        game_id,
+                        title,
+                        file_path,
+                        config_path,
+                        disc_number
                     )
-                message = f"Imported {len(xenia_edge_games)} games"
-                log_callback(message)
-                return
+                    VALUES (?, ?, ?, ?, ?)
+                    """, (
+                        game_id,
+                        title,
+                        file_path,
+                        config_path,
+                        detect_disc_number(file_path),
+                    ))
+            self.import_multidisc_json(
+                    r"config/multidisc.json", log_callback=log_callback
+                )
+            message = f"Imported {len(xenia_edge_games)} games"
+            log_callback(message)
+            compatibility = Compatibility(self)
+            compatibility.update_compatibility()
+            return
 
 
     def search_games(self, search_text=""):

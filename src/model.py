@@ -8,6 +8,7 @@ from PySide6.QtCore import (
     QAbstractTableModel,
     QModelIndex
 )
+from PySide6.QtGui import QBrush, QColor, QFont
 
 from db import Database
 from utils import star, format_disc_type
@@ -44,6 +45,7 @@ class GameTableModel(QAbstractTableModel):
         ("disc_type", "Disc Type"),
         ("label", "Label"),
         ("xenia_version", "Xenia Version"),
+        ("compatibility_rating", "Compatibility"),
     ]
 
     def __init__(self):
@@ -60,12 +62,12 @@ class GameTableModel(QAbstractTableModel):
             query = """
                 SELECT
                     game_no,
-                    game_id,
+                    games.game_id,
                     media_id,
                     title,
                     file_path,
                     config_path,
-                    favourite,
+                    COALESCE(favourites.favourite, 0) AS favourite,
                     last_played,
                     play_count,
                     disc_count,
@@ -73,8 +75,10 @@ class GameTableModel(QAbstractTableModel):
                     play_time,
                     disc_number,
                     label,
-                    xenia_version
+                    xenia_version,
+                    compatibility_rating
                 FROM games LEFT JOIN discs ON discs.disc_index = games.disc_number AND discs.title_id = games.game_id
+                LEFT JOIN favourites ON favourites.game_id = games.game_id
             """
 
             params = ()
@@ -107,6 +111,15 @@ class GameTableModel(QAbstractTableModel):
         return section + 1
 
     def data(self, index, role=Qt.ItemDataRole.DisplayRole):
+        COMPATIBILITY = {
+            "Perfect": ("Perfect", "#2ecc71"),
+            "Playable": ("Playable", "#27ae60"),
+            "Gameplay": ("Gameplay", "#f1c40f"),
+            "Menu": ("Menu", "#e67e22"),
+            "Loads": ("Loads", "#e74c3c"),
+            "Unplayable": ("Unplayable", "#7f8c8d"),
+            None: ("Unknown", "#95a5a6"),
+        }
 
         if not index.isValid():
             return None
@@ -114,9 +127,27 @@ class GameTableModel(QAbstractTableModel):
         row = self.games[index.row()]
         key = self.COLUMNS[index.column()][0]
 
-        if role == Qt.ItemDataRole.DisplayRole:
+        # Compatibility column special roles
+        if key == "compatibility_rating":
+            rating = row.get("compatibility_rating")
+            text, colour = COMPATIBILITY.get(rating, COMPATIBILITY[None])
 
-            value = row.get(key, None)
+            if role == Qt.ItemDataRole.DisplayRole:
+                return text
+
+            if role == Qt.ItemDataRole.ForegroundRole:
+                return QBrush(QColor(colour))
+
+            if role == Qt.ItemDataRole.TextAlignmentRole:
+                return Qt.AlignmentFlag.AlignCenter
+
+            if role == Qt.ItemDataRole.FontRole:
+                font = QFont()
+                font.setBold(True)
+                return font
+
+        if role == Qt.ItemDataRole.DisplayRole:
+            value = row.get(key)
 
             if key == "favourite":
                 return star(int(value or 0))
@@ -128,23 +159,13 @@ class GameTableModel(QAbstractTableModel):
                 if value is None:
                     return ""
 
-                play_time: float = cast(float,value)
+                play_time = int(cast(float, value))
+                hours, minutes = divmod(play_time, 60)
 
-                if play_time <= 0:
-                    return "Never Played"
-
-                play_time_int = int(play_time)
-
-                hours, minutes = divmod(play_time_int, 60)
-
-                if hours:
-                    return f"{hours}h {minutes}m"
-
-                return f"{minutes}m"
+                return f"{hours}h {minutes}m" if hours else f"{minutes}m"
 
             if key == "disc_type":
-                disc_type: str = cast(str, value)
-                return format_disc_type(disc_type) or None
+                return format_disc_type(cast(str, value)) or None
 
             return value if value is not None else ""
 
@@ -166,7 +187,7 @@ class GameTableModel(QAbstractTableModel):
 
         with self.db.get_db() as con:
             con.execute("""
-                UPDATE games
+                UPDATE favourites
                 SET favourite = ?
                 WHERE game_id = ?
             """, (new_value, game_id))
@@ -234,7 +255,8 @@ class GameTableModel(QAbstractTableModel):
             9: "play_time",
             10: "disc_number",
             11: "label",
-            12: "xenia_version"
+            12: "xenia_version",
+            13: "compatibility_rating",
         }
 
         field = mapping.get(column)
@@ -246,12 +268,12 @@ class GameTableModel(QAbstractTableModel):
             query = (f"""
                 SELECT
                     game_no,
-                    game_id,
+                    games.game_id,
                     media_id,
                     title,
                     file_path,
                     config_path,
-                    favourite,
+                    COALESCE(favourites.favourite, 0) AS favourite,
                     last_played,
                     play_count,
                     disc_count,
@@ -259,8 +281,10 @@ class GameTableModel(QAbstractTableModel):
                     play_time,
                     disc_number,
                     label,
-                    xenia_version
+                    xenia_version,
+                    compatibility_rating
                 FROM games LEFT JOIN discs ON discs.disc_index = games.disc_number AND discs.title_id = games.game_id
+                LEFT JOIN favourites ON favourites.game_id = games.game_id
                 ORDER BY {field} {"DESC" if reverse else "ASC"}
             """)
             params = ()
