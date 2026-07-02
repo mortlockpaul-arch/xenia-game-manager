@@ -26,8 +26,10 @@ from PySide6.QtGui import QGuiApplication, QIcon
 
 from download import TUDownloadWorker
 from config import save_config, load_config, load_xenia_manager_config, get_app_dir
+from edge_import import use_xenia_manager_content_folder_for_edge
 from model import GameTableModel
 from db import Database
+from remove_empty_folders import remove_empty_folders
 from updater import check_for_update
 from utils import smart_title_case, xenia_edge_optimise_settings
 from xboxunity_api import login_xboxunity, test_connectivity
@@ -62,6 +64,7 @@ class GameLauncher(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.use_xenia_manager_content_for_edge_btn = None
         self.import_edge_btn = None
         self.browse_btn_edge = None
         self.xenia_edge_path = None
@@ -103,7 +106,7 @@ class GameLauncher(QMainWindow):
         self.db = Database()
         self.db.init_db()
         self.model = GameTableModel()
-        self.resize(1800, 800)
+        self.resize(1800, 900)
         self.build_ui()
         self.load_saved_config()
 
@@ -261,11 +264,11 @@ class GameLauncher(QMainWindow):
         tools_layout.addWidget(self.fix_titles_btn)
 
         self.import_btn = QPushButton("Import Xenia Manager Game List")
-        self.import_btn.clicked.connect(self.import_games)
+        self.import_btn.clicked.connect(partial(self.import_games,"xenia_manager"))
         tools_layout.addWidget(self.import_btn)
 
         self.import_edge_btn = QPushButton("Import Xenia Edge Game List")
-        self.import_edge_btn.clicked.connect(self.import_games)
+        self.import_edge_btn.clicked.connect(partial(self.import_games, "xenia_edge"))
         tools_layout.addWidget(self.import_edge_btn)
 
         self.export_btn = QPushButton("Update Xenia Manager Game List")
@@ -283,6 +286,13 @@ class GameLauncher(QMainWindow):
 
         self.check_update_btn = QPushButton("Check for Updates")
         self.check_update_btn.clicked.connect(self.check_for_updates)
+        self.remove_clean_btn = QPushButton("Remove Empty Folders")
+        self.remove_clean_btn.clicked.connect(self.remove_clean_folders)
+
+        self.use_xenia_manager_content_for_edge_btn = QPushButton("Use Xenia Manager Unified Content folder for Xenia Edge")
+        self.use_xenia_manager_content_for_edge_btn.clicked.connect(self.use_xenia_manager_content_for_edge)
+        tools_layout.addWidget(self.use_xenia_manager_content_for_edge_btn)
+        tools_layout.addWidget(self.remove_clean_btn)
         tools_layout.addWidget(self.check_update_btn)
 
         tools_box.setLayout(tools_layout)
@@ -291,11 +301,59 @@ class GameLauncher(QMainWindow):
 
         layout.addStretch()
 
+        buttons = [
+            self.fix_titles_btn,
+            self.import_btn,
+            self.import_edge_btn,
+            self.export_btn,
+            self.refresh_btn,
+            self.xenia_edge_optimise_btn,
+            self.check_update_btn,
+            self.use_xenia_manager_content_for_edge_btn,
+            self.remove_clean_btn,
+        ]
+
+        for button in buttons:
+            button.setMinimumHeight(32)
+
         self.settings_drawer.hide()
+
+    from PySide6.QtWidgets import QMessageBox
+
+    def use_xenia_manager_content_for_edge(self):
+        try:
+            use_xenia_manager_content_folder_for_edge()
+            QMessageBox.information(
+                self,
+                "Success",
+                "Xenia Edge is now using the Xenia Manager content folder."
+            )
+        except Exception as e:
+            QMessageBox.critical(
+                self,
+                "Error",
+                str(e)
+            )
 
     def on_optimize_xenia_clicked(self):
         xenia_edge_optimise_settings(self.log)
 
+    def remove_clean_folders(self):
+        folder = QFileDialog.getExistingDirectory(
+            self,
+            "Select Folder"
+        )
+
+        if not folder:
+            return
+
+        count = remove_empty_folders(folder, self.log)
+
+        QMessageBox.information(
+            self,
+            "Finished",
+            f"Removed {count} empty folder(s)."
+        )
     def set_checkbox(self, checkbox_name, checked, save=True):
         config = load_config()
 
@@ -546,12 +604,26 @@ class GameLauncher(QMainWindow):
             QHeaderView.ResizeMode.Interactive
         )
 
-        header.setStretchLastSection(True)
+        header.setStretchLastSection(False)
 
-        header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)  # Game Title
-        header.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)
+        header.setSectionResizeMode(1, QHeaderView.ResizeMode.Fixed)
         header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(3, QHeaderView.ResizeMode.Fixed)
+        header.setSectionResizeMode(4, QHeaderView.ResizeMode.Fixed)
+        header.setSectionResizeMode(5, QHeaderView.ResizeMode.Fixed)
+        header.setSectionResizeMode(6, QHeaderView.ResizeMode.Fixed)
+        header.setSectionResizeMode(7, QHeaderView.ResizeMode.Fixed)
+        header.setSectionResizeMode(8, QHeaderView.ResizeMode.Fixed)
+        header.setSectionResizeMode(9, QHeaderView.ResizeMode.Fixed)
 
+        self.table.setColumnWidth(0, 28)  # ★
+        self.table.setColumnWidth(1, 28)  # Number
+        self.table.setColumnWidth(3, 70)  # ★
+        self.table.setColumnWidth(4, 70)  # Number
+        self.table.setColumnWidth(7, 135)  # Number
+        self.table.setColumnWidth(5, 70)  # Number
+        self.table.setColumnWidth(8, 50)  # Number
         self.search.setClearButtonEnabled(True)
         self.table.verticalHeader().hide()
 
@@ -668,6 +740,7 @@ class GameLauncher(QMainWindow):
         self.entry_apikey.setText(config.get("api_key", ""))
         self.xenia_manager_path.setText(config.get("xenia_manager_path", ""))
         self.xenia_canary_path.setText(config.get("xenia_canary_path", ""))
+        self.xenia_edge_path.setText(config.get("xenia_edge_path", ""))
         self.title_updates_path.setText(config.get("title_updates_path", ""))
         if config.get("api_key"):
             self.api_key = config["api_key"]
@@ -837,13 +910,13 @@ class GameLauncher(QMainWindow):
                 index.row()
             )
 
-    def import_games(self):
+    def import_games(self, xenia_version):
         # Refresh table
         self.model.load()
 
         try:
             # Import games
-            self.db.import_games_from_edge_or_xenia_manager(self.model.games, log_callback=self.log)
+            self.db.import_games_from_edge_or_xenia_manager(xenia_version, self.model.games, log_callback=self.log)
         except Exception as e:
             QMessageBox.critical(
                 self,
