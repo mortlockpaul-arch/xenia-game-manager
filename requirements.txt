@@ -2,3 +2,4 @@ pyside6~=6.11.1
 requests~=2.34.2
 packaging~=26.2
 cx-freeze~=8.6.4
+pywin32>=311
