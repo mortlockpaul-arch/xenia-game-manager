@@ -3,6 +3,9 @@ name = "xenia-game-manager"
 description = "Xenia Game Manager"
 version = "0.5.3"
 requires-python = ">=3.10.10"
+authors = [
+    { name = "Paul Mortlock", email = "you@example.com" }
+]
 dependencies = [
     "cx-freeze==8.6.4",
     "packaging>=26.2",

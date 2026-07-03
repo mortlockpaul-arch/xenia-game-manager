@@ -1,5 +1,0 @@
-# Title Name: Halo 4
-# Title ID: 4D530919
-
-[GPU]
-readback_resolve = "full" # Fixes the darker gamma at the cost of performance
