@@ -1,5 +1,0 @@
-# Title Name: SEGA Superstars Tennis
-# Title ID: 534507F5
-
-[GPU]
-clear_memory_page_state = true # Fixes warped graphics in game

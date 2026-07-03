@@ -1,5 +1,0 @@
-# Title Name: Batman: Arkham City
-# Title ID: 57520802
-
-[GPU]
-occlusion_query = "strict" # Fixes unoccluded lens flares
