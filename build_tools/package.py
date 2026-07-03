@@ -1,12 +1,39 @@
+import filecmp
 import shutil
 import uuid
 import zipfile
 from pathlib import Path
+import tempfile
+import win32com.shell.shell as shell
+import win32con
 
 ROOT = Path(__file__).resolve().parent.parent
 
+def disk_fix():
+    script = """
+select volume G
+delete volume
+
+select volume H
+extend
+"""
+
+    with tempfile.NamedTemporaryFile("w", delete=False, suffix=".txt") as f:
+        f.write(script)
+        script_path = f.name
+    rc = shell.ShellExecuteEx(
+        lpVerb="runas",
+        lpFile="diskpart.exe",
+        lpParameters=f'/s "{script_path}"',
+        nShow=win32con.SW_SHOWNORMAL,
+    )
+    if rc <= 32:
+        raise RuntimeError("Failed to launch DiskPart or the UAC prompt was cancelled.")
+
+
 def generate_guid():
     return str(uuid.uuid4())
+
 
 def zip_portable():
     build_dir = ROOT / "build" / "exe.win-amd64-3.14"
@@ -19,12 +46,9 @@ def zip_portable():
             zipf.write(file, file.relative_to(build_dir))
 
     print("Portable ZIP created:", out_zip)
-from pathlib import Path
-import shutil
-import filecmp
-from pathlib import Path
-import shutil
-import filecmp
+
+
+
 
 def copy_optimized_settings():
     settings_dest = ROOT / "src" / "assets" / "settings"
@@ -51,7 +75,9 @@ def copy_optimized_settings():
     else:
         print(f"Updated {copied} file(s).")
 
+
 if __name__ == "__main__":
     zip_portable()
-    print(generate_guid())
+    # print(generate_guid())
     copy_optimized_settings()
+    # disk_fix()
