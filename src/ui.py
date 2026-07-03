@@ -57,8 +57,8 @@ class GameLauncher(QMainWindow):
     def check_for_updates(self):
         result = check_for_update()
         if result:
-            print("Updating XboxUnity...")
-            print(result)
+            self.log("Update Available...")
+            self.log(result)
         else:
             self.log("No update available")
 

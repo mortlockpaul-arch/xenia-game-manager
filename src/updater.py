@@ -1,7 +1,7 @@
 import requests
 from packaging.version import parse
 
-CURRENT_VERSION = "0.3.0"
+CURRENT_VERSION = "0.7.3"
 
 def check_for_update():
     data = requests.get(
