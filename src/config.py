@@ -16,8 +16,7 @@ def load_xenia_manager_config(xenia_manager_path):
         with open(xenia_manager_config, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
-        print("Config load error:", e)
-        return {}
+        raise("Config load error:", e)
 
 def load_config():
     datadir = get_app_dir()
@@ -27,18 +26,14 @@ def load_config():
         with open(config_file, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
-        print("Config load error:", e)
-        return {}
-
+        raise("Config load error:", e)
 
 def save_config(data: dict):
     datadir = get_app_dir()
     config_dir = os.path.join(datadir, "config")
     config_file = os.path.join(config_dir, ".x360-game-manager-config.json")
-    print(config_dir)
-    print(config_file)
     try:
         with open(config_file, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4)
     except Exception as e:
-        print("Config save error:", e)
+        raise("Config save error:", e)
