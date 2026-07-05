@@ -224,6 +224,9 @@ class GameTableModel(QAbstractTableModel):
                 game_id
             ))
 
+    def get_game_title(self, row_index):
+        return self.games[row_index].get("title", "")
+
     def get_game_path(self, row_index):
         return self.games[row_index].get("file_path", "")
 
@@ -235,6 +238,9 @@ class GameTableModel(QAbstractTableModel):
 
     def get_config_path(self, row_index):
         return self.games[row_index].get("config_path", "")
+
+    def get_xenia_version(self, row_index):
+        return self.games[row_index].get("xenia_version", "")
 
     def sort(self, column, order=Qt.SortOrder.AscendingOrder):
 

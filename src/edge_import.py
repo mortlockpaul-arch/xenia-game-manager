@@ -33,26 +33,35 @@ def use_xenia_manager_content_folder_for_edge():
     if not edge_content.exists():
         edge_content.symlink_to(manager_content, target_is_directory=True)
 
+from pathlib import Path
+import tomllib
 
-def import_edge_games():
-    library = Path(r"C:\Users\mortl\Documents\Xenia\library")
+
+def import_edge_games(log_callback=None, library = Path(r"C:\Users\mortl\Documents\Xenia\library")):
+
     games = []
+
     for toml_file in library.glob("*/game.toml"):
         with toml_file.open("rb") as f:
             data = tomllib.load(f)
 
-        games.append({
-            "title_id": data["title_id"],
-            "name": data["name"],
-            "paths": [p["path"] for p in data.get("paths", [])],
-            "default_path": next(
-                (p["path"] for p in data.get("paths", []) if p.get("default")),
-                None,
-            ),
-        })
+        for path_info in data.get("paths", []):
+            label = path_info.get("label")
 
-    for game in games:
-        print(game)
+            game = {
+                "title_id": data["title_id"],
+                "name": f"{data['name']} ({label})" if label else data["name"],
+                "path": path_info["path"],
+                "default": path_info.get("default", False),
+            }
+
+            games.append(game)
+
+            if log_callback:
+                log_callback(game["name"])
+            else:
+                print(game["name"])
+
     return games
 
 
