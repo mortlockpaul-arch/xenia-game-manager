@@ -11,10 +11,12 @@ from config import get_app_dir, load_config, save_config
 class Updater:
     def __init__(self):
 
+        self.config = load_config()
         self.new_version = None
-        self.edge_version = None
+        self.edge_version = self.config["edge_version"]
         self.latest_version = None
         self.download_path = get_app_dir()
+        self.current_version = self.config["current_version"]
 
     def get_edge_version(self):
         data = requests.get(
@@ -31,7 +33,7 @@ class Updater:
 
         self.new_version = data["tag_name"].lstrip("v")
 
-        if parse(self.new_version) > parse(CURRENT_VERSION):
+        if parse(self.new_version) > parse(self.current_version):
             asset_url = data["assets"][0]["browser_download_url"]
 
             return self.new_version, asset_url

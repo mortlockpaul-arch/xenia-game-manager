@@ -98,66 +98,61 @@ class Database:
         self.cursor = self.conn.cursor()
 
     def import_multidisc_json(self, json_path, log_callback=None):
-        """
-        Import preservation metadata JSON
-        """
-
-        json_path = Path(json_path)
+        """Import preservation metadata JSON."""
 
         with open(json_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
+            entries = json.load(f)["entries"]
 
-        entries = data["entries"]
+        imported = 0
 
         with self.conn as con:
-
             for game in entries:
-
                 title_id = game["title_id"]
 
+                # Skip games that aren't in the library
+                if not con.execute(
+                        "SELECT 1 FROM games WHERE game_id = ?",
+                        (title_id,)
+                ).fetchone():
+                    continue
+
+                imported += 1
+
                 con.execute("""
-                UPDATE games
-                SET
-                    disc_count = ?,
-                    disc_type = ?,
-                    xenia_disc_swap_required = ?
-                WHERE game_id = ?
+                    UPDATE games
+                    SET
+                        disc_count = ?,
+                        disc_type = ?,
+                        xenia_disc_swap_required = ?
+                    WHERE game_id = ?
                 """, (
                     game["disc_count"],
                     game["disc_type"],
                     int(game["xenia_disc_swap_required"]),
-                    title_id
+                    title_id,
                 ))
 
-                con.execute("""
-                DELETE FROM discs
-                WHERE title_id = ?
-                """, (title_id,))
+                con.execute(
+                    "DELETE FROM discs WHERE title_id = ?",
+                    (title_id,)
+                )
 
-                for idx, label in enumerate(
-                        game["disc_layout"],
-                        start=1
-                ):
-                    con.execute("""
-                    INSERT INTO discs
-                    (
+                con.executemany("""
+                    INSERT INTO discs (
                         title_id,
                         disc_index,
                         label
                     )
                     VALUES (?, ?, ?)
-                    """, (
-                        title_id,
-                        idx,
-                        label
-                    ))
+                """, [
+                    (title_id, index, label)
+                    for index, label in enumerate(game["disc_layout"], start=1)
+                ])
 
-        message = (
-            f"Imported multi-disc metadata "
-            f"for {len(entries)} games"
-        )
         if log_callback:
-            log_callback(message)
+            log_callback(
+                f"Imported multi-disc metadata for {imported} games"
+            )
 
     def get_game_discs(self, title_id):
 
@@ -201,6 +196,7 @@ class Database:
         with self.conn as con:
             con.execute("DELETE FROM discs")
             con.execute("DELETE FROM games")
+            con.execute("DELETE FROM favourites")
             con.execute(
                 "DELETE FROM sqlite_sequence WHERE name='discs'"
             )
@@ -237,8 +233,7 @@ class Database:
             con.execute("""
             CREATE TABLE IF NOT EXISTS favourites (
                 game_id TEXT PRIMARY KEY ,
-                favourite INTEGER DEFAULT 0,
-                FOREIGN KEY(game_id) REFERENCES games(game_id)
+                favourite INTEGER DEFAULT 0
             )
             """)
 
@@ -247,10 +242,21 @@ class Database:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title_id TEXT NOT NULL,
                 disc_index INTEGER,
-                label TEXT,
-                FOREIGN KEY(title_id) REFERENCES games(game_id)
+                label TEXT
             )
             """)
+
+            con.execute("""
+            CREATE VIEW IF NOT EXISTS disc_view AS
+                SELECT
+                    d.id,
+                    d.title_id,
+                    g.title,
+                    d.disc_index,
+                    d.label
+                FROM discs d
+                JOIN games g
+                    ON d.title_id = g.game_id;""")
 
             con.execute("""
             CREATE INDEX IF NOT EXISTS idx_games_title
@@ -400,8 +406,7 @@ class Database:
                 if not xenia_edge_installed:
                     raise Exception("Xenia Edge Not Installed")
             xenia_edge_path = config["xenia_edge_path"]
-            xenia_edge_path = Path(xenia_edge_path)
-            xenia_edge_games = import_edge_games()
+            xenia_edge_games = import_edge_games(log_callback=log_callback)
 
             if len(xenia_edge_games) == len(games):
                 message = f"Import Not Required {len(xenia_edge_games)} games"
@@ -418,7 +423,7 @@ class Database:
                     title = game.get("name")
                     settings = Path(r"C:\Users\mortl\Documents\Xenia\config")
 
-                    file_path = game.get("default_path")  # or paths[0]
+                    file_path = game.get("path")  # or paths[0]
                     config_path = str(settings / f"{game_id}.config.toml")
                     print(game_id)
                     print(title)
@@ -431,9 +436,10 @@ class Database:
                         title,
                         file_path,
                         config_path,
-                        disc_number
+                        disc_number,
+                        xenia_version
                     )
-                    VALUES (?, ?, ?, ?, ?)
+                    VALUES (?, ?, ?, ?, ?, "Edge")
                     """, (
                         game_id,
                         title,
