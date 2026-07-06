@@ -14,6 +14,6 @@
     "xenia_mousehook_installed": true,
     "xenia_title_updates_path": "D:/",
     "github_api": "https://api.github.com/repos/xenia-canary/game-compatibility/releases/latest",
-    "edge_version": "c0e1129",
+    "edge_version": "007fe6d",
     "current_version": "0.7.3"
 }

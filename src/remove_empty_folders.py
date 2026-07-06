@@ -90,3 +90,5 @@ if __name__ == "__main__":
 
     count = remove_empty_folders(r"D:\roms\Xbox360")
     print(f"Removed {count} folders")
+    count = remove_empty_folders(r"C:\Users\mortl\Downloads")
+    print(f"Removed {count} folders")
