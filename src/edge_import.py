@@ -63,11 +63,17 @@ from pathlib import Path
 import tomllib
 
 
-def import_edge_games(log_callback=None, library = Path(r"C:\Users\mortl\Documents\Xenia\library")):
+def import_edge_games(log_callback=None):
+    config = load_config()
+    edge_path = Path(config["xenia_edge_path"])
+    edge_library = Path.home() / "Documents" / "Xenia" / "library"
+
+    if (edge_path / "portable.txt").exists():
+        edge_library = edge_path / "library"
 
     games = []
 
-    for toml_file in library.glob("*/game.toml"):
+    for toml_file in edge_library.glob("*/game.toml"):
         with toml_file.open("rb") as f:
             data = tomllib.load(f)
 
