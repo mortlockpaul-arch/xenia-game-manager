@@ -27,6 +27,7 @@ from PySide6.QtGui import QGuiApplication, QIcon
 from download import TUDownloadWorker
 from config import save_config, load_config, load_xenia_manager_config, get_app_dir
 from edge_import import use_xenia_manager_content_folder_for_edge
+from extract import extract_archives
 from model import GameTableModel
 from db import Database
 from remove_empty_folders import remove_empty_folders
@@ -53,6 +54,15 @@ class ClickOverlay(QWidget):
 
 
 class GameLauncher(QMainWindow):
+
+    def extract_downloaded_archives(self):
+        base_dir = Path(__file__).resolve().parent  # Adjust if needed
+
+        extract_archives(
+            folder=Path.home() / "Downloads",
+            seven_zip_path=base_dir / "assets" / "zip" / "7z.exe",
+            log_callback=self.log,
+        )
 
     def check_for_updates(self):
         updater = Updater()
@@ -313,14 +323,14 @@ class GameLauncher(QMainWindow):
         self.import_edge_btn = QPushButton("Import Xenia Edge Game List")
         self.import_edge_btn.clicked.connect(partial(self.import_games, "xenia_edge"))
         tools_layout.addWidget(self.import_edge_btn)
+        #
+        # self.export_btn = QPushButton("Update Xenia Manager Game List")
+        # self.export_btn.clicked.connect(self.export_titles)
+        # tools_layout.addWidget(self.export_btn)
 
-        self.export_btn = QPushButton("Update Xenia Manager Game List")
-        self.export_btn.clicked.connect(self.export_titles)
-        tools_layout.addWidget(self.export_btn)
-
-        self.refresh_btn = QPushButton("Refresh")
-        self.refresh_btn.clicked.connect(self.refresh)
-        tools_layout.addWidget(self.refresh_btn)
+        # self.refresh_btn = QPushButton("Refresh")
+        # self.refresh_btn.clicked.connect(self.refresh)
+        # tools_layout.addWidget(self.refresh_btn)
 
 
         self.xenia_edge_optimise_btn = QPushButton("Create Xenia Edge Optimised Settings")
@@ -331,6 +341,8 @@ class GameLauncher(QMainWindow):
         self.check_update_btn.clicked.connect(self.check_for_updates)
         self.remove_clean_btn = QPushButton("Remove Empty Folders")
         self.remove_clean_btn.clicked.connect(self.remove_clean_folders)
+        self.remove_clean_btn = QPushButton("Extract Downloaded Archives")
+        self.remove_clean_btn.clicked.connect(self.extract_downloaded_archives)
 
         self.use_xenia_manager_content_for_edge_btn = QPushButton("Use Xenia Manager Unified Content folder for Xenia Edge")
         self.use_xenia_manager_content_for_edge_btn.clicked.connect(self.use_xenia_manager_content_for_edge)
@@ -348,8 +360,6 @@ class GameLauncher(QMainWindow):
             self.fix_titles_btn,
             self.import_btn,
             self.import_edge_btn,
-            self.export_btn,
-            self.refresh_btn,
             self.xenia_edge_optimise_btn,
             self.check_update_btn,
             self.use_xenia_manager_content_for_edge_btn,
@@ -365,7 +375,7 @@ class GameLauncher(QMainWindow):
 
     def use_xenia_manager_content_for_edge(self):
         try:
-            use_xenia_manager_content_folder_for_edge()
+            use_xenia_manager_content_folder_for_edge(log_callback=self.log)
             QMessageBox.information(
                 self,
                 "Success",
@@ -688,6 +698,9 @@ class GameLauncher(QMainWindow):
         self.search.textChanged.connect(self.search_changed)
         toolbar.addWidget(self.search)
 
+        self.refresh_btn = QPushButton("Refresh")
+        self.refresh_btn.clicked.connect(self.refresh)
+
         self.launch_canary = QPushButton("Launch with Canary")
         self.launch_canary.clicked.connect(partial(self.launch_game, "canary"))
         self.launch_edge = QPushButton("Launch with Edge")
@@ -695,6 +708,7 @@ class GameLauncher(QMainWindow):
         self.btn_tu = QPushButton("Search and Download TUs")
         self.btn_tu.clicked.connect(self.search_and_download_tus)
 
+        toolbar.addWidget(self.refresh_btn)
         toolbar.addWidget(self.launch_canary)
         toolbar.addWidget(self.launch_edge)
         toolbar.addWidget(self.btn_tu)

@@ -54,7 +54,7 @@ class Updater:
 
             if self.latest_version != edge_version:
                 assets = data.get("assets", [])
-                asset_url = assets[0]["browser_download_url"] if assets else None
+                asset_url = assets[2]["browser_download_url"] if assets else None
                 return self.latest_version, asset_url
 
         except requests.RequestException:
@@ -76,14 +76,12 @@ class Updater:
 
 if __name__ == "__main__":
     updater = Updater()
-    CURRENT_VERSION = "0.7.3"
     EDGE_RELEASE = "https://github.com/has207/xenia-edge/releases"
 
     CONFIG = load_config()
-    EDGE_VERSION = updater.get_edge_version()
-    CONFIG["edge_version"] = EDGE_VERSION
-    CONFIG["current_version"] = CURRENT_VERSION
-    save_config(CONFIG)
+
+    EDGE_VERSION = CONFIG["edge_version"]
+    CURRENT_VERSION = CONFIG["current_version"]
     result = updater.check_for_edge_update(EDGE_VERSION)
     if result:
         LATEST_VERSION, ASSET_URL = result
@@ -94,5 +92,6 @@ if __name__ == "__main__":
     if result:
         LATEST_VERSION, ASSET_URL = result
         print(LATEST_VERSION, ASSET_URL)
+        EDGE_VERSION = updater.get_edge_version()
     else:
         print("No Xenia Game Manager update available")

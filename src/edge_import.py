@@ -8,7 +8,7 @@ import shutil
 from pathlib import Path
 
 
-def use_xenia_manager_content_folder_for_edge():
+def use_xenia_manager_content_folder_for_edge(log_callback=None):
     config = load_config()
     xenia_manager_path = Path(config["xenia_manager_path"])
     xenia_manager_config = load_xenia_manager_config(xenia_manager_path)
@@ -18,20 +18,35 @@ def use_xenia_manager_content_folder_for_edge():
             "XeniaManager Unified content is not enabled. ")
 
     manager_content = Path(config["xenia_manager_path"]) / "content"
-    edge_content = Path.home() / "Documents" / "Xenia" / "content"
-
     manager_content.mkdir(parents=True, exist_ok=True)
+    manager_target = manager_content.resolve()
 
-    if edge_content.exists() and not edge_content.is_symlink():
-        for item in edge_content.iterdir():
-            destination = manager_content / item.name
-            if not destination.exists():
-                shutil.move(str(item), str(destination))
+    content_paths = {
+        "edge_content": Path.home() / "Documents" / "Xenia" / "content",
+        "canary_content": Path(config["xenia_canary_path"]) / "content",
+        "netplay_content": Path(config["xenia_netplay_path"]) / "content",
+        "mouse_hook_content": Path(config["xenia_mousehook_path"]) / "content",
+    }
 
-        edge_content.rmdir()
-
-    if not edge_content.exists():
-        edge_content.symlink_to(manager_content, target_is_directory=True)
+    for name, path in content_paths.items():
+        if path.is_symlink():
+            if path.resolve() != manager_target:
+                (log_callback or print)(f"{name}: Incorrect symlink ({path.readlink()})")
+                path.unlink()
+                path.symlink_to(manager_content, target_is_directory=True)
+                (log_callback or print)(f"{name}: Fixed -> {manager_content}")
+        if path.is_symlink():
+            (log_callback or print)(f"{name} points to: {path.readlink()}")
+            (log_callback or print)(f"{name} resolved to: {path.resolve()}")
+            continue
+        if path.exists() and not path.is_symlink():
+            (log_callback or print)(f"Moving content and creating symlink for {name}")
+            for item in path.iterdir():
+                destination = manager_content / item.name
+                if not destination.exists():
+                    shutil.move(str(item), str(destination))
+            path.unlink()
+            path.symlink_to(manager_content, target_is_directory=True)
 
 from pathlib import Path
 import tomllib
@@ -56,11 +71,7 @@ def import_edge_games(log_callback=None, library = Path(r"C:\Users\mortl\Documen
             }
 
             games.append(game)
-
-            if log_callback:
-                log_callback(game["name"])
-            else:
-                print(game["name"])
+            (log_callback or print)(game["name"])
 
     return games
 

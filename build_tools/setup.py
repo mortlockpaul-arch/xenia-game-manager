@@ -26,6 +26,7 @@ build_exe_options = {
         (str(ROOT / "src" / "config"), "config"),
         (str(ROOT / "assets" / "icons"), "assets/icons"),
         (str(ROOT / "src" / "assets" / "settings"), "assets/settings"),
+        (str(ROOT / "src" / "assets" / "zip"), "assets/zip"),
     ],
     "optimize": 2,
 }
