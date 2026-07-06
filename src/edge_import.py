@@ -21,8 +21,14 @@ def use_xenia_manager_content_folder_for_edge(log_callback=None):
     manager_content.mkdir(parents=True, exist_ok=True)
     manager_target = manager_content.resolve()
 
+    edge_path = Path(config["xenia_edge_path"])
+    edge_content = Path.home() / "Documents" / "Xenia" / "content"
+
+    if (edge_path / "portable.txt").exists():
+        edge_content = edge_path / "content"
+
     content_paths = {
-        "edge_content": Path.home() / "Documents" / "Xenia" / "content",
+        "edge_content": edge_content,
         "canary_content": Path(config["xenia_canary_path"]) / "content",
         "netplay_content": Path(config["xenia_netplay_path"]) / "content",
         "mouse_hook_content": Path(config["xenia_mousehook_path"]) / "content",
@@ -46,6 +52,11 @@ def use_xenia_manager_content_folder_for_edge(log_callback=None):
                 if not destination.exists():
                     shutil.move(str(item), str(destination))
             path.unlink()
+            path.symlink_to(manager_content, target_is_directory=True)
+        if not path.exists():
+            (log_callback or print)(f"{name}: Missing folder, creating symlink -> {manager_content}")
+
+            path.parent.mkdir(parents=True, exist_ok=True)
             path.symlink_to(manager_content, target_is_directory=True)
 
 from pathlib import Path
