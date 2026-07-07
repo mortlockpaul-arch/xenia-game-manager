@@ -2,7 +2,9 @@
 
 import sqlite3
 import json
+from datetime import datetime, timedelta
 from pathlib import Path
+from typing import Any
 
 import requests
 from PySide6.QtWidgets import QMessageBox
@@ -17,8 +19,21 @@ DB_PATH = "db/games.db"
 
 class Compatibility:
 
-    def __init__(self, db):
+    def __init__(self, db, log_call_back=None):
         self.compatibility = None
+        self.compatibility_file = Path(__file__).parent / "config" / "compatibility.json"
+        if self.compatibility_file.exists():
+            modified = datetime.fromtimestamp(self.compatibility_file.stat().st_mtime)
+
+            if datetime.now() - modified >= timedelta(days=1):
+                (log_call_back or print)(f"File {self.compatibility_file} is 1 day old or older. Downloading compatibility data.")
+                self.download_compatibility()
+            else:
+                (log_call_back or print)(f"File {self.compatibility_file} is not 1 day old or older. Not downloading compatibility data.")
+        else:
+            (log_call_back or print)(f"File {self.compatibility_file} does not exist. Downloading compatibility data.")
+            self.download_compatibility()
+
         self.db = db
 
     def download_compatibility(self):
@@ -50,12 +65,12 @@ class Compatibility:
 
         self.compatibility = response.json()
 
-        with open("compatibility.json", "wb") as f:
+        with open(self.compatibility_file, "wb") as f:
             f.write(response.content)
 
     def update_compatibility(self):
         if self.compatibility is None:
-            with open("compatibility.json", "r", encoding="utf-8") as f:
+            with open(self.compatibility_file, "r", encoding="utf-8") as f:
                 self.compatibility = json.load(f)
 
         compat_by_title: dict[str, dict[str, Any]] = {
@@ -96,6 +111,7 @@ class Database:
         self.conn = sqlite3.connect(DB_PATH)
         self.conn.row_factory = sqlite3.Row
         self.cursor = self.conn.cursor()
+
 
     def import_multidisc_json(self, json_path, log_callback=None):
         """Import preservation metadata JSON."""
@@ -489,8 +505,8 @@ class Database:
 
 
 if __name__ == "__main__":
-    db = Database()
-    db.init_db()
+    # db = Database()
+    # db.init_db()
 
     # Example:
     #

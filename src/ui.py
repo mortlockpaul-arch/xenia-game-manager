@@ -30,7 +30,7 @@ from config import save_config, load_config, load_xenia_manager_config, get_app_
 from edge_import import use_xenia_manager_content_folder_for_edge
 from extract import extract_archives
 from model import GameTableModel
-from db import Database
+from db import Database, Compatibility
 from remove_empty_folders import remove_empty_folders
 from updater import Updater, download_file
 from utils import smart_title_case, xenia_edge_optimise_settings
@@ -117,7 +117,7 @@ class GameLauncher(QMainWindow):
         self.model = GameTableModel()
         self.resize(1800, 900)
         self.build_ui()
-
+        self.compatibility = Compatibility(self.db, self.log)
 
         self.widgets = {
             "manager": WidgetInfo(
