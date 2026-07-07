@@ -1,23 +1,27 @@
 from pathlib import Path
 import subprocess
 
+from config import get_app_dir
 
-def extract_archives(folder, seven_zip_path="7z.exe", log_callback=None):
+
+def extract_archives(folder, log_callback=None, subfolder=False):
     """
     Extract .zip, .7z, .rar archives into subfolders named after the archive.
     Deletes archive only if extraction succeeds.
     """
     folder = Path(folder)
     count = 0
-
+    root = get_app_dir()
+    seven_zip_path = Path(get_app_dir()) / "assets" / "zip" / "7z.exe"
     for archive in folder.iterdir():
         if archive.suffix.lower() not in {".zip", ".7z", ".rar"}:
             continue
 
-        output_dir = folder / archive.stem
+        if subfolder: output_dir = folder / archive.stem
+        else: output_dir = folder
 
         if output_dir.exists():
-            msg = f"Warning {archive.name} (folder already exists)"
+            msg = f"Warning {output_dir.name} (folder already exists)"
             (log_callback or print)(msg)
 
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -49,4 +53,4 @@ def extract_archives(folder, seven_zip_path="7z.exe", log_callback=None):
     return count
 
 if __name__ == "__main__":
-    extract_archives(folder=r"C:\Users\mortl\Downloads", seven_zip_path=r"C:\Users\mortl\Documents\PycharmProjects\PythonProject\src\assets\zip\7z.exe", log_callback=print)
+    extract_archives(folder=r"C:\Users\mortl\Downloads", log_callback=print)
