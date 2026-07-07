@@ -748,7 +748,7 @@ class GameLauncher(QMainWindow):
             self.log("Error: No games loaded")
             return
         config = load_config()
-        folder = config["title_updates_path"]
+        folder = config["xenia_title_updates_path"]
         if not folder:
             self.log("Error: No Folder Selected")
             return
