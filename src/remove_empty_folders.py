@@ -88,6 +88,13 @@ if __name__ == "__main__":
     )
     print(f"Moved {count} folders")
 
+    count = move_title_update_folders(
+        r"D:",
+        r"D:\TitleUpdates",
+        "*.tu"
+    )
+    print(f"Moved {count} folders")
+
     count = remove_empty_folders(r"D:\roms\Xbox360")
     print(f"Removed {count} folders")
     count = remove_empty_folders(r"C:\Users\mortl\Downloads")
