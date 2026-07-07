@@ -647,17 +647,17 @@ class GameLauncher(QMainWindow):
 
         self.refresh_btn = QPushButton("Refresh")
         self.refresh_btn.clicked.connect(self.refresh)
-
-        self.launch_canary = QPushButton("Launch with Canary")
-        self.launch_canary.clicked.connect(partial(self.launch_game, "canary"))
-        self.launch_edge = QPushButton("Launch with Edge")
-        self.launch_edge.clicked.connect(partial(self.launch_game, "edge"))
+        #
+        # self.launch_canary = QPushButton("Launch with Canary")
+        # self.launch_canary.clicked.connect(partial(self.launch_game, "canary"))
+        # self.launch_edge = QPushButton("Launch with Edge")
+        # self.launch_edge.clicked.connect(partial(self.launch_game, "edge"))
         self.btn_tu = QPushButton("Search and Download TUs")
         self.btn_tu.clicked.connect(self.search_and_download_tus)
 
         toolbar.addWidget(self.refresh_btn)
-        toolbar.addWidget(self.launch_canary)
-        toolbar.addWidget(self.launch_edge)
+        # toolbar.addWidget(self.launch_canary)
+        # toolbar.addWidget(self.launch_edge)
         toolbar.addWidget(self.btn_tu)
 
         # ================= PROGRESS =================
@@ -1001,8 +1001,7 @@ class GameLauncher(QMainWindow):
         index = self.table.selectionModel().currentIndex()
         return index.row() if index.isValid() else None
 
-    def launch_game(self, xenia_version=None):
-
+    def launch_game(self):
         xenia_exe_configuration_location = ""
         xenia_exe_path = ""
         row = self.get_selected_row()
@@ -1012,7 +1011,7 @@ class GameLauncher(QMainWindow):
         game_path = self.model.get_game_path(row)
         game_id = self.model.get_game_id(row)
         db_game_config_source = self.model.get_config_path(row)
-        if xenia_version is None: xenia_version = self.model.get_xenia_version(row)
+        xenia_version = self.model.get_xenia_version(row)
         print(game, xenia_version)
         from pathlib import Path
         config = load_config()
