@@ -1,6 +1,7 @@
 # ui.py
 import os
 import shutil
+import subprocess
 from dataclasses import dataclass
 from functools import partial
 
@@ -115,7 +116,7 @@ class GameLauncher(QMainWindow):
         self.db = Database()
         self.db.init_db()
         self.model = GameTableModel()
-        self.resize(1800, 900)
+        self.setFixedSize(1770, 900)
         self.build_ui()
         self.compatibility = Compatibility(self.db, self.log)
 
@@ -612,6 +613,24 @@ class GameLauncher(QMainWindow):
                 self.height()
             )
 
+    import subprocess
+    from pathlib import Path
+
+    def launch_program(self, program):
+        config = load_config()
+
+        programs = {
+            "manager": Path(config["xenia_manager_path"]) / "XeniaManager.exe",
+            "edge": Path(config["xenia_edge_path"]) / "xenia_edge.exe",
+        }
+
+        exe = programs.get(program)
+        if not exe or not exe.exists():
+            return
+
+        subprocess.Popen([str(exe)])
+
+
     def build_ui(self):
         central = QWidget()
         self.setCentralWidget(central)
@@ -639,16 +658,16 @@ class GameLauncher(QMainWindow):
         self.refresh_btn = QPushButton("Refresh")
         self.refresh_btn.clicked.connect(self.refresh)
         #
-        # self.launch_canary = QPushButton("Launch with Canary")
-        # self.launch_canary.clicked.connect(partial(self.launch_game, "canary"))
-        # self.launch_edge = QPushButton("Launch with Edge")
-        # self.launch_edge.clicked.connect(partial(self.launch_game, "edge"))
+        self.launch_manager = QPushButton("Launch Xenia Manager")
+        self.launch_manager.clicked.connect(partial(self.launch_program, "manager"))
+        self.launch_edge = QPushButton("Launch Edge")
+        self.launch_edge.clicked.connect(partial(self.launch_program, "edge"))
         self.btn_tu = QPushButton("Search and Download TUs")
         self.btn_tu.clicked.connect(self.search_and_download_tus)
 
         toolbar.addWidget(self.refresh_btn)
-        # toolbar.addWidget(self.launch_canary)
-        # toolbar.addWidget(self.launch_edge)
+        toolbar.addWidget(self.launch_manager)
+        toolbar.addWidget(self.launch_edge)
         toolbar.addWidget(self.btn_tu)
 
         # ================= PROGRESS =================
@@ -688,7 +707,7 @@ class GameLauncher(QMainWindow):
 
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)
         header.setSectionResizeMode(1, QHeaderView.ResizeMode.Fixed)
-        header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(2, QHeaderView.ResizeMode.Fixed)
         header.setSectionResizeMode(3, QHeaderView.ResizeMode.Fixed)
         header.setSectionResizeMode(4, QHeaderView.ResizeMode.Fixed)
         header.setSectionResizeMode(5, QHeaderView.ResizeMode.Fixed)
@@ -699,6 +718,7 @@ class GameLauncher(QMainWindow):
 
         self.table.setColumnWidth(0, 28)  # ★
         self.table.setColumnWidth(1, 28)  # Number
+        self.table.setColumnWidth(2, 575)  # Number
         self.table.setColumnWidth(3, 70)  # ★
         self.table.setColumnWidth(4, 70)  # Number
         self.table.setColumnWidth(7, 135)  # Number
@@ -956,7 +976,9 @@ class GameLauncher(QMainWindow):
     # -------------------------
 
     def refresh(self):
-
+        # width = self.table.columnWidth(2)
+        self.console.clear()
+        # print(width)
         self.model.load()
 
     # -------------------------
@@ -977,6 +999,7 @@ class GameLauncher(QMainWindow):
         try:
             # Import games
             self.db.import_games_from_edge_or_xenia_manager(xenia_version, self.model.games, log_callback=self.log)
+            self.refresh()
         except Exception as e:
             QMessageBox.critical(
                 self,
