@@ -27,7 +27,7 @@ class Compatibility:
             "User-Agent": "XeniaGameManager"
         }
         config = load_config()
-        api = config["github_api"]
+        api = config["xenia_game_compatibility_url"]
         release = requests.get(api, headers=headers, timeout=30)
         release.raise_for_status()
 

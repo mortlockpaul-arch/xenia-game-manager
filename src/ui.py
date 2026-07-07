@@ -32,7 +32,7 @@ from extract import extract_archives
 from model import GameTableModel
 from db import Database
 from remove_empty_folders import remove_empty_folders
-from updater import Updater
+from updater import Updater, download_file
 from utils import smart_title_case, xenia_edge_optimise_settings
 from xboxunity_api import login_xboxunity, test_connectivity
 
@@ -70,20 +70,11 @@ class GameLauncher(QMainWindow):
     def extract_downloaded_archives(self):
         base_dir = Path(__file__).resolve().parent  # Adjust if needed
 
-        extract_archives(
-            folder=Path.home() / "Downloads",
-            seven_zip_path=base_dir / "assets" / "zip" / "7z.exe",
-            log_callback=self.log,
-        )
+        extract_archives(folder=Path.home() / "Downloads", log_callback=self.log)
 
     def check_for_updates(self):
         updater = Updater()
-        result = updater.check_for_update()
-        if result:
-            self.log("Update Available...")
-            self.log(result)
-        else:
-            self.log("No update available")
+        updater.check_for_updates(log_call_back=self.log)
 
     def __init__(self):
         super().__init__()
