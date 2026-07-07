@@ -4,19 +4,22 @@ from pathlib import Path
 
 import sys
 
-def get_app_dir():
+
+def get_app_dir() -> Path:
     if getattr(sys, "frozen", False):
-        return os.path.dirname(sys.executable)  # ✔ correct for frozen apps
-    return os.path.dirname(os.path.abspath(__file__))
+        return Path(sys.executable).parent  # Frozen executable directory
+    return Path(__file__).resolve().parent  # Script directory
+
 
 def load_xenia_manager_config(xenia_manager_path):
-    xenia_manager_config_path = Path.joinpath(xenia_manager_path,"config")
-    xenia_manager_config = os.path.join(xenia_manager_config_path,"config.json")
+    xenia_manager_config_path = Path.joinpath(xenia_manager_path, "config")
+    xenia_manager_config = os.path.join(xenia_manager_config_path, "config.json")
     try:
         with open(xenia_manager_config, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
-        raise("Config load error:", e)
+        raise ("Config load error:", e)
+
 
 def load_config():
     datadir = get_app_dir()
@@ -26,7 +29,8 @@ def load_config():
         with open(config_file, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
-        raise("Config load error:", e)
+        raise ("Config load error:", e)
+
 
 def save_config(data: dict):
     datadir = get_app_dir()
@@ -36,4 +40,4 @@ def save_config(data: dict):
         with open(config_file, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4)
     except Exception as e:
-        raise("Config save error:", e)
+        raise ("Config save error:", e)
