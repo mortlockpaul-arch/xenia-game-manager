@@ -50,6 +50,7 @@ def extract_archives(folder, log_callback=None, subfolder=False):
             msg = f"Error: {archive.name} ({e})"
             (log_callback or print)(msg)
 
+    if count == 0: (log_callback or print)(f"No archives found in {folder}")
     return count
 
 if __name__ == "__main__":
