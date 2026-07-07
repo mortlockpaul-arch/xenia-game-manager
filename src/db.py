@@ -345,6 +345,8 @@ class Database:
         config = load_config()
         xenia_manager_installed = config["xenia_manager_installed"]
         xenia_edge_installed = config["xenia_edge_installed"]
+        multidisc_info = get_app_dir() / "config" / "multidisc.json"
+
         if xenia_version == "xenia_manager":
             if not  xenia_manager_installed:
                 raise Exception("Xenia Manager Not Installed")
@@ -409,7 +411,6 @@ class Database:
                         disc_number,
                         xenia_version
                     ))
-                multidisc_info = Path(get_app_dir()) / config / "multidisc.json"
                 self.import_multidisc_json(
                     multidisc_info, log_callback=log_callback
                 )
@@ -468,7 +469,6 @@ class Database:
                         config_path,
                         detect_disc_number(file_path),
                     ))
-            multidisc_info = Path(get_app_dir()) / config / "multidisc.json"
             self.import_multidisc_json(
                     multidisc_info, log_callback=log_callback
                 )
