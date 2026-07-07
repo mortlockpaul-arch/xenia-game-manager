@@ -11,7 +11,7 @@ from PySide6.QtWidgets import QMessageBox
 from cx_Freeze import exception
 
 import edge_import
-from config import load_config, load_xenia_manager_config
+from config import load_config, load_xenia_manager_config, get_app_dir
 from utils import detect_disc_number
 
 DB_PATH = "db/games.db"
@@ -208,11 +208,11 @@ class Database:
         return self.conn
 
 
-    def clear_db(self):
+    def clear_db(self, delete_favourites=False):
         with self.conn as con:
             con.execute("DELETE FROM discs")
             con.execute("DELETE FROM games")
-            con.execute("DELETE FROM favourites")
+            if delete_favourites: con.execute("DELETE FROM favourites")
             con.execute(
                 "DELETE FROM sqlite_sequence WHERE name='discs'"
             )
@@ -409,10 +409,11 @@ class Database:
                         disc_number,
                         xenia_version
                     ))
+                multidisc_info = Path(get_app_dir()) / config / "multidisc.json"
                 self.import_multidisc_json(
-                    r"config/multidisc.json", log_callback=log_callback
+                    multidisc_info, log_callback=log_callback
                 )
-                message = f"Imported {len(xenia_manager_games)} games"
+                message = f"Imported {len(xenia_manager_games)} Games from Xenia Manager"
                 log_callback(message)
                 compatibility = Compatibility(self)
                 compatibility.update_compatibility()
@@ -437,10 +438,14 @@ class Database:
                 for game in xenia_edge_games:
                     game_id = game.get("title_id")
                     title = game.get("name")
-                    settings = Path(r"C:\Users\mortl\Documents\Xenia\config")
+                    edge_path = Path(config["xenia_edge_path"])
+                    edge_configs = Path.home() / "Documents" / "Xenia" / "config"
+
+                    if (edge_path / "portable.txt").exists():
+                        edge_configs = edge_path / "content"
 
                     file_path = game.get("path")  # or paths[0]
-                    config_path = str(settings / f"{game_id}.config.toml")
+                    config_path = str(edge_configs / f"{game_id}.config.toml")
                     print(game_id)
                     print(title)
                     print(file_path)
@@ -463,10 +468,11 @@ class Database:
                         config_path,
                         detect_disc_number(file_path),
                     ))
+            multidisc_info = Path(get_app_dir()) / config / "multidisc.json"
             self.import_multidisc_json(
-                    r"config/multidisc.json", log_callback=log_callback
+                    multidisc_info, log_callback=log_callback
                 )
-            message = f"Imported {len(xenia_edge_games)} games"
+            message = f"Imported {len(xenia_edge_games)} Games from Xenia Edge"
             log_callback(message)
             compatibility = Compatibility(self)
             compatibility.update_compatibility()
