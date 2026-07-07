@@ -13,9 +13,8 @@
     "xenia_mousehook_path": "D:/RetroBat/emulators/xenia-manager/Emulators/Xenia Mousehook",
     "xenia_mousehook_installed": true,
     "xenia_title_updates_path": "H:/Title Updates",
-
     "edge_version": "2432190",
-    "current_portable_version": "0.7.3",
+    "current_portable_version": "0.7.9",
     "xenia_portable_path": "C:/xenia-game-manager/",
     "xenia_edge_url": "https://api.github.com/repos/has207/xenia-edge/releases/latest",
     "xenia_game_compatibility_url": "https://api.github.com/repos/xenia-canary/game-compatibility/releases/latest",
