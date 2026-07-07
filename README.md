@@ -25,8 +25,8 @@ Personal use project.
 
 This software integrates with:
 
-- Xenia Canary
-- Xenia Manager
+- Xenia Manager / Netplay / Mousehook and Canary
+- Xenia Edge
 
 All trademarks, copyrights, and intellectual property remain the property of their respective owners.
 
