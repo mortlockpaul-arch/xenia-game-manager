@@ -1,0 +1,8 @@
+# Title Name: Red Dead Redemption
+# Title ID: 5454082B
+
+[GPU]
+framerate_limit = 120 # Caps the FPS to 60.
+
+[Memory]
+protect_zero = false # Stops the freezing on netplay builds.

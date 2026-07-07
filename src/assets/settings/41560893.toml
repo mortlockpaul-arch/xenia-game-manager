@@ -1,0 +1,6 @@
+# Title Name: NASCAR 2011
+# Title ID: 41560893
+
+[GPU]
+clear_memory_page_state = true # Fixes warped graphics in game
+readback_resolve = "full" # Renders the car livery

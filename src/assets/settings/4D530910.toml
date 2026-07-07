@@ -1,0 +1,6 @@
+# Title Name: Forza Motorsport 4
+# Title ID: 4D530910
+
+[GPU]
+readback_resolve = "full" # Fixes road texture and thumbnails of cars
+vsync = false # Unlocks framerate (Combined with framerate limit set to 0)
