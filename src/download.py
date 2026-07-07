@@ -31,7 +31,7 @@ class TUDownloadWorker(QThread):
             "errors": 0
         }
 
-        self.log.emit("Starting TU download process...\n")
+        self.log.emit("Starting Title Update Download process...\n")
 
         for game_index, game in enumerate(self.games, 1):
             game_name = game.get("title")
