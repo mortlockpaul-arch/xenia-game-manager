@@ -13,6 +13,7 @@ The launcher imports your Xenia Manager `games.json`, stores game metadata in SQ
 - Identify Multi Disc games
 - Add Favourites
 - Download Title Updates from xboxunity.net for games in the list
+- Download DLC from archive.org for games in the list
 - Optimize Xenia Edge Games 
 - Title Cleanup
 - Extract Downloaded Archives
