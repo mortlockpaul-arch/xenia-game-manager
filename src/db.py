@@ -388,6 +388,7 @@ class Database:
                     play_time = (game.get("playtime"))
                     xenia_version = game.get("xenia_version")
                     disc_number = detect_disc_number(file_path)
+                    disc_type = "XBLA" if game_id.lower() in file_path.lower() else "DVD"
                     con.execute("""
                     INSERT INTO games
                     (
@@ -398,9 +399,10 @@ class Database:
                         config_path,
                         play_time,
                         disc_number,
-                        xenia_version
+                        xenia_version,
+                        disc_type
                     )
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """, (
                         game_id,
                         media_id,
@@ -409,7 +411,8 @@ class Database:
                         config_path,
                         play_time,
                         disc_number,
-                        xenia_version
+                        xenia_version,
+                        disc_type
                     ))
                 self.import_multidisc_json(
                     multidisc_info, log_callback=log_callback
@@ -447,6 +450,7 @@ class Database:
 
                     file_path = game.get("path")  # or paths[0]
                     config_path = str(edge_configs / f"{game_id}.config.toml")
+                    disc_type = "XBLA" if game_id.lower() in file_path.lower() else "DVD"
                     print(game_id)
                     print(title)
                     print(file_path)
@@ -459,15 +463,17 @@ class Database:
                         file_path,
                         config_path,
                         disc_number,
-                        xenia_version
+                        xenia_version,
+                        disc_type
                     )
-                    VALUES (?, ?, ?, ?, ?, "Edge")
+                    VALUES (?, ?, ?, ?, ?, "Edge", ?)
                     """, (
                         game_id,
                         title,
                         file_path,
                         config_path,
                         detect_disc_number(file_path),
+                        disc_type
                     ))
             self.import_multidisc_json(
                     multidisc_info, log_callback=log_callback

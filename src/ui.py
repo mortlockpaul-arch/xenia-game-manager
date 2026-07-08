@@ -26,6 +26,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtWidgets import QMenu
 from PySide6.QtGui import QGuiApplication, QIcon
 
+from archive_window import ArchiveBrowser
 from download import TUDownloadWorker
 from config import save_config, load_config, load_xenia_manager_config, get_app_dir
 from edge_import import use_xenia_manager_content_folder_for_edge
@@ -630,7 +631,15 @@ class GameLauncher(QMainWindow):
 
         subprocess.Popen([str(exe)])
 
+    def open_archive_browser(self):
 
+        dlg = ArchiveBrowser(self.db, self)
+
+        if dlg.exec():
+            files = dlg.selected_files()
+
+            for file in files:
+                print(file)
     def build_ui(self):
         central = QWidget()
         self.setCentralWidget(central)
@@ -664,10 +673,12 @@ class GameLauncher(QMainWindow):
         self.launch_edge.clicked.connect(partial(self.launch_program, "edge"))
         self.btn_tu = QPushButton("Search and Download TUs")
         self.btn_tu.clicked.connect(self.search_and_download_tus)
-
+        self.archive_button = QPushButton("DLC Downloader")
+        self.archive_button.clicked.connect(self.open_archive_browser)
         toolbar.addWidget(self.refresh_btn)
         toolbar.addWidget(self.launch_manager)
         toolbar.addWidget(self.launch_edge)
+        toolbar.addWidget(self.archive_button)
         toolbar.addWidget(self.btn_tu)
 
         # ================= PROGRESS =================
@@ -715,15 +726,17 @@ class GameLauncher(QMainWindow):
         header.setSectionResizeMode(7, QHeaderView.ResizeMode.Fixed)
         header.setSectionResizeMode(8, QHeaderView.ResizeMode.Fixed)
         header.setSectionResizeMode(9, QHeaderView.ResizeMode.Fixed)
+        header.setSectionResizeMode(11, QHeaderView.ResizeMode.Fixed)
 
-        self.table.setColumnWidth(0, 28)  # ★
-        self.table.setColumnWidth(1, 28)  # Number
+        self.table.setColumnWidth(0, 32)  # ★
+        self.table.setColumnWidth(1, 32)  # Number
         self.table.setColumnWidth(2, 575)  # Number
         self.table.setColumnWidth(3, 70)  # ★
         self.table.setColumnWidth(4, 70)  # Number
         self.table.setColumnWidth(7, 135)  # Number
         self.table.setColumnWidth(5, 70)  # Number
         self.table.setColumnWidth(8, 50)  # Number
+        self.table.setColumnWidth(11, 200)  # Number
         self.search.setClearButtonEnabled(True)
         self.table.verticalHeader().hide()
 

@@ -42,7 +42,6 @@ class GameTableModel(QAbstractTableModel):
         ("play_count", "Plays"),
         ("play_time", "Play Time"),
         ("disc_number", "Disc"),
-        ("disc_type", "Disc Type"),
         ("label", "Label"),
         ("xenia_version", "Xenia Version"),
         ("compatibility_rating", "Compatibility"),
