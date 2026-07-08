@@ -1,7 +1,8 @@
 # Xenia Game Launcher
 
-A lightweight PySide6 launcher for Xbox 360 games running through Xenia Canary and Xenia Manager.
-The launcher imports your Xenia Manager `games.json`, stores game metadata in SQLite, provides title cleanup tools, favourites, search, sorting, multi-disc support, play tracking and downloading title updates from xboxunity.net for games in the list.
+PySide6 Xenia Game Manager and Launcher for Xbox 360 games.
+
+The Manager imports your Game List from Xenia Manager or Xenia Edge , stores game metadata in SQLite, provides title cleanup, archive tools, favourites, search, sorting, multi-disc support, play tracking and downloading title updates from xboxunity.net for games in the list.
 
 ---
 
@@ -9,7 +10,7 @@ The launcher imports your Xenia Manager `games.json`, stores game metadata in SQ
 
 ## Library Management
 
-- Import games from Xenia Manager `games.json` or Xenia Edge Game List
+- Import games from Xenia Manager or Xenia Edge Game List
 - Identify Multi Disc games
 - Add Favourites
 - Download Title Updates from xboxunity.net for games in the list
@@ -17,7 +18,7 @@ The launcher imports your Xenia Manager `games.json`, stores game metadata in SQ
 - Optimize Xenia Edge Games 
 - Title Cleanup
 - Extract Downloaded Archives
-- Unify content folders for all Xenia Forks
+- Unify Content folders for Xenia Canary, Netplay and Mousehook.
 
 ---
 # License
