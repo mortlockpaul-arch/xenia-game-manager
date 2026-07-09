@@ -637,9 +637,16 @@ class GameLauncher(QMainWindow):
 
         if dlg.exec():
             files = dlg.selected_files()
-
+            downloads_dir = Path.cwd() / "downloads"
+            downloads_dir.mkdir(exist_ok=True)
+            done = 0
             for file in files:
                 print(file)
+                done += 1
+                destination = downloads_dir / file["filename"]
+                self.update_file_progress(done=done,total=len(files))
+                download_file(file.get("url"), destination)
+
     def build_ui(self):
         central = QWidget()
         self.setCentralWidget(central)
