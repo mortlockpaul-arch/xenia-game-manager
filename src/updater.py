@@ -11,18 +11,57 @@ from config import get_app_dir, load_config, save_config
 from extract import extract_archives
 
 
-def download_file(url, path):
+def download_file(url, path, progress_callback=None, print_debug:bool=False):
     path = Path(path)
 
     if path.is_dir():
         raise ValueError(f"{path} is a directory, expected a file path.")
 
     path.parent.mkdir(parents=True, exist_ok=True)
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/138.0.0.0 Safari/537.36"
+        ),
+        "Referer": "https://archive.org/",
+        "Accept": "*/*",
+    }
+    import json
+    import requests
 
-    r = requests.get(url, stream=True)
+    with open("assets/archive.txt", encoding="utf-8") as f:
+        data = json.load(f)
+
+    cookies = {
+        c["name"]: c["value"]
+        for c in data
+        if c["name"] in ("logged-in-user", "logged-in-sig")
+    }
+
+    r = requests.get(url, headers=headers, cookies=cookies, stream=True)
+    if print_debug:
+        print(r.status_code)
+        print(r.headers.get("Content-Type"))
+        print(r.headers.get("Content-Length"))
+        print(r.status_code)
+        print(r.url)
+        print(r.text[:1000])
+
+    r.raise_for_status()
+    total = int(r.headers.get("Content-Length", 0))
+    done = 0
+
     with open(path, "wb") as f:
-        for chunk in r.iter_content(8192):
+        for chunk in r.iter_content(chunk_size=8192):
+            if not chunk:
+                continue
+
             f.write(chunk)
+            done += len(chunk)
+
+            if progress_callback:
+                progress_callback(done=done, total=total)
 
 
 class Updater:

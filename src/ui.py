@@ -645,7 +645,8 @@ class GameLauncher(QMainWindow):
                 done += 1
                 destination = downloads_dir / file["filename"]
                 self.update_file_progress(done=done,total=len(files))
-                download_file(file.get("url"), destination)
+                download_file(file.get("url"), destination, self.update_file_progress)
+                extract_archives(downloads_dir, self.log)
 
     def build_ui(self):
         central = QWidget()
