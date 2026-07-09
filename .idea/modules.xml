@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/Documents/GitHub/optimized-settings/.idea/optimized-settings.iml" filepath="$USER_HOME$/Documents/GitHub/optimized-settings/.idea/optimized-settings.iml" />
+      <module fileurl="file://$USER_HOME$/PycharmProjects/RGSX/.idea/RGSX.iml" filepath="$USER_HOME$/PycharmProjects/RGSX/.idea/RGSX.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../GitHub/optimized-settings/.idea/optimized-settings.iml" filepath="$PROJECT_DIR$/../../GitHub/optimized-settings/.idea/optimized-settings.iml" />
       <module fileurl="file://$PROJECT_DIR$/../x360db/.idea/x360db.iml" filepath="$PROJECT_DIR$/../x360db/.idea/x360db.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/xenia-game-manager.iml" filepath="$PROJECT_DIR$/.idea/xenia-game-manager.iml" />
     </modules>
