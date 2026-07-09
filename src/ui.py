@@ -11,7 +11,7 @@ from datetime import datetime
 from pathlib import Path
 import time
 
-from PySide6.QtCore import Qt, QEasingCurve, QPropertyAnimation, QRect
+from PySide6.QtCore import Qt, QEasingCurve, QPropertyAnimation, QRect, QThread, Signal, QObject, Slot
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -65,14 +65,77 @@ class WidgetInfo:
     config_key_installed: str
     config_key_path: str
 
+class DownloadWorker(QThread):
+    file_progress = Signal(int, int)      # bytes done, bytes total
+    overall_progress = Signal(int, int, str)   # file number, total files, filename
+    log = Signal(str)
+    finished = Signal()
+
+    def __init__(self, files):
+        super().__init__()
+        self.files = files
+
+    def run(self):
+        downloads_dir = Path.cwd() / "downloads"
+        downloads_dir.mkdir(exist_ok=True)
+
+        for i, file in enumerate(self.files, 1):
+            destination = downloads_dir / file["filename"]
+
+            self.overall_progress.emit(i, len(self.files), file["filename"])
+
+            download_file(
+                file["url"],
+                destination,
+                lambda done, total: self.file_progress.emit(done, total),
+                True,
+                log_call_back=self.log.emit
+            )
+
+        extract_archives(downloads_dir, self.log.emit, remove_archives=False)
+
+        self.finished.emit()
+
+class ExtractWorker(QObject):
+    finished = Signal()
+    log = Signal(str)
+
+    def __init__(self, folders):
+        super().__init__()
+        self.folders = folders
+
+    @Slot()
+    def run(self):
+        try:
+            for folder in self.folders:
+                extract_archives(
+                    folder=folder,
+                    log_callback=self.log.emit,
+                    remove_archives=True,
+                )
+        finally:
+            self.finished.emit()
+
 class GameLauncher(QMainWindow):
 
-
-
     def extract_downloaded_archives(self):
-        base_dir = Path(__file__).resolve().parent  # Adjust if needed
+        base_dir = Path(__file__).resolve().parent
 
-        extract_archives(folder=Path.home() / "Downloads", log_callback=self.log)
+        self.extract_thread = QThread()
+        self.extract_worker = ExtractWorker(
+            [
+                Path.home() / "Downloads",
+                base_dir / "Downloads",
+            ]
+        )
+
+        self.extract_worker.log.connect(self.log)
+        self.extract_worker.moveToThread(self.extract_thread)
+        self.extract_thread.started.connect(self.extract_worker.run)
+        self.extract_worker.finished.connect(self.extract_thread.quit)
+        self.extract_worker.finished.connect(self.extract_worker.deleteLater)
+        self.extract_thread.finished.connect(self.extract_thread.deleteLater)
+        self.extract_thread.start()
 
     def check_for_updates(self):
         updater = Updater()
@@ -91,7 +154,6 @@ class GameLauncher(QMainWindow):
         self.process = None
         self.start_time = None
         self.token = None
-        self.progress = None
         self.login_btn = None
         self.entry_apikey = None
         self.entry_pass = None
@@ -637,16 +699,14 @@ class GameLauncher(QMainWindow):
 
         if dlg.exec():
             files = dlg.selected_files()
-            downloads_dir = Path.cwd() / "downloads"
-            downloads_dir.mkdir(exist_ok=True)
-            done = 0
-            for file in files:
-                print(file)
-                done += 1
-                destination = downloads_dir / file["filename"]
-                self.update_file_progress(done=done,total=len(files))
-                download_file(file.get("url"), destination, self.update_file_progress)
-                extract_archives(downloads_dir, self.log)
+
+            self.worker = DownloadWorker(files)
+            self.worker.overall_progress.connect(self.update_file_progress)
+            self.worker.file_progress.connect(self.update_download_progress)
+            self.worker.log.connect(self.log)
+            self.worker.finished.connect(lambda: self.log("Finished"))
+
+            self.worker.start()
 
     def build_ui(self):
         central = QWidget()
@@ -690,9 +750,30 @@ class GameLauncher(QMainWindow):
         toolbar.addWidget(self.btn_tu)
 
         # ================= PROGRESS =================
-        self.progress = QProgressBar()
-        toolbar.addWidget(self.progress)
+        progress_widget = QWidget()
 
+        self.overall_label = QLabel("Overall")
+        self.current_label = QLabel("Current File")
+
+        self.progress_overall = QProgressBar()
+        self.progress_current = QProgressBar()
+
+        overall_layout = QVBoxLayout()
+        overall_layout.setContentsMargins(0, 0, 0, 0)
+        overall_layout.addWidget(self.overall_label)
+        overall_layout.addWidget(self.progress_overall)
+
+        current_layout = QVBoxLayout()
+        current_layout.setContentsMargins(0, 0, 0, 0)
+        current_layout.addWidget(self.current_label)
+        current_layout.addWidget(self.progress_current)
+
+        layout = QHBoxLayout(progress_widget)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.addLayout(overall_layout)
+        layout.addLayout(current_layout)
+
+        toolbar.addWidget(progress_widget)
         # 🔥 IMPORTANT: attach toolbar to main layout
         main_layout.addLayout(toolbar)
 
@@ -797,10 +878,17 @@ class GameLauncher(QMainWindow):
 
         self.worker.start()
 
-    def update_file_progress(self, done, total):
+    def update_file_progress(self, done, total, filename):
         if total > 0:
-            self.progress.setMaximum(total)
-            self.progress.setValue(done)
+            self.progress_current.setMaximum(total)
+            self.progress_current.setValue(done)
+            self.current_label.setText(filename)
+
+    def update_download_progress(self, done, total):
+        if total > 0:
+            self.progress_overall.setMaximum(total)
+            self.progress_overall.setValue(done)
+            self.overall_label.setText(f"Overall ({done}/{total})")
 
     def update_game_progress(self, current, total):
         self.log(f"Game progress: {current}/{total}")

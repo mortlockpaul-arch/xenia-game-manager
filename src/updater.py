@@ -11,7 +11,7 @@ from config import get_app_dir, load_config, save_config
 from extract import extract_archives
 
 
-def download_file(url, path, progress_callback=None, print_debug:bool=False):
+def download_file(url, path, progress_callback=None, print_debug:bool=False, log_call_back=None):
     path = Path(path)
 
     if path.is_dir():
@@ -40,6 +40,9 @@ def download_file(url, path, progress_callback=None, print_debug:bool=False):
     }
 
     r = requests.get(url, headers=headers, cookies=cookies, stream=True)
+    total = int(r.headers.get("Content-Length", 0))
+    (log_call_back or print)(f"Downloading: {path.name} ({human_size(total)})")
+
     if print_debug:
         print(r.status_code)
         print(r.headers.get("Content-Type"))
@@ -49,11 +52,17 @@ def download_file(url, path, progress_callback=None, print_debug:bool=False):
         print(r.text[:1000])
 
     r.raise_for_status()
-    total = int(r.headers.get("Content-Length", 0))
+
+    total = r.headers.get("Content-Length")
+    total = int(total) if total else None
+
     done = 0
 
+    if progress_callback:
+        progress_callback(done=done, total=total)
+
     with open(path, "wb") as f:
-        for chunk in r.iter_content(chunk_size=8192):
+        for chunk in r.iter_content(chunk_size=1024 * 1024):
             if not chunk:
                 continue
 
@@ -63,6 +72,13 @@ def download_file(url, path, progress_callback=None, print_debug:bool=False):
             if progress_callback:
                 progress_callback(done=done, total=total)
 
+def human_size(size):
+    size = int(size)
+    for unit in ("B", "KB", "MB", "GB", "TB"):
+        if size < 1024:
+            return f"{size:.1f} {unit}"
+        size /= 1024
+    return f"{size:.1f} PB"
 
 class Updater:
     def __init__(self):

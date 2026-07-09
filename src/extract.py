@@ -4,7 +4,7 @@ import subprocess
 from config import get_app_dir
 
 
-def extract_archives(folder, log_callback=None, subfolder=False):
+def extract_archives(folder, log_callback=None, subfolder=False, remove_archives=True):
     """
     Extract .zip, .7z, .rar archives into subfolders named after the archive.
     Deletes archive only if extraction succeeds.
@@ -20,10 +20,6 @@ def extract_archives(folder, log_callback=None, subfolder=False):
         if subfolder: output_dir = folder / archive.stem
         else: output_dir = folder
 
-        if output_dir.exists():
-            msg = f"Warning {output_dir.name} (folder already exists)"
-            (log_callback or print)(msg)
-
         output_dir.mkdir(parents=True, exist_ok=True)
 
         cmd = [
@@ -38,7 +34,7 @@ def extract_archives(folder, log_callback=None, subfolder=False):
             result = subprocess.run(cmd, capture_output=True, text=True)
 
             if result.returncode == 0:
-                archive.unlink()
+                if remove_archives: archive.unlink()
                 count += 1
                 msg = f"Extracted: {archive.name}"
                 (log_callback or print)(msg)
