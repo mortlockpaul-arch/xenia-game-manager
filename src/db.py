@@ -516,7 +516,7 @@ class Database:
                     raise Exception("Xenia Edge Not Installed")
             xenia_edge_path = config["xenia_edge_path"]
             xenia_edge_games = import_edge_games(log_callback=log_callback)
-
+            xenia_version = "Edge"
             if len(xenia_edge_games) == len(games):
                 message = f"Import Not Required {len(xenia_edge_games)} games"
                 if log_callback:

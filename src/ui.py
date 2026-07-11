@@ -1139,15 +1139,20 @@ class GameLauncher(QMainWindow):
         config = load_config()
         xenia_canary_installed = config["xenia_canary_installed"]
         xenia_edge_installed = config["xenia_edge_installed"]
+        xenia_netplay_installed = config["xenia_netplay_installed"]
+        xenia_mousehook_installed = config["xenia_mousehook_installed"]
         xenia_manager_installed = config["xenia_manager_installed"]
         xenia_edge_path = config["xenia_edge_path"]
         xenia_canary_path = config["xenia_canary_path"]
+        xenia_netplay_path = config["xenia_netplay_path"]
+        xenia_mousehook_path = config["xenia_mousehook_path"]
+        xenia_version = str(xenia_version).lower()
         if xenia_manager_installed:
             xenia_manager_path = Path(config["xenia_manager_path"])
             xenia_manager_config = load_xenia_manager_config(xenia_manager_path)
-            configuration_location = xenia_manager_config["emulators"]["canary"]["configuration_location"]
-            xenia_emulator_location = Path(xenia_manager_config["emulators"]["canary"]["emulator_location"])
-            xenia_exe_location = Path(xenia_manager_config["emulators"]["canary"]["executable_location"])
+            configuration_location = xenia_manager_config["emulators"][f"{xenia_version}"]["configuration_location"]
+            xenia_emulator_location = Path(xenia_manager_config["emulators"][f"{xenia_version}"]["emulator_location"])
+            xenia_exe_location = Path(xenia_manager_config["emulators"][f"{xenia_version}"]["executable_location"])
             xenia_exe_path = Path.joinpath(xenia_manager_path, xenia_exe_location)
             db_game_config_source = Path(xenia_manager_path) / db_game_config_source
             xenia_exe_configuration_location = Path.joinpath(xenia_manager_path, configuration_location)
@@ -1162,7 +1167,22 @@ class GameLauncher(QMainWindow):
             xenia_exe_path = Path(xenia_canary_path) / "xenia_canary.exe"
             xenia_exe_configuration_location = Path(xenia_canary_path) / "xenia-canary.config.toml"
             db_game_config_source = Path(xenia_canary_path).parent.parent / db_game_config_source
-
+        if xenia_version.lower() == "netplay":
+            if not xenia_netplay_installed:
+                raise Exception("Netplay not installed")
+            datadir = Path(get_app_dir())
+            mini_config_dir = datadir / "assets" / "settings"
+            xenia_exe_path = Path(xenia_netplay_path) / "xenia_canary_netplay.exe"
+            xenia_exe_configuration_location = Path(xenia_netplay_path) / "xenia-canary-netplay.config.toml"
+            db_game_config_source = Path(xenia_netplay_path).parent.parent / db_game_config_source
+        if xenia_version.lower() == "mousehook":
+            if not xenia_mousehook_installed:
+                raise Exception("Mousehook not installed")
+            datadir = Path(get_app_dir())
+            mini_config_dir = datadir / "assets" / "settings"
+            xenia_exe_path = Path(xenia_mousehook_path) / "xenia_canary_mousehook.exe"
+            xenia_exe_configuration_location = Path(xenia_mousehook_path) / "xenia-canary-mousehook.config.toml"
+            db_game_config_source = Path(xenia_mousehook_path).parent.parent / db_game_config_source
         if xenia_version.lower() == "edge":
             if not xenia_edge_installed:
                 raise Exception("Edge not installed")
@@ -1170,6 +1190,9 @@ class GameLauncher(QMainWindow):
             mini_config_dir = datadir / "assets" / "settings"
             xenia_exe_path = Path(xenia_edge_path) / "xenia_edge.exe"
             xenia_exe_configuration_location = Path.home() / "Documents" / "Xenia" / "config"
+            if (xenia_edge_path / "portable.text").exists():
+                xenia_exe_configuration_location = Path(xenia_edge_path / "config").parent
+
 
         if db_game_config_source and Path(db_game_config_source).exists():
             shutil.copy(db_game_config_source, xenia_exe_configuration_location)
@@ -1184,12 +1207,15 @@ class GameLauncher(QMainWindow):
 
         if game_path and not Path(game_path).exists():
             print("Game path missing:", game_path)
-
+        xenia_exe_path = Path(xenia_exe_path)
         try:
             import subprocess
             import time
             self.start_time = time.time()
-            self.process = subprocess.Popen([xenia_exe_path, game_path])
+            self.process = subprocess.Popen(
+                [xenia_exe_path, game_path],
+                cwd=os.path.dirname(xenia_exe_path)
+            )
 
             threading.Thread(
                 target=self.monitor_game,

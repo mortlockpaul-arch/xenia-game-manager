@@ -10,7 +10,7 @@ from xboxunity_api import (
 
 class TUDownloadWorker(QThread):
     log = Signal(str)
-    progress = Signal(int, int)          # current, total
+    progress = Signal(int, int, str)          # current, total
     game_progress = Signal(int, int)     # game index, total games
     finished = Signal(dict)
 
@@ -97,9 +97,9 @@ class TUDownloadWorker(QThread):
         self.log.emit("TU download completed.")
         self.finished.emit(stats)
 
-    def _progress_callback(self, completed, total):
+    def _progress_callback(self, completed, total, filename):
         if total > 0:
-            self.progress.emit(completed, total)
+            self.progress.emit(completed, total, filename)
 
     def _safe_name(self, name):
         import re

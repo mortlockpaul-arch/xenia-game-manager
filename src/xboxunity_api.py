@@ -316,7 +316,7 @@ def download_tu(url, destination, progress_callback=None):
                 downloaded += len(chunk)
 
                 if progress_callback and total_size > 0:
-                    progress_callback(downloaded, total_size)
+                    progress_callback(downloaded, total_size,original_filename)
 
         print(f"[INFO] Download completed: {destination}")
 
