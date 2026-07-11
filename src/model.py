@@ -32,7 +32,6 @@ class GameTableModel(QAbstractTableModel):
 
     COLUMNS = [
         ("favourite", "Fav"),
-        ("game_no", "No."),
         ("title", "Title"),
         ("game_id", "Title ID"),
         ("media_id", "Media ID"),
@@ -42,7 +41,6 @@ class GameTableModel(QAbstractTableModel):
         ("play_count", "Plays"),
         ("play_time", "Play Time"),
         ("disc_number", "Disc"),
-        ("label", "Label"),
         ("xenia_version", "Xenia Version"),
         ("compatibility_rating", "Compatibility"),
     ]
@@ -240,7 +238,6 @@ class GameTableModel(QAbstractTableModel):
             8: "play_count",
             9: "play_time",
             10: "disc_number",
-            11: "label",
             12: "xenia_version",
             13: "compatibility_rating",
         }

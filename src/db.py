@@ -12,7 +12,7 @@ from cx_Freeze import exception
 
 import edge_import
 from config import load_config, load_xenia_manager_config, get_app_dir
-from utils import detect_disc_number
+from utils import detect_disc_number, strip_disc_suffix
 
 DB_PATH = "db/games.db"
 
@@ -138,28 +138,34 @@ class Database:
 
                 imported += 1
 
+                con.execute("""
+                    UPDATE games
+                    SET title = ?
+                    WHERE game_id = ?
+                """, (
+                    game["title"],
+                    game_id,
+                ))
+
                 for index, label in enumerate(game["disc_layout"], start=1):
                     con.execute("""
                         INSERT INTO discs (
                             game_id,
-                            disc_index,
                             disc_count,
                             disc_type,
                             disc_swap_required,
                             disc_number,
                             label
                         )
-                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                        VALUES (?, ?, ?, ?, ?, ?)
                         ON CONFLICT(game_id, disc_number)
                         DO UPDATE SET
-                            disc_index = excluded.disc_index,
                             disc_count = excluded.disc_count,
                             disc_type = excluded.disc_type,
                             disc_swap_required = excluded.disc_swap_required,
                             label = excluded.label
                     """, (
                         game_id,
-                        index,
                         game["disc_count"],
                         game["disc_type"],
                         int(game["xenia_disc_swap_required"]),
@@ -179,12 +185,12 @@ class Database:
                 dict(row)
                 for row in con.execute("""
                     SELECT
-                        disc_index,
+                        disc_number,
                         label,
                         file_path
                     FROM discs
                     WHERE title_id = ?
-                    ORDER BY disc_index
+                    ORDER BY disc_number
                 """, (title_id,))
             ]
     def get_multidisc_games(self):
@@ -236,12 +242,11 @@ class Database:
         with self.conn as con:
             con.execute("""
             CREATE TABLE IF NOT EXISTS games (
-                game_no INTEGER PRIMARY KEY AUTOINCREMENT,
-                game_id TEXT NOT NULL UNIQUE,
+                game_id TEXT NOT NULL PRIMARY KEY,
                 title TEXT NOT NULL,
-                file_path TEXT,
                 config_path TEXT,
-                xenia_version TEXT
+                xenia_version TEXT,
+                UNIQUE(game_id)
             );
             """)
             con.execute("""
@@ -274,13 +279,12 @@ class Database:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 game_id TEXT NOT NULL,
                 media_id TEXT,
-                disc_index INTEGER,
+                file_path TEXT,
                 disc_count INTEGER DEFAULT 1,
                 disc_type TEXT,
                 disc_swap_required INTEGER DEFAULT 0,
                 disc_number INTEGER DEFAULT 1,
                 label TEXT,
-            
                 UNIQUE(game_id, disc_number),
             
                 FOREIGN KEY (game_id)
@@ -291,19 +295,21 @@ class Database:
             con.execute("""
             CREATE VIEW IF NOT EXISTS game_view AS
             SELECT
-                g.game_no,
                 g.game_id,
                 d.media_id,
-                g.title,
-                g.file_path,
+                CASE
+                    WHEN d.disc_count > 1
+                    THEN g.title || ' - ' || d.label
+                    ELSE g.title
+                END AS title,
                 g.config_path,
                 g.xenia_version,
 
-                d.disc_index,
+                d.file_path,
+                d.disc_number,
                 d.disc_count,
                 d.disc_type,
                 d.disc_swap_required,
-                d.disc_number,
                 d.label,
 
                 COALESCE(f.favourite, 0) AS favourite,
@@ -337,7 +343,8 @@ class Database:
                 d.id,
                 d.game_id,
                 g.title,
-                d.disc_index,
+                d.disc_number,
+                d.file_path,
                 d.label
             FROM discs d
             JOIN games g
@@ -446,7 +453,7 @@ class Database:
                     game_id = game.get("game_id")
                     title = game.get("title")
                     media_id = game.get("media_id")
-
+                    title = strip_disc_suffix(title)
                     file_path = (game.get("file_locations", {}).get("game"))
                     config_path = (game.get("file_locations", {}).get("config"))
                     play_time = (game.get("playtime"))
@@ -457,21 +464,18 @@ class Database:
                         INSERT INTO games (
                             game_id,
                             title,
-                            file_path,
                             config_path,
                             xenia_version
                         )
-                        VALUES (?, ?, ?, ?, ?)
+                        VALUES (?, ?, ?, ?)
                         ON CONFLICT(game_id)
                         DO UPDATE SET
                             title = excluded.title,
-                            file_path = excluded.file_path,
                             config_path = excluded.config_path,
                             xenia_version = excluded.xenia_version
                     """, (
                         game_id,
                         title,
-                        file_path,
                         config_path,
                         xenia_version,
                     ))
@@ -494,9 +498,10 @@ class Database:
                             game_id,
                             media_id,
                             disc_number,
+                            file_path,
                             disc_type
                         )
-                        VALUES (?, ?, ?, ?)
+                        VALUES (?, ?, ?, ?, ?)
                         ON CONFLICT(game_id, disc_number)
                         DO UPDATE SET
                             game_id = excluded.game_id,
@@ -506,6 +511,7 @@ class Database:
                         game_id,
                         media_id,
                         disc_number,
+                        file_path,
                         disc_type,
                     ))
 
@@ -561,21 +567,18 @@ class Database:
                         INSERT INTO games (
                             game_id,
                             title,
-                            file_path,
                             config_path,
                             xenia_version
                         )
-                        VALUES (?, ?, ?, ?, ?)
+                        VALUES (?, ?, ?, ?)
                         ON CONFLICT(game_id)
                         DO UPDATE SET
                             title = excluded.title,
-                            file_path = excluded.file_path,
                             config_path = excluded.config_path,
                             xenia_version = excluded.xenia_version
                     """, (
                         game_id,
                         title,
-                        file_path,
                         config_path,
                         xenia_version,
                     ))
@@ -584,17 +587,20 @@ class Database:
                             game_id,
                             media_id,
                             disc_number,
+                            file_path,
                             disc_type
                         )
-                        VALUES (?, ?, ?, ?)
+                        VALUES (?, ?, ?, ?, ?)
                         ON CONFLICT(game_id, disc_number)
                         DO UPDATE SET
-                            disc_type = excluded.disc_type,
-                            media_id = COALESCE(excluded.media_id, discs.media_id)
+                            game_id = excluded.game_id,
+                            disc_number = excluded.disc_number,
+                            disc_type = excluded.disc_type
                     """, (
                         game_id,
                         media_id,
                         disc_number,
+                        file_path,
                         disc_type,
                     ))
 
@@ -630,7 +636,7 @@ class Database:
             SELECT *
             FROM discs
             WHERE title_id = ?
-            ORDER BY disc_index
+            ORDER BY disc_number
             """, (
                 title_id,
             )).fetchall()

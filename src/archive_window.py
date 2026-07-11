@@ -341,13 +341,14 @@ class ArchiveBrowser(QDialog):
 
 
     def load_games(self):
-
         try:
-
-            cur = self.db.conn.execute(
-                "SELECT game_id, title, disc_type FROM games"
-            )
-
+            cur = self.db.conn.execute("""
+                SELECT
+                    game_id,
+                    title,
+                    disc_type
+                FROM game_view
+            """)
             self.games = {
                 row["game_id"].upper(): {
                     "title": row["title"],
@@ -355,10 +356,9 @@ class ArchiveBrowser(QDialog):
                 }
                 for row in cur
             }
-
-
-        except Exception:
-            self.games = {}
+        except Exception as e:
+            print(e)
+            raise
 
     @staticmethod
     def get_title_id(filename):
@@ -430,21 +430,72 @@ class ArchiveBrowser(QDialog):
             if archive == "XBOX_360_XBLA_DLC"
             else "DVD"
         )
+
         title_id = self.get_title_id(filename)
         game = ""
         disc_type = ""
-        game_info = None
-        # First try exact Title ID
+
+        filename_norm = normalise_name(filename)
+        filename_words = set(filename_norm.split())
+
+        # Text before the first " - "
+        filename_base = re.split(r"\s+-\s+", filename, maxsplit=1)[0]
+        filename_base_norm = normalise_name(filename_base)
+
+        # ------------------------------------------------------------------
+        # 1. Exact Title ID
+        # ------------------------------------------------------------------
+
         if title_id:
             game_info = self.games.get(title_id)
             if game_info and game_info["disc_type"] == expected_disc_type:
                 game = game_info["title"]
                 disc_type = game_info["disc_type"]
 
-        # Fall back to fuzzy word matching
+        # ------------------------------------------------------------------
+        # 2. Filename starts with game title
+        # 3. Filename before " - " exactly equals game title
+        # ------------------------------------------------------------------
+
         if not game:
 
-            filename_words = set(normalise_name(filename).split())
+            best_score = -1
+            best_match = None
+
+            for _title_id, game_info in self.games.items():
+
+                if game_info["disc_type"] != expected_disc_type:
+                    continue
+
+                game_name = game_info["title"]
+                game_norm = normalise_name(game_name)
+
+                score = -1
+
+                # Exact base match
+                if filename_base_norm == game_norm:
+                    score = 10000
+
+                # Filename begins with title
+                elif filename_norm.startswith(game_norm):
+                    score = 9000 + len(game_norm)
+
+                if score > best_score:
+                    best_score = score
+                    best_match = (
+                        _title_id,
+                        game_name,
+                        game_info["disc_type"],
+                    )
+
+            if best_match:
+                title_id, game, disc_type = best_match
+
+        # ------------------------------------------------------------------
+        # 4. Fuzzy word matching
+        # ------------------------------------------------------------------
+
+        if not game:
 
             best_score = 0
             best_match = None
@@ -460,18 +511,18 @@ class ArchiveBrowser(QDialog):
                 if not game_words:
                     continue
 
-                # Ignore extremely short names
-                if len("".join(game_words)) < 3:
-                    continue
-
                 matched = len(game_words & filename_words)
+                ratio = matched / len(game_words)
 
-                # All words must match
-                if matched != len(game_words):
+                # Require at least 75% of title words
+                if ratio < 0.75:
                     continue
 
-                # Prefer longer titles
-                score = matched * 100 + sum(len(w) for w in game_words)
+                score = (
+                        ratio * 1000
+                        + matched * 100
+                        + sum(len(w) for w in game_words)
+                )
 
                 if score > best_score:
                     best_score = score
@@ -482,9 +533,7 @@ class ArchiveBrowser(QDialog):
                     )
 
             if best_match:
-                title_id = best_match[0]
-                game = best_match[1]
-                disc_type = best_match[2]
+                title_id, game, disc_type = best_match
 
         # installed = bool(game)
         #

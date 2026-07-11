@@ -179,7 +179,7 @@ class GameLauncher(QMainWindow):
         self.db = Database()
         self.db.init_db()
         self.model = GameTableModel()
-        self.setFixedSize(1770, 900)
+        self.setFixedSize(1640, 900)
         self.build_ui()
         self.compatibility = Compatibility(self.db, self.log)
 
@@ -818,14 +818,13 @@ class GameLauncher(QMainWindow):
         header.setSectionResizeMode(11, QHeaderView.ResizeMode.Fixed)
 
         self.table.setColumnWidth(0, 32)  # ★
-        self.table.setColumnWidth(1, 32)  # Number
-        self.table.setColumnWidth(2, 575)  # Number
-        self.table.setColumnWidth(3, 70)  # ★
+        self.table.setColumnWidth(1, 575)  # Number
+        self.table.setColumnWidth(2, 70)  # ★
+        self.table.setColumnWidth(3, 70)  # Number
+        self.table.setColumnWidth(6, 135)  # Number
         self.table.setColumnWidth(4, 70)  # Number
-        self.table.setColumnWidth(7, 135)  # Number
-        self.table.setColumnWidth(5, 70)  # Number
-        self.table.setColumnWidth(8, 50)  # Number
-        self.table.setColumnWidth(11, 200)  # Number
+        self.table.setColumnWidth(7, 50)  # Number
+        self.table.setColumnWidth(10, 200)  # Number
         self.search.setClearButtonEnabled(True)
         self.table.verticalHeader().hide()
 

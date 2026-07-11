@@ -33,10 +33,6 @@ def smart_title_case(title):
 
     return " ".join(words)
 
-
-DISC_PATTERNS = [
-    r"\b(?:disc|disk|dvd|cd)\s*(\d+)\b",
-]
 from pathlib import Path
 import shutil
 from pathlib import Path
@@ -60,46 +56,51 @@ def xenia_edge_optimise_settings(log_callback = None):
         else:
             log_callback(f"Copied {toml_file.name} -> {destination.name}")
 
+import re
+
+DISC_PATTERNS = [
+    r"\(\s*(?:disc|disk|dvd|cd)\s*(\d+)\s*\)",
+    r"(?:disc|disk|dvd|cd)\s*(\d+)",
+]
+
+
 def detect_disc_number(title: str):
     """
-    Returns disc number if found (Contains (Disc 1-4)
+    Returns the detected disc number.
+    Returns 1 if no disc number is present.
     """
 
     if not title:
-        return None
-
-    lower = title.lower()
+        return 1
 
     for pattern in DISC_PATTERNS:
-        match = re.search(pattern, lower)
-
+        match = re.search(pattern, title, re.IGNORECASE)
         if match:
-            try:
-                return int(match.group(1))
-            except ValueError:
-                return 1
+            return int(match.group(1))
 
     return 1
 
 
 def strip_disc_suffix(title: str):
     """
-    Lost Odyssey Disc 1
-    -> Lost Odyssey
+    Examples:
+        Lost Odyssey (Disc 1) -> Lost Odyssey
+        Lost Odyssey Disc 2   -> Lost Odyssey
+        Lost Odyssey - DVD 1  -> Lost Odyssey
+        Lost Odyssey: CD 3    -> Lost Odyssey
     """
 
     if not title:
         return ""
 
     title = re.sub(
-        r"\s*[-:]?\s*(disc|disk|dvd|cd)\s*\d+$",
+        r"\s*[\(\[]?\s*[-:]?\s*(?:disc|disk|dvd|cd)\s*\d+\s*[\)\]]?\s*$",
         "",
         title,
         flags=re.IGNORECASE,
     )
 
     return title.strip()
-
 
 def is_install_disc(label: str):
     if not label:
