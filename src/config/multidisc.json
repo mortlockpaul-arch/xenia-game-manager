@@ -4,6 +4,25 @@
 "dataset_type": "multi_disc_preservation_phase1",
 "entries": [
 {
+"title": "JoJo's Bizarre Adventure HD Ver.",
+"title_id": "5841124E",
+"regions": ["NTSC-U", "PAL", "NTSC-J"],
+"disc_count": 1,
+"disc_layout": [],
+"disc_type": "story_swap",
+"xenia_disc_swap_required": true,
+"notes": "Classic sequential JRPG disc swapping"
+},
+{
+"title": "N+",
+"title_id": "5841085C",
+"regions": ["NTSC-U", "PAL", "NTSC-J"],
+"disc_count": 1,
+"disc_layout": [],
+"disc_type": "story_swap",
+"xenia_disc_swap_required": false,
+"notes": "Classic sequential JRPG disc swapping"
+},  {
 "title": "Lost Odyssey",
 "title_id": "4D5307FA",
 "regions": ["NTSC-U", "PAL", "NTSC-J"],
@@ -86,7 +105,7 @@
 "xenia_disc_swap_required": false,
 "notes": ""
 }, {
-"title": "Deus Ex - Human Revolution - Director's Cut (Disc 1)",
+"title": "Deus Ex - Human Revolution - Director's Cut",
 "title_id": "535107FA",
 "regions": ["NTSC-U", "PAL"],
 "disc_count": 2,
@@ -98,7 +117,7 @@
 "xenia_disc_swap_required": false,
 "notes": ""
 },{
-"title": "METAL GEAR SOLID V THE PHANTOM PAIN",
+"title": "Metal Gear Solid V: The Phantom Pain",
 "title_id": "4B4E085E",
 "regions": ["NTSC-U", "PAL"],
 "disc_count": 2,
