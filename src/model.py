@@ -59,25 +59,8 @@ class GameTableModel(QAbstractTableModel):
 
         with self.db.get_db() as con:
             query = """
-                SELECT
-                    game_no,
-                    games.game_id,
-                    media_id,
-                    title,
-                    file_path,
-                    config_path,
-                    COALESCE(favourites.favourite, 0) AS favourite,
-                    last_played,
-                    play_count,
-                    disc_count,
-                    disc_type,
-                    play_time,
-                    disc_number,
-                    label,
-                    xenia_version,
-                    compatibility_rating
-                FROM games LEFT JOIN discs ON discs.disc_index = games.disc_number AND discs.title_id = games.game_id
-                LEFT JOIN favourites ON favourites.game_id = games.game_id
+                SELECT *
+                FROM game_view
             """
 
             params = ()
@@ -263,33 +246,17 @@ class GameTableModel(QAbstractTableModel):
         }
 
         field = mapping.get(column)
-
-        if not field:
+        if field is None:
             return
 
+        direction = "DESC" if reverse else "ASC"
+
         with self.db.get_db() as con:
-            query = (f"""
-                SELECT
-                    game_no,
-                    games.game_id,
-                    media_id,
-                    title,
-                    file_path,
-                    config_path,
-                    COALESCE(favourites.favourite, 0) AS favourite,
-                    last_played,
-                    play_count,
-                    disc_count,
-                    disc_type,
-                    play_time,
-                    disc_number,
-                    label,
-                    xenia_version,
-                    compatibility_rating
-                FROM games LEFT JOIN discs ON discs.disc_index = games.disc_number AND discs.title_id = games.game_id
-                LEFT JOIN favourites ON favourites.game_id = games.game_id
-                ORDER BY {field} {"DESC" if reverse else "ASC"}
-            """)
+            query = f"""
+                    SELECT *
+                    FROM game_view
+                    ORDER BY {field} {direction}
+                """
             params = ()
             self.games = cast(
                 list[dict[str, Any]],
