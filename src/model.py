@@ -182,7 +182,7 @@ class GameTableModel(QAbstractTableModel):
     def add_play_time(self, game_id, minutes):
         with self.db.get_db() as con:
             con.execute("""
-                UPDATE games
+                UPDATE gameplay
                 SET play_time = COALESCE(play_time, 0) + ?
                 WHERE game_id = ?
             """, (minutes, game_id))
@@ -196,7 +196,7 @@ class GameTableModel(QAbstractTableModel):
         with self.db.get_db() as con:
 
             con.execute("""
-                UPDATE games
+                UPDATE gameplay
                 SET
                     play_count = play_count + 1,
                     last_played = ?
