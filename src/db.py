@@ -74,36 +74,40 @@ class Compatibility:
                 self.compatibility = json.load(f)
 
         compat_by_title: dict[str, dict[str, Any]] = {
-            game["id"]: game
+            game["id"].upper(): game
             for game in self.compatibility
         }
 
-        con = self.db.get_db()
-        rows = con.execute(
-            "SELECT game_id FROM games"
-        ).fetchall()
+        with self.db.get_db() as con:
+            rows = con.execute(
+                "SELECT game_id FROM games"
+            ).fetchall()
 
-        for row in rows:
-            compat = compat_by_title.get(row["game_id"].upper())
-            if compat is not None:
-                print(compat["state"])
-            if compat:
-                con.execute(
-                    """
-                    UPDATE games
-                    SET compatibility_rating = ?,
-                        compatibility_issue = ?,
-                        compatibility_updated = CURRENT_TIMESTAMP
-                    WHERE game_id = ?
-                    """,
-                    (
+            for row in rows:
+                game_id = row["game_id"].upper()
+                compat = compat_by_title.get(game_id)
+
+                if compat:
+                    print(compat["state"])
+
+                    con.execute("""
+                        INSERT INTO compatibility (
+                            game_id,
+                            compatibility_rating,
+                            compatibility_issue,
+                            compatibility_updated
+                        )
+                        VALUES (?, ?, ?, CURRENT_TIMESTAMP)
+                        ON CONFLICT(game_id)
+                        DO UPDATE SET
+                            compatibility_rating = excluded.compatibility_rating,
+                            compatibility_issue = excluded.compatibility_issue,
+                            compatibility_updated = CURRENT_TIMESTAMP
+                    """, (
+                        row["game_id"],
                         compat["state"],
                         compat.get("issue", ""),
-                        row["game_id"],
-                    ),
-                )
-
-        con.commit()
+                    ))
 
 class Database:
 
@@ -111,7 +115,7 @@ class Database:
         self.conn = sqlite3.connect(DB_PATH)
         self.conn.row_factory = sqlite3.Row
         self.cursor = self.conn.cursor()
-
+        self.conn.execute("PRAGMA foreign_keys = ON")
 
     def import_multidisc_json(self, json_path, log_callback=None):
         """Import preservation metadata JSON."""
@@ -123,47 +127,45 @@ class Database:
 
         with self.conn as con:
             for game in entries:
-                title_id = game["title_id"]
+                game_id = game["title_id"]
 
                 # Skip games that aren't in the library
                 if not con.execute(
                         "SELECT 1 FROM games WHERE game_id = ?",
-                        (title_id,)
+                        (game_id,)
                 ).fetchone():
                     continue
 
                 imported += 1
 
-                con.execute("""
-                    UPDATE games
-                    SET
-                        disc_count = ?,
-                        disc_type = ?,
-                        xenia_disc_swap_required = ?
-                    WHERE game_id = ?
-                """, (
-                    game["disc_count"],
-                    game["disc_type"],
-                    int(game["xenia_disc_swap_required"]),
-                    title_id,
-                ))
-
-                con.execute(
-                    "DELETE FROM discs WHERE title_id = ?",
-                    (title_id,)
-                )
-
-                con.executemany("""
-                    INSERT INTO discs (
-                        title_id,
-                        disc_index,
+                for index, label in enumerate(game["disc_layout"], start=1):
+                    con.execute("""
+                        INSERT INTO discs (
+                            game_id,
+                            disc_index,
+                            disc_count,
+                            disc_type,
+                            disc_swap_required,
+                            disc_number,
+                            label
+                        )
+                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                        ON CONFLICT(game_id, disc_number)
+                        DO UPDATE SET
+                            disc_index = excluded.disc_index,
+                            disc_count = excluded.disc_count,
+                            disc_type = excluded.disc_type,
+                            disc_swap_required = excluded.disc_swap_required,
+                            label = excluded.label
+                    """, (
+                        game_id,
+                        index,
+                        game["disc_count"],
+                        game["disc_type"],
+                        int(game["xenia_disc_swap_required"]),
+                        index,
                         label
-                    )
-                    VALUES (?, ?, ?)
-                """, [
-                    (title_id, index, label)
-                    for index, label in enumerate(game["disc_layout"], start=1)
-                ])
+                    ))
 
         if log_callback:
             log_callback(
@@ -202,77 +204,145 @@ class Database:
                 """)
             ]
 
+    from contextlib import contextmanager
+    import sqlite3
+
+    @contextmanager
     def get_db(self):
-        self.conn = sqlite3.connect(DB_PATH)
-        self.conn.row_factory = sqlite3.Row
-        return self.conn
+        con = sqlite3.connect(DB_PATH)
+        con.row_factory = sqlite3.Row
+        con.execute("PRAGMA foreign_keys = ON")
 
+        try:
+            yield con
+            con.commit()
+        except Exception:
+            con.rollback()
+            raise
+        finally:
+            con.close()
 
-    def clear_db(self, delete_favourites=False):
+    def clear_db(self, delete_favourites=False, delete_discs=False):
         with self.conn as con:
-            con.execute("DELETE FROM discs")
+            if delete_discs:
+                con.execute("DELETE FROM discs")
+                con.execute("DELETE FROM sqlite_sequence WHERE name='discs'")
             con.execute("DELETE FROM games")
             if delete_favourites: con.execute("DELETE FROM favourites")
-            con.execute(
-                "DELETE FROM sqlite_sequence WHERE name='discs'"
-            )
-            con.execute(
-                "DELETE FROM sqlite_sequence WHERE name='games'"
-            )
+            con.execute("DELETE FROM sqlite_sequence WHERE name='games'")
             con.commit()
-
 
     def init_db(self):
         with self.conn as con:
             con.execute("""
             CREATE TABLE IF NOT EXISTS games (
                 game_no INTEGER PRIMARY KEY AUTOINCREMENT,
-                game_id TEXT,
-                media_id TEXT,
+                game_id TEXT NOT NULL UNIQUE,
                 title TEXT NOT NULL,
                 file_path TEXT,
                 config_path TEXT,
-                last_played TEXT,
-                play_count INTEGER DEFAULT 0,
-                play_time INTEGER DEFAULT 0,
-                disc_count INTEGER DEFAULT 1,
-                disc_type TEXT,
-                xenia_disc_swap_required INTEGER DEFAULT 0,
-                disc_number INTEGER DEFAULT 0,
-                xenia_version TEXT,
+                xenia_version TEXT
+            );
+            """)
+            con.execute("""
+            CREATE TABLE IF NOT EXISTS compatibility (
+                game_id TEXT PRIMARY KEY,
                 compatibility_rating TEXT,
                 compatibility_issue TEXT,
-                compatibility_updated CURRENT_TIMESTAMP
-            )
+                compatibility_updated DATETIME DEFAULT CURRENT_TIMESTAMP
+            );
+            """)
+
+            con.execute("""
+            CREATE TABLE IF NOT EXISTS gameplay (
+                game_id TEXT PRIMARY KEY,
+                last_played TEXT,
+                play_count INTEGER DEFAULT 0,
+                play_time INTEGER DEFAULT 0
+            );
             """)
 
             con.execute("""
             CREATE TABLE IF NOT EXISTS favourites (
-                game_id TEXT PRIMARY KEY ,
+                game_id TEXT PRIMARY KEY,
                 favourite INTEGER DEFAULT 0
-            )
+            );
             """)
 
             con.execute("""
             CREATE TABLE IF NOT EXISTS discs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                title_id TEXT NOT NULL,
+                game_id TEXT NOT NULL,
+                media_id TEXT,
                 disc_index INTEGER,
-                label TEXT
-            )
+                disc_count INTEGER DEFAULT 1,
+                disc_type TEXT,
+                disc_swap_required INTEGER DEFAULT 0,
+                disc_number INTEGER DEFAULT 1,
+                label TEXT,
+            
+                UNIQUE(game_id, disc_number),
+            
+                FOREIGN KEY (game_id)
+                    REFERENCES games(game_id)
+                    ON DELETE CASCADE
+            );
+            """)
+            con.execute("""
+            CREATE VIEW IF NOT EXISTS game_view AS
+            SELECT
+                g.game_no,
+                g.game_id,
+                d.media_id,
+                g.title,
+                g.file_path,
+                g.config_path,
+                g.xenia_version,
+
+                d.disc_index,
+                d.disc_count,
+                d.disc_type,
+                d.disc_swap_required,
+                d.disc_number,
+                d.label,
+
+                COALESCE(f.favourite, 0) AS favourite,
+
+                p.last_played,
+                COALESCE(p.play_count, 0) AS play_count,
+                COALESCE(p.play_time, 0) AS play_time,
+
+                c.compatibility_rating,
+                c.compatibility_issue,
+                c.compatibility_updated
+
+            FROM games g
+
+            JOIN discs d
+                ON g.game_id = d.game_id
+
+            LEFT JOIN gameplay p
+                ON g.game_id = p.game_id
+
+            LEFT JOIN compatibility c
+                ON g.game_id = c.game_id
+
+            LEFT JOIN favourites f
+                ON g.game_id = f.game_id;
             """)
 
             con.execute("""
             CREATE VIEW IF NOT EXISTS disc_view AS
-                SELECT
-                    d.id,
-                    d.title_id,
-                    g.title,
-                    d.disc_index,
-                    d.label
-                FROM discs d
-                JOIN games g
-                    ON d.title_id = g.game_id;""")
+            SELECT
+                d.id,
+                d.game_id,
+                g.title,
+                d.disc_index,
+                d.label
+            FROM discs d
+            JOIN games g
+                ON d.game_id = g.game_id;
+            """)
 
             con.execute("""
             CREATE INDEX IF NOT EXISTS idx_games_title
@@ -281,7 +351,7 @@ class Database:
 
             con.execute("""
             CREATE INDEX IF NOT EXISTS idx_discs_title_id
-            ON discs(title_id)
+            ON discs(game_id)
             """)
 
 
@@ -368,8 +438,8 @@ class Database:
                     log_callback(message)
                     return
 
-            self.clear_db()
-
+            # self.clear_db()
+            message = f"Imported {len(xenia_manager_games)} Games from Xenia Manager"
             with self.conn as con:
 
                 for game in xenia_manager_games:
@@ -377,51 +447,69 @@ class Database:
                     title = game.get("title")
                     media_id = game.get("media_id")
 
-                    file_path = (
-                        game.get("file_locations", {})
-                        .get("game")
-                    )
-                    config_path = (
-                        game.get("file_locations", {})
-                        .get("config")
-                    )
+                    file_path = (game.get("file_locations", {}).get("game"))
+                    config_path = (game.get("file_locations", {}).get("config"))
                     play_time = (game.get("playtime"))
                     xenia_version = game.get("xenia_version")
                     disc_number = detect_disc_number(file_path)
                     disc_type = "XBLA" if game_id.lower() in file_path.lower() else "DVD"
                     con.execute("""
-                    INSERT INTO games
-                    (
+                        INSERT INTO games (
+                            game_id,
+                            title,
+                            file_path,
+                            config_path,
+                            xenia_version
+                        )
+                        VALUES (?, ?, ?, ?, ?)
+                        ON CONFLICT(game_id)
+                        DO UPDATE SET
+                            title = excluded.title,
+                            file_path = excluded.file_path,
+                            config_path = excluded.config_path,
+                            xenia_version = excluded.xenia_version
+                    """, (
                         game_id,
-                        media_id,
                         title,
                         file_path,
                         config_path,
-                        play_time,
-                        disc_number,
                         xenia_version,
-                        disc_type
-                    )
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    ))
+
+                    con.execute("""
+                        INSERT INTO gameplay (
+                            game_id,
+                            play_time
+                        )
+                        VALUES (?, ?)
+                        ON CONFLICT(game_id)
+                        DO UPDATE SET
+                            play_time = excluded.play_time
+                    """, (
+                        game_id,
+                        play_time,
+                    ))
+                    con.execute("""
+                        INSERT INTO discs (
+                            game_id,
+                            media_id,
+                            disc_number,
+                            disc_type
+                        )
+                        VALUES (?, ?, ?, ?)
+                        ON CONFLICT(game_id, disc_number)
+                        DO UPDATE SET
+                            game_id = excluded.game_id,
+                            disc_number = excluded.disc_number,
+                            disc_type = excluded.disc_type
                     """, (
                         game_id,
                         media_id,
-                        title,
-                        file_path,
-                        config_path,
-                        play_time,
                         disc_number,
-                        xenia_version,
-                        disc_type
+                        disc_type,
                     ))
-                self.import_multidisc_json(
-                    multidisc_info, log_callback=log_callback
-                )
-                message = f"Imported {len(xenia_manager_games)} Games from Xenia Manager"
-                log_callback(message)
-                compatibility = Compatibility(self)
-                compatibility.update_compatibility()
-                return
+
+
         else:
             if xenia_version == "xenia_edge":
                 if not xenia_edge_installed:
@@ -435,12 +523,26 @@ class Database:
                     log_callback(message)
                     return
 
-            self.clear_db()
-
+            # self.clear_db()
+            message = f"Imported {len(xenia_edge_games)} Games From Edge"
             with self.conn as con:
+                old_media = {
+                    (row["game_id"], row["disc_number"]): row["media_id"]
+                    for row in con.execute("""
+                        SELECT game_id, disc_number, media_id
+                        FROM discs
+                        WHERE media_id IS NOT NULL
+                    """)
+                }
 
                 for game in xenia_edge_games:
                     game_id = game.get("title_id")
+                    file_path = game.get("path")  # or paths[0]
+                    disc_number = detect_disc_number(file_path)
+                    old_id = old_media.get((game_id, disc_number))
+                    media_id = None
+                    if media_id is None:
+                        media_id = old_id
                     title = game.get("name")
                     edge_path = Path(config["xenia_edge_path"])
                     edge_configs = Path.home() / "Documents" / "Xenia" / "config"
@@ -448,7 +550,7 @@ class Database:
                     if (edge_path / "portable.txt").exists():
                         edge_configs = edge_path / "content"
 
-                    file_path = game.get("path")  # or paths[0]
+
                     config_path = str(edge_configs / f"{game_id}.config.toml")
                     disc_type = "XBLA" if game_id.lower() in file_path.lower() else "DVD"
                     print(game_id)
@@ -456,34 +558,52 @@ class Database:
                     print(file_path)
                     print(config_path)
                     con.execute("""
-                    INSERT INTO games
-                    (
-                        game_id,
-                        title,
-                        file_path,
-                        config_path,
-                        disc_number,
-                        xenia_version,
-                        disc_type
-                    )
-                    VALUES (?, ?, ?, ?, ?, "Edge", ?)
+                        INSERT INTO games (
+                            game_id,
+                            title,
+                            file_path,
+                            config_path,
+                            xenia_version
+                        )
+                        VALUES (?, ?, ?, ?, ?)
+                        ON CONFLICT(game_id)
+                        DO UPDATE SET
+                            title = excluded.title,
+                            file_path = excluded.file_path,
+                            config_path = excluded.config_path,
+                            xenia_version = excluded.xenia_version
                     """, (
                         game_id,
                         title,
                         file_path,
                         config_path,
-                        detect_disc_number(file_path),
-                        disc_type
+                        xenia_version,
                     ))
-            self.import_multidisc_json(
-                    multidisc_info, log_callback=log_callback
-                )
-            message = f"Imported {len(xenia_edge_games)} Games from Xenia Edge"
-            log_callback(message)
-            compatibility = Compatibility(self)
-            compatibility.update_compatibility()
-            return
+                    con.execute("""
+                        INSERT INTO discs (
+                            game_id,
+                            media_id,
+                            disc_number,
+                            disc_type
+                        )
+                        VALUES (?, ?, ?, ?)
+                        ON CONFLICT(game_id, disc_number)
+                        DO UPDATE SET
+                            disc_type = excluded.disc_type,
+                            media_id = COALESCE(excluded.media_id, discs.media_id)
+                    """, (
+                        game_id,
+                        media_id,
+                        disc_number,
+                        disc_type,
+                    ))
 
+        compatibility = Compatibility(self)
+        compatibility.update_compatibility()
+
+        self.import_multidisc_json(multidisc_info, log_callback=log_callback)
+
+        log_callback(message)
 
     def search_games(self, search_text=""):
         with self.conn as con:

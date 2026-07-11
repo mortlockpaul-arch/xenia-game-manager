@@ -1086,7 +1086,6 @@ class GameLauncher(QMainWindow):
 
     def refresh(self):
         # width = self.table.columnWidth(2)
-        self.console.clear()
         # print(width)
         self.model.load()
 
@@ -1104,7 +1103,7 @@ class GameLauncher(QMainWindow):
     def import_games(self, xenia_version):
         # Refresh table
         self.model.load()
-
+        self.log("Importing games...")
         try:
             # Import games
             self.db.import_games_from_edge_or_xenia_manager(xenia_version, self.model.games, log_callback=self.log)

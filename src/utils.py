@@ -400,39 +400,93 @@ def install_title_update(
 
     return dest
 
+import json
+from difflib import unified_diff
 
-if __name__ == "__main__":
-    config = load_config()
-    xenia_manager_installed = config["xenia_manager_installed"]
-    if xenia_manager_installed:
-        xenia_manager_path = Path(config["xenia_manager_path"])
-        xenia_manager_config = load_xenia_manager_config(xenia_manager_path)
+import json
 
-        unified_content: bool = (xenia_manager_config["emulators"]["settings"]["unified_content"])
-        xenia_path = Path(xenia_manager_config["emulators"]["canary"]["executable_location"])
-        xenia_emulator_location = Path(xenia_manager_config["emulators"]["canary"]["emulator_location"])
-        emulators_dir = Path(xenia_emulator_location).parent
-        if unified_content:
-            xenia_content_folder = Path.joinpath(xenia_manager_path, emulators_dir, "Content")
-        else:
-            xenia_content_folder = Path.joinpath(xenia_emulator_location, "content")
 
-        profile_info = detect_profiles(xenia_content_folder)
+def show_game_diff(file1, file2):
+    with open(file1, encoding="utf-8") as f:
+        old_games = json.load(f)
 
-        for profile in profile_info:
-            xuid = profile["xuid"]
-            profile_path = Path(profile["path"])
-            account_path = (
-                    profile_path
-                    / "FFFE07D1"
-                    / "00010000"
-                    / xuid
-                    / "Account"
-            )
-            print(xuid)
-            print(profile_path)
-            print(account_path)
-    else:
-        print("Xenia Manager is not installed")
+    with open(file2, encoding="utf-8") as f:
+        new_games = json.load(f)
 
-    xenia_edge_optimise_settings()
+    def key(game):
+        return game["game_id"], game["media_id"]
+
+    old = {key(g): g for g in old_games}
+    new = {key(g): g for g in new_games}
+
+    added = new.keys() - old.keys()
+    removed = old.keys() - new.keys()
+    common = old.keys() & new.keys()
+
+    print(f"Added: {len(added)}")
+    for k in sorted(added):
+        g = new[k]
+        print(f"  + {g['title']} ({g['game_id']} / {g['media_id']})")
+
+    print(f"\nRemoved: {len(removed)}")
+    for k in sorted(removed):
+        g = old[k]
+        print(f"  - {g['title']} ({g['game_id']} / {g['media_id']})")
+
+    print("\nModified:")
+    for k in sorted(common):
+        before = old[k]
+        after = new[k]
+
+        changes = []
+
+        for field in sorted(set(before) | set(after)):
+            if before.get(field) != after.get(field):
+                changes.append(field)
+
+        if changes:
+            print(f"* {after['title']}: {', '.join(changes)}")
+
+config = load_config()
+xenia_manager_path = Path(config["xenia_manager_path"])
+
+show_game_diff(
+    xenia_manager_path / "config" / "games.json.backup",
+    xenia_manager_path / "config" / "games.json",
+)
+
+    #
+    # config = load_config()
+    # xenia_manager_installed = config["xenia_manager_installed"]
+    # if xenia_manager_installed:
+    #     xenia_manager_path = Path(config["xenia_manager_path"])
+    #     xenia_manager_config = load_xenia_manager_config(xenia_manager_path)
+    #
+    #     unified_content: bool = (xenia_manager_config["emulators"]["settings"]["unified_content"])
+    #     xenia_path = Path(xenia_manager_config["emulators"]["canary"]["executable_location"])
+    #     xenia_emulator_location = Path(xenia_manager_config["emulators"]["canary"]["emulator_location"])
+    #     emulators_dir = Path(xenia_emulator_location).parent
+    #     if unified_content:
+    #         xenia_content_folder = Path.joinpath(xenia_manager_path, emulators_dir, "Content")
+    #     else:
+    #         xenia_content_folder = Path.joinpath(xenia_emulator_location, "content")
+    #
+    #     profile_info = detect_profiles(xenia_content_folder)
+    #
+    #     for profile in profile_info:
+    #         xuid = profile["xuid"]
+    #         profile_path = Path(profile["path"])
+    #         account_path = (
+    #                 profile_path
+    #                 / "FFFE07D1"
+    #                 / "00010000"
+    #                 / xuid
+    #                 / "Account"
+    #         )
+    #         print(xuid)
+    #         print(profile_path)
+    #         print(account_path)
+    # else:
+    #     print("Xenia Manager is not installed")
+    #
+    # xenia_edge_optimise_settings()
