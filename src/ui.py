@@ -1146,7 +1146,7 @@ class GameLauncher(QMainWindow):
         xenia_netplay_path = config["xenia_netplay_path"]
         xenia_mousehook_path = config["xenia_mousehook_path"]
         xenia_version = str(xenia_version).lower()
-        if xenia_manager_installed:
+        if xenia_manager_installed and xenia_version!="edge":
             xenia_manager_path = Path(config["xenia_manager_path"])
             xenia_manager_config = load_xenia_manager_config(xenia_manager_path)
             configuration_location = xenia_manager_config["emulators"][f"{xenia_version}"]["configuration_location"]
@@ -1187,10 +1187,15 @@ class GameLauncher(QMainWindow):
                 raise Exception("Edge not installed")
             datadir = Path(get_app_dir())
             mini_config_dir = datadir / "assets" / "settings"
-            xenia_exe_path = Path(xenia_edge_path) / "xenia_edge.exe"
+            xenia_edge_path = Path(xenia_edge_path)
+            xenia_exe_path = xenia_edge_path / "xenia_edge.exe"
+
+            # Default (non-portable)
             xenia_exe_configuration_location = Path.home() / "Documents" / "Xenia" / "config"
-            if (xenia_edge_path / "portable.text").exists():
-                xenia_exe_configuration_location = Path(xenia_edge_path / "config").parent
+
+            # Portable mode
+            if (xenia_edge_path / "portable.txt").exists():
+                xenia_exe_configuration_location = xenia_edge_path / "config"
 
 
         if db_game_config_source and Path(db_game_config_source).exists():
