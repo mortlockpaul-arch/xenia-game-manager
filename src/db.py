@@ -21,7 +21,8 @@ class Compatibility:
 
     def __init__(self, db, log_call_back=None):
         self.compatibility = None
-        self.compatibility_file = Path(__file__).parent / "config" / "compatibility.json"
+        root = get_app_dir()
+        self.compatibility_file = root / "config" / "compatibility.json"
         if self.compatibility_file.exists():
             modified = datetime.fromtimestamp(self.compatibility_file.stat().st_mtime)
 

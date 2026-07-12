@@ -36,6 +36,18 @@
 "disc_type": "story_swap",
 "xenia_disc_swap_required": true,
 "notes": "Classic sequential JRPG disc swapping"
+},{
+"title": "Star Wars: The Force Unleashed",
+"title_id": "4C4107D2",
+"regions": ["NTSC-U", "PAL", "NTSC-J"],
+"disc_count": 2,
+"disc_layout": [
+"Disc 1 - Story Start",
+"Disc 2 - Story Continuation"
+],
+"disc_type": "story_swap",
+"xenia_disc_swap_required": true,
+"notes": "Classic sequential JRPG disc swapping"
 },
 {
 "title": "Blue Dragon",
