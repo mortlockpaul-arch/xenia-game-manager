@@ -40,6 +40,7 @@ def extract_archives(folder, log_callback=None, subfolder=False, remove_archives
                 (log_callback or print)(msg)
             else:
                 msg = f"Failed: {archive.name}\n{result.stderr}"
+                archive.unlink()
                 (log_callback or print)(msg)
 
         except Exception as e:
