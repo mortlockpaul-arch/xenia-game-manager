@@ -119,8 +119,10 @@ def copy_optimized_settings():
 
 
 if __name__ == "__main__":
+    create_defaults()
+    copy_optimized_settings()
     zip_portable()
     # print(generate_guid())
-    copy_optimized_settings()
-    create_defaults()
+
+
     # disk_fix()
