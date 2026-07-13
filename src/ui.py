@@ -924,19 +924,26 @@ class GameLauncher(QMainWindow):
         self.worker.start()
 
     def update_file_progress(self, done, total, filename):
-        if total > 0:
             self.progress_current.setMaximum(total)
             self.progress_current.setValue(done)
-            self.current_label.setText(filename)
+            self.current_label.setText(f"{filename} ({done}/{total})")
 
     def update_download_progress(self, done, total):
-        if total > 0:
             self.progress_overall.setMaximum(total)
             self.progress_overall.setValue(done)
-            self.overall_label.setText(f"Overall ({done}/{total})")
+            self.overall_label.setText(f"({self.human_size(done)}/{self.human_size(total)})")
 
     def update_game_progress(self, current, total):
         self.log(f"Game progress: {current}/{total}")
+
+    @staticmethod
+    def human_size(size):
+        size = int(size)
+        for unit in ("B", "KB", "MB", "GB", "TB"):
+            if size < 1024:
+                return f"{size:.1f} {unit}"
+            size /= 1024
+        return f"{size:.1f} PB"
 
     def download_finished(self, stats):
         self.log("\n=== SUMMARY ===")
@@ -1102,10 +1109,7 @@ class GameLauncher(QMainWindow):
     def export_titles(self):
 
         try:
-
-            updated = export_titles_to_json(
-                GAMES_JSON
-            )
+            updated = self.db.export_titles_to_xenia_manager_game_list()
 
             QMessageBox.information(
                 self,
@@ -1264,7 +1268,7 @@ class GameLauncher(QMainWindow):
             self.start_time = time.time()
             self.process = subprocess.Popen(
                 [xenia_exe_path, game_path],
-                cwd=os.path.dirname(xenia_exe_path)
+                cwd=os.path.dirname(xenia_canary_path)
             )
 
             threading.Thread(
