@@ -21,7 +21,7 @@ from PySide6.QtWidgets import (
     QTableView,
     QMessageBox,
     QHeaderView, QPlainTextEdit, QGroupBox, QLabel, QSizePolicy, QMainWindow, QFormLayout, QToolButton, QFileDialog,
-    QFrame, QGraphicsDropShadowEffect, QProgressBar, QCheckBox,
+    QFrame, QGraphicsDropShadowEffect, QProgressBar, QCheckBox, QApplication,
 )
 from PySide6.QtWidgets import QMenu
 from PySide6.QtGui import QGuiApplication, QIcon
@@ -737,10 +737,17 @@ class GameLauncher(QMainWindow):
             if not exe.exists():
                 try:
                     installer = XeniaManagerInstaller()
-                    installer.install()
+                    exe = installer.install()
                     self.config["xenia_manager_installed"] = True
                     self.config["xenia_manager_path"] = str(exe)
                     save_config(self.config)
+                    self.config = load_config()
+                    xenia_manager_installed = self.config["xenia_manager_installed"]
+                    button_text = "Launch Xenia Manager"
+                    if not xenia_manager_installed:
+                        button_text = "Install Xenia Manager"
+                    self.launch_manager.setText(button_text)
+                    self.launch_manager.repaint()
                 except Exception as e:
                     QMessageBox.critical(self, "Install Failed", str(e))
                     return
@@ -997,10 +1004,17 @@ class GameLauncher(QMainWindow):
         exe = Path(r"C:\xenia-manager") / "XeniaManager.exe"
         if not exe.exists():
             installer = XeniaManagerInstaller()
-            installer.install(log_callback=self.log)
+            exe = installer.install(log_callback=self.log)
             self.config["xenia_manager_installed"] = True
             self.config["xenia_manager_path"] = str(exe)
             save_config(self.config)
+            self.config = load_config()
+            xenia_manager_installed = self.config["xenia_manager_installed"]
+            button_text = "Launch Xenia Manager"
+            if not xenia_manager_installed:
+                button_text = "Install Xenia Manager"
+            self.launch_manager.setText(button_text)
+            self.launch_manager.repaint()
         self.config = load_config()
         self.set_checkbox("manager", self.config.get("xenia_manager_installed", False), save=False)
         self.set_checkbox("canary", self.config.get("xenia_canary_installed", False), save=False)
