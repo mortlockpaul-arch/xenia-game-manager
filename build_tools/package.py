@@ -7,6 +7,8 @@ import tempfile
 import win32com.shell.shell as shell
 import win32con
 
+from ui import resource_path
+
 ROOT = Path(__file__).resolve().parent.parent
 
 def disk_fix():
@@ -51,8 +53,44 @@ def zip_portable():
             zipf.writestr("portable.txt", "")
     print("Portable ZIP created:", out_zip)
 
+def create_defaults():
+    print("Creating default game manager")
 
+    base_path = Path.cwd().parent / "src"
+    default_path = base_path / "assets" / "default"
 
+    db_dir = base_path / "db"
+    config_dir = base_path / "config"
+
+    db_dir.mkdir(parents=True, exist_ok=True)
+    config_dir.mkdir(parents=True, exist_ok=True)
+
+    def backup_existing(path):
+        if path.exists():
+            backup = path.with_name(path.name + ".previous")
+
+            if backup.exists():
+                backup.unlink()
+
+            path.rename(backup)
+
+    # Copy database
+    default_db = default_path / "games.db"
+    db_target = db_dir / "games.db"
+
+    backup_existing(db_target)
+
+    if default_db.exists():
+        shutil.copy2(default_db, db_target)
+
+    # Copy config
+    default_config = default_path / ".x360-game-manager-config.json"
+    config_target = config_dir / ".x360-game-manager-config.json"
+
+    backup_existing(config_target)
+
+    if default_config.exists():
+        shutil.copy2(default_config, config_target)
 
 def copy_optimized_settings():
     settings_dest = ROOT / "src" / "assets" / "settings"
@@ -84,4 +122,5 @@ if __name__ == "__main__":
     zip_portable()
     # print(generate_guid())
     copy_optimized_settings()
+    create_defaults()
     # disk_fix()

@@ -475,7 +475,10 @@ def show_game_diff(file1, file2, log_call_back):
 def show_differences(log_callback):
     config = load_config()
     xenia_manager_path = Path(config["xenia_manager_path"])
-
+    xenia_manager_installed = config["xenia_manager_installed"]
+    if not xenia_manager_installed:
+        log_callback("Xenia Manager not installed")
+        return
     show_game_diff(
         xenia_manager_path / "config" / "games.json",
         get_app_dir() / "config" / "games.json",
