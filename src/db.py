@@ -1,5 +1,5 @@
 # db.py
-
+import shutil
 import sqlite3
 import json
 from datetime import datetime, timedelta
@@ -431,9 +431,8 @@ class Database:
             games_json = Path("config") / "games.json"
             xenia_manager_path = config["xenia_manager_path"]
             games_json_path = Path(xenia_manager_path) / games_json
-            if not games_json_path.exists():
-                raise Exception("Missing File")
-
+            shutil.copy2(games_json_path, get_app_dir() / "config" / "games.json")
+            log_callback(f"Copied {games_json_path} to {get_app_dir() / "config" / "games.json"} You can compare later to spot difference.")
             if not games_json_path.exists():
                 raise FileNotFoundError(games_json_path)
 
