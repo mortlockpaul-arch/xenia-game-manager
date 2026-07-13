@@ -1,5 +1,36 @@
 [
   {
+    "issue": 1160,
+    "id": "4D53087E",
+    "title": "Fable 2 Limited Edition Bonus Disc",
+    "updated": "2026-07-12T14:16:35Z",
+    "state": "Playable",
+    "labels": {
+      "state": [
+        "state-playable"
+      ],
+      "others": []
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1160"
+  },
+  {
+    "issue": 1159,
+    "id": "4D5388BB",
+    "title": "Mass Effect Bonus Disc",
+    "updated": "2026-07-12T13:54:29Z",
+    "state": "Playable",
+    "labels": {
+      "state": [
+        "state-playable"
+      ],
+      "others": [
+        "kernel-unimplemented-feature",
+        "tech-uses-xmp"
+      ]
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1159"
+  },
+  {
     "issue": 1157,
     "id": "53450857",
     "title": "Virtua Tennis 4",
@@ -246,17 +277,16 @@
     "issue": 1137,
     "id": "584111E8",
     "title": "State of Decay",
-    "updated": "2026-07-01T10:13:40Z",
+    "updated": "2026-07-11T19:13:33Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
-        "gpu-drawing-missing",
-        "gpu-shader-errors",
         "tech-engine-cry",
-        "gpu-readback"
+        "gpu-readback",
+        "gpu-occlusion-query"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/1137"
@@ -4152,7 +4182,7 @@
     "issue": 866,
     "id": "58411446",
     "title": "Guacamelee! Super Turbo Championship Edition",
-    "updated": "2025-10-03T15:06:10Z",
+    "updated": "2026-07-11T19:12:11Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -4205,7 +4235,7 @@
     "issue": 861,
     "id": "464F07E8",
     "title": "Sniper Elite V2",
-    "updated": "2025-09-22T17:11:39Z",
+    "updated": "2026-07-12T10:49:32Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -4349,7 +4379,7 @@
     "issue": 853,
     "id": "4541096E",
     "title": "Fuse",
-    "updated": "2026-06-01T12:50:07Z",
+    "updated": "2026-07-12T15:04:24Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -5893,7 +5923,7 @@
     "issue": 755,
     "id": "434307D2",
     "title": "Dead Rising",
-    "updated": "2026-05-13T20:02:09Z",
+    "updated": "2026-07-11T20:44:44Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -10003,7 +10033,7 @@
     "issue": 484,
     "id": "464F0803",
     "title": "Sniper Elite 3: Ultimate Edition",
-    "updated": "2026-05-08T11:42:03Z",
+    "updated": "2026-07-12T10:52:06Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -10506,11 +10536,11 @@
     "issue": 451,
     "id": "5345080E",
     "title": "Alpha Protocol",
-    "updated": "2025-01-22T03:38:12Z",
-    "state": "Gameplay",
+    "updated": "2026-07-12T11:26:42Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
       "others": [
         "tech-middleware-criware",
@@ -12197,7 +12227,7 @@
     "issue": 351,
     "id": "45410964",
     "title": "NHL 12",
-    "updated": "2026-02-11T12:55:22Z",
+    "updated": "2026-07-12T09:17:18Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -13401,7 +13431,7 @@
     "issue": 282,
     "id": "454107D8",
     "title": "NBA LIVE 06",
-    "updated": "2026-05-23T11:50:26Z",
+    "updated": "2026-07-11T18:50:20Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -15335,14 +15365,16 @@
     "issue": 158,
     "id": "494707E4",
     "title": "Race Pro",
-    "updated": "2025-10-16T18:31:48Z",
+    "updated": "2026-07-11T22:08:31Z",
     "state": "Loads",
     "labels": {
       "state": [
         "state-menus"
       ],
       "others": [
-        "backwards-compatibility-unsupported"
+        "kernel-save-file-errors",
+        "backwards-compatibility-unsupported",
+        "tech-uses-xmp"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/158"
@@ -15512,7 +15544,7 @@
     "issue": 148,
     "id": "454109F9",
     "title": "FIFA 19",
-    "updated": "2026-06-24T19:55:45Z",
+    "updated": "2026-07-12T08:58:59Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -16834,7 +16866,7 @@
     "issue": 44,
     "id": "4D5307D5",
     "title": "Gears of War",
-    "updated": "2026-06-08T08:07:00Z",
+    "updated": "2026-07-11T18:00:43Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -16850,13 +16882,14 @@
     "issue": 43,
     "id": "415608A4",
     "title": "Transformers Dark of The Moon",
-    "updated": "2026-05-14T12:40:41Z",
+    "updated": "2026-07-12T15:30:29Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
+        "gpu-drawing-corrupt",
         "tech-physics-physx",
         "marketplace-nodownload",
         "crash-random"
@@ -17364,7 +17397,7 @@
     "issue": 4,
     "id": "4D5307FA",
     "title": "Lost Odyssey",
-    "updated": "2026-07-03T01:04:24Z",
+    "updated": "2026-07-12T17:08:13Z",
     "state": "Gameplay",
     "labels": {
       "state": [

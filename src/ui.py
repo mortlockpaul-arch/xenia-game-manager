@@ -34,7 +34,7 @@ from extract import extract_archives
 from model import GameTableModel
 from db import Database, Compatibility
 from remove_empty_folders import remove_empty_folders
-from updater import Updater, download_file
+from updater import UpdateWorker, UpdateManager
 from utils import smart_title_case, xenia_edge_optimise_settings
 from xboxunity_api import login_xboxunity, test_connectivity
 
@@ -65,11 +65,13 @@ class WidgetInfo:
     config_key_installed: str
     config_key_path: str
 
+
 class DownloadWorker(QThread):
-    file_progress = Signal(int, int)      # bytes done, bytes total
-    overall_progress = Signal(int, int, str)   # file number, total files, filename
     log = Signal(str)
+    overall_progress = Signal(int, int, str)
+    file_progress = Signal(int, int)
     finished = Signal()
+    error = Signal(str)
 
     def __init__(self, files):
         super().__init__()
@@ -79,20 +81,38 @@ class DownloadWorker(QThread):
         downloads_dir = Path.cwd() / "downloads"
         downloads_dir.mkdir(exist_ok=True)
 
-        for i, file in enumerate(self.files, 1):
-            destination = downloads_dir / file["filename"]
+        try:
+            for i, file in enumerate(self.files, 1):
+                destination = downloads_dir / file["filename"]
 
-            self.overall_progress.emit(i, len(self.files), file["filename"])
+                self.overall_progress.emit(
+                    i,
+                    len(self.files),
+                    file["filename"]
+                )
 
-            download_file(
-                file["url"],
-                destination,
-                lambda done, total: self.file_progress.emit(done, total),
-                True,
-                log_call_back=self.log.emit
+                self.updater = UpdateManager()
+
+                self.updater.log.connect(self.log)
+                self.updater.progress.connect(self.file_progress)
+                self.updater.finished.connect(self.finished)
+                self.updater.error.connect(self.error)
+
+                self.updater.download_file(
+                    url=file["url"],
+                    archive_org=True,
+                    path=destination
+                )
+
+            extract_archives(
+                downloads_dir,
+                self.log.emit,
+                remove_archives=False
             )
 
-        extract_archives(downloads_dir, self.log.emit, remove_archives=False)
+        except Exception as e:
+            self.error.emit(str(e))
+            return
 
         self.finished.emit()
 
@@ -138,11 +158,32 @@ class GameLauncher(QMainWindow):
         self.extract_thread.start()
 
     def check_for_updates(self):
-        updater = Updater()
-        updater.check_for_updates(log_call_back=self.log)
+
+        self.update_worker = UpdateWorker()
+
+        self.update_worker.log.connect(self.log)
+        self.update_worker.progress.connect(self.update_progress)
+        self.update_worker.error.connect(self.log)
+        self.update_worker.finished.connect(
+            self.update_finished
+        )
+
+        self.update_worker.start()
+
+    def update_finished(self):
+        self.log("Update check complete")
+
+        self.update_worker.deleteLater()
+
+    def update_progress(self, done, total):
+
+        if total:
+            percent = int((done / total) * 100)
+            self.progress_current.setValue(percent)
 
     def __init__(self):
         super().__init__()
+        self.update_worker = None
         self.xenia_title_updates_path = None
         self.use_xenia_manager_content_for_edge_btn = None
         self.import_edge_btn = None
@@ -705,7 +746,7 @@ class GameLauncher(QMainWindow):
             self.worker.file_progress.connect(self.update_download_progress)
             self.worker.log.connect(self.log)
             self.worker.finished.connect(lambda: self.log("Finished"))
-
+            self.worker.error.connect(self.log)
             self.worker.start()
 
     def build_ui(self):
