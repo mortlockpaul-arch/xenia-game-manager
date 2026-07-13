@@ -216,7 +216,15 @@ class GameLauncher(QMainWindow):
         )
         icon_path = resource_path("assets/icons/app.ico")
         self.setWindowIcon(QIcon(icon_path))
+        from cx_Freeze import Executable
 
+        executables = [
+            Executable(
+                script="main.py",
+                target_name="Xenia Game Manager.exe",
+                icon="assets/icons/app.ico",
+            )
+        ]
 
         self.db = Database()
         self.db.init_db()
@@ -1247,20 +1255,20 @@ class GameLauncher(QMainWindow):
             if (xenia_edge_path / "portable.txt").exists():
                 xenia_exe_configuration_location = xenia_edge_path / "config"
 
+        asset_config = Path(get_app_dir()) / "assets" / "settings" / f"{game_id}.toml"
 
-        if db_game_config_source and Path(db_game_config_source).exists():
+        if asset_config.exists():
+            shutil.copy(asset_config, xenia_exe_configuration_location)
+            self.log(f"Copied {asset_config} to {xenia_exe_configuration_location}")
+        elif db_game_config_source and Path(db_game_config_source).exists():
             shutil.copy(db_game_config_source, xenia_exe_configuration_location)
+            self.log(f"Copied {db_game_config_source} to {xenia_exe_configuration_location}")
         else:
-            print("Config missing:", db_game_config_source)
-
-        print([
-            xenia_exe_path,
-            game_path,
-            db_game_config_source
-        ])
+            self.log(f"Config Missing: {xenia_exe_configuration_location}")
 
         if game_path and not Path(game_path).exists():
-            print("Game path missing:", game_path)
+            self.log(f"Game path Missing: {game_path}")
+            raise Exception
         xenia_exe_path = Path(xenia_exe_path)
         try:
             import subprocess
