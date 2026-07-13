@@ -1,0 +1,8 @@
+# Title Name: Galaga Legions
+# Title ID: 584108BB
+
+[Content]
+license_mask = 1 # Unlocks full game
+
+[GPU]
+vsync = true # Unlocks framerate (Combined with framerate limit set to 0)
