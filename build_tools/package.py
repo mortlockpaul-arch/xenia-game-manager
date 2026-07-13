@@ -37,14 +37,18 @@ def generate_guid():
 
 def zip_portable():
     build_dir = ROOT / "build" / "exe.win-amd64-3.14"
-    out_zip = ROOT / "dist" / "XeniaGameManager-portable.zip"
+    out_zip = ROOT / "dist" / "xenia-game-manager-portable.zip"
 
     out_zip.parent.mkdir(exist_ok=True)
 
     with zipfile.ZipFile(out_zip, "w", zipfile.ZIP_DEFLATED) as zipf:
         for file in build_dir.rglob("*"):
+            if file.name == "portable.txt":
+                continue
             zipf.write(file, file.relative_to(build_dir))
-
+            # Add portable.txt to the root of the ZIP
+        if not (build_dir / "portable.txt").exists():
+            zipf.writestr("portable.txt", "")
     print("Portable ZIP created:", out_zip)
 
 

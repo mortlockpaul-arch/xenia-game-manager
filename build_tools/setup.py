@@ -37,7 +37,7 @@ bdist_msi_options = {
     "launch_on_finish": True,
     "initial_target_dir": r"C:\xenia-game-manager",
     "all_users": True,
-    "output_name": "XeniaGameManager-win64.msi",
+    "output_name": "xenia-game-manager-win64.msi",
     "product_name": "Xenia Game Manager",
     "data": {
         "Icon": [
