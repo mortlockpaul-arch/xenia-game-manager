@@ -157,31 +157,68 @@ class UpdateManager(QObject):
         version: str = data["tag_name"]
         return version
 
-    @staticmethod
-    def check_for_github_update(url: str, current_version: str, asset_index: int = 0):
-        try:
-            response = requests.get(url, timeout=1000)
-            response.raise_for_status()
+    def check_for_github_update(
+            self,
+            url,
+            current_version,
+            asset_index=0,
+            asset_match=None,
+    ):
+        """
+        Checks GitHub for a newer release.
 
-            data = response.json()
+        Returns:
+            (latest_version, download_url) if an update is available,
+            otherwise None.
+        """
 
-            version = data["tag_name"].lstrip("v")
+        headers = {"Accept": "application/vnd.github+json"}
 
-            if version == current_version:
-                return None
+        r = requests.get(url, headers=headers, timeout=30)
+        r.raise_for_status()
 
-            assets = data.get("assets", [])
-            if asset_index >= len(assets):
-                return None
+        release = r.json()
 
-            return version, assets[asset_index]["browser_download_url"]
+        latest_version = release["tag_name"].lstrip("v")
+        current_version = str(current_version).lstrip("v")
 
-        except requests.RequestException:
+        if latest_version == current_version:
             return None
+
+        assets = release.get("assets", [])
+
+        if not assets:
+            return None
+
+        # Select asset by filename if requested
+        if asset_match:
+            asset = next(
+                (
+                    a for a in assets
+                    if asset_match.lower() in a["name"].lower()
+                ),
+                None,
+            )
+
+            if asset is None:
+                raise RuntimeError(
+                    f"No asset matching '{asset_match}' found."
+                )
+
+        else:
+            if asset_index >= len(assets):
+                raise RuntimeError(
+                    f"Release only contains {len(assets)} asset(s)."
+                )
+
+            asset = assets[asset_index]
+
+        return latest_version, asset["browser_download_url"]
 
     def check_for_updates(self):
 
         self._check_component(
+            name="Xenia Edge",
             version_key="edge_version",
             install_path=self.config["xenia_edge_path"],
             current_version=self.config["edge_version"],
@@ -190,6 +227,7 @@ class UpdateManager(QObject):
         )
 
         self._check_component(
+            name="Xenia Game Manager",
             version_key="game_manager_version",
             install_path=self.config["xenia_portable_path"],
             current_version=self.config["game_manager_version"],
@@ -200,6 +238,7 @@ class UpdateManager(QObject):
 
     def _check_component(
             self,
+            name,
             version_key,
             install_path,
             current_version,
@@ -208,14 +247,32 @@ class UpdateManager(QObject):
             asset_name=None,
     ):
 
+        asset_match:str = ""
+
+        if name == "Xenia Game Manager":
+            if Path("portable.txt").exists():
+                asset_match = "portable"
+            else:
+                asset_match = ".msi"
+        if name == "Xenia Edge":
+            edge_path = Path(self.config["xenia_edge_path"])
+            if Path(edge_path / "portable.txt").exists():
+                asset_match = "portable"
+            else:
+                asset_match = ".msi"
+
         result = self.check_for_github_update(
             url=github_url,
             current_version=current_version,
             asset_index=asset_index,
+            asset_match=asset_match,
         )
 
         if not result:
-            self._log("No update available")
+            if name == "Xenia Game Manager":
+                self._log(f"No {name} {asset_match} update available")
+            if name == "Xenia Edge":
+                self._log(f"No {name} {asset_match.title()} update available")
             return False
 
         latest_version, asset_url = result
@@ -225,9 +282,12 @@ class UpdateManager(QObject):
                 urlparse(asset_url).path
             ).name
 
-        self._log(f"Update found: {current_version} -> {latest_version}")
+        self._log(f"{name} Update found: {current_version} -> {latest_version}")
 
-        asset_path = (Path(install_path) / asset_name)
+        if asset_match != "portable":
+            asset_path = Path.home() / asset_name
+        else:
+            asset_path = (Path(install_path) / asset_name)
 
         try:
             self.download_file(asset_url, asset_path, archive_org=False,)
@@ -235,17 +295,17 @@ class UpdateManager(QObject):
         except requests.RequestException as e:
             self.error.emit(f"Download failed: {e}")
             return False
+        if asset_path.suffix.lower() in {".zip", ".7z"}:
+            self._log(f"Extracting {asset_name}...")
 
-        self._log(f"Extracting {asset_name}...")
-
-        if extract_archives(install_path) != 1:
-            self.error.emit(f"Failed extracting {asset_name}")
-            return False
+            if extract_archives(install_path) != 1:
+                self.error.emit(f"Failed extracting {asset_name}")
+                return False
 
         self.config[version_key] = latest_version
 
         save_config(self.config)
 
-        self._log(f"Updated to {latest_version}")
+        self._log(f"{name} Updated to {latest_version}")
 
         return True

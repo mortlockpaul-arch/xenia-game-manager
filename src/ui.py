@@ -26,6 +26,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtWidgets import QMenu
 from PySide6.QtGui import QGuiApplication, QIcon
 
+import db
 from archive_window import ArchiveBrowser
 from download import TUDownloadWorker
 from config import save_config, load_config, load_xenia_manager_config, get_app_dir
@@ -35,7 +36,7 @@ from model import GameTableModel
 from db import Database, Compatibility
 from remove_empty_folders import remove_empty_folders
 from updater import UpdateWorker, UpdateManager
-from utils import smart_title_case, xenia_edge_optimise_settings
+from utils import smart_title_case, xenia_edge_optimise_settings, show_differences
 from xboxunity_api import login_xboxunity, test_connectivity
 
 
@@ -220,7 +221,7 @@ class GameLauncher(QMainWindow):
         self.db = Database()
         self.db.init_db()
         self.model = GameTableModel()
-        self.setFixedSize(1640, 900)
+        self.setFixedSize(1640, 950)
         self.build_ui()
         self.compatibility = Compatibility(self.db, self.log)
 
@@ -452,6 +453,10 @@ class GameLauncher(QMainWindow):
         self.fix_titles_btn = QPushButton("Fix Titles")
         self.fix_titles_btn.clicked.connect(self.fix_titles)
         tools_layout.addWidget(self.fix_titles_btn)
+
+        self.show_differences_btn = QPushButton("Show Xenia Manager Differences")
+        self.show_differences_btn.clicked.connect(self.show_differences)
+        tools_layout.addWidget(self.show_differences_btn)
 
         self.import_btn = QPushButton("Import Xenia Manager Game List")
         self.import_btn.clicked.connect(partial(self.import_games, "xenia_manager"))
@@ -780,7 +785,7 @@ class GameLauncher(QMainWindow):
         self.launch_manager.clicked.connect(partial(self.launch_program, "manager"))
         self.launch_edge = QPushButton("Launch Edge")
         self.launch_edge.clicked.connect(partial(self.launch_program, "edge"))
-        self.btn_tu = QPushButton("Search and Download TUs")
+        self.btn_tu = QPushButton("Download Title Updates")
         self.btn_tu.clicked.connect(self.search_and_download_tus)
         self.archive_button = QPushButton("DLC Downloader")
         self.archive_button.clicked.connect(self.open_archive_browser)
@@ -1291,11 +1296,13 @@ class GameLauncher(QMainWindow):
     # Fix Titles
     # -------------------------
 
+    def show_differences(self):
+        show_differences(self.log)
+
     def fix_titles(self):
 
         updated = 0
-
-        with get_db() as con:
+        with self.db.get_db() as con:
 
             rows = con.execute("""
                 SELECT
@@ -1319,16 +1326,11 @@ class GameLauncher(QMainWindow):
                         cleaned,
                         row["game_id"]
                     ))
-
+                    self.log(f"Cleaned Title {row["title"]} to {cleaned}")
                     updated += 1
 
         self.model.load()
-
-        QMessageBox.information(
-            self,
-            "Done",
-            f"Updated {updated} titles."
-        )
+        self.log(f"Updated {updated} games")
 
     # -------------------------
     # Style

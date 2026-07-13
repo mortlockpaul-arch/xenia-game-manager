@@ -3,10 +3,18 @@ import os
 
 from config import load_config, load_xenia_manager_config, get_app_dir
 
+import re
+
 KEEP_UPPER = {
     "DLC", "HD", "XBLA", "USA", "PAL",
     "NTSC", "GTA", "NBA", "NHL", "UFC",
-    "FIFA", "MX", "ATV", "II", "III", "UGC", "NFS", "IL"
+    "FIFA", "MX", "ATV", "NFS", "PGA",
+    "UGC", "IL", "XL", "HAWX"
+}
+
+ROMAN_NUMERALS = {
+    "I", "II", "III", "IV", "V",
+    "VI", "VII", "VIII", "IX", "X"
 }
 
 
@@ -14,24 +22,40 @@ def smart_title_case(title):
     title = re.sub(r"\s*\(\d+\)$", "", title)
     title = re.sub(r"\s+", " ", title).strip()
 
-    words = []
+    def fix_word(word):
+        m = re.match(r"^(\W*)(.*?)(\W*)$", word)
+        if not m:
+            return word
 
-    for word in title.split():
+        prefix, core, suffix = m.groups()
 
-        # already normal mixed case
-        if not word.isupper():
-            words.append(word)
-            continue
+        if not core:
+            return word
 
-        # preserve acronyms
-        if word in KEEP_UPPER:
-            words.append(word)
-            continue
+        parts = []
+        for part in core.split("-"):
 
-        # convert shouting words
-        words.append(word.capitalize())
+            # Preserve acronyms with periods (H.A.W.X., U.S.A., etc.)
+            if re.fullmatch(r"(?:[A-Z]\.)+[A-Z]?\.?", part):
+                parts.append(part.upper().rstrip("."))  # remove trailing dot if desired
+                continue
 
-    return " ".join(words)
+            upper = part.upper()
+
+            # Remove periods for acronym lookup
+            lookup = upper.replace(".", "")
+
+            if lookup in KEEP_UPPER or upper in ROMAN_NUMERALS:
+                # Restore acronym with periods if present
+                parts.append(upper.rstrip(".") if "." in part else upper)
+            elif part.isupper():
+                parts.append(part.capitalize())
+            else:
+                parts.append(part)
+
+        return prefix + "-".join(parts) + suffix
+
+    return " ".join(fix_word(w) for w in title.split())
 
 from pathlib import Path
 import shutil
@@ -407,7 +431,7 @@ from difflib import unified_diff
 import json
 
 
-def show_game_diff(file1, file2):
+def show_game_diff(file1, file2, log_call_back):
     with open(file1, encoding="utf-8") as f:
         old_games = json.load(f)
 
@@ -424,17 +448,17 @@ def show_game_diff(file1, file2):
     removed = old.keys() - new.keys()
     common = old.keys() & new.keys()
 
-    print(f"Added: {len(added)}")
+    log_call_back(f"Added: {len(added)}")
     for k in sorted(added):
         g = new[k]
-        print(f"  + {g['title']} ({g['game_id']} / {g['media_id']})")
+        log_call_back(f"  + {g['title']} ({g['game_id']} / {g['media_id']})")
 
-    print(f"\nRemoved: {len(removed)}")
+    log_call_back(f"Removed: {len(removed)}")
     for k in sorted(removed):
         g = old[k]
-        print(f"  - {g['title']} ({g['game_id']} / {g['media_id']})")
+        log_call_back(f"  - {g['title']} ({g['game_id']} / {g['media_id']})")
 
-    print("\nModified:")
+    log_call_back(f"Modified: {len(common)}")
     for k in sorted(common):
         before = old[k]
         after = new[k]
@@ -446,48 +470,14 @@ def show_game_diff(file1, file2):
                 changes.append(field)
 
         if changes:
-            print(f"* {after['title']}: {', '.join(changes)}")
+            log_call_back(f"* {after['title']}: {', '.join(changes)}")
 
-config = load_config()
-xenia_manager_path = Path(config["xenia_manager_path"])
+def show_differences(log_callback):
+    config = load_config()
+    xenia_manager_path = Path(config["xenia_manager_path"])
 
-show_game_diff(
-    xenia_manager_path / "config" / "games.json.backup",
-    xenia_manager_path / "config" / "games.json",
-)
-
-    #
-    # config = load_config()
-    # xenia_manager_installed = config["xenia_manager_installed"]
-    # if xenia_manager_installed:
-    #     xenia_manager_path = Path(config["xenia_manager_path"])
-    #     xenia_manager_config = load_xenia_manager_config(xenia_manager_path)
-    #
-    #     unified_content: bool = (xenia_manager_config["emulators"]["settings"]["unified_content"])
-    #     xenia_path = Path(xenia_manager_config["emulators"]["canary"]["executable_location"])
-    #     xenia_emulator_location = Path(xenia_manager_config["emulators"]["canary"]["emulator_location"])
-    #     emulators_dir = Path(xenia_emulator_location).parent
-    #     if unified_content:
-    #         xenia_content_folder = Path.joinpath(xenia_manager_path, emulators_dir, "Content")
-    #     else:
-    #         xenia_content_folder = Path.joinpath(xenia_emulator_location, "content")
-    #
-    #     profile_info = detect_profiles(xenia_content_folder)
-    #
-    #     for profile in profile_info:
-    #         xuid = profile["xuid"]
-    #         profile_path = Path(profile["path"])
-    #         account_path = (
-    #                 profile_path
-    #                 / "FFFE07D1"
-    #                 / "00010000"
-    #                 / xuid
-    #                 / "Account"
-    #         )
-    #         print(xuid)
-    #         print(profile_path)
-    #         print(account_path)
-    # else:
-    #     print("Xenia Manager is not installed")
-    #
-    # xenia_edge_optimise_settings()
+    show_game_diff(
+        xenia_manager_path / "config" / "games.json",
+        get_app_dir() / "config" / "games.json",
+        log_call_back=log_callback
+    )
