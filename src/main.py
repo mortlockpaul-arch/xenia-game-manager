@@ -23,6 +23,15 @@ def disc_count():
         ).fetchone()[0]
 
 def main():
+    import ctypes
+    appid = "PaulMortlock.XeniaGameManager"
+    set_appid = getattr(
+        ctypes.windll.shell32,
+        "SetCurrentProcessExplicitAppUserModelID",
+        None,
+    )
+    if set_appid:
+        set_appid(appid)
     app = QApplication(sys.argv)
     print(game_count())
     print(disc_count())
