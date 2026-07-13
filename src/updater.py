@@ -229,7 +229,7 @@ class UpdateManager(QObject):
         self._check_component(
             name="Xenia Game Manager",
             version_key="game_manager_version",
-            install_path=self.config["xenia_portable_path"],
+            install_path=self.config["xenia_game_manager_portable_path"],
             current_version=self.config["game_manager_version"],
             github_url=self.config["xenia_game_manager_url"],
         )
