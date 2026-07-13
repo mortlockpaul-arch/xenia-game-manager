@@ -24,9 +24,10 @@ build_exe_options = {
     "include_files": [
         (str(ROOT / "src" / "db"), "db"),
         (str(ROOT / "src" / "config"), "config"),
-        (str(ROOT / "assets" / "icons"), "assets/icons"),
+        (str(ROOT / "src" / "assets" / "icons"), "assets/icons"),
         (str(ROOT / "src" / "assets" / "settings"), "assets/settings"),
         (str(ROOT / "src" / "assets" / "zip"), "assets/zip"),
+        (str(ROOT / "src" / "assets" / "default"), "assets/default"),
     ],
     "optimize": 2,
 }
