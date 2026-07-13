@@ -7,7 +7,9 @@ ROOT = Path(__file__).resolve().parent.parent
 APP_NAME = "Xenia Game Manager"
 VERSION = get_version()
 
-base = "gui"
+from sys import platform
+
+base = "gui" if platform == "win32" else None
 
 executables = [
     Executable(

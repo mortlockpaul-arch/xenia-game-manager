@@ -216,15 +216,6 @@ class GameLauncher(QMainWindow):
         )
         icon_path = resource_path("assets/icons/app.ico")
         self.setWindowIcon(QIcon(icon_path))
-        from cx_Freeze import Executable
-
-        executables = [
-            Executable(
-                script="main.py",
-                target_name="Xenia Game Manager.exe",
-                icon="assets/icons/app.ico",
-            )
-        ]
 
         self.db = Database()
         self.db.init_db()
