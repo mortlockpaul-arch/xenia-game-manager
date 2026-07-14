@@ -11,7 +11,7 @@ from datetime import datetime
 from pathlib import Path
 import time
 
-from PySide6.QtCore import Qt, QEasingCurve, QPropertyAnimation, QRect, QThread, Signal, QObject, Slot
+from PySide6.QtCore import Qt, QEasingCurve, QPropertyAnimation, QRect, QThread, Signal, QObject, Slot, QTimer
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -272,7 +272,7 @@ class GameLauncher(QMainWindow):
             ),
         }
 
-        self.load_saved_config()
+        QTimer.singleShot(5000, self.load_saved_config)
 
     def create_settings_drawer(self):
 
@@ -730,27 +730,7 @@ class GameLauncher(QMainWindow):
     from pathlib import Path
 
     def launch_program(self, program):
-        xenia_manager_installed = self.config["xenia_manager_installed"]
-        if not xenia_manager_installed:
-            exe = Path(r"C:\xenia-manager") / "XeniaManager.exe"
-
-            if not exe.exists():
-                try:
-                    installer = XeniaManagerInstaller()
-                    exe = installer.install()
-                    self.config["xenia_manager_installed"] = True
-                    self.config["xenia_manager_path"] = str(exe)
-                    save_config(self.config)
-                    self.config = load_config()
-                    xenia_manager_installed = self.config["xenia_manager_installed"]
-                    button_text = "Launch Xenia Manager"
-                    if not xenia_manager_installed:
-                        button_text = "Install Xenia Manager"
-                    self.launch_manager.setText(button_text)
-                    self.launch_manager.repaint()
-                except Exception as e:
-                    QMessageBox.critical(self, "Install Failed", str(e))
-                    return
+        self.method_name()
         self.config = load_config()
         programs = {
             "manager": Path(self.config["xenia_manager_path"]) / "XeniaManager.exe",
@@ -1005,6 +985,23 @@ class GameLauncher(QMainWindow):
         save_config(config)
 
     def load_saved_config(self):
+        self.method_name()
+
+        self.config = load_config()
+        self.set_checkbox("manager", self.config.get("xenia_manager_installed", False), save=False)
+        self.set_checkbox("canary", self.config.get("xenia_canary_installed", False), save=False)
+        self.set_checkbox("edge", self.config.get("xenia_edge_installed", False), save=False)
+        self.entry_user.setText(self.config.get("username", ""))
+        self.entry_pass.setText(self.config.get("password", ""))
+        self.entry_apikey.setText(self.config.get("api_key", ""))
+        self.xenia_manager_path.setText(self.config.get("xenia_manager_path", ""))
+        self.xenia_canary_path.setText(self.config.get("xenia_canary_path", ""))
+        self.xenia_edge_path.setText(self.config.get("xenia_edge_path", ""))
+        self.xenia_title_updates_path.setText(self.config.get("xenia_title_updates_path", ""))
+        if self.config.get("api_key"):
+            self.api_key = self.config["api_key"]
+
+    def method_name(self):
         self.config = load_config()
         exe = Path(r"C:\xenia-manager") / "XeniaManager.exe"
         if not exe.exists():
@@ -1038,20 +1035,6 @@ class GameLauncher(QMainWindow):
                 button_text = "Install Xenia Manager"
             self.launch_edge.setText(button_text)
             self.launch_edge.repaint()
-
-        self.config = load_config()
-        self.set_checkbox("manager", self.config.get("xenia_manager_installed", False), save=False)
-        self.set_checkbox("canary", self.config.get("xenia_canary_installed", False), save=False)
-        self.set_checkbox("edge", self.config.get("xenia_edge_installed", False), save=False)
-        self.entry_user.setText(self.config.get("username", ""))
-        self.entry_pass.setText(self.config.get("password", ""))
-        self.entry_apikey.setText(self.config.get("api_key", ""))
-        self.xenia_manager_path.setText(self.config.get("xenia_manager_path", ""))
-        self.xenia_canary_path.setText(self.config.get("xenia_canary_path", ""))
-        self.xenia_edge_path.setText(self.config.get("xenia_edge_path", ""))
-        self.xenia_title_updates_path.setText(self.config.get("xenia_title_updates_path", ""))
-        if self.config.get("api_key"):
-            self.api_key = self.config["api_key"]
 
     def login(self):
         username = self.entry_user.text().strip()
