@@ -432,6 +432,12 @@ import json
 
 
 def show_game_diff(file1, file2, log_call_back):
+    if not file1.exists():
+        log_call_back(f"File {file1} does not exist")
+        return
+    if not file2.exists():
+        log_call_back(f"File {file2} does not exist")
+        return
     with open(file1, encoding="utf-8") as f:
         old_games = json.load(f)
 
