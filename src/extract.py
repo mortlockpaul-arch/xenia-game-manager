@@ -10,6 +10,8 @@ def extract_archives(folder, log_callback=None, subfolder=False, remove_archives
     Deletes archive only if extraction succeeds.
     """
     folder = Path(folder)
+    msg = f"Folder: {folder.name}"
+    (log_callback or print)(msg)
     count = 0
     root = get_app_dir()
     seven_zip_path = Path(get_app_dir()) / "assets" / "zip" / "7z.exe"
@@ -19,7 +21,8 @@ def extract_archives(folder, log_callback=None, subfolder=False, remove_archives
 
         if subfolder: output_dir = folder / archive.stem
         else: output_dir = folder
-
+        msg = f"Archive: {archive.name}"
+        (log_callback or print)(msg)
         output_dir.mkdir(parents=True, exist_ok=True)
 
         cmd = [

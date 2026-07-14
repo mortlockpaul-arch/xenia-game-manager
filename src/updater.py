@@ -272,7 +272,7 @@ class UpdateManager(QObject):
             if name == "Xenia Game Manager":
                 self._log(f"No {name} {asset_match} update available")
             if name == "Xenia Edge":
-                self._log(f"No {name} {asset_match.title()} update available")
+                self._log(f"No {name} {asset_match} update available")
             return False
 
         latest_version, asset_url = result

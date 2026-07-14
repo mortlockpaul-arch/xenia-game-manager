@@ -14,7 +14,7 @@
     "xenia_mousehook_installed": false,
     "xenia_title_updates_path": "C:/Title Updates",
     "edge_version": "5796dd4",
-    "game_manager_version": "0.9.0",
+    "game_manager_version": "0.9.1",
     "xenia_game_manager_portable_path": "C:/xenia-game-manager/",
     "xenia_edge_url": "https://api.github.com/repos/has207/xenia-edge/releases/latest",
     "xenia_game_compatibility_url": "https://api.github.com/repos/xenia-canary/game-compatibility/releases/latest",

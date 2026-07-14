@@ -21,7 +21,7 @@ from PySide6.QtWidgets import (
     QTableView,
     QMessageBox,
     QHeaderView, QPlainTextEdit, QGroupBox, QLabel, QSizePolicy, QMainWindow, QFormLayout, QToolButton, QFileDialog,
-    QFrame, QGraphicsDropShadowEffect, QProgressBar, QCheckBox, QApplication,
+    QFrame, QGraphicsDropShadowEffect, QProgressBar, QCheckBox, QApplication, QGridLayout,
 )
 from PySide6.QtWidgets import QMenu
 from PySide6.QtGui import QGuiApplication, QIcon
@@ -150,13 +150,15 @@ class GameLauncher(QMainWindow):
                 base_dir / "Downloads",
             ]
         )
-
+        self.extract_downloaded_archives_btn.setEnabled(False)
         self.extract_worker.log.connect(self.log)
         self.extract_worker.moveToThread(self.extract_thread)
         self.extract_thread.started.connect(self.extract_worker.run)
         self.extract_worker.finished.connect(self.extract_thread.quit)
         self.extract_worker.finished.connect(self.extract_worker.deleteLater)
-        self.extract_thread.finished.connect(self.extract_thread.deleteLater)
+        self.extract_thread.finished.connect(
+            lambda: self.extract_downloaded_archives_btn.setEnabled(True)
+        )
         self.extract_thread.start()
 
     def check_for_updates(self):
@@ -185,6 +187,7 @@ class GameLauncher(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.extract_downloaded_archives_btn = None
         self.config = None
         self.archive_button = None
         self.launch_edge = None
@@ -452,11 +455,12 @@ class GameLauncher(QMainWindow):
 
         tools_box = QGroupBox("Tools")
 
-        tools_layout = QVBoxLayout()
+        tools_layout = QGridLayout()
+        tools_layout.setContentsMargins(4, 2, 4, 4)
+        tools_layout.setSpacing(3)
 
         self.fix_titles_btn = QPushButton("Fix Titles")
         self.fix_titles_btn.clicked.connect(self.fix_titles)
-        tools_layout.addWidget(self.fix_titles_btn)
 
         self.show_differences_btn = QPushButton("Show Xenia Manager Differences")
         self.show_differences_btn.clicked.connect(self.show_differences)
@@ -464,15 +468,12 @@ class GameLauncher(QMainWindow):
 
         self.import_btn = QPushButton("Import Xenia Manager Game List")
         self.import_btn.clicked.connect(partial(self.import_games, "xenia_manager"))
-        tools_layout.addWidget(self.import_btn)
 
         self.import_edge_btn = QPushButton("Import Xenia Edge Game List")
         self.import_edge_btn.clicked.connect(partial(self.import_games, "xenia_edge"))
-        tools_layout.addWidget(self.import_edge_btn)
-        #
-        # self.export_btn = QPushButton("Update Xenia Manager Game List")
-        # self.export_btn.clicked.connect(self.export_titles)
-        # tools_layout.addWidget(self.export_btn)
+
+        self.export_btn = QPushButton("Update Xenia Manager Game List")
+        self.export_btn.clicked.connect(self.export_titles)
 
         # self.refresh_btn = QPushButton("Refresh")
         # self.refresh_btn.clicked.connect(self.refresh)
@@ -480,21 +481,17 @@ class GameLauncher(QMainWindow):
 
         self.xenia_edge_optimise_btn = QPushButton("Create Xenia Edge Optimised Settings")
         self.xenia_edge_optimise_btn.clicked.connect(self.on_optimize_xenia_clicked)
-        tools_layout.addWidget(self.xenia_edge_optimise_btn)
 
         self.check_update_btn = QPushButton("Check for Updates")
         self.check_update_btn.clicked.connect(self.check_for_updates)
         self.remove_clean_btn = QPushButton("Remove Empty Folders")
         self.remove_clean_btn.clicked.connect(self.remove_clean_folders)
-        self.remove_clean_btn = QPushButton("Extract Downloaded Archives")
-        self.remove_clean_btn.clicked.connect(self.extract_downloaded_archives)
+        self.extract_downloaded_archives_btn = QPushButton("Extract Downloaded Archives")
+        self.extract_downloaded_archives_btn.clicked.connect(self.extract_downloaded_archives)
 
         self.use_xenia_manager_content_for_edge_btn = QPushButton(
-            "Use Xenia Manager Unified Content folder for Xenia Edge")
+            "Link Xenia Edge Content Folder")
         self.use_xenia_manager_content_for_edge_btn.clicked.connect(self.use_xenia_manager_content_for_edge)
-        tools_layout.addWidget(self.use_xenia_manager_content_for_edge_btn)
-        tools_layout.addWidget(self.remove_clean_btn)
-        tools_layout.addWidget(self.check_update_btn)
 
         tools_box.setLayout(tools_layout)
 
@@ -504,17 +501,30 @@ class GameLauncher(QMainWindow):
 
         buttons = [
             self.fix_titles_btn,
+            self.show_differences_btn,
             self.import_btn,
             self.import_edge_btn,
+            self.export_btn,
             self.xenia_edge_optimise_btn,
-            self.check_update_btn,
             self.use_xenia_manager_content_for_edge_btn,
             self.remove_clean_btn,
+            self.check_update_btn,
+            self.extract_downloaded_archives_btn,
         ]
 
-        for button in buttons:
-            button.setMinimumHeight(32)
+        for index, button in enumerate(buttons):
+            row = index // 2
+            column = index % 2
 
+            button.setMinimumHeight(34)
+            button.setMaximumHeight(36)
+            button.setStyleSheet("""
+                QPushButton {
+                    font-size: 10pt;
+                }
+            """)
+
+            tools_layout.addWidget(button, row, column)
         self.settings_drawer.hide()
 
     from PySide6.QtWidgets import QMessageBox
@@ -1025,6 +1035,9 @@ class GameLauncher(QMainWindow):
             installer.INSTALL_PATH = exe
             installer.MANAGER_OR_EDGE = "Edge"
             exe = installer.install(log_callback=self.log)
+            # Create portable.txt
+            portable_file = exe.parent / "portable.txt"
+            portable_file.touch(exist_ok=True)
             self.config["xenia_edge_installed"] = True
             self.config["xenia_edge_path"] = str(exe)
             save_config(self.config)
