@@ -812,7 +812,12 @@ class GameLauncher(QMainWindow):
             button_text = "Install Xenia Manager"
         self.launch_manager = QPushButton(button_text)
         self.launch_manager.clicked.connect(partial(self.launch_program, "manager"))
-        self.launch_edge = QPushButton("Launch Edge")
+
+        xenia_edge_installed = self.config["xenia_edge_installed"]
+        button_text = "Launch Xenia Edge"
+        if not xenia_edge_installed:
+            button_text = "Install Xenia Edge"
+        self.launch_edge = QPushButton(button_text)
         self.launch_edge.clicked.connect(partial(self.launch_program, "edge"))
         self.btn_tu = QPushButton("Download Title Updates")
         self.btn_tu.clicked.connect(self.search_and_download_tus)
@@ -1015,6 +1020,25 @@ class GameLauncher(QMainWindow):
                 button_text = "Install Xenia Manager"
             self.launch_manager.setText(button_text)
             self.launch_manager.repaint()
+
+        exe = Path(r"C:\xenia-manager") / "emulators" / "Xenia Edge" / "xenia_edge.exe"
+        if not exe.exists():
+            installer = XeniaManagerInstaller()
+            installer.GITHUB_API = "https://api.github.com/repos/has207/xenia-edge/releases/latest"
+            installer.INSTALL_PATH = exe
+            installer.MANAGER_OR_EDGE = "Edge"
+            exe = installer.install(log_callback=self.log)
+            self.config["xenia_edge_installed"] = True
+            self.config["xenia_edge_path"] = str(exe)
+            save_config(self.config)
+            self.config = load_config()
+            xenia_manager_installed = self.config["xenia_edge_installed"]
+            button_text = "Launch Xenia Edge"
+            if not xenia_manager_installed:
+                button_text = "Install Xenia Manager"
+            self.launch_edge.setText(button_text)
+            self.launch_edge.repaint()
+
         self.config = load_config()
         self.set_checkbox("manager", self.config.get("xenia_manager_installed", False), save=False)
         self.set_checkbox("canary", self.config.get("xenia_canary_installed", False), save=False)

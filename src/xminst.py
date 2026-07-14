@@ -11,6 +11,7 @@ class XeniaManagerInstaller:
 
     GITHUB_API = "https://api.github.com/repos/xenia-manager/xenia-manager/releases/latest"
     INSTALL_PATH = Path(r"C:\xenia-manager")
+    MANAGER_OR_EDGE = "Manager"
 
     def install(self, log_callback=None):
 
@@ -18,7 +19,7 @@ class XeniaManagerInstaller:
             if log_callback:
                 log_callback(msg)
 
-        log("Checking for latest Xenia Manager...")
+        log(f"Checking for latest Xenia {self.MANAGER_OR_EDGE}...")
 
         release = requests.get(self.GITHUB_API, timeout=30)
         release.raise_for_status()
@@ -57,6 +58,6 @@ class XeniaManagerInstaller:
         with zipfile.ZipFile(zip_path) as z:
             z.extractall(self.INSTALL_PATH)
 
-        log("Xenia Manager installed.")
+        log(f"Xenia {self.MANAGER_OR_EDGE} installed.")
 
         return self.INSTALL_PATH
