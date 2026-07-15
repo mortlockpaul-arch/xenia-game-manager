@@ -1033,38 +1033,46 @@ class GameLauncher(QMainWindow):
         if not exe.exists() and not xenia_manager_installed:
             installer = XeniaManagerInstaller()
             exe = installer.install(log_callback=self.log)
+
+        if exe and exe.exists():
             self.config["xenia_manager_installed"] = True
             self.config["xenia_manager_path"] = str(exe)
             save_config(self.config)
-            self.config = load_config()
-            xenia_manager_installed = self.config["xenia_manager_installed"]
-            button_text = "Launch Xenia Manager"
-            if not xenia_manager_installed:
-                button_text = "Install Xenia Manager"
-            self.launch_manager.setText(button_text)
-            self.launch_manager.repaint()
+
+        self.config = load_config()
+        xenia_manager_installed = self.config.get("xenia_manager_installed", False)
+
+        button_text = "Launch Xenia Manager" if xenia_manager_installed else "Install Xenia Manager"
+        self.launch_manager.setText(button_text)
+        self.launch_manager.repaint()
 
         exe = Path(r"C:\xenia-manager") / "emulators" / "Xenia Edge" / "xenia_edge.exe"
+        install_path = exe.parent
         xenia_edge_installed = self.config.get("xenia_edge_installed", False)
         if not exe.exists() and not xenia_edge_installed:
             installer = XeniaManagerInstaller()
             installer.GITHUB_API = "https://api.github.com/repos/has207/xenia-edge/releases/latest"
-            installer.INSTALL_PATH = exe
+            installer.INSTALL_PATH = install_path
             installer.MANAGER_OR_EDGE = "Edge"
+
             exe = installer.install(log_callback=self.log)
+
+        if exe and exe.exists():
             # Create portable.txt
-            portable_file = exe.parent / "portable.txt"
+            portable_file = install_path / "portable.txt"
             portable_file.touch(exist_ok=True)
+
             self.config["xenia_edge_installed"] = True
-            self.config["xenia_edge_path"] = str(exe)
+            self.config["xenia_edge_path"] = str(install_path)
             save_config(self.config)
-            self.config = load_config()
-            xenia_manager_installed = self.config["xenia_edge_installed"]
-            button_text = "Launch Xenia Edge"
-            if not xenia_manager_installed:
-                button_text = "Install Xenia Manager"
-            self.launch_edge.setText(button_text)
-            self.launch_edge.repaint()
+
+        # Refresh config state
+        self.config = load_config()
+        xenia_edge_installed = self.config.get("xenia_edge_installed", False)
+
+        button_text = "Launch Xenia Edge" if xenia_edge_installed else "Install Xenia Edge"
+        self.launch_edge.setText(button_text)
+        self.launch_edge.repaint()
 
     def login(self):
         username = self.entry_user.text().strip()
