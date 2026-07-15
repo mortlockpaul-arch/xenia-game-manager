@@ -1,9 +1,25 @@
 [
   {
+    "issue": 1162,
+    "id": "58410B16",
+    "title": "Street Fighter III: Online Edition",
+    "updated": "2026-07-14T17:09:32Z",
+    "state": "Gameplay",
+    "labels": {
+      "state": [
+        "state-gameplay"
+      ],
+      "others": [
+        "vsync-off-speedup"
+      ]
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1162"
+  },
+  {
     "issue": 1161,
     "id": "57520824",
     "title": "The Witcher 2: Assassins of Kings - Enhanced Edition",
-    "updated": "2026-07-13T14:28:52Z",
+    "updated": "2026-07-13T21:21:25Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -11,7 +27,8 @@
       ],
       "others": [
         "gpu-drawing-corrupt",
-        "gpu-readback"
+        "gpu-readback",
+        "tech-engine-red"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/1161"
@@ -4436,7 +4453,7 @@
     "issue": 851,
     "id": "45410950",
     "title": "Battlefield 3",
-    "updated": "2026-05-08T16:30:17Z",
+    "updated": "2026-07-14T16:46:11Z",
     "state": "Loads",
     "labels": {
       "state": [
@@ -4624,13 +4641,15 @@
     "issue": 840,
     "id": "454109AB",
     "title": "Army of Two: The Devil's Cartel",
-    "updated": "2026-06-15T14:09:10Z",
+    "updated": "2026-07-14T16:45:25Z",
     "state": "Loads",
     "labels": {
       "state": [
         "state-intro"
       ],
-      "others": []
+      "others": [
+        "tech-engine-frostbite"
+      ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/840"
   },
@@ -7806,13 +7825,15 @@
     "issue": 627,
     "id": "43430819",
     "title": "Resident Evil 6",
-    "updated": "2025-07-03T08:14:04Z",
+    "updated": "2026-07-14T17:10:11Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
-      "others": []
+      "others": [
+        "gpu-drawing-corrupt"
+      ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/627"
   },
@@ -9958,7 +9979,7 @@
     "issue": 490,
     "id": "58410957",
     "title": "Call of Duty Classic",
-    "updated": "2026-05-20T19:10:24Z",
+    "updated": "2026-07-14T08:22:03Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -11264,13 +11285,16 @@
     "issue": 409,
     "id": "4D53084D",
     "title": "Forza Motorsport 3",
-    "updated": "2026-07-07T15:27:15Z",
-    "state": "Gameplay",
+    "updated": "2026-07-14T11:13:44Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
-      "others": []
+      "others": [
+        "gpu-readback",
+        "gpu-occlusion-query"
+      ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/409"
   },
@@ -14557,7 +14581,7 @@
     "issue": 215,
     "id": "4D530877",
     "title": "Halo 3: ODST",
-    "updated": "2026-06-02T11:13:25Z",
+    "updated": "2026-07-14T16:49:40Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -14567,7 +14591,8 @@
         "tech-engine-blam",
         "gpu-readback",
         "kernel-KeSetCurrentStackPointers",
-        "vsync-off-speedup"
+        "vsync-off-speedup",
+        "gpu-occlusion-query"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/215"
@@ -16435,7 +16460,7 @@
     "issue": 77,
     "id": "4D5307D3",
     "title": "PERFECT DARK ZERO",
-    "updated": "2026-05-01T22:02:10Z",
+    "updated": "2026-07-14T16:45:17Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -16919,11 +16944,11 @@
     "issue": 42,
     "id": "5454086B",
     "title": "Max Payne 3",
-    "updated": "2026-07-08T14:37:44Z",
-    "state": "Gameplay",
+    "updated": "2026-07-14T14:58:26Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
       "others": [
         "tech-engine-rage",

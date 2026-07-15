@@ -36,11 +36,11 @@ extend
 def generate_guid():
     return str(uuid.uuid4())
 
+from pathlib import Path
 
 def zip_portable():
-    build_dir = ROOT / "build" / "exe.win-amd64-3.14"
-    out_zip = ROOT / "dist" / "xenia-game-manager-portable.zip"
-
+    build_dir = Path("build") / "exe.win-amd64-3.14"
+    out_zip = Path("dist") / "xenia-game-manager-portable.zip"
     out_zip.parent.mkdir(exist_ok=True)
 
     with zipfile.ZipFile(out_zip, "w", zipfile.ZIP_DEFLATED) as zipf:
@@ -53,8 +53,14 @@ def zip_portable():
             zipf.writestr("portable.txt", "")
     print("Portable ZIP created:", out_zip)
 
+import shutil
+from pathlib import Path
+
+import shutil
+from pathlib import Path
+
 def create_defaults():
-    print("Creating default game manager")
+    print("Creating default game manager database and configuration files...")
 
     base_path = Path.cwd().parent / "src"
     default_path = base_path / "assets" / "default"
@@ -62,35 +68,51 @@ def create_defaults():
     db_dir = base_path / "db"
     config_dir = base_path / "config"
 
+    backup_dir = base_path / "backup"
+    backup_dir.mkdir(parents=True, exist_ok=True)
+
     db_dir.mkdir(parents=True, exist_ok=True)
     config_dir.mkdir(parents=True, exist_ok=True)
 
-    def backup_existing(path):
-        if path.exists():
-            backup = path.with_name(path.name + ".previous")
+    def backup_existing(path: Path):
+        if not path.exists():
+            print(f"  No existing file to back up: {path.name}")
+            return
 
-            if backup.exists():
-                backup.unlink()
+        backup = backup_dir / path.name
 
-            path.rename(backup)
+        if backup.exists():
+            print(f"  Removing old backup: {backup.name}")
+            backup.unlink()
 
-    # Copy database
+        print(f"  Backing up {path.name} -> {backup}")
+        shutil.move(path, backup)
+
+    # Database
     default_db = default_path / "games.db"
     db_target = db_dir / "games.db"
 
     backup_existing(db_target)
 
     if default_db.exists():
+        print(f"  Installing default database: {db_target}")
         shutil.copy2(default_db, db_target)
+    else:
+        print(f"  Default database not found: {default_db}")
 
-    # Copy config
-    default_config = default_path / ".x360-game-manager-config.json"
-    config_target = config_dir / ".x360-game-manager-config.json"
+    # Configuration
+    default_config = default_path / "game-manager-config.json"
+    config_target = config_dir / "game-manager-config.json"
 
     backup_existing(config_target)
 
     if default_config.exists():
+        print(f"  Installing default configuration: {config_target}")
         shutil.copy2(default_config, config_target)
+    else:
+        print(f"  Default configuration not found: {default_config}")
+
+    print("Done.")
 
 def copy_optimized_settings():
     settings_dest = ROOT / "src" / "assets" / "settings"
@@ -117,12 +139,7 @@ def copy_optimized_settings():
     else:
         print(f"Updated {copied} file(s).")
 
-
 if __name__ == "__main__":
     create_defaults()
     copy_optimized_settings()
     zip_portable()
-    # print(generate_guid())
-
-
-    # disk_fix()

@@ -24,7 +24,7 @@ def load_xenia_manager_config(xenia_manager_path):
 def load_config():
     datadir = get_app_dir()
     config_dir = os.path.join(datadir, "config")
-    config_file = os.path.join(config_dir, ".x360-game-manager-config.json")
+    config_file = os.path.join(config_dir, "game-manager-config.json")
     try:
         with open(config_file, "r", encoding="utf-8") as f:
             return json.load(f)
@@ -35,7 +35,7 @@ def load_config():
 def save_config(data: dict):
     datadir = get_app_dir()
     config_dir = os.path.join(datadir, "config")
-    config_file = os.path.join(config_dir, ".x360-game-manager-config.json")
+    config_file = os.path.join(config_dir, "game-manager-config.json")
     try:
         with open(config_file, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4)

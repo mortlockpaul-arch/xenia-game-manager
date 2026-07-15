@@ -13,5 +13,6 @@ dependencies = [
     "requests>=2.34.2",
     "pywin32>=311",
     "browser-cookie3>=0.20.1",
-    "download-file>=0.2",
+    "tomli-w>=1.2.0",
+    "tomlkit>=0.15.0",
 ]

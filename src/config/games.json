@@ -267,7 +267,7 @@
     "alternative_id": [],
     "media_id": "78B89007",
     "title": "Alan Wakes American Nightmare",
-    "playtime": 0,
+    "playtime": 0.623027545,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "https://github.com/xenia-canary/game-compatibility/issues/353",
@@ -428,7 +428,7 @@
     "alternative_id": [],
     "media_id": "5C19C70F",
     "title": "Aliens vs Predator",
-    "playtime": 0,
+    "playtime": 6.910634333333333,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "https://github.com/xenia-canary/game-compatibility/issues/660",
@@ -1748,7 +1748,7 @@
     ],
     "media_id": "2C584E7F",
     "title": "Diablo III",
-    "playtime": 261.38869761,
+    "playtime": 317.24126590333333,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "https://github.com/xenia-canary/game-compatibility/issues/48",
@@ -1941,6 +1941,29 @@
     }
   },
   {
+    "game_id": "434D084F",
+    "alternative_id": [],
+    "media_id": "1B2F61B1",
+    "title": "F1 2013 - Complete Edition",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/1069",
+      "rating": "Gameplay"
+    },
+    "artwork": {
+      "background": "GameData\\F1 2013 - Complete Edition\\Artwork\\Background.jpg",
+      "boxart": "GameData\\F1 2013 - Complete Edition\\Artwork\\Boxart.png",
+      "icon": "GameData\\F1 2013 - Complete Edition\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "D:\\roms\\xbox360\\F1 2013 - Complete Edition (Europe) (En,Fr,De,Es,It,Pl,Ru).iso",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\F1 2013 - Complete Edition.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
     "game_id": "434D0849",
     "alternative_id": [
       "434D884D"
@@ -1988,6 +2011,31 @@
       "game": "D:\\roms\\xbox360\\Fable - The Journey (Europe) (En,It,Pt).zar",
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Fable The Journey.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
+    "game_id": "425307E0",
+    "alternative_id": [
+      "425307EE"
+    ],
+    "media_id": "6470401C",
+    "title": "Fallout - New Vegas",
+    "playtime": 64.83310039166666,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/850",
+      "rating": "Playable"
+    },
+    "artwork": {
+      "background": "GameData\\Fallout - New Vegas\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Fallout - New Vegas\\Artwork\\Boxart.png",
+      "icon": "GameData\\Fallout - New Vegas\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "D:\\roms\\xbox360\\Fallout - New Vegas (USA, Europe).iso",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Fallout - New Vegas.config.toml",
       "custom_emulator_executable": null
     }
   },
@@ -2133,6 +2181,31 @@
       "game": "D:\\roms\\xbox360\\Forza Motorsport 2 (Europe) (En,Ja,Fr,De,Es,It,Zh,Ko,Pl,Cs,Hu).iso",
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Forza Motorsport 2.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
+    "game_id": "534507D5",
+    "alternative_id": [
+      "534587D8"
+    ],
+    "media_id": "1D5F3880",
+    "title": "Full Auto",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/176",
+      "rating": "Gameplay"
+    },
+    "artwork": {
+      "background": "GameData\\Full Auto\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Full Auto\\Artwork\\Boxart.png",
+      "icon": "GameData\\Full Auto\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\Full Auto (USA, Europe) (En,Fr,De,Es,It).iso",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Full Auto.config.toml",
       "custom_emulator_executable": null
     }
   },
@@ -2449,8 +2522,8 @@
     "alternative_id": [],
     "media_id": "1F4C5091",
     "title": "Hydro Thunder Hurricane",
-    "playtime": 1.737220875,
-    "xenia_version": "Canary",
+    "playtime": 3.7183772166666667,
+    "xenia_version": "Netplay",
     "compatibility": {
       "url": "https://github.com/xenia-canary/game-compatibility/issues/738",
       "rating": "Gameplay"
@@ -2463,7 +2536,7 @@
     "file_locations": {
       "game": "D:\\roms\\xbox360\\5841096A\\000D0000\\17EE90959CCE5C680E1B7D3DB92A616D807CFA8358",
       "patch": null,
-      "config": "Emulators\\Xenia Canary\\config\\Hydro Thunder Hurricane.config.toml",
+      "config": "Emulators\\Xenia Netplay\\config\\Hydro Thunder Hurricane.config.toml",
       "custom_emulator_executable": null
     }
   },
@@ -2650,6 +2723,29 @@
       "game": "D:\\roms\\xbox360\\5841124E\\000D0000\\91F727D960DAA6BAD1196AF55F7BFBCB1CE7124858",
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\JOJOS BIZARRE ADVENTURE HD Ver.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
+    "game_id": "584107D8",
+    "alternative_id": [],
+    "media_id": "00000000",
+    "title": "Joust",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown"
+    },
+    "artwork": {
+      "background": "GameData\\Joust\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Joust\\Artwork\\Boxart.png",
+      "icon": "GameData\\Joust\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\584107D8\\000D0000\\49A43028F0D56A4BC755C14B363E42B8C844FC1158",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Joust.config.toml",
       "custom_emulator_executable": null
     }
   },
@@ -3102,6 +3198,31 @@
     }
   },
   {
+    "game_id": "573607E0",
+    "alternative_id": [
+      "573687E5"
+    ],
+    "media_id": "426D6368",
+    "title": "Motorcycle Club",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown"
+    },
+    "artwork": {
+      "background": "GameData\\Motorcycle Club\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Motorcycle Club\\Artwork\\Boxart.png",
+      "icon": "GameData\\Motorcycle Club\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "D:\\roms\\xbox360\\Motorcycle Club (Europe).iso",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Motorcycle Club.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
     "game_id": "58410837",
     "alternative_id": [],
     "media_id": "00000000",
@@ -3409,6 +3530,31 @@
     }
   },
   {
+    "game_id": "4B4E083A",
+    "alternative_id": [
+      "4B4E081A"
+    ],
+    "media_id": "244A2C90",
+    "title": "Otomedius Excellent",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/73",
+      "rating": "Playable"
+    },
+    "artwork": {
+      "background": "GameData\\Otomedius Excellent\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Otomedius Excellent\\Artwork\\Boxart.png",
+      "icon": "GameData\\Otomedius Excellent\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "D:\\roms\\xbox360\\Otomedius Excellent (USA, Canada).iso",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Otomedius Excellent.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
     "game_id": "4B4E07EE",
     "alternative_id": [],
     "media_id": "1EA01EB1",
@@ -3499,6 +3645,29 @@
       "game": "D:\\roms\\xbox360\\Payday 2.zar",
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\PAYDAY 2.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
+    "game_id": "415407E2",
+    "alternative_id": [],
+    "media_id": "46D5242F",
+    "title": "Persona 4 Arena Ultimax",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/548",
+      "rating": "Gameplay"
+    },
+    "artwork": {
+      "background": "GameData\\Persona 4 Arena Ultimax\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Persona 4 Arena Ultimax\\Artwork\\Boxart.png",
+      "icon": "GameData\\Persona 4 Arena Ultimax\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "D:\\roms\\xbox360\\Persona 4 Arena Ultimax (Europe).iso",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Persona 4 Arena Ultimax.config.toml",
       "custom_emulator_executable": null
     }
   },
@@ -4531,6 +4700,52 @@
       "game": "D:\\roms\\xbox360\\58410879\\000D0000\\DE2DED2C62ED7BF9E06D33AC97A327E5B510FC1258",
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Shred Nebula.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
+    "game_id": "4B4E0823",
+    "alternative_id": [],
+    "media_id": "7D387D17",
+    "title": "Silent Hill - Downpour",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/419",
+      "rating": "Playable"
+    },
+    "artwork": {
+      "background": "GameData\\Silent Hill - Downpour\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Silent Hill - Downpour\\Artwork\\Boxart.png",
+      "icon": "GameData\\Silent Hill - Downpour\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "D:\\roms\\xbox360\\Silent Hill - Downpour (USA, Europe) (En,Fr,De,Es,It,Pt).iso",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Silent Hill - Downpour.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
+    "game_id": "4B4E07E5",
+    "alternative_id": [],
+    "media_id": "61FBCD98",
+    "title": "Silent Hill - Homecoming",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/296",
+      "rating": "Playable"
+    },
+    "artwork": {
+      "background": "GameData\\Silent Hill - Homecoming\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Silent Hill - Homecoming\\Artwork\\Boxart.png",
+      "icon": "GameData\\Silent Hill - Homecoming\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "D:\\roms\\xbox360\\Silent Hill - Homecoming (USA) (En,Fr,De,Es,It).iso",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Silent Hill - Homecoming.config.toml",
       "custom_emulator_executable": null
     }
   },
