@@ -612,8 +612,12 @@ class GameLauncher(QMainWindow):
 
         if checkbox_name != "manager":
             return
-        xenia_manager_path = Path(config["xenia_manager_path"])
-        manager_config = load_xenia_manager_config(xenia_manager_path)
+        try:
+            xenia_manager_path = Path(config["xenia_manager_path"])
+            manager_config = load_xenia_manager_config(xenia_manager_path)
+        except Exception as e:
+            self.log(f"Config Load Error: {e}")
+            return
 
         manager_paths = {
             "canary": manager_config["emulators"]["canary"]["emulator_location"],
@@ -791,6 +795,7 @@ class GameLauncher(QMainWindow):
         self.search = QLineEdit()
         self.search.setPlaceholderText("Search games...")
         self.search.textChanged.connect(self.search_changed)
+        self.search.setFixedWidth(250)
         toolbar.addWidget(self.search)
 
         self.refresh_btn = QPushButton("Refresh")
@@ -1000,6 +1005,9 @@ class GameLauncher(QMainWindow):
         config = load_config()
         config[f"{key}"] = folder
         save_config(config)
+        if button_name == "manager":
+            self.xenia_manager_installed.setChecked(True)
+            self.checkbox_changed(Qt.CheckState.Checked, "manager")
 
     def load_saved_config(self):
         self.install_xenia_manager_and_xenia_edge()
@@ -1229,12 +1237,10 @@ class GameLauncher(QMainWindow):
             # Import games
             self.db.import_games_from_edge_or_xenia_manager(xenia_version, self.model.games, log_callback=self.log)
             self.refresh()
+        except FileNotFoundError as e:
+            self.log("File not found: " + str(e) + " (No games found)")
         except Exception as e:
-            QMessageBox.critical(
-                self,
-                "Import Failed",
-                str(e)
-            )
+            self.log("Import Failed: " + str(e))
 
     # -------------------------
     # Launch Game

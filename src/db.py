@@ -431,10 +431,10 @@ class Database:
             games_json = Path("config") / "games.json"
             xenia_manager_path = config["xenia_manager_path"]
             games_json_path = Path(xenia_manager_path) / games_json
-            shutil.copy2(games_json_path, get_app_dir() / "config" / "games.json")
-            log_callback(f"Copied {games_json_path} to {get_app_dir() / "config" / "games.json"} You can compare later to spot difference.")
             if not games_json_path.exists():
                 raise FileNotFoundError(games_json_path)
+            shutil.copy2(games_json_path, get_app_dir() / "config" / "games.json")
+            log_callback(f"Copied {games_json_path} to {get_app_dir() / "config" / "games.json"} You can compare later to spot difference.")
 
             with open(games_json_path, "r", encoding="utf-8") as f:
                 xenia_manager_games = json.load(f)
