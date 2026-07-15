@@ -756,7 +756,10 @@ class GameLauncher(QMainWindow):
         if not exe or not exe.exists():
             return
 
-        subprocess.Popen([str(exe)])
+        self.process = subprocess.Popen(
+            [exe],
+            cwd=os.path.dirname(exe)
+        )
 
     def open_archive_browser(self):
 
