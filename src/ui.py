@@ -1029,6 +1029,7 @@ class GameLauncher(QMainWindow):
     def install_xenia_manager_and_xenia_edge(self):
         self.config = load_config()
         exe = Path(r"C:\xenia-manager") / "XeniaManager.exe"
+        install_path = exe.parent
         xenia_manager_installed = self.config.get("xenia_manager_installed", False)
         if not exe.exists() and not xenia_manager_installed:
             installer = XeniaManagerInstaller()
@@ -1036,7 +1037,7 @@ class GameLauncher(QMainWindow):
 
         if exe and exe.exists():
             self.config["xenia_manager_installed"] = True
-            self.config["xenia_manager_path"] = str(exe)
+            self.config["xenia_manager_path"] = str(install_path)
             save_config(self.config)
 
         self.config = load_config()
