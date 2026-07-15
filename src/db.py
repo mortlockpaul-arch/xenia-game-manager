@@ -608,7 +608,6 @@ class Database:
         compatibility.update_compatibility()
 
         self.import_multidisc_json(multidisc_info, log_callback=log_callback)
-
         log_callback(message)
 
     def search_games(self, search_text=""):

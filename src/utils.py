@@ -16,7 +16,39 @@ ROMAN_NUMERALS = {
     "I", "II", "III", "IV", "V",
     "VI", "VII", "VIII", "IX", "X"
 }
+from pathlib import Path
+import tomlkit
 
+
+def deep_merge(base, override):
+    for key, value in override.items():
+        if (
+            key in base
+            and isinstance(base[key], dict)
+            and isinstance(value, dict)
+        ):
+            deep_merge(base[key], value)
+        else:
+            base[key] = value
+    return base
+
+
+def merge_toml(default_file: Path, override_file: Path, output_file: Path):
+    with default_file.open("r", encoding="utf-8") as f:
+        default = tomlkit.parse(f.read())
+
+    if override_file.exists():
+        with override_file.open("r", encoding="utf-8") as f:
+            override = tomlkit.parse(f.read())
+    else:
+        override = tomlkit.document()
+
+    merged = deep_merge(default, override)
+
+    output_file.parent.mkdir(parents=True, exist_ok=True)
+
+    with output_file.open("w", encoding="utf-8") as f:
+        f.write(tomlkit.dumps(merged))
 
 def smart_title_case(title):
     title = re.sub(r"\s*\(\d+\)$", "", title)

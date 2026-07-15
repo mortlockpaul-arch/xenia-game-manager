@@ -36,7 +36,7 @@ from model import GameTableModel
 from db import Database, Compatibility
 from remove_empty_folders import remove_empty_folders
 from updater import UpdateWorker, UpdateManager
-from utils import smart_title_case, xenia_edge_optimise_settings, show_differences
+from utils import smart_title_case, xenia_edge_optimise_settings, show_differences, merge_toml
 from xboxunity_api import login_xboxunity, test_connectivity
 from xminst import XeniaManagerInstaller
 
@@ -612,8 +612,8 @@ class GameLauncher(QMainWindow):
 
         if checkbox_name != "manager":
             return
-
-        manager_config = load_xenia_manager_config(Path(config["xenia_manager_path"]))
+        xenia_manager_path = Path(config["xenia_manager_path"])
+        manager_config = load_xenia_manager_config(xenia_manager_path)
 
         manager_paths = {
             "canary": manager_config["emulators"]["canary"]["emulator_location"],
@@ -622,12 +622,13 @@ class GameLauncher(QMainWindow):
         }
 
         for emulator in ("canary", "netplay", "mousehook"):
+            emulator_path = xenia_manager_path / manager_paths[emulator]
             if checked:
                 self.set_checkbox(
                     emulator,
                     True,
                     placeholder=f"Using Xenia Manager {emulator.title()} location...",
-                    text=manager_paths[emulator],
+                    text=str(emulator_path),
                     path_enabled=False,
                     button_enabled=False,
                 )
@@ -740,7 +741,7 @@ class GameLauncher(QMainWindow):
     from pathlib import Path
 
     def launch_program(self, program):
-        self.method_name()
+        self.install_xenia_manager_and_xenia_edge()
         self.config = load_config()
         programs = {
             "manager": Path(self.config["xenia_manager_path"]) / "XeniaManager.exe",
@@ -860,7 +861,7 @@ class GameLauncher(QMainWindow):
         self.table.setAlternatingRowColors(True)
 
         self.table.doubleClicked.connect(
-            self.launch_game
+            self.launch_game_double_clicked
         )
 
         self.table.clicked.connect(
@@ -916,6 +917,12 @@ class GameLauncher(QMainWindow):
         self.table.customContextMenuRequested.connect(self.show_table_menu)
 
         self.apply_style()
+
+    def launch_game_double_clicked(self):
+        try:
+            self.launch_game()
+        except Exception as e:
+            self.log(f"Error: {e}")
 
     def toggle_settings(self):
         self.settings_panel.setVisible(self.settings_btn.isChecked())
@@ -995,7 +1002,7 @@ class GameLauncher(QMainWindow):
         save_config(config)
 
     def load_saved_config(self):
-        self.method_name()
+        self.install_xenia_manager_and_xenia_edge()
 
         self.config = load_config()
         self.set_checkbox("manager", self.config.get("xenia_manager_installed", False), save=False)
@@ -1011,10 +1018,11 @@ class GameLauncher(QMainWindow):
         if self.config.get("api_key"):
             self.api_key = self.config["api_key"]
 
-    def method_name(self):
+    def install_xenia_manager_and_xenia_edge(self):
         self.config = load_config()
         exe = Path(r"C:\xenia-manager") / "XeniaManager.exe"
-        if not exe.exists():
+        xenia_manager_installed = self.config.get("xenia_manager_installed", False)
+        if not exe.exists() and not xenia_manager_installed:
             installer = XeniaManagerInstaller()
             exe = installer.install(log_callback=self.log)
             self.config["xenia_manager_installed"] = True
@@ -1029,7 +1037,8 @@ class GameLauncher(QMainWindow):
             self.launch_manager.repaint()
 
         exe = Path(r"C:\xenia-manager") / "emulators" / "Xenia Edge" / "xenia_edge.exe"
-        if not exe.exists():
+        xenia_edge_installed = self.config.get("xenia_edge_installed", False)
+        if not exe.exists() and not xenia_edge_installed:
             installer = XeniaManagerInstaller()
             installer.GITHUB_API = "https://api.github.com/repos/has207/xenia-edge/releases/latest"
             installer.INSTALL_PATH = exe
@@ -1249,6 +1258,7 @@ class GameLauncher(QMainWindow):
         print(game, xenia_version)
         from pathlib import Path
         config = load_config()
+        xenia_exe_location = config["xenia_canary_path"]
         xenia_canary_installed = config["xenia_canary_installed"]
         xenia_edge_installed = config["xenia_edge_installed"]
         xenia_netplay_installed = config["xenia_netplay_installed"]
@@ -1263,35 +1273,38 @@ class GameLauncher(QMainWindow):
             xenia_manager_path = Path(config["xenia_manager_path"])
             xenia_manager_config = load_xenia_manager_config(xenia_manager_path)
             configuration_location = xenia_manager_config["emulators"][f"{xenia_version}"]["configuration_location"]
-            xenia_emulator_location = Path(xenia_manager_config["emulators"][f"{xenia_version}"]["emulator_location"])
-            xenia_exe_location = Path(xenia_manager_config["emulators"][f"{xenia_version}"]["executable_location"])
-            xenia_exe_path = Path.joinpath(xenia_manager_path, xenia_exe_location)
+            xenia_canary_path = Path(xenia_manager_config["emulators"][f"{xenia_version}"]["emulator_location"])
+            xenia_exe_location = Path.joinpath(xenia_manager_path,xenia_manager_config["emulators"][f"{xenia_version}"]["executable_location"]).parent
+            xenia_exe_path = Path.joinpath(xenia_manager_path,xenia_manager_config["emulators"][f"{xenia_version}"]["executable_location"])
             db_game_config_source = Path(xenia_manager_path) / db_game_config_source
             xenia_exe_configuration_location = Path.joinpath(xenia_manager_path, configuration_location)
 
         # "D:\RetroBat\emulators\xenia-manager\Emulators\Xenia Canary\xenia-canary.config.toml"
         # Emulators\Xenia Canary\config\007 Legends.config.toml
-        if xenia_version.lower() == "canary":
+        if xenia_version.lower() == "canary" and not xenia_manager_installed:
             if not xenia_canary_installed:
                 raise Exception("Canary not installed")
             datadir = Path(get_app_dir())
             mini_config_dir = datadir / "assets" / "settings"
+            xenia_exe_location = Path(xenia_canary_path)
             xenia_exe_path = Path(xenia_canary_path) / "xenia_canary.exe"
             xenia_exe_configuration_location = Path(xenia_canary_path) / "xenia-canary.config.toml"
             db_game_config_source = Path(xenia_canary_path).parent.parent / db_game_config_source
-        if xenia_version.lower() == "netplay":
+        if xenia_version.lower() == "netplay" and not xenia_manager_installed:
             if not xenia_netplay_installed:
                 raise Exception("Netplay not installed")
             datadir = Path(get_app_dir())
             mini_config_dir = datadir / "assets" / "settings"
+            xenia_exe_location = Path(xenia_netplay_path)
             xenia_exe_path = Path(xenia_netplay_path) / "xenia_canary_netplay.exe"
             xenia_exe_configuration_location = Path(xenia_netplay_path) / "xenia-canary-netplay.config.toml"
             db_game_config_source = Path(xenia_netplay_path).parent.parent / db_game_config_source
-        if xenia_version.lower() == "mousehook":
+        if xenia_version.lower() == "mousehook" and not xenia_manager_installed:
             if not xenia_mousehook_installed:
                 raise Exception("Mousehook not installed")
             datadir = Path(get_app_dir())
             mini_config_dir = datadir / "assets" / "settings"
+            xenia_exe_location = Path(xenia_mousehook_path)
             xenia_exe_path = Path(xenia_mousehook_path) / "xenia_canary_mousehook.exe"
             xenia_exe_configuration_location = Path(xenia_mousehook_path) / "xenia-canary-mousehook.config.toml"
             db_game_config_source = Path(xenia_mousehook_path).parent.parent / db_game_config_source
@@ -1300,6 +1313,7 @@ class GameLauncher(QMainWindow):
                 raise Exception("Edge not installed")
             datadir = Path(get_app_dir())
             mini_config_dir = datadir / "assets" / "settings"
+            xenia_exe_location = Path(xenia_edge_path)
             xenia_edge_path = Path(xenia_edge_path)
             xenia_exe_path = xenia_edge_path / "xenia_edge.exe"
 
@@ -1311,10 +1325,16 @@ class GameLauncher(QMainWindow):
                 xenia_exe_configuration_location = xenia_edge_path / "config"
 
         asset_config = Path(get_app_dir()) / "assets" / "settings" / f"{game_id}.toml"
-
         if asset_config.exists():
-            shutil.copy(asset_config, xenia_exe_configuration_location)
-            self.log(f"Copied {asset_config} to {xenia_exe_configuration_location}")
+            default_config = Path(get_app_dir()) / "assets" / "default" / "xenia-canary.config.toml"
+            config_path = Path(xenia_exe_configuration_location)
+
+            new_path = config_path.parent.parent / config_path.name
+
+            output_config = Path(new_path)
+            merge_toml(default_config, asset_config, output_config)
+            # shutil.copy(asset_config, new_path)
+            self.log(f"Merged {asset_config.name} into {output_config}")
         elif db_game_config_source and Path(db_game_config_source).exists():
             shutil.copy(db_game_config_source, xenia_exe_configuration_location)
             self.log(f"Copied {db_game_config_source} to {xenia_exe_configuration_location}")
@@ -1324,14 +1344,13 @@ class GameLauncher(QMainWindow):
         if game_path and not Path(game_path).exists():
             self.log(f"Game path Missing: {game_path}")
             raise Exception
-        xenia_exe_path = Path(xenia_exe_path)
         try:
             import subprocess
             import time
             self.start_time = time.time()
             self.process = subprocess.Popen(
                 [xenia_exe_path, game_path],
-                cwd=os.path.dirname(xenia_canary_path)
+                cwd=os.path.dirname(xenia_exe_location)
             )
 
             threading.Thread(
@@ -1358,6 +1377,7 @@ class GameLauncher(QMainWindow):
         self.model.add_play_time(game_id, minutes)
         self.model.mark_played(game_id)
         self.model.load()
+
 
     # -------------------------
     # Fix Titles
