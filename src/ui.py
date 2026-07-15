@@ -745,7 +745,6 @@ class GameLauncher(QMainWindow):
     from pathlib import Path
 
     def launch_program(self, program):
-        self.install_xenia_manager_and_xenia_edge()
         self.config = load_config()
         programs = {
             "manager": Path(self.config["xenia_manager_path"]) / "XeniaManager.exe",
