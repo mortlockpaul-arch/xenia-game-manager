@@ -43,10 +43,40 @@ bdist_msi_options = {
     "output_name": "xenia-game-manager-win64.msi",
     "product_name": "Xenia Game Manager",
     "data": {
-        "Icon": [
-            ("IconId", str(ROOT / "assets" / "icons" / "app.ico")),
-        ],
-    },
+    "Icon": [
+        ("IconId", str(ROOT / "assets" / "icons" / "app.ico")),
+    ],
+    "Shortcut": [
+        (
+            "DesktopShortcut",
+            "DesktopFolder",
+            "Xenia Game Manager",
+            "TARGETDIR",
+            "[TARGETDIR]XeniaGameManager.exe",
+            None,
+            "Launch Xenia Game Manager",
+            None,
+            "IconId",
+            0,
+            None,
+            "TARGETDIR",
+        ),
+        (
+            "StartMenuShortcut",
+            "ProgramMenuFolder",
+            "Xenia Game Manager",
+            "TARGETDIR",
+            "[TARGETDIR]XeniaGameManager.exe",
+            None,
+            "Launch Xenia Game Manager",
+            None,
+            "IconId",
+            0,
+            None,
+            "TARGETDIR",
+        ),
+    ],
+},
 }
 
 setup(
