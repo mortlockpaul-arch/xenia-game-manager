@@ -1,4 +1,5 @@
 import os
+import time
 from pathlib import Path
 import requests
 
@@ -11,6 +12,7 @@ class DownloadArtifact:
     REPO = "xenia-canary"
 
     def __init__(self, token=None, log_callback=None):
+        self.token = token
         self.session = requests.Session()
         self.session.headers.update({
             "Accept": "application/vnd.github+json",
@@ -23,6 +25,25 @@ class DownloadArtifact:
             self.session.headers["Authorization"] = f"Bearer {token}"
 
     def latest_artifact(self, name_contains="windows"):
+        url = f"https://api.github.com/repos/{self.OWNER}/{self.REPO}/actions/runs"
+        for attempt in range(3):
+            r = self.session.get(
+                url,
+                params={"status": "success", "per_page": 1},
+                headers=self.session.headers,
+                timeout=15,
+            )
+
+            if r.status_code == 503:
+                print(f"GitHub unavailable, retrying ({attempt + 1}/3)...")
+                time.sleep(2)
+                continue
+
+            r.raise_for_status()
+            break
+        else:
+            raise RuntimeError("GitHub API is unavailable after 3 attempts.")
+
         r = self.session.get(
             f"https://api.github.com/repos/{self.OWNER}/{self.REPO}/actions/runs",
             params={

@@ -190,6 +190,7 @@ class GameLauncher(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.xenia_netplay_installed = None
         self.extract_downloaded_archives_btn = None
         self.config = None
         self.archive_button = None
@@ -318,14 +319,14 @@ class GameLauncher(QMainWindow):
         """)
 
         layout = QVBoxLayout(self.settings_drawer)
-
-        title = QLabel("Settings")
-        layout.addWidget(title)
+        #
+        # title = QLabel("Settings")
+        # layout.addWidget(title)
 
         # ---------------- LOGIN BOX ----------------
-        login_box = QGroupBox("Login XboxUnity / API Key")
-        login_box.setFixedWidth(520)
-
+        # login_box = QGroupBox("Login XboxUnity / API Key")
+        # login_box.setFixedWidth(520)
+        xboxunity_row = QHBoxLayout()
         login_form = QFormLayout()
 
         self.entry_user = QLineEdit()
@@ -333,29 +334,23 @@ class GameLauncher(QMainWindow):
         self.entry_pass.setEchoMode(QLineEdit.EchoMode.Password)
         self.entry_apikey = QLineEdit()
 
-        self.entry_user.setPlaceholderText("Username")
-        self.entry_pass.setPlaceholderText("Password")
-        self.entry_apikey.setPlaceholderText("API Key")
+        self.entry_user.setPlaceholderText("Xbox Unity Username")
+        self.entry_pass.setPlaceholderText("Xbox Unity Password")
+        self.entry_apikey.setPlaceholderText("Xbox Unity API Key")
 
         login_form.addRow("Username", self.entry_user)
         login_form.addRow("Password", self.entry_pass)
         login_form.addRow("API Key", self.entry_apikey)
+        #
+        # self.login_btn = QPushButton("Login")
+        # self.login_btn.clicked.connect(self.login)
+        # login_form.addRow(self.login_btn)
 
-        self.login_btn = QPushButton("Login")
-        self.login_btn.clicked.connect(self.login)
-        login_form.addRow(self.login_btn)
+        group = QGroupBox("Xbox Unity")
+        group.setLayout(login_form)
 
-        login_box.setLayout(login_form)
-
-        login_box.setSizePolicy(
-            QSizePolicy.Policy.Fixed,
-            QSizePolicy.Policy.Fixed
-        )
-
-        layout.addWidget(
-            login_box,
-            alignment=Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop
-        )
+        xboxunity_row.addWidget(group)
+        layout.addLayout(xboxunity_row)
 
         # ---------------- XENIA MANAGER PATH ----------------
         layout.addWidget(QLabel("Xenia Manager Folder"))
@@ -430,6 +425,32 @@ class GameLauncher(QMainWindow):
         title_updates_row.addWidget(browse_btn_title_updates)
 
         layout.addLayout(title_updates_row)
+
+        # ---------------- GITHUB TOKEN ----------------
+        layout.addWidget(QLabel("GitHub Personal Access Token"))
+
+        github_row = QHBoxLayout()
+
+        self.github_token = QLineEdit()
+        self.github_token.setPlaceholderText("Personal Access Token...")
+        self.github_token.setEchoMode(QLineEdit.EchoMode.Password)  # Optional
+
+        show_token = QCheckBox("Show")
+        show_token.toggled.connect(
+            lambda checked: self.github_token.setEchoMode(
+                QLineEdit.EchoMode.Normal if checked else QLineEdit.EchoMode.Password
+            )
+        )
+
+        github_environment_variable = os.environ.get("GITHUB_TOKEN")
+        if github_environment_variable:
+            self.github_token.setText(github_environment_variable)
+
+        github_row.addWidget(show_token)
+
+        github_row.addWidget(self.github_token)
+
+        layout.addLayout(github_row)
 
         self.xenia_manager_installed.setToolTip(
             "<b>Xenia Manager</b><br>"
@@ -543,10 +564,9 @@ class GameLauncher(QMainWindow):
         self.settings_drawer.hide()
 
     def download_experimental_releases(self):
-        token = os.getenv("GITHUB_TOKEN")
         config = load_config()
 
-        token = token or config.get("github_token")
+        github_environment_variable = os.environ.get("GITHUB_TOKEN")
 
         def log(message):
             self.log(message)
@@ -615,7 +635,7 @@ class GameLauncher(QMainWindow):
 
             log(f"Downloading {release['name']}...")
 
-            downloader = DownloadArtifact(token, log_callback=log)
+            downloader = DownloadArtifact(github_environment_variable, log_callback=log)
             downloader.OWNER = release["owner"]
             downloader.REPO = release["repo"]
 
