@@ -219,9 +219,9 @@ class UpdateManager(QObject):
 
         self._check_component(
             name="Xenia Edge",
-            version_key="edge_version",
+            version_key="xenia_edge_version",
             install_path=self.config["xenia_edge_path"],
-            current_version=self.config["edge_version"],
+            current_version=self.config["xenia_edge_version"],
             github_url=self.config["xenia_edge_url"],
             asset_index=3,
         )

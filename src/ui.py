@@ -1,17 +1,19 @@
 # ui.py
+import logging
 import os
 import shutil
 import subprocess
-from dataclasses import dataclass
-from functools import partial
-
 import sys
 import threading
-from datetime import datetime
-from pathlib import Path
 import time
+from dataclasses import dataclass
+from datetime import datetime
+from functools import partial
+from pathlib import Path
 
 from PySide6.QtCore import Qt, QEasingCurve, QPropertyAnimation, QRect, QThread, Signal, QObject, Slot, QTimer
+from PySide6.QtGui import QGuiApplication, QIcon
+from PySide6.QtWidgets import QMenu
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -21,20 +23,17 @@ from PySide6.QtWidgets import (
     QTableView,
     QMessageBox,
     QHeaderView, QPlainTextEdit, QGroupBox, QLabel, QSizePolicy, QMainWindow, QFormLayout, QToolButton, QFileDialog,
-    QFrame, QGraphicsDropShadowEffect, QProgressBar, QCheckBox, QApplication, QGridLayout,
+    QFrame, QGraphicsDropShadowEffect, QProgressBar, QCheckBox, QGridLayout,
 )
-from PySide6.QtWidgets import QMenu
-from PySide6.QtGui import QGuiApplication, QIcon
 
-import db
 from actions import DownloadArtifact
 from archive_window import ArchiveBrowser
-from download import TUDownloadWorker
 from config import save_config, load_config, load_xenia_manager_config, get_app_dir
+from db import Database, Compatibility
+from download import TUDownloadWorker
 from edge_import import use_xenia_manager_content_folder_for_edge
 from extract import extract_archives
 from model import GameTableModel
-from db import Database, Compatibility
 from remove_empty_folders import remove_empty_folders
 from updater import UpdateWorker, UpdateManager
 from utils import smart_title_case, xenia_edge_optimise_settings, show_differences, merge_toml
@@ -58,6 +57,7 @@ class ClickOverlay(QWidget):
 
     def mousePressEvent(self, event):
         self.launcher.close_drawer()
+
 
 @dataclass
 class WidgetInfo:
@@ -119,6 +119,7 @@ class DownloadWorker(QThread):
 
         self.finished.emit()
 
+
 class ExtractWorker(QObject):
     finished = Signal()
     log = Signal(str)
@@ -138,6 +139,7 @@ class ExtractWorker(QObject):
                 )
         finally:
             self.finished.emit()
+
 
 class GameLauncher(QMainWindow):
 
@@ -232,6 +234,7 @@ class GameLauncher(QMainWindow):
         self.setFixedSize(1640, 950)
         self.build_ui()
         self.compatibility = Compatibility(self.db, self.log)
+        self.setup_logging()
 
         self.widgets = {
             "manager": WidgetInfo(
@@ -275,8 +278,22 @@ class GameLauncher(QMainWindow):
                 "xenia_mousehook_path",
             ),
         }
+        QTimer.singleShot(5000, self.install_xenia_manager_and_xenia_edge)
+        QTimer.singleShot(10000, self.load_saved_config)
 
-        QTimer.singleShot(5000, self.load_saved_config)
+    @staticmethod
+    def setup_logging():
+
+        log_dir = get_app_dir() / "logs"
+        log_dir.mkdir(exist_ok=True)
+
+        logging.basicConfig(
+            filename=log_dir / "xenia_manager.log",
+            level=logging.INFO,
+            format="%(asctime)s | %(levelname)s | %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S",
+            force=True,   # <-- add this
+        )
 
     def create_settings_drawer(self):
 
@@ -286,7 +303,7 @@ class GameLauncher(QMainWindow):
 
         self.settings_drawer = QFrame(self)
         self.settings_drawer.setObjectName("settingsDrawer")
-        self.settings_drawer.setFixedWidth(580)
+        self.settings_drawer.setFixedWidth(650)
 
         shadow = QGraphicsDropShadowEffect()
         shadow.setBlurRadius(40)
@@ -356,69 +373,48 @@ class GameLauncher(QMainWindow):
 
         layout.addLayout(xenia_row)
 
-        # ---------------- XENIA CANARY PATH ----------------
-        layout.addWidget(QLabel("Xenia Canary Folder"))
+        for name in ("canary", "netplay", "mousehook", "edge"):
+            display = f"Xenia {name.capitalize()}"
 
-        canary_row = QHBoxLayout()
-        self.xenia_canary_path = QLineEdit()
-        self.xenia_canary_path.setPlaceholderText("Xenia Canary location...")
-        self.xenia_canary_installed = QCheckBox()
-        self.xenia_canary_installed.stateChanged.connect(partial(self.checkbox_changed, checkbox_name="canary"))
-        self.browse_btn_canary = QPushButton("Browse")
-        self.browse_btn_canary.clicked.connect(partial(self.pick_xenia_path, button_name="canary"))
-        canary_row.addWidget(self.xenia_canary_installed)
-        canary_row.addWidget(self.xenia_canary_path)
-        canary_row.addWidget(self.browse_btn_canary)
+            layout.addWidget(QLabel(f"{display} Folder"))
 
-        layout.addLayout(canary_row)
+            row = QHBoxLayout()
 
-        # ---------------- XENIA NETPLAY PATH ----------------
-        layout.addWidget(QLabel("Xenia Netplay Folder"))
+            # Path
+            path = QLineEdit()
+            path.setPlaceholderText(f"{display} location...")
+            path.setFixedWidth(430)
+            path.setReadOnly(True)
+            setattr(self, f"xenia_{name}_path", path)
 
-        netplay_row = QHBoxLayout()
-        self.xenia_netplay_path = QLineEdit()
-        self.xenia_netplay_path.setPlaceholderText("Xenia Netplay location...")
-        self.xenia_netplay_installed = QCheckBox()
-        self.xenia_netplay_installed.stateChanged.connect(partial(self.checkbox_changed, checkbox_name="netplay"))
-        self.browse_btn_netplay = QPushButton("Browse")
-        self.browse_btn_netplay.clicked.connect(partial(self.pick_xenia_path, button_name="netplay"))
-        netplay_row.addWidget(self.xenia_netplay_installed)
-        netplay_row.addWidget(self.xenia_netplay_path)
-        netplay_row.addWidget(self.browse_btn_netplay)
+            # Version
+            version = QLineEdit()
+            version.setPlaceholderText("Version...")
+            version.setFixedWidth(100)
+            version.setReadOnly(True)
+            setattr(self, f"xenia_{name}_version", version)
 
-        layout.addLayout(netplay_row)
+            # Installed checkbox
+            installed = QCheckBox()
+            installed.stateChanged.connect(
+                partial(self.checkbox_changed, checkbox_name=name)
+            )
+            setattr(self, f"xenia_{name}_installed", installed)
 
-        # ---------------- XENIA MOUSEHOOK PATH ----------------
-        layout.addWidget(QLabel("Xenia Mousehook Folder"))
+            installed.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+            # Browse button
+            browse = QPushButton("Browse")
+            browse.clicked.connect(
+                partial(self.pick_xenia_path, button_name=name)
+            )
+            setattr(self, f"browse_btn_{name}", browse)
 
-        mousehook_row = QHBoxLayout()
-        self.xenia_mousehook_path = QLineEdit()
-        self.xenia_mousehook_path.setPlaceholderText("Xenia Mousehook location...")
-        self.xenia_mousehook_installed = QCheckBox()
-        self.xenia_mousehook_installed.stateChanged.connect(partial(self.checkbox_changed, checkbox_name="mousehook"))
-        self.browse_btn_mousehook = QPushButton("Browse")
-        self.browse_btn_mousehook.clicked.connect(partial(self.pick_xenia_path, button_name="mousehook"))
-        mousehook_row.addWidget(self.xenia_mousehook_installed)
-        mousehook_row.addWidget(self.xenia_mousehook_path)
-        mousehook_row.addWidget(self.browse_btn_mousehook)
+            row.addWidget(installed)
+            row.addWidget(path)
+            row.addWidget(version)
+            row.addWidget(browse)
 
-        layout.addLayout(mousehook_row)
-
-        # ---------------- XENIA EDGE PATH ----------------
-        layout.addWidget(QLabel("Xenia Edge Folder"))
-
-        edge_row = QHBoxLayout()
-        self.xenia_edge_path = QLineEdit()
-        self.xenia_edge_path.setPlaceholderText("Xenia Edge location...")
-        self.xenia_edge_installed = QCheckBox()
-        self.xenia_edge_installed.stateChanged.connect(partial(self.checkbox_changed, checkbox_name="edge"))
-        self.browse_btn_edge = QPushButton("Browse")
-        self.browse_btn_edge.clicked.connect(partial(self.pick_xenia_path, button_name="edge"))
-        edge_row.addWidget(self.xenia_edge_installed)
-        edge_row.addWidget(self.xenia_edge_path)
-        edge_row.addWidget(self.browse_btn_edge)
-
-        layout.addLayout(edge_row)
+            layout.addLayout(row)
 
         # ---------------- TITLE UPDATE PATH ----------------
         layout.addWidget(QLabel("Title Updates Folder"))
@@ -503,6 +499,18 @@ class GameLauncher(QMainWindow):
 
         layout.addWidget(tools_box)
 
+        self.console = QPlainTextEdit()
+
+        self.console.setReadOnly(True)
+
+        self.console.setMaximumHeight(100)
+
+        self.console.setPlaceholderText(
+            "Application log..."
+        )
+
+        layout.addWidget(self.console)
+
         layout.addStretch()
 
         buttons = [
@@ -534,48 +542,108 @@ class GameLauncher(QMainWindow):
             tools_layout.addWidget(button, row, column)
         self.settings_drawer.hide()
 
-    from PySide6.QtWidgets import QMessageBox
-
     def download_experimental_releases(self):
         token = os.getenv("GITHUB_TOKEN")
         config = load_config()
 
-        token = token or config["github_token"]
+        token = token or config.get("github_token")
 
         def log(message):
             self.log(message)
 
-        folder_canary = config["xenia_canary_path"]
-        downloader = DownloadArtifact(token, log_callback=log)
+        releases = [
+            {
+                "name": "Canary",
+                "owner": "xenia-canary",
+                "repo": "xenia-canary",
+                "path_key": "xenia_canary_path",
+                "installed_key": "xenia_canary_installed",
+                "version_key": "xenia_canary_version",
+                "default": r"C:\xenia_canary",
+            },
+            {
+                "name": "Netplay",
+                "owner": "AdrianCassar",
+                "repo": "xenia-canary",
+                "path_key": "xenia_netplay_path",
+                "installed_key": "xenia_netplay_installed",
+                "version_key": "xenia_netplay_version",
+                "default": r"C:\xenia_netplay",
+            },
+            {
+                "name": "Mousehook",
+                "owner": "marinesciencedude",
+                "repo": "xenia-canary-mousehook",
+                "path_key": "xenia_mousehook_path",
+                "installed_key": "xenia_mousehook_installed",
+                "version_key": "xenia_mousehook_version",
+                "default": r"C:\xenia_mousehook",
+            },
+            {
+                "name": "Edge",
+                "owner": "has207",
+                "repo": "xenia-edge",
+                "path_key": "xenia_edge_path",
+                "installed_key": "xenia_edge_installed",
+                "version_key": "xenia_edge_version",
+                "default": r"C:\xenia_edge",
+            },
+        ]
 
-        downloader.OWNER = "xenia-canary"
-        downloader.REPO = "xenia-canary"
+        for release in releases:
+            xenia_version = release["name"].lower()
+            xenia_manager_installed = config["xenia_manager_installed"]
+            folder = Path(config.get(release["path_key"]) or release["default"])
+            if xenia_manager_installed and xenia_version != "edge":
+                xenia_manager_path = Path(config["xenia_manager_path"])
+                xenia_manager_config = load_xenia_manager_config(xenia_manager_path)
+                configuration_location = xenia_manager_config["emulators"][f"{xenia_version}"]["configuration_location"]
+                emulator_location = Path(xenia_manager_config["emulators"][f"{xenia_version}"]["emulator_location"])
+                executable_location_parent = Path.joinpath(xenia_manager_path,
+                                                           xenia_manager_config["emulators"][f"{xenia_version}"][
+                                                               "executable_location"]).parent
+                executable_location = Path.joinpath(xenia_manager_path,
+                                                    xenia_manager_config["emulators"][f"{xenia_version}"][
+                                                        "executable_location"])
+                folder = executable_location_parent
 
-        zip_file = downloader.download(output_dir=folder_canary)
+            folder.mkdir(parents=True, exist_ok=True)
 
-        if extract_archives(folder_canary) != 1:
-            log(f"Failed extracting {zip_file}")
+            config[release["path_key"]] = str(folder)
+            config[release["installed_key"]] = True
+            save_config(config)
 
-        folder_netplay = config["xenia_netplay_path"]
-        downloader = DownloadArtifact(token, log)
+            log(f"Downloading {release['name']}...")
 
-        zip_file = downloader.download(output_dir=folder_netplay)
+            downloader = DownloadArtifact(token, log_callback=log)
+            downloader.OWNER = release["owner"]
+            downloader.REPO = release["repo"]
 
-        if extract_archives(folder_netplay) != 1:
-            log(f"Failed extracting {zip_file}")
+            result = downloader.download(output_dir=folder)
+            zip_file = result["path"]
+            version = result["version"]
+            from datetime import datetime, timezone
 
-        folder_mousehook = config["xenia_mousehook_path"]
-        downloader = DownloadArtifact(token, log)
+            build_date = datetime.strptime(
+                result["build_date"],
+                "%Y-%m-%dT%H:%M:%SZ"
+            ).replace(tzinfo=timezone.utc)
 
-        downloader.OWNER = "marinesciencedude"
-        downloader.REPO = "xenia-canary-mousehook"
+            age = datetime.now(timezone.utc) - build_date
 
-        zip_file = downloader.download(output_dir=folder_mousehook)
+            days = age.days
+            hours = age.seconds // 3600
+            minutes = (age.seconds % 3600) // 60
 
-        if extract_archives(folder_mousehook) != 1:
-            log(f"Failed extracting {zip_file}")
+            self.log(f"version {version} is {days} days, {hours} hours, {minutes} minutes old")
 
-        log(f"Finished: {zip_file}")
+            if extract_archives(folder=folder, log_callback=self.log) != 1:
+                log(f"Failed extracting {zip_file}")
+            else:
+                log(f"Finished {release['name']}")
+                config[release["version_key"]] = version
+                save_config(config)
+        self.load_saved_config()
 
     def use_xenia_manager_content_for_edge(self):
         try:
@@ -789,9 +857,6 @@ class GameLauncher(QMainWindow):
                 self.height()
             )
 
-    import subprocess
-    from pathlib import Path
-
     def launch_program(self, program):
         self.config = load_config()
         programs = {
@@ -956,18 +1021,6 @@ class GameLauncher(QMainWindow):
 
         main_layout.addWidget(self.table)
 
-        self.console = QPlainTextEdit()
-
-        self.console.setReadOnly(True)
-
-        self.console.setMaximumHeight(100)
-
-        self.console.setPlaceholderText(
-            "Application log..."
-        )
-
-        main_layout.addWidget(self.console)
-
         self.table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.table.customContextMenuRequested.connect(self.show_table_menu)
 
@@ -1010,14 +1063,14 @@ class GameLauncher(QMainWindow):
         self.worker.start()
 
     def update_file_progress(self, done, total, filename):
-            self.progress_current.setMaximum(total)
-            self.progress_current.setValue(done)
-            self.current_label.setText(f"{filename} ({done}/{total})")
+        self.progress_current.setMaximum(total)
+        self.progress_current.setValue(done)
+        self.current_label.setText(f"{filename} ({done}/{total})")
 
     def update_download_progress(self, done, total):
-            self.progress_overall.setMaximum(total)
-            self.progress_overall.setValue(done)
-            self.overall_label.setText(f"({self.human_size(done)}/{self.human_size(total)})")
+        self.progress_overall.setMaximum(total)
+        self.progress_overall.setValue(done)
+        self.overall_label.setText(f"({self.human_size(done)}/{self.human_size(total)})")
 
     def update_game_progress(self, current, total):
         self.log(f"Game progress: {current}/{total}")
@@ -1060,18 +1113,26 @@ class GameLauncher(QMainWindow):
             self.checkbox_changed(Qt.CheckState.Checked, "manager")
 
     def load_saved_config(self):
-        self.install_xenia_manager_and_xenia_edge()
-
         self.config = load_config()
         self.set_checkbox("manager", self.config.get("xenia_manager_installed", False), save=False)
         self.set_checkbox("canary", self.config.get("xenia_canary_installed", False), save=False)
+        self.set_checkbox("netplay", self.config.get("xenia_netplay_installed", False), save=False)
+        self.set_checkbox("mousehook", self.config.get("xenia_mousehook_installed", False), save=False)
         self.set_checkbox("edge", self.config.get("xenia_edge_installed", False), save=False)
         self.entry_user.setText(self.config.get("username", ""))
         self.entry_pass.setText(self.config.get("password", ""))
         self.entry_apikey.setText(self.config.get("api_key", ""))
         self.xenia_manager_path.setText(self.config.get("xenia_manager_path", ""))
         self.xenia_canary_path.setText(self.config.get("xenia_canary_path", ""))
+        self.xenia_netplay_path.setText(self.config.get("xenia_netplay_path", ""))
+        self.xenia_mousehook_path.setText(self.config.get("xenia_mousehook_path", ""))
         self.xenia_edge_path.setText(self.config.get("xenia_edge_path", ""))
+
+        self.xenia_canary_version.setText(self.config.get("xenia_canary_version", ""))
+        self.xenia_netplay_version.setText(self.config.get("xenia_netplay_version", ""))
+        self.xenia_mousehook_version.setText(self.config.get("xenia_mousehook_version", ""))
+        self.xenia_edge_version.setText(self.config.get("xenia_edge_version", ""))
+
         self.xenia_title_updates_path.setText(self.config.get("xenia_title_updates_path", ""))
         if self.config.get("api_key"):
             self.api_key = self.config["api_key"]
@@ -1124,6 +1185,8 @@ class GameLauncher(QMainWindow):
         button_text = "Launch Xenia Edge" if xenia_edge_installed else "Install Xenia Edge"
         self.launch_edge.setText(button_text)
         self.launch_edge.repaint()
+
+        self.load_saved_config()
 
     def login(self):
         username = self.entry_user.text().strip()
@@ -1236,9 +1299,15 @@ class GameLauncher(QMainWindow):
 
     def log(self, message):
         timestamp = datetime.now().strftime("%H:%M:%S")
+
+        # UI console
         self.console.appendPlainText(
             f"[{timestamp}] {message}"
         )
+
+        # File log
+        logging.info(message)
+
         return None
 
     # -------------------------
@@ -1334,13 +1403,16 @@ class GameLauncher(QMainWindow):
         xenia_netplay_path = config["xenia_netplay_path"]
         xenia_mousehook_path = config["xenia_mousehook_path"]
         xenia_version = str(xenia_version).lower()
-        if xenia_manager_installed and xenia_version!="edge":
+        if xenia_manager_installed and xenia_version != "edge":
             xenia_manager_path = Path(config["xenia_manager_path"])
             xenia_manager_config = load_xenia_manager_config(xenia_manager_path)
             configuration_location = xenia_manager_config["emulators"][f"{xenia_version}"]["configuration_location"]
             xenia_canary_path = Path(xenia_manager_config["emulators"][f"{xenia_version}"]["emulator_location"])
-            xenia_exe_location = Path.joinpath(xenia_manager_path,xenia_manager_config["emulators"][f"{xenia_version}"]["executable_location"]).parent
-            xenia_exe_path = Path.joinpath(xenia_manager_path,xenia_manager_config["emulators"][f"{xenia_version}"]["executable_location"])
+            xenia_exe_location = Path.joinpath(xenia_manager_path,
+                                               xenia_manager_config["emulators"][f"{xenia_version}"][
+                                                   "executable_location"]).parent
+            xenia_exe_path = Path.joinpath(xenia_manager_path,
+                                           xenia_manager_config["emulators"][f"{xenia_version}"]["executable_location"])
             db_game_config_source = Path(xenia_manager_path) / db_game_config_source
             xenia_exe_configuration_location = Path.joinpath(xenia_manager_path, configuration_location)
 
@@ -1442,7 +1514,6 @@ class GameLauncher(QMainWindow):
         self.model.add_play_time(game_id, minutes)
         self.model.mark_played(game_id)
         self.model.load()
-
 
     # -------------------------
     # Fix Titles
