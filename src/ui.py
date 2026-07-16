@@ -27,6 +27,7 @@ from PySide6.QtWidgets import QMenu
 from PySide6.QtGui import QGuiApplication, QIcon
 
 import db
+from actions import DownloadArtifact
 from archive_window import ArchiveBrowser
 from download import TUDownloadWorker
 from config import save_config, load_config, load_xenia_manager_config, get_app_dir
@@ -486,9 +487,14 @@ class GameLauncher(QMainWindow):
         self.check_update_btn.clicked.connect(self.check_for_updates)
         self.remove_clean_btn = QPushButton("Remove Empty Folders")
         self.remove_clean_btn.clicked.connect(self.remove_clean_folders)
+
         self.extract_downloaded_archives_btn = QPushButton("Extract Downloaded Archives")
         self.extract_downloaded_archives_btn.clicked.connect(self.extract_downloaded_archives)
 
+        self.download_experimental_releases_btn = QPushButton("Download Experimental Releases")
+        self.download_experimental_releases_btn.clicked.connect(
+            self.download_experimental_releases
+        )
         self.use_xenia_manager_content_for_edge_btn = QPushButton(
             "Link Xenia Edge Content Folder")
         self.use_xenia_manager_content_for_edge_btn.clicked.connect(self.use_xenia_manager_content_for_edge)
@@ -510,6 +516,7 @@ class GameLauncher(QMainWindow):
             self.remove_clean_btn,
             self.check_update_btn,
             self.extract_downloaded_archives_btn,
+            self.download_experimental_releases_btn
         ]
 
         for index, button in enumerate(buttons):
@@ -528,6 +535,47 @@ class GameLauncher(QMainWindow):
         self.settings_drawer.hide()
 
     from PySide6.QtWidgets import QMessageBox
+
+    def download_experimental_releases(self):
+        token = os.getenv("GITHUB_TOKEN")
+        config = load_config()
+
+        token = token or config["github_token"]
+
+        def log(message):
+            self.log(message)
+
+        folder_canary = config["xenia_canary_path"]
+        downloader = DownloadArtifact(token, log_callback=log)
+
+        downloader.OWNER = "xenia-canary"
+        downloader.REPO = "xenia-canary"
+
+        zip_file = downloader.download(output_dir=folder_canary)
+
+        if extract_archives(folder_canary) != 1:
+            log(f"Failed extracting {zip_file}")
+
+        folder_netplay = config["xenia_netplay_path"]
+        downloader = DownloadArtifact(token, log)
+
+        zip_file = downloader.download(output_dir=folder_netplay)
+
+        if extract_archives(folder_netplay) != 1:
+            log(f"Failed extracting {zip_file}")
+
+        folder_mousehook = config["xenia_mousehook_path"]
+        downloader = DownloadArtifact(token, log)
+
+        downloader.OWNER = "marinesciencedude"
+        downloader.REPO = "xenia-canary-mousehook"
+
+        zip_file = downloader.download(output_dir=folder_mousehook)
+
+        if extract_archives(folder_mousehook) != 1:
+            log(f"Failed extracting {zip_file}")
+
+        log(f"Finished: {zip_file}")
 
     def use_xenia_manager_content_for_edge(self):
         try:

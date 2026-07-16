@@ -19,7 +19,7 @@
     "issue": 1161,
     "id": "57520824",
     "title": "The Witcher 2: Assassins of Kings - Enhanced Edition",
-    "updated": "2026-07-13T21:21:25Z",
+    "updated": "2026-07-14T21:08:02Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -3113,7 +3113,7 @@
     "issue": 936,
     "id": "584114C6",
     "title": "Minecraft Story Mode 2",
-    "updated": "2026-04-02T17:26:45Z",
+    "updated": "2026-07-15T07:00:21Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -4413,7 +4413,7 @@
     "issue": 853,
     "id": "4541096E",
     "title": "Fuse",
-    "updated": "2026-07-12T15:04:24Z",
+    "updated": "2026-07-15T11:20:49Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -7681,13 +7681,15 @@
     "issue": 638,
     "id": "4343081D",
     "title": "Resident Evil: ORC (Operation Raccoon City)",
-    "updated": "2026-02-03T18:48:06Z",
+    "updated": "2026-07-14T18:20:22Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
-      "others": []
+      "others": [
+        "gpu-readback"
+      ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/638"
   },
@@ -12791,7 +12793,7 @@
     "issue": 321,
     "id": "4156091D",
     "title": "Call Of Duty: Black Ops III",
-    "updated": "2026-06-16T16:19:10Z",
+    "updated": "2026-07-15T16:10:02Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -14082,7 +14084,7 @@
     "issue": 247,
     "id": "5451082C",
     "title": "Warhammer 40,000: Space Marine",
-    "updated": "2026-07-09T00:47:32Z",
+    "updated": "2026-07-15T11:19:34Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -14344,7 +14346,7 @@
     "issue": 229,
     "id": "545407EE",
     "title": "The Darkness",
-    "updated": "2026-06-25T09:44:41Z",
+    "updated": "2026-07-15T05:11:50Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -17067,7 +17069,7 @@
     "issue": 32,
     "id": "545408B2",
     "title": "WWE 2K14",
-    "updated": "2026-07-01T04:00:09Z",
+    "updated": "2026-07-15T15:02:46Z",
     "state": "Gameplay",
     "labels": {
       "state": [
