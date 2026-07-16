@@ -2,12 +2,14 @@
   <configuration default="false" name="main" type="PythonConfigurationType" factoryName="Python" editBeforeRun="true" activateToolWindowBeforeRun="false" focusToolWindowBeforeRun="true" nameIsGenerated="true">
     <module name="xenia-game-manager" />
     <selectedOptions>
-      <option name="environmentVariables" visible="false" />
       <option name="envPaths" visible="false" />
     </selectedOptions>
     <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
+    <envs>
+      <env name="GITHUB_TOKEN" value="REMOVED" />
+    </envs>
     <option name="SDK_HOME" value="" />
     <option name="SDK_NAME" value="uv (PythonProject) (6)" />
     <option name="WORKING_DIRECTORY" value="C:\Users\mortl\Documents\PycharmProjects\PythonProject\src" />
