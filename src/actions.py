@@ -44,17 +44,16 @@ class DownloadArtifact:
 
         artifacts = r.json()["artifacts"]
 
-        if not artifacts:
-            raise RuntimeError("No artifacts found.")
-
         for artifact in artifacts:
             if name_contains.lower() in artifact["name"].lower():
-                return artifact
+                return artifact, run
 
         raise RuntimeError(f"No artifact containing '{name_contains}' found.")
 
     def download(self, output_dir="."):
-        artifact = self.latest_artifact()
+        artifact, run = self.latest_artifact()
+
+        version = f"build-{run['run_number']}"
 
         self.log(f"Downloading: {artifact['name']}")
 
@@ -74,4 +73,10 @@ class DownloadArtifact:
 
         self.log(f"Downloaded: {path}")
 
-        return path
+        return {
+            "path": path,
+            "version": f"build-{run['run_number']}",
+            "artifact": artifact["name"],
+            "sha": run["head_sha"][:7],
+            "build_date": run["created_at"]
+        }
