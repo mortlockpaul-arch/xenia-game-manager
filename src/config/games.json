@@ -1604,7 +1604,7 @@
     ],
     "media_id": "148AAE50",
     "title": "Dead Island Riptide",
-    "playtime": 0,
+    "playtime": 27.448196531666667,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "https://github.com/xenia-canary/game-compatibility/issues/750",
@@ -2237,7 +2237,7 @@
     "alternative_id": [],
     "media_id": "3528321A",
     "title": "Gears of War - Judgment",
-    "playtime": 262.971933035,
+    "playtime": 263.37482514333334,
     "xenia_version": "Netplay",
     "compatibility": {
       "url": "https://github.com/xenia-canary/game-compatibility/issues/45",
