@@ -12,3 +12,4 @@ venv/
 .idea/
 .vscode/
 /Xenia_Game_Manager.egg-info/
+/build_tools/
