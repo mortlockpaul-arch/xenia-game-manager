@@ -11,15 +11,19 @@ def get_app_dir() -> Path:
     return Path(__file__).resolve().parent  # Script directory
 
 
-def load_xenia_manager_config(xenia_manager_path):
+def load_xenia_manager_config():
+    config = load_config()
+    xenia_manager_path = Path(config["xenia_manager_path"])
     xenia_manager_config_path = Path.joinpath(xenia_manager_path, "config")
-    xenia_manager_config = os.path.join(xenia_manager_config_path, "config.json")
+    xenia_manager_config = Path.joinpath(xenia_manager_config_path, "config.json")
+    if not xenia_manager_config.exists():
+        return {}, xenia_manager_config
     try:
         with open(xenia_manager_config, "r", encoding="utf-8") as f:
-            return json.load(f)
+            config = json.load(f)
     except Exception as e:
         raise RuntimeError(f"Config Load Error: {e}") from e
-
+    return config, xenia_manager_path
 
 def load_config():
     datadir = get_app_dir()

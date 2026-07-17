@@ -368,11 +368,8 @@ class Database:
         config = load_config()
         xenia_manager_installed = config["xenia_manager_installed"]
         if xenia_manager_installed:
-            xenia_manager_path = Path(config["xenia_manager_path"])
-            xenia_manager_config = load_xenia_manager_config(xenia_manager_path)
-            games_json = Path("config") / "games.json"
             xenia_manager_path = config["xenia_manager_path"]
-            games_json_path = Path(xenia_manager_path) / games_json
+            games_json_path = Path(xenia_manager_path) / Path("config") / "games.json"
             if not games_json_path.exists():
                 raise Exception("Missing File")
             with open(games_json_path, "r", encoding="utf-8") as f:

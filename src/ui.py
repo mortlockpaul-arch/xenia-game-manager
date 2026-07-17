@@ -6,11 +6,15 @@ import subprocess
 import sys
 import threading
 import time
+import traceback
+import webbrowser
 from dataclasses import dataclass
 from datetime import datetime
 from functools import partial
 from pathlib import Path
 
+import keyring
+import requests
 from PySide6.QtCore import Qt, QEasingCurve, QPropertyAnimation, QRect, QThread, Signal, QObject, Slot, QTimer
 from PySide6.QtGui import QGuiApplication, QIcon
 from PySide6.QtWidgets import QMenu
@@ -342,9 +346,9 @@ class GameLauncher(QMainWindow):
         login_form.addRow("Password", self.entry_pass)
         login_form.addRow("API Key", self.entry_apikey)
         #
-        # self.login_btn = QPushButton("Login")
-        # self.login_btn.clicked.connect(self.login)
-        # login_form.addRow(self.login_btn)
+        self.login_btn = QPushButton("Login")
+        self.login_btn.clicked.connect(self.login)
+        login_form.addRow(self.login_btn)
 
         group = QGroupBox("Xbox Unity")
         group.setLayout(login_form)
@@ -427,13 +431,32 @@ class GameLauncher(QMainWindow):
         layout.addLayout(title_updates_row)
 
         # ---------------- GITHUB TOKEN ----------------
+        import keyring
+
         layout.addWidget(QLabel("GitHub Personal Access Token"))
 
         github_row = QHBoxLayout()
 
         self.github_token = QLineEdit()
         self.github_token.setPlaceholderText("Personal Access Token...")
-        self.github_token.setEchoMode(QLineEdit.EchoMode.Password)  # Optional
+        self.github_token.setEchoMode(QLineEdit.EchoMode.Password)
+
+        # Load token from Windows Credential Manager
+        token = keyring.get_password("Xenia Game Manager", "github_token")
+        if token:
+            self.github_token.setText(token)
+
+        # Save token whenever it changes
+        def save_github_token(text):
+            if text:
+                keyring.set_password("Xenia Game Manager", "github_token", text)
+            else:
+                try:
+                    keyring.delete_password("Xenia Game Manager", "github_token")
+                except keyring.errors.PasswordDeleteError:
+                    pass
+
+        self.github_token.textChanged.connect(save_github_token)
 
         show_token = QCheckBox("Show")
         show_token.toggled.connect(
@@ -442,9 +465,10 @@ class GameLauncher(QMainWindow):
             )
         )
 
-        github_environment_variable = os.environ.get("GITHUB_TOKEN")
-        if github_environment_variable:
-            self.github_token.setText(github_environment_variable)
+        github_row.addWidget(self.github_token)
+        github_row.addWidget(show_token)
+
+        layout.addLayout(github_row)
 
         github_row.addWidget(show_token)
 
@@ -565,8 +589,12 @@ class GameLauncher(QMainWindow):
 
     def download_experimental_releases(self):
         config = load_config()
-
-        github_environment_variable = os.environ.get("GITHUB_TOKEN")
+        self.log(clear_console=True)
+        github_environment_variable = keyring.get_password("Xenia Game Manager", "github_token")
+        if not github_environment_variable:
+            self.log("Generate a Personal Github Token before downloading experimental releases.")
+            self.log("Make sure it has Update GitHub Action workflows scope enabled.")
+            return
 
         def log(message):
             self.log(message)
@@ -615,8 +643,10 @@ class GameLauncher(QMainWindow):
             xenia_manager_installed = config["xenia_manager_installed"]
             folder = Path(config.get(release["path_key"]) or release["default"])
             if xenia_manager_installed and xenia_version != "edge":
-                xenia_manager_path = Path(config["xenia_manager_path"])
-                xenia_manager_config = load_xenia_manager_config(xenia_manager_path)
+                xenia_manager_config, xenia_manager_path = load_xenia_manager_config()
+                if not xenia_manager_config:
+                    self.log(f"Config Load Error: No such file or directory: {xenia_manager_path} for {xenia_version}")
+                    continue
                 configuration_location = xenia_manager_config["emulators"][f"{xenia_version}"]["configuration_location"]
                 emulator_location = Path(xenia_manager_config["emulators"][f"{xenia_version}"]["emulator_location"])
                 executable_location_parent = Path.joinpath(xenia_manager_path,
@@ -639,31 +669,41 @@ class GameLauncher(QMainWindow):
             downloader.OWNER = release["owner"]
             downloader.REPO = release["repo"]
 
-            result = downloader.download(output_dir=folder)
-            zip_file = result["path"]
-            version = result["version"]
-            from datetime import datetime, timezone
+            try:
+                result = downloader.download(output_dir=folder)
+                zip_file = result["path"]
+                version = result["version"]
+                from datetime import datetime, timezone
 
-            build_date = datetime.strptime(
-                result["build_date"],
-                "%Y-%m-%dT%H:%M:%SZ"
-            ).replace(tzinfo=timezone.utc)
+                build_date = datetime.strptime(
+                    result["build_date"],
+                    "%Y-%m-%dT%H:%M:%SZ"
+                ).replace(tzinfo=timezone.utc)
 
-            age = datetime.now(timezone.utc) - build_date
+                age = datetime.now(timezone.utc) - build_date
 
-            days = age.days
-            hours = age.seconds // 3600
-            minutes = (age.seconds % 3600) // 60
+                days = age.days
+                hours = age.seconds // 3600
+                minutes = (age.seconds % 3600) // 60
 
-            self.log(f"version {version} is {days} days, {hours} hours, {minutes} minutes old")
+                self.log(f"version {version} is {days} days, {hours} hours, {minutes} minutes old")
 
-            if extract_archives(folder=folder, log_callback=self.log) != 1:
-                log(f"Failed extracting {zip_file}")
-            else:
-                log(f"Finished {release['name']}")
-                config[release["version_key"]] = version
-                save_config(config)
-        self.load_saved_config()
+                if extract_archives(folder=folder, log_callback=self.log) != 1:
+                    log(f"Failed extracting {zip_file}")
+                else:
+                    log(f"Finished {release['name']}")
+                    config[release["version_key"]] = version
+                    save_config(config)
+                self.load_saved_config()
+            except requests.exceptions.HTTPError as e:
+                self.log(f"HTTP error: {e}")
+                self.log(traceback.format_exc())
+
+            except requests.exceptions.RequestException as e:
+                self.log(f"Network error: {e}")
+                self.log(traceback.format_exc())
+
+
 
     def use_xenia_manager_content_for_edge(self):
         try:
@@ -673,6 +713,8 @@ class GameLauncher(QMainWindow):
                 "Success",
                 "Xenia Edge is now using the Xenia Manager content folder."
             )
+        except RuntimeError as e:
+            self.log(traceback.format_exc(), console_log=False)
         except Exception as e:
             QMessageBox.critical(
                 self,
@@ -749,8 +791,7 @@ class GameLauncher(QMainWindow):
         if checkbox_name != "manager":
             return
         try:
-            xenia_manager_path = Path(config["xenia_manager_path"])
-            manager_config = load_xenia_manager_config(xenia_manager_path)
+            manager_config = load_xenia_manager_config()
         except Exception as e:
             self.log(f"Config Load Error: {e}")
             return
@@ -1212,7 +1253,10 @@ class GameLauncher(QMainWindow):
         username = self.entry_user.text().strip()
         password = self.entry_pass.text().strip()
         api_key = self.entry_apikey.text().strip()
-
+        if not api_key:
+            webbrowser.open("https://xboxunity.net/")
+            self.log("No API key provided. Opening XboxUnity...")
+            return
         config = load_config()
 
         # Save API key mode (preferred)
@@ -1317,18 +1361,22 @@ class GameLauncher(QMainWindow):
             ]
             clipboard.setText("\n".join(values))
 
-    def log(self, message):
+    def log(self, message: str = "", console_log: bool=True, log_log:bool=True, clear_console:bool=False):
+        if clear_console:
+            self.console.clear()
+            return
         timestamp = datetime.now().strftime("%H:%M:%S")
 
         # UI console
-        self.console.appendPlainText(
-            f"[{timestamp}] {message}"
-        )
+        if console_log:
+            self.console.appendPlainText(
+                f"[{timestamp}] {message}"
+            )
 
         # File log
-        logging.info(message)
+        if log_log: logging.info(message)
 
-        return None
+        return
 
     # -------------------------
     # Search
@@ -1424,8 +1472,7 @@ class GameLauncher(QMainWindow):
         xenia_mousehook_path = config["xenia_mousehook_path"]
         xenia_version = str(xenia_version).lower()
         if xenia_manager_installed and xenia_version != "edge":
-            xenia_manager_path = Path(config["xenia_manager_path"])
-            xenia_manager_config = load_xenia_manager_config(xenia_manager_path)
+            xenia_manager_config, xenia_manager_path = load_xenia_manager_config()
             configuration_location = xenia_manager_config["emulators"][f"{xenia_version}"]["configuration_location"]
             xenia_canary_path = Path(xenia_manager_config["emulators"][f"{xenia_version}"]["emulator_location"])
             xenia_exe_location = Path.joinpath(xenia_manager_path,
