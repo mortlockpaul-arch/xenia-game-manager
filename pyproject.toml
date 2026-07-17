@@ -16,4 +16,5 @@ dependencies = [
     "tomli-w>=1.2.0",
     "tomlkit>=0.15.0",
     "keyring>=25.7.0",
+    "pip>=26.1.2",
 ]
