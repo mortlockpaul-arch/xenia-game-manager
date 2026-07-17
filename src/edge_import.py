@@ -10,8 +10,7 @@ from pathlib import Path
 
 def use_xenia_manager_content_folder_for_edge(log_callback=None):
     config = load_config()
-    xenia_manager_path = Path(config["xenia_manager_path"])
-    xenia_manager_config = load_xenia_manager_config(xenia_manager_path)
+    xenia_manager_config = load_xenia_manager_config()
     unified_content: bool = (xenia_manager_config["emulators"]["settings"]["unified_content"])
     if not unified_content:
         raise RuntimeError(

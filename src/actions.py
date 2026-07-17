@@ -78,12 +78,17 @@ class DownloadArtifact:
 
         self.log(f"Downloading: {artifact['name']}")
 
-        r = self.session.get(
-            artifact["archive_download_url"],
-            allow_redirects=True,
-            stream=True,
-        )
-        r.raise_for_status()
+        try:
+            r = self.session.get(
+                artifact["archive_download_url"],
+                allow_redirects=True,
+                stream=True,
+            )
+            r.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            self.log(f"Error downloading artifact: {e}")
+            return {}
+
 
         path = Path(output_dir) / f"{artifact['name']}.zip"
 

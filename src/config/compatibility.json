@@ -1,5 +1,22 @@
 [
   {
+    "issue": 1163,
+    "id": "53450839",
+    "title": "Resonance of Fate",
+    "updated": "2026-07-16T15:24:30Z",
+    "state": "Gameplay",
+    "labels": {
+      "state": [
+        "state-gameplay"
+      ],
+      "others": [
+        "apu-silent",
+        "apu-garbage"
+      ]
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1163"
+  },
+  {
     "issue": 1162,
     "id": "58410B16",
     "title": "Street Fighter III: Online Edition",
@@ -276,7 +293,7 @@
     "issue": 1140,
     "id": "545408A7",
     "title": "Grand Theft Auto V",
-    "updated": "2026-07-12T22:56:43Z",
+    "updated": "2026-07-16T08:45:37Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -9405,13 +9422,17 @@
     "issue": 526,
     "id": "45410866",
     "title": "The Godfather 2",
-    "updated": "2025-09-07T05:04:28Z",
+    "updated": "2026-07-15T17:41:55Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
-      "others": []
+      "others": [
+        "tech-engine-renderware",
+        "tech-middleware-havok",
+        "vsync-off-speedup"
+      ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/526"
   },
@@ -9419,13 +9440,14 @@
     "issue": 525,
     "id": "555307EA",
     "title": "Brothers in Arms: HH",
-    "updated": "2025-03-14T03:21:53Z",
+    "updated": "2026-07-16T12:10:32Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
+        "gpu-drawing-corrupt",
         "tech-engine-unreal"
       ]
     },
@@ -9981,11 +10003,11 @@
     "issue": 490,
     "id": "58410957",
     "title": "Call of Duty Classic",
-    "updated": "2026-07-14T08:22:03Z",
-    "state": "Gameplay",
+    "updated": "2026-07-16T08:40:43Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
       "others": [
         "kernel-save-file-errors",
@@ -11755,7 +11777,7 @@
     "issue": 383,
     "id": "434D0845",
     "title": "DiRT Showdown",
-    "updated": "2025-01-10T03:57:07Z",
+    "updated": "2026-07-15T20:20:52Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -14311,15 +14333,13 @@
     "issue": 232,
     "id": "415608CB",
     "title": "Call Of Duty: Modern Warfare 3",
-    "updated": "2026-06-19T20:54:30Z",
+    "updated": "2026-07-16T16:33:11Z",
     "state": "Playable",
     "labels": {
       "state": [
         "state-playable"
       ],
-      "others": [
-        "gpu-shader-errors"
-      ]
+      "others": []
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/232"
   },
@@ -16064,7 +16084,7 @@
     "issue": 112,
     "id": "4D5308D6",
     "title": "Fable III",
-    "updated": "2026-07-08T18:38:25Z",
+    "updated": "2026-07-15T20:51:15Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -16476,11 +16496,11 @@
     "issue": 75,
     "id": "4D530910",
     "title": "Forza Motorsport 4",
-    "updated": "2026-07-07T18:17:52Z",
-    "state": "Gameplay",
+    "updated": "2026-07-16T12:38:33Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
       "others": [
         "gpu-drawing-corrupt",
@@ -16496,7 +16516,7 @@
     "issue": 74,
     "id": "4D5307F1",
     "title": "Fable 2",
-    "updated": "2026-06-10T23:21:16Z",
+    "updated": "2026-07-16T11:20:45Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -17107,7 +17127,7 @@
     "issue": 30,
     "id": "4D5309C9",
     "title": "Forza Horizon",
-    "updated": "2026-07-09T00:58:46Z",
+    "updated": "2026-07-16T08:14:15Z",
     "state": "Playable",
     "labels": {
       "state": [

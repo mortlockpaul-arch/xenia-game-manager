@@ -15,4 +15,5 @@ dependencies = [
     "browser-cookie3>=0.20.1",
     "tomli-w>=1.2.0",
     "tomlkit>=0.15.0",
+    "keyring>=25.7.0",
 ]
