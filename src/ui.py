@@ -15,7 +15,7 @@ from pathlib import Path
 
 import keyring
 import requests
-from PySide6.QtCore import Qt, QEasingCurve, QPropertyAnimation, QRect, QThread, Signal, QObject, Slot, QTimer
+from PySide6.QtCore import Qt, QEasingCurve, QPropertyAnimation, QRect, QThread, Signal, QObject, Slot, QTimer, QSize
 from PySide6.QtGui import QGuiApplication, QIcon
 from PySide6.QtWidgets import QMenu
 from PySide6.QtWidgets import (
@@ -194,7 +194,10 @@ class GameLauncher(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.xenia_netplay_installed = None
+        self.xenia_edge_installed: QCheckBox = QCheckBox()
+        self.xenia_manager_installed: QCheckBox = QCheckBox()
+        self.xenia_canary_installed: QCheckBox = QCheckBox()
+        self.xenia_netplay_installed: QCheckBox = QCheckBox()
         self.extract_downloaded_archives_btn = None
         self.config = None
         self.archive_button = None
@@ -785,13 +788,12 @@ class GameLauncher(QMainWindow):
     def checkbox_changed(self, state, checkbox_name):
         checked = bool(state)
         config = load_config()
-
         self.set_checkbox(checkbox_name, checked)
 
         if checkbox_name != "manager":
             return
         try:
-            manager_config = load_xenia_manager_config()
+            manager_config, xenia_manager_path = load_xenia_manager_config()
         except Exception as e:
             self.log(f"Config Load Error: {e}")
             return
@@ -1038,8 +1040,10 @@ class GameLauncher(QMainWindow):
         self.table.setModel(self.model)
 
         self.table.setSortingEnabled(True)
-
         self.table.setAlternatingRowColors(True)
+
+        self.table.setIconSize(QSize(24, 24))
+        self.table.verticalHeader().setDefaultSectionSize(32)
 
         self.table.doubleClicked.connect(
             self.launch_game_double_clicked
@@ -1057,27 +1061,32 @@ class GameLauncher(QMainWindow):
 
         header.setStretchLastSection(False)
 
-        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)
-        header.setSectionResizeMode(1, QHeaderView.ResizeMode.Fixed)
-        header.setSectionResizeMode(2, QHeaderView.ResizeMode.Fixed)
-        header.setSectionResizeMode(3, QHeaderView.ResizeMode.Fixed)
-        header.setSectionResizeMode(4, QHeaderView.ResizeMode.Fixed)
-        header.setSectionResizeMode(5, QHeaderView.ResizeMode.Fixed)
-        header.setSectionResizeMode(6, QHeaderView.ResizeMode.Fixed)
-        header.setSectionResizeMode(7, QHeaderView.ResizeMode.Fixed)
-        header.setSectionResizeMode(8, QHeaderView.ResizeMode.Fixed)
-        header.setSectionResizeMode(9, QHeaderView.ResizeMode.Fixed)
-        header.setSectionResizeMode(11, QHeaderView.ResizeMode.Fixed)
+        # Fixed columns
+        for column in [
+            0, 1, 3, 4, 5, 6, 7, 8, 9, 11
+        ]:
+            header.setSectionResizeMode(
+                column,
+                QHeaderView.ResizeMode.Fixed
+            )
 
-        self.table.setColumnWidth(0, 32)  # ★
-        self.table.setColumnWidth(1, 575)  # Number
-        self.table.setColumnWidth(2, 70)  # ★
-        self.table.setColumnWidth(3, 70)  # Number
-        self.table.setColumnWidth(6, 135)  # Number
-        self.table.setColumnWidth(4, 70)  # Number
-        self.table.setColumnWidth(7, 50)  # Number
-        self.table.setColumnWidth(10, 200)  # Number
+        # Widths
+        self.table.setColumnWidth(0, 32)  # Favourite
+        self.table.setColumnWidth(1, 32)  # Icon
+        self.table.setColumnWidth(2, 600)  # Title
+        self.table.setColumnWidth(3, 80)  # Title ID
+        self.table.setColumnWidth(4, 80)  # Media ID
+        self.table.setColumnWidth(5, 60)  # Discs
+        self.table.setColumnWidth(6, 120)  # Type
+        self.table.setColumnWidth(7, 130)  # Last Played
+        self.table.setColumnWidth(8, 60)  # Plays
+        self.table.setColumnWidth(9, 80)  # Play Time
+        self.table.setColumnWidth(10, 60)  # Disc
+        self.table.setColumnWidth(11, 120)  # Xenia Version
+        self.table.setColumnWidth(12, 120)  # Compatibility
+
         self.search.setClearButtonEnabled(True)
+
         self.table.verticalHeader().hide()
 
         main_layout.addWidget(self.table)
