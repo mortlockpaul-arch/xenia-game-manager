@@ -428,7 +428,7 @@ class Database:
         config = load_config()
         xenia_manager_installed = config["xenia_manager_installed"]
         xenia_edge_installed = config["xenia_edge_installed"]
-        multidisc_info = get_app_dir() / "config" / "multidisc.json"
+        multidisc_info = get_app_dir() / "config" / "disc-info.json"
 
         if xenia_version == "xenia_manager":
             if not  xenia_manager_installed:
@@ -659,7 +659,7 @@ if __name__ == "__main__":
     # )
     #
     # import_multidisc_json(
-    #     r"multidisc.json"
+    #     r"disc-info.json"
     # )
 
     print("Database initialized")
