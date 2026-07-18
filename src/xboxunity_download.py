@@ -1,14 +1,10 @@
 import os
-
 from PySide6.QtCore import QThread, Signal
 
-from xboxunity_api import (
-    search_tus,
-    download_tu
-)
+import xboxunity_api
 
 
-class TUDownloadWorker(QThread):
+class TitleUpdateWorker(QThread):
     log = Signal(str)
     progress = Signal(int, int, str)          # current, total
     game_progress = Signal(int, int)     # game index, total games
@@ -20,6 +16,13 @@ class TUDownloadWorker(QThread):
         self.token = token
         self.api_key = api_key
         self.output_folder = output_folder
+        self.xbox_unity_api = xboxunity_api.XBoxUnity(log_callback=self.log)
+
+    def log_message(self, message):
+        if self.log is None:
+            print(message)
+        elif hasattr(self.log, "emit"):
+            self.log.emit(message)
 
     def run(self):
         total_games = len(self.games)
@@ -43,7 +46,7 @@ class TUDownloadWorker(QThread):
             self.log.emit(f"Searching TUs for: {game_name}")
 
             try:
-                tus = search_tus(
+                tus = self.xbox_unity_api.search_tus(
                     media_id=media_id,
                     title_id=title_id,
                     token=self.token,
@@ -77,7 +80,7 @@ class TUDownloadWorker(QThread):
                 self.log.emit(f"Downloading {filename}")
 
                 try:
-                    success, original_file = download_tu(
+                    success, original_file = self.xbox_unity_api.download_tu(
                         download_url,
                         destination,
                         progress_callback=self._progress_callback
