@@ -15,7 +15,7 @@ executables = [
     Executable(
         script=str(ROOT / "src" / "main.py"),
         base=base,
-        icon=str(ROOT / "assets" / "icons" / "app.ico"),
+        icon=str(ROOT / "src" / "assets" / "icons" / "app.ico"),
         target_name=APP_NAME.replace(" ", ""),
     )
 ]
@@ -44,7 +44,7 @@ bdist_msi_options = {
     "product_name": "Xenia Game Manager",
     "data": {
     "Icon": [
-        ("IconId", str(ROOT / "assets" / "icons" / "app.ico")),
+        ("IconId", str(ROOT / "src" / "assets" / "icons" / "app.ico")),
     ],
     "Shortcut": [
         (
