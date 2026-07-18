@@ -22,7 +22,7 @@ class GameTableModel(QAbstractTableModel):
 
     COLUMNS = [
         ("favourite", "Fav"),
-        ("artwork_path", "Icon"),
+        ("artwork_path", ""),
         ("title", "Title"),
         ("game_id", "Title ID"),
         ("media_id", "Media ID"),

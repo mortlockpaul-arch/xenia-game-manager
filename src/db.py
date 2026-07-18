@@ -89,8 +89,6 @@ class Compatibility:
                 compat = compat_by_title.get(game_id)
 
                 if compat:
-                    print(compat["state"])
-
                     con.execute("""
                         INSERT INTO compatibility (
                             game_id,
@@ -569,13 +567,9 @@ class Database:
                     if (edge_path / "portable.txt").exists():
                         edge_configs = edge_path / "content"
 
-
                     config_path = str(edge_configs / f"{game_id}.config.toml")
                     disc_type = "XBLA" if game_id.lower() in file_path.lower() else "DVD"
-                    print(game_id)
-                    print(title)
-                    print(file_path)
-                    print(config_path)
+
                     con.execute("""
                         INSERT INTO games (
                             game_id,

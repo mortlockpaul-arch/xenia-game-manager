@@ -17,10 +17,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\007 Legends [RF].zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\007 Legends.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5451083B",
@@ -42,10 +44,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\50 Cent - Blood on the Sand (USA, Europe) (En,Fr,De).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\50 Cent BotS.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "414B07D1",
@@ -65,10 +69,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\A-Train HX (Europe) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\A-Train HX.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "465307DA",
@@ -88,10 +94,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Armored Core - For Answer.iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\AC for Answer.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4E4D07D1",
@@ -111,10 +119,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Ace Combat 6 - Fires of Liberation (Europe) (En,Fr,De,Es,It) (Rev 1).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\ACE COMBAT 6 Fires of Liberation.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4E4D081C",
@@ -137,10 +147,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Ace Combat - Assault Horizon (Europe) (En,Fr,De,Es,It).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\ACE COMBAT ASSAULT HORIZON.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410A5C",
@@ -160,10 +172,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\58410A5C\\000D0000\\86E8A55A767E0DC40090CFFA1EBCCE9C593E9D9158",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Adventures of Shuggy.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4E4D07D8",
@@ -183,10 +197,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Afro Samurai (Europe) (En,Fr,Es,It).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\AFRO SAMURAI.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410A06",
@@ -206,10 +222,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\58410A06\\000D0000\\6840ACC01BAE9B0EBB40F577349428B04B9042A958",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\AFTER BURNER CLIMAX.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B5907E0",
@@ -232,10 +250,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Air Conflicts - Secret Wars (USA).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Air Conflicts - Secret Wars.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "413307D9",
@@ -255,10 +275,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Air Conflicts - Vietnam (USA, Europe).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Air Conflicts - Vietnam (USA, Europe).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "413307D6",
@@ -280,10 +302,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Air Conflicts - Pacific Carriers (Europe).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Air Conflicts Pacific Carriers.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D530805",
@@ -303,10 +327,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Alan Wake (World) (En,Ja,Fr,De,Es,It,Zh,Ko,Pl,Ru).zar",
+      "additional_discs": [],
       "patch": "Emulators\\Xenia Canary\\patches\\4D530805 - Alan Wake.patch.toml",
       "config": "Emulators\\Xenia Canary\\config\\Alan Wake.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58411233",
@@ -326,10 +352,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58411233\\000D0000\\10B9122134DE13D8B85827EBC29CBB6396E314BC58",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Alan Wakes American Nightmare.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "45410916",
@@ -349,10 +377,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Alice - Madness Returns (USA, Europe) (En,Fr,De,Es,It).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Alice Madness Returns.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5345085E",
@@ -372,10 +402,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Alien - Isolation (USA, Europe) (En,Fr,De,Es,It,Pt,Pl,Ru) (Disc 1) (Installation Disc).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Alien - Isolation (Disc 1) (Installation Disc).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5345085E",
@@ -395,10 +427,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Alien - Isolation (USA, Europe) (En,Fr,De,Es,It,Pt,Pl,Ru) (Disc 2).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Alien - Isolation (Disc 2).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410A22",
@@ -418,10 +452,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58410A22\\000D0000\\58410A2200000000",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Alien Breed 2 Assault.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410AA3",
@@ -441,10 +477,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58410AA3\\000D0000\\58410AA300000000",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Alien Breed 3 Descent.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410964",
@@ -464,10 +502,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58410964\\000D0000\\083833CC99CEE294786FBDFE8E89ACFE48C3B44B58",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Alien Breed Episode 1.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5345082A",
@@ -487,10 +527,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Aliens vs. Predator (USA, Europe) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Aliens vs Predator.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5841095E",
@@ -510,10 +552,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\5841095E\\000D0000\\F4CDF5AAEC321884B39C59A778CF959ECCC45F8158",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Ancients of Ooga.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4156088B",
@@ -535,10 +579,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Apache - Air Assault (USA, Europe) (En,Fr,De,Es).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Apache Air Assault.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410991",
@@ -558,10 +604,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58410991\\000D0000\\542D23E02A6FD65DDB7767A07A151353F0DFFDE858",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\ARKANOID Live.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "555307D4",
@@ -581,10 +629,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Assassin\u0027s Creed (USA, Europe) (En,Fr,De,Es,It) (Rev 1).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Assassin\u0027s Creed.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5553085D",
@@ -604,10 +654,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Assassin\u0027s Creed - Brotherhood (USA, Europe) (En,Fr,De,Es,It,Nl,Pt,Sv,No,Da).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Assassin\u0027s Creed - Brotherhood.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "555308CE",
@@ -627,10 +679,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Assassin\u0027s Creed - Rogue (USA, Europe) (En,Fr,De,Es,It,Nl,Pt,Pl).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Assassin\u0027s Creed - Rogue.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "584113FC",
@@ -650,10 +704,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\584113FC\\000D0000\\F6C1A31CC8D967315ECC5DD93D965252552CFDA858",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Assassins Creed III Liberation HD.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "43430817",
@@ -675,10 +731,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Asura\u0027s Wrath (World).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Asura\u0027s Wrath.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "443607D6",
@@ -698,10 +756,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Back to the Future - The Game - 30th Anniversary Edition.zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Back to the Future The Game - 30th Anniversary Edition.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D5307ED",
@@ -721,10 +781,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Banjo-Kazooie - Nuts \u0026 Bolts (Europe) (En,Ja,Fr,De,Es,It,Nl,Sv,No,Zh,Ko,Pl,Ru,Cs).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Banjo Kazooie N and B.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410954",
@@ -744,10 +806,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58410954\\000D0000\\DA78E477AA5E31A7D01AE8F84109FD4BF89E49E858",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Banjo-Kazooie (1).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410955",
@@ -767,10 +831,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58410955\\000D0000\\ABB9CAB336175357D09F2D922735D23C62F90DDD58",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Banjo-Tooie (1).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "57520802",
@@ -792,10 +858,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Batman - Arkham City (World) (En,Ja,Fr,De,Es,It,Pt,Ko,Pl,Ru).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Batman - Arkham City.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "584114BB",
@@ -817,10 +885,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\584114BB\\000D0000\\B8BF6DC2B347E7E7D6FAC59A0620BBBB61457E6358",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Batman The Telltale Series.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "454107DB",
@@ -840,10 +910,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Battlefield 2 - Modern Combat (USA).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Battlefield 2 Modern Combat.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "454108A8",
@@ -863,10 +935,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Battlefield - Bad Company 2 (Europe) (En,Fr,De,Es,It,Pl,Ru) (Limited Edition).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Battlefield Bad Company 2.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "534507F4",
@@ -886,10 +960,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Beijing 2008 (USA, Europe) (En,Fr,De,Es,It).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Beijing 2008.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B4E0839",
@@ -911,10 +987,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Birds of Steel (Europe).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Birds of Steel.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "464507D1",
@@ -934,10 +1012,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Blood Bowl.zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Blood Bowl.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D5307DF",
@@ -957,10 +1037,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Blue Dragon (Europe) (En,De,Es) (Disc 1).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Blue Dragon (Disc 1).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D5307DF",
@@ -980,10 +1062,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Blue Dragon (Europe) (En,De,Es) (Disc 2).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Blue Dragon (Disc 2).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D5307DF",
@@ -1003,10 +1087,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Blue Dragon (Europe) (En,De,Es) (Disc 3).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Blue Dragon (Disc 3).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "41560845",
@@ -1026,10 +1112,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Blur (USA, Europe) (En,Fr,De,Es,It).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Blur.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "545407E7",
@@ -1052,10 +1140,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Borderlands (World) (En,Fr,De,Es,It).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Borderlands.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410AF1",
@@ -1075,10 +1165,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58410AF1\\000D0000\\F315723EF5C4D9A1696C3C35CE25C055DF6780FE58",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Boulder Dash-XL.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "584109B0",
@@ -1098,10 +1190,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\584109B0\\000D0000\\CF084D62A08FC7BF491F9D52DD49367522D9B79758",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\BUBBLE BOBBLE Neo.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "454108EF",
@@ -1123,10 +1217,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Bulletstorm (USA, Europe) (En,Fr,De,Es,It,Pl,Ru).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Bulletstorm.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5454081A",
@@ -1148,10 +1244,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Bully - Scholarship Edition.zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Bully Scholarship Ed.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410B90",
@@ -1171,10 +1269,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58410B90\\000D0000\\77D836DC3DFB9EACE58412957AF836760E9A682C58",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\BurgerTime World Tour.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "45410806",
@@ -1194,10 +1294,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Burnout Paradise (USA).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Burnout Paradise.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "454107DC",
@@ -1217,10 +1319,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Burnout Revenge (Europe) (En,Es,Nl,Sv,Fi).zar",
+      "additional_discs": [],
       "patch": "Emulators\\Xenia Canary\\patches\\454107DC - Burnout Revenge.patch.toml",
       "config": "Emulators\\Xenia Canary\\config\\Burnout Revenge.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "415607E6",
@@ -1240,10 +1344,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Call of Duty 4 - Modern Warfare (USA, Europe).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Call of Duty 4 - Modern Warfare.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5553083C",
@@ -1263,10 +1369,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\James Cameron\u0027s Avatar - The Game (USA, Europe) (En,Fr,De,Es,It,Nl).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Camerons Avatar.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D4B07D6",
@@ -1286,10 +1394,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Carrier Command - Gaea Mission (Europe).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Carrier Command GAEA Mission.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "54510848",
@@ -1309,10 +1419,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Cars Race-O-Rama [RF].zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Cars Race-O-Rama.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58411408",
@@ -1332,10 +1444,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58411408\\000D0000\\3D431C3F7792E74D4F425CABE26417900017A3FD58",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Castlevania Lords of Shadow - Mirror of Fate HD.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B4E084D",
@@ -1358,10 +1472,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Castlevania - Lords of Shadow 2.zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Castlevania Lords Of Shadow 2.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "434D07E9",
@@ -1381,10 +1497,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Clive Barker\u0027s Jericho (USA, Europe) (En,Fr,De,Es,It).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Clive Barkers Jericho.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "55530836",
@@ -1404,10 +1522,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Cloudy with a Chance of Meatballs [RF].zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Cloudy with a Chance of Meatballs.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "45410860",
@@ -1429,10 +1549,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Command \u0026 Conquer Red Alert 3 [RF].zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Command \u0026 Conquer - Red Alert 3.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "45410860",
@@ -1454,10 +1576,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Command \u0026 Conquer - Red Alert 3 (USA, Europe) (En,Es).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Command \u0026 Conquer - Red Alert 3 (1).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4541083A",
@@ -1477,10 +1601,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Command \u0026 Conquer 3 - Kane\u0027s Wrath (USA).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Command \u0026 Conquer 3 - Kanes Wrath.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4541080E",
@@ -1500,10 +1626,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Command \u0026 Conquer 3 - Tiberium Wars (USA).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Command \u0026 Conquer 3 - Tiberium Wars.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "584109BF",
@@ -1525,10 +1653,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\584109BF\\000D0000\\AF4E5C384CAD63FAA96EADE50F7A69CFFEE0DC6D58",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Command \u0026 Conquer Red Alert 3 Commanders Challenge.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D5307DC",
@@ -1548,10 +1678,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Crackdown (World) (En,Ja,Fr,De,Es,It,Zh,Ko,Cs,Hu).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Crackdown.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B5907E6",
@@ -1571,10 +1703,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Dark (USA, Europe).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\DARK.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4E4D083A",
@@ -1594,10 +1728,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Dark Souls (Europe).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Dark Souls.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "465307E4",
@@ -1617,10 +1753,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Dark Souls II (World) (En,Ja,Fr,De,Es,It,Zh,Ko,Pl,Ru).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\DARK SOULS II.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "564707D4",
@@ -1640,10 +1778,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Darkest of Days (USA).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Darkest Of Days.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "54510865",
@@ -1663,10 +1803,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\De Blob 2 (USA, Europe) (En,Fr,De,Es,It).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\de Blob 2.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B4D07DF",
@@ -1688,10 +1830,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Dead Island - Game of the Year Edition (USA, Europe) (En,Fr,De,Es,It,Pl).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Dead Island.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B4D07F2",
@@ -1713,10 +1857,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Dead Island - Riptide - Complete Edition.zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Dead Island Riptide.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "435607D8",
@@ -1736,10 +1882,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Deadliest Catch Sea of Chaos\u00A0[NTSCU].zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Deadliest Catch Sea of Chaos.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "415608EC",
@@ -1759,10 +1907,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Deadpool.zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Deadpool.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "415807D8",
@@ -1785,10 +1935,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Deathsmiles (USA).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Deathsmiles.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410823",
@@ -1808,10 +1960,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\58410823\\000D0000\\346322980D17D4A5E74B3E0191B61832F0A6BA2658",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\DEFENDER.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "535107FA",
@@ -1831,10 +1985,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Deus Ex - Human Revolution - Director\u0027s Cut (USA, Europe) (En,Fr,De,Es,It) (Disc 1).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Deus Ex - Human Revolution - Director\u0027s Cut (Disc 1).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "535107FA",
@@ -1854,10 +2010,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Deus Ex - Human Revolution - Director\u0027s Cut (USA, Europe) (En,Fr,De,Es,It) (Disc 2).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Deus Ex - Human Revolution - Director\u0027s Cut (Disc 2).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "394F07D1",
@@ -1880,10 +2038,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Diablo III (Europe, Australia) (En,Fr).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Diablo III.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "394F07D4",
@@ -1906,10 +2066,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Diablo III - Reaper of Souls - Ultimate Evil Edition (USA).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Diablo III - Reaper of Souls - Ultimate Evil Edition.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "434D083D",
@@ -1929,10 +2091,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Dirt 3 - Complete Edition.zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\DiRT 3.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "434D0845",
@@ -1954,10 +2118,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\DiRT Showdown [RF].iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\DiRT Showdown.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5345085A",
@@ -1977,10 +2143,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Dreamcast Collection.zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Dreamcast Collection.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5553087E",
@@ -2003,10 +2171,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Driver - San Francisco (World) (En,Fr,De,Es,It,Nl,Sv,No,Da).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Driver - San Francisco.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "565507E0",
@@ -2028,10 +2198,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Eragon (Europe).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Eragon.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4E4D07E2",
@@ -2054,10 +2226,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Eternal Sonata [PAL].iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Eternal Sonata (1).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "434D084F",
@@ -2077,10 +2251,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\F1 2013 - Complete Edition (Europe) (En,Fr,De,Es,It,Pl,Ru).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\F1 2013 - Complete Edition.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "434D0849",
@@ -2102,10 +2278,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\F1 Race Stars (USA, Europe) (En,Fr,De,Es,It,Pt,Pl).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\F1 Race Stars.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D530A1A",
@@ -2128,10 +2306,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Fable - The Journey (Europe) (En,It,Pt).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Fable The Journey.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "425307E0",
@@ -2153,10 +2333,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Fallout - New Vegas (USA, Europe).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Fallout - New Vegas.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "FFED2000",
@@ -2176,10 +2358,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Fallout - New Vegas - Ultimate Edition (USA) (Disc 2).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Fallout - New Vegas - Ultimate Edition (USA) (Disc 2).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "425307D5",
@@ -2199,10 +2383,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Fallout 3 (USA).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Fallout 3.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "FFED2000",
@@ -2222,10 +2408,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Fallout 3 - Game of the Year Edition (USA, Europe) (Disc 2).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Fallout 3 - Game of the Year Edition (USA, Europe) (Disc 2).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "464507E1",
@@ -2245,10 +2433,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Farming Simulator 15 (USA, Europe) (En,Fr,De,Es,It,Nl,Pt,Pl,Ru).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Farming Simulator 15.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "415608ED",
@@ -2268,10 +2458,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Fast \u0026 Furious - Showdown (USA, Europe).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Fast \u0026 Furious - Showdown.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B5607E3",
@@ -2293,10 +2485,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Fist of the North Star - Ken\u0027s Rage 2 (USA).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Fist of the North Star Kens rage 2 (1).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "454D07D2",
@@ -2316,10 +2510,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\FlatOut - Ultimate Carnage (USA, Europe) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\FlatOut UC.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D5309C9",
@@ -2342,10 +2538,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Forza Horizon (Europe) (En,Fr,De,Es,It,Nl).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Netplay\\config\\Forza Horizon.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D530AA4",
@@ -2367,10 +2565,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Forza Horizon 2 (USA) (En,Ja,Fr,De,Es,It,Pt,Zh,Pl,Ru).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Netplay\\config\\Forza Horizon 2.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D5307EA",
@@ -2390,10 +2590,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Forza Motorsport 2 (Europe) (En,Ja,Fr,De,Es,It,Zh,Ko,Pl,Cs,Hu).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Forza Motorsport 2.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "534507D5",
@@ -2415,10 +2617,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Full Auto (USA, Europe) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Full Auto.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "584108BB",
@@ -2438,10 +2642,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\584108BB\\000D0000\\CED63B0E9958E30F4D3E506624A04135DBB08B3B58",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Galaga Legions.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D530A26",
@@ -2461,10 +2667,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Gears of War - Judgment (USA, Europe) (En,Fr,Es,Nl,No,Da,Fi,Zh,Ko,Pl,Cs,Hu).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Netplay\\config\\Gears of War - Judgment.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D5308AB",
@@ -2487,10 +2695,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Gears of War 3 (UK).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Gears of War 3.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "415608AF",
@@ -2512,10 +2722,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\GoldenEye 007 - Reloaded (USA, Europe) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\GoldenEye 007 Reloaded.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "545407F2",
@@ -2535,10 +2747,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Grand Theft Auto IV (Europe, Asia) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Grand Theft Auto IV.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "445407D4",
@@ -2560,10 +2774,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\445407D4\\00007000\\15EC0198EE25F66A13E7",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Gray Matter.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "575207E9",
@@ -2583,10 +2799,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Green Lantern - Rise of the Manhunters (Europe) (En,Fr,De,Es,It,Nl).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Green Lantern - Rise of the Manhunters.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "434D07FF",
@@ -2606,10 +2824,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\GRID [RF].iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\GRID.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "434D0851",
@@ -2629,10 +2849,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Grid Autosport (USA, Europe) (En,Fr,De,Es,It,Pt,Pl,Ru).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\GRID Autosport.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "415607D3",
@@ -2652,10 +2874,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Gun (USA) (En,Fr,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Gun.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410817",
@@ -2675,10 +2899,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\58410817\\000D0000\\06EE7AE2FFF418AB1D65384A05CB1869CB1C4FB758",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\GYRUSS.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B4E07D3",
@@ -2698,10 +2924,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Hellboy - The Science of Evil (USA, Europe) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Hellboy TSoE.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "53510804",
@@ -2723,10 +2951,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Hitman Absolution [PAL][NTSCU].iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Hitman Absolution.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5351081C",
@@ -2746,10 +2976,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Hitman HD Trilogy (USA, Europe) (En,Fr,De) (Disc 1).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Hitman HD Pack.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5841096A",
@@ -2769,10 +3001,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\5841096A\\000D0000\\17EE90959CCE5C680E1B7D3DB92A616D807CFA8358",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Netplay\\config\\Hydro Thunder Hurricane.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "464F07D1",
@@ -2792,10 +3026,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\IL-2 Sturmovik - Birds of Prey.zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\IL-2 Birds of Prey.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410A1B",
@@ -2815,10 +3051,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58410A1B\\000D0000\\D2BAC6E5571A96D5BB3CEF0F1A3F4F25709C951358",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\ilomilo.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "57520829",
@@ -2840,10 +3078,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Injustice - Gods Among Us (USA, Europe) (En,Fr,De,Es,It,Pt,Pl,Ru).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Injustice Gods Among Us.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5841096B",
@@ -2863,10 +3103,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\5841096B\\000D0000\\A467D43B3D410D452D8C992FB98C2ACBAFB557E558",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Ion Assault.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4156081F",
@@ -2886,10 +3128,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\007 - Blood Stone (USA, Europe) (En,Fr,De).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\James Bond 007 Blood Stone.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "455607D6",
@@ -2909,10 +3153,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\JASF - Jane\u0027s Advanced Strike Fighters (USA, Europe) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Janes Advanced Strike Fighters.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58411247",
@@ -2932,10 +3178,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58411247\\000D0000\\8885C3EC05FD920A80B8ED48A8A6777EC5483FA558",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Jet Set Radio.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5841124E",
@@ -2955,10 +3203,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\5841124E\\000D0000\\91F727D960DAA6BAD1196AF55F7BFBCB1CE7124858",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\JOJOS BIZARRE ADVENTURE HD Ver.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "584107D8",
@@ -2978,10 +3228,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\584107D8\\000D0000\\49A43028F0D56A4BC755C14B363E42B8C844FC1158",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Joust.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "534307F8",
@@ -3001,10 +3253,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Kane \u0026 Lynch 2 - Dog Days (USA, Europe) (En,Fr,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Kane \u0026 Lynch 2 - Dog Days.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "534307E0",
@@ -3026,10 +3280,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Kane \u0026 Lynch - Dead Men (World) (En,Fr,De,Es,It).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Kane and Lynch Dead Men.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "41560926",
@@ -3049,10 +3305,37 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Kings Quest The Complete Collection\\Compatibility \u0026 TU7\\41560926\\00007000\\9E5ED855D30A8B2A08E88C9623FCDD5E41",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Kings Quest The Complete Collection.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
+  },
+  {
+    "game_id": "454108D4",
+    "alternative_id": [],
+    "media_id": "0E79403B",
+    "title": "Left 4 Dead 2",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/179",
+      "rating": "Playable"
+    },
+    "artwork": {
+      "background": "GameData\\Left 4 Dead 2\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Left 4 Dead 2\\Artwork\\Boxart.png",
+      "icon": "GameData\\Left 4 Dead 2\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "Z:\\xbox360\\Left 4 Dead 2 (World) (En,Ja,Fr,De,Es,It,Pt,Zh,Ko,Pl,Ru).iso",
+      "additional_discs": [],
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Left 4 Dead 2.config.toml",
+      "custom_emulator_executable": null
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "575207F1",
@@ -3072,10 +3355,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Legend of the Guardians - The Owls of Ga\u0027Hoole (USA, Europe).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Legend of the Guardians - The Owls of Ga\u0027Hoole.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D530888",
@@ -3095,10 +3380,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Lips - I Love the 80s (Europe).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Lips.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "565707D0",
@@ -3118,10 +3405,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Lollipop Chainsaw (USA, Europe) (En,Fr,De,Es,It,Pt,Ru).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Lollipop Chainsaw.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "575207D5",
@@ -3143,10 +3432,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Looney Tunes - Acme Arsenal (Europe).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Looney Tunes - Acme Arsenal.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5553080F",
@@ -3166,10 +3457,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Lost - Via Domus (USA, Europe) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Lost - Via Domus.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D5307FA",
@@ -3189,10 +3482,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Lost Odyssey (USA, Europe) (En,Ja,Fr,De,Es,It) (Disc 1).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Lost Odyssey (Disc 1).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D5307FA",
@@ -3212,10 +3507,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Lost Odyssey (USA, Europe) (En,Ja,Fr,De,Es,It) (Disc 2).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Lost Odyssey (Disc 2).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D5307FA",
@@ -3235,10 +3532,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Lost Odyssey (USA, Europe) (En,Ja,Fr,De,Es,It) (Disc 3).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Lost Odyssey (Disc 3).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D5307FA",
@@ -3258,10 +3557,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Lost Odyssey (USA, Europe) (En,Ja,Fr,De,Es,It) (Disc 4).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Lost Odyssey (Disc 4).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "545407E6",
@@ -3285,10 +3586,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Mafia II (Europe) (En,De,It).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Mafia II.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B4E085E",
@@ -3308,10 +3611,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Metal Gear Solid V - The Phantom Pain (USA, Europe) (En,Ja,Fr,De,Es,It,Pt,Ru) (Disc 1).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\METAL GEAR SOLID V THE PHANTOM PAIN.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B4E085E",
@@ -3331,10 +3636,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Metal Gear Solid V - The Phantom Pain (USA, Europe) (En,Ja,Fr,De,Es,It,Pt,Ru) (Disc 1).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\METAL GEAR SOLID V THE PHANTOM PAIN (1).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B4E085E",
@@ -3354,10 +3661,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Metal Gear Solid V - The Phantom Pain (USA, Europe) (En,Ja,Fr,De,Es,It,Pt,Ru) (Disc 2).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\METAL GEAR SOLID V THE PHANTOM PAIN (2).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B4D07F5",
@@ -3380,10 +3689,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Metro - Last Light (World) (En,Fr,De,Es,It,Nl,Pl,Ru,Cs).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Metro Last Light.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "415608D3",
@@ -3403,10 +3714,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\MIB - Alien Crisis (USA, Europe) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\MIB - Alien Crisis.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "545407F8",
@@ -3426,10 +3739,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Midnight Club - Los Angeles - Complete Edition (USA, Europe).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Midnight Club Los Angeles Complete.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410A19",
@@ -3449,10 +3764,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\000D0000\\F39732706B59E86B7DB12EDBC19E1D2EFB13C34F58",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Might Magic Clash of Heroes.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "464F07D7",
@@ -3472,10 +3789,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\MorphX (USA, Europe).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\MorphX.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "573607E0",
@@ -3497,10 +3816,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Motorcycle Club (Europe).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Motorcycle Club.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410837",
@@ -3520,10 +3841,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58410837\\000D0000\\16CDE0861522E9FBC23FBC157CF82EEC049E25DC58",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Ms PAC-MAN.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5841085C",
@@ -3543,10 +3866,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\000D0000\\6AC90DB8C28AD3284860400B801F8A8C825095C058",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\N.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B4D07E0",
@@ -3568,10 +3893,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Nail\u0027d.zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Nail\u0027d.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4E4D87F3",
@@ -3591,10 +3918,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Namco Museum - Virtual Arcade (USA) (En,Fr) (Rev 1).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Namco Museum - Virtual Arcade.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4E4D0842",
@@ -3616,10 +3945,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Naruto Shippuden - Ultimate Ninja Storm Generations.zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\NARUTO SHIPPUDEN Ultimate Ninja STORM Generations.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "464F07D8",
@@ -3639,10 +3970,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Naughty Bear Gold Edition [PAL][NTSCU].iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Naughty Bear.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "454107EC",
@@ -3662,10 +3995,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Need for Speed Carbon Collectors Edition [PAL].ISO",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Need for Speed Carbon.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "454109C6",
@@ -3685,10 +4020,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Need for Speed - Rivals (USA, Europe) (En,Ja,Fr,De,Es,It,Nl,Pt,Zh,Pl,Ru).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Need for Speed Rivals.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4541094A",
@@ -3710,10 +4047,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Need for Speed - The Run (USA) (En,Fr,Es).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\NEED FOR SPEED THE RUN.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "454107D9",
@@ -3733,10 +4072,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Need for Speed - Most Wanted (USA).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\NFS Most Wanted.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D4A07D5",
@@ -3756,10 +4097,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Night at the Museum - Battle of the Smithsonian - The Video Game (USA, Europe) (En,Fr,De).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Night at the Museum\u00A02.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B5907E5",
@@ -3781,10 +4124,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Omerta - City of Gangsters (USA, Europe).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Omerta - City of Gangsters.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "445007EA",
@@ -3804,10 +4149,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Onechanbara - Bikini Samurai Squad (USA, Europe) (En,Fr).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Onechanbara - Bikini Samurai Squad.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B4E083A",
@@ -3829,10 +4176,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Otomedius Excellent (USA, Canada).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Otomedius Excellent.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B4E07EE",
@@ -3852,10 +4201,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Otomedius Gorgeous! (Japan).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Otomedius Gorgeous!.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410811",
@@ -3875,10 +4226,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58410811\\000D0000\\AE2EAEAF0A68E40EA6B04C46A1B5729B29068CDC58",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\PAC-MAN.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410A8C",
@@ -3898,10 +4251,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58410A8C\\000D0000\\38D034D6344630EE7876DF7742227F9ED065219058",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\PAC-MAN Championship Edition DX.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "464F0800",
@@ -3923,10 +4278,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Payday 2.zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\PAYDAY 2.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "415407E2",
@@ -3946,10 +4303,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Persona 4 Arena Ultimax (Europe).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Persona 4 Arena Ultimax.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "555307D3",
@@ -3972,10 +4331,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Peter Jackson\u0027s King Kong - The Official Game of the Movie (USA, Europe) (En,Fr,De,Es,It,Nl,Sv,No,Da,Fi).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Mousehook\\config\\Peter Jacksons King Kong.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "435607D7",
@@ -3995,10 +4356,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Pinball Hall of Fame - The Williams Collection (USA).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Pinball Hall of Fame.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "504707D1",
@@ -4018,10 +4381,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\PopCap Arcade Vol 1 (USA).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\PopCap Arcade Vol 1 (USA).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "45410912",
@@ -4041,10 +4406,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Portal 2 [RF].iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Portal 2.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "535107D4",
@@ -4064,10 +4431,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Project Sylpheed - Arc of Deception (USA, Europe) (En,Ja).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Project Sylpheed - Arc of Deception.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4156084E",
@@ -4089,10 +4458,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Prototype (World) (En,Fr,Es,It).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\PROTOTYPE.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "415607D2",
@@ -4114,10 +4485,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Quake 4.zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\QUAKE 4.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "415607FF",
@@ -4137,10 +4510,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\007 - Quantum of Solace (USA, Europe) (En,Fr).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Quantum of Solace.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "584108AD",
@@ -4160,10 +4535,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\584108AD\\000D0000\\79A4BF150EBD4C60FBEAC4C50C0D4DE217E723EF",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\R-Type Dimensions.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "425307EC",
@@ -4185,10 +4562,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Rage (Europe) (Disc 1).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Rage (Disc 1).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "425307EC",
@@ -4210,10 +4589,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Rage (Europe) (Fr,De,Es,It) (Disc 2).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Rage (Disc 2).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "425307EC",
@@ -4235,10 +4616,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Rage (Europe) (Fr,De,Es,It) (Disc 3).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Rage (Disc 3).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "584111E0",
@@ -4258,10 +4641,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\584111E0\\000D0000\\62939F79719792E4C7A3023F3C63E17428928B4D58",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\REAL STEEL.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5454082B",
@@ -4281,10 +4666,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Red Dead Redemption - Game of the Year Edition (USA, Europe) (En,Fr,De,Es,It) (Disc 1) (Red Dead Redemption Single Player).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Red Dead Redemption - Game of the Year Edition (Disc 1) (Red Dead Redemption Single Player).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5454082B",
@@ -4304,10 +4691,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Red Dead Redemption - Game of the Year Edition (USA, Europe) (En,Fr,De,Es,It) (Disc 2) (Undead Nightmare and Multiplayer).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Red Dead Redemption - Game of the Year Edition (Disc 2) (Undead Nightmare and Multiplayer).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5454082B",
@@ -4327,10 +4716,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Red Dead Redemption - Undead Nightmare (USA, Europe) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Red Dead Redemption - Undead Nightmare.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "43430833",
@@ -4352,10 +4743,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Resident Evil Revelations [RF].iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Resident Evil - Revelations ~ Biohazard - Revelations - Unveiled Edition.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4343081C",
@@ -4375,10 +4768,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\4343081C\\00007000\\148121D3F5566CE330DDCCB0790C9BEA43",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Resident Evil 4.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "434307D4",
@@ -4398,10 +4793,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Resident Evil 5 (World) (En,Ja,Fr,De,Es,It).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Resident Evil 5.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "43430819",
@@ -4424,10 +4821,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Resident Evil 6 (World) (En,Ja,Fr,De,Es,It,Pt,Pl,Ru) (Disc 1) (Game).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Resident Evil 6.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4343081D",
@@ -4447,10 +4846,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Resident Evil - Operation Raccoon City (USA, Europe) (En,Fr,De,Es,It,Pl,Ru).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Resident Evil Operation Raccoon City.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "43430840",
@@ -4472,10 +4873,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Resident Evil - Revelations 2 (USA, Europe) (En,Ja,Fr,De,Es,It,Pt,Zh,Ko,Pl,Ru).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Resident Evil Revelations 2.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "53450839",
@@ -4495,10 +4898,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Resonance of Fate (USA, Europe) (En,Ja,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Resonance of Fate.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B4D07E9",
@@ -4518,10 +4923,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Ride to Hell - Retribution (USA, Europe).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Ride to Hell - Retribution.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4E4D07D3",
@@ -4543,10 +4950,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Ridge Racer 6 (USA) (En,Ja,Fr,De,Es,It).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Ridge Racer 6.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4E4D083E",
@@ -4568,10 +4977,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Ridge Racer Unbounded (World).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Ridge Racer Unbounded.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "54510875",
@@ -4591,10 +5002,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Rio [RF].iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Rio.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "53510823",
@@ -4614,10 +5027,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Rise of the Tomb Raider (Europe) (En,De,It,Nl).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Rise of the Tomb Raider.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "565507D4",
@@ -4637,10 +5052,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Robert Ludlum\u0027s The Bourne Conspiracy (USA, Europe) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Robert Ludlum\u0027s The Bourne Conspiracy.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "584107E0",
@@ -4660,10 +5077,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\584107E0\\000D0000\\990DE8BDC1201BABB4C05C0E7236DE0DD876B2C758",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Robotron 2084.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "545407DF",
@@ -4683,10 +5102,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Rockstar Games Presents Table Tennis.zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Rockstar Table Tennis.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5841082D",
@@ -4706,10 +5127,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\5841082D\\000D0000\\94BAD36BA7284B5CA2E9F73F0EE84A1C788A9A3158",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\ROOT BEER TAPPER.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B4D07D1",
@@ -4731,10 +5154,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Sacred 2 - Fallen Angel (Europe) (Fr,De).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Sacred 2 Fallen Angel.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410B87",
@@ -4754,10 +5179,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58410B87\\000D0000\\B6833B4073B17738BA2206A31D55A51EF214F8DF58",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Saint\u0027s Row Moneyshot.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "545107D1",
@@ -4780,10 +5207,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Saints Row (World) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": "Emulators\\Xenia Mousehook\\patches\\545107D1 - Saints Row.patch.toml",
       "config": "Emulators\\Xenia Mousehook\\config\\Saints Row.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "545107FC",
@@ -4805,10 +5234,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Saints Row 2 (USA, Europe) (En,Fr,De,Es,It,Nl,Sv,Da).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Saints Row 2.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B4D0800",
@@ -4828,10 +5259,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Saints Row - Gat out of Hell (USA, Europe) (En,Fr,De,Es,It,Pl,Ru).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Saints Row Gat Out of Hell.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B4D07F6",
@@ -4854,10 +5287,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Saints Row IV - National Treasure Edition.zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Saints Row IV.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5451086D",
@@ -4880,10 +5315,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Saints Row - The Third (USA, Europe) (En,Fr,De,Es,It,Nl,Pl,Ru).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Saints Row The Third.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410814",
@@ -4903,10 +5340,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58410814\\000D0000\\D7D77CCD24011AD72C20282ECDAB8B9E9D64432258",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Scramble.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D530AA6",
@@ -4929,10 +5368,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\ScreamRide.zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\ScreamRide.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D530AA6",
@@ -4955,10 +5396,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\ScreamRide (USA, Europe) (En,Ja,Fr,De,Es,It,Pt,Pl,Ru).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\ScreamRide (1).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410B45",
@@ -4978,10 +5421,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58410B45\\000D0000\\CD0E5DF6A17270F4A4059C88BC8E15C0990ECC3E58",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Section 8 Prejudice.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "534507E6",
@@ -5001,10 +5446,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Sega Rally Revo (USA, Europe) (En,Fr,De,Es,It).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\SEGA Rally.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "45410934",
@@ -5024,10 +5471,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Need For Speed Shift 2 Unleashed [RF].zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\SHIFT 2 UNLEASHED.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410879",
@@ -5047,10 +5496,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58410879\\000D0000\\DE2DED2C62ED7BF9E06D33AC97A327E5B510FC1258",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Shred Nebula.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B4E0823",
@@ -5070,10 +5521,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Silent Hill - Downpour (USA, Europe) (En,Fr,De,Es,It,Pt).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Silent Hill - Downpour.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B4E07E5",
@@ -5093,10 +5546,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Silent Hill - Homecoming (USA) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Silent Hill - Homecoming.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "454108E6",
@@ -5116,10 +5571,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Skate 3 (USA, Europe) (En,Fr,De,Es,It,Nl).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Skate 3.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5345085D",
@@ -5141,10 +5598,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Sonic \u0026 All-Stars Racing Transformed (World) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Sonic \u0026 All-Stars Racing Transformed.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "53450848",
@@ -5167,10 +5626,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Sonic Generations.zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Sonic Generations.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "534507D6",
@@ -5190,10 +5651,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Sonic the Hedgehog (USA, Europe) (En,Ja,Fr,De,Es,It).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\SONIC THE HEDGEHOG.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "53450812",
@@ -5213,10 +5676,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Sonic Unleashed.zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\SONIC UNLEASHED.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "53450810",
@@ -5236,10 +5701,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Sonic\u0027s Ultimate Genesis Collection (USA).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Sonics UGC.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5841080C",
@@ -5259,10 +5726,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\5841080C\\000D0000\\5B340CF9CCDDEC28B0810E99A01D0877D960B42358",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Space Giraffe.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "41560881",
@@ -5282,10 +5751,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Spider-Man - Shattered Dimensions (USA) (En,Fr,De,Es,It).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Spider-Man - Shattered Dimensions.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "535107DD",
@@ -5305,10 +5776,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Star Ocean - The Last Hope (USA) (Disc 1).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Star Ocean - The Last Hope (Disc 1).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "535107DD",
@@ -5328,10 +5801,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Star Ocean - The Last Hope (USA) (Disc 2).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Star Ocean - The Last Hope (Disc 2).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "535107DD",
@@ -5351,10 +5826,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Star Ocean - The Last Hope (USA) (Disc 3).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Star Ocean - The Last Hope (Disc 3).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4C4107D2",
@@ -5374,10 +5851,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Star Wars - The Force Unleashed (World) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Star Wars - The Force Unleashed.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4C4107D2",
@@ -5397,10 +5876,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Star Wars - The Force Unleashed - Ultimate Sith Edition (USA, Europe) (En,Fr,De,Es,It) (Disc 1).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Star Wars - The Force Unleashed - Ultimate Sith Edition (Disc 1).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4C4107D2",
@@ -5420,10 +5901,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Star Wars - The Force Unleashed - Ultimate Sith Edition (USA, Europe) (En,Fr,De,Es,It) (Disc 2).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Star Wars - The Force Unleashed - Ultimate Sith Edition (Disc 2).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "53450806",
@@ -5443,10 +5926,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Stormrise (USA, Europe) (En,Fr,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Stormrise.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D5707D2",
@@ -5469,10 +5954,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\John Woo Presents Stranglehold (USA) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Stranglehold.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "454107ED",
@@ -5492,10 +5979,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Superman Returns (USA).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Superman Returns.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4C5307D8",
@@ -5515,10 +6004,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Superstars V8 - Next Challenge (Europe).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Superstars V8 NC.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "455607D5",
@@ -5538,10 +6029,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Terminator Salvation (USA, Europe) (En,Fr,De,Es,It,Pt).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Terminator Salvation.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5841083B",
@@ -5561,10 +6054,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\5841083B\\000D0000\\AC5A8FAAF149BA9EED8D24FA2690A4E1B0B0EC5A58",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Tetris Splash.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "454108B1",
@@ -5584,10 +6079,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Beatles, The - Rock Band.iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\The Beatles Rock Band.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "545407EE",
@@ -5610,10 +6107,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\Darkness, The (USA, Europe) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\The Darkness.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4541080F",
@@ -5633,10 +6132,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Orange Box, The (World) (En,Fr,De).zar",
+      "additional_discs": [],
       "patch": "Emulators\\Xenia Canary\\patches\\4541080F - The Orange Box.patch.toml",
       "config": "Emulators\\Xenia Canary\\config\\The Orange Box.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "45410809",
@@ -5656,10 +6157,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Simpsons Game, The (Europe) (En,No,Da,Fi).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\The Simpsons Game (1).config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "454107F4",
@@ -5679,10 +6182,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Tiger Woods PGA Tour 07 (USA).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Tiger Woods PGA Tour 07.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "454109A9",
@@ -5705,10 +6210,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Tiger Woods PGA Tour 14 - Masters Historic Edition (USA, Europe).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Tiger Woods PGA TOUR 14.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "55530848",
@@ -5730,10 +6237,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Tom Clancy\u0027s H.A.W.X. 2 (USA, Europe) (En,Fr,De,Es,It,Pl).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Tom Clancy\u0027s H.A.W.X. 2.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "41560904",
@@ -5753,10 +6262,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Transformers - Rise of the Dark Spark (USA) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\TRANSFORMERS Rise of the Dark Spark.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410AAD",
@@ -5776,10 +6287,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\58410AAD\\000D0000\\FB397172C4B4BDBE075DF758DAE196759A388B6958",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Trials Evolution.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5841095A",
@@ -5799,10 +6312,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\5841095A\\000D0000\\6E133151FC02CFA6D6653C9AAE46D1DC8014605158",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Trials HD.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "425607ED",
@@ -5824,10 +6339,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Disney TRON - Evolution (USA, Europe) (En,Fr,De,Es,It).zar",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Tron Evolution.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4B5907DC",
@@ -5850,10 +6367,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Tropico 4 - Gold Edition (USA, Europe) (En,Ja,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Tropico 4.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "4D5707DB",
@@ -5875,10 +6394,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Unreal Tournament III (World) (En,Fr,De,Es,It).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Unreal Tournament III.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "5451082C",
@@ -5900,10 +6421,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Warhammer 40,000 - Space Marine.iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Warhammer 40000 Space Marine.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410B27",
@@ -5923,10 +6446,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\58410B27\\000D0000\\19762F0B0AEA4816763C1096B435B4B2692B2EC958",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Warlords.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "584111DC",
@@ -5946,10 +6471,12 @@
     },
     "file_locations": {
       "game": "H:\\roms\\xbox360\\584111DC\\000D0000\\6BAFFA3FA6EDD340C53FD7CB35281598B364358058",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Warp.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "575207F2",
@@ -5969,10 +6496,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Where the Wild Things Are - The Videogame (USA, Europe).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Where the Wild Things Are - The Videogame.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "494D085D",
@@ -5992,10 +6521,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\Xbox 360 - The Official Xbox Magazine Issue 100 - July 2013.iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Xbox 360 - The Official Xbox Magazine Issue 100 - July 2013.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "545408AE",
@@ -6015,10 +6546,12 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\XCOM - Enemy Within (USA, Europe) (En,Fr,De,Es,It,Ko,Pl,Ru).iso",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\XCOM Enemy Within.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   },
   {
     "game_id": "58410894",
@@ -6038,9 +6571,11 @@
     },
     "file_locations": {
       "game": "D:\\roms\\xbox360\\000D0000\\02A1905E4C8004A483BA2E30B9467A2AE8E364BE58",
+      "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Xevious.config.toml",
       "custom_emulator_executable": null
-    }
+    },
+    "last_played_disc": 1
   }
 ]
