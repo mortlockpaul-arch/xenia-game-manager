@@ -1288,13 +1288,13 @@ class GameLauncher(QMainWindow):
         self.table.setColumnWidth(0, 32)  # Favourite
         self.table.setColumnWidth(1, 32)  # Icon
         self.table.setColumnWidth(2, 600)  # Title
-        self.table.setColumnWidth(3, 80)  # Title ID
-        self.table.setColumnWidth(4, 80)  # Media ID
+        self.table.setColumnWidth(3, 85)  # Title ID
+        self.table.setColumnWidth(4, 85)  # Media ID
         self.table.setColumnWidth(5, 60)  # Discs
         self.table.setColumnWidth(6, 120)  # Type
         self.table.setColumnWidth(7, 130)  # Last Played
         self.table.setColumnWidth(8, 60)  # Plays
-        self.table.setColumnWidth(9, 80)  # Play Time
+        self.table.setColumnWidth(9, 85)  # Play Time
         self.table.setColumnWidth(10, 60)  # Disc
         self.table.setColumnWidth(11, 120)  # Xenia Version
         self.table.setColumnWidth(12, 120)  # Compatibility

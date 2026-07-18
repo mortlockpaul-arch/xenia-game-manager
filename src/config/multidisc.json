@@ -4,14 +4,24 @@
 "dataset_type": "multi_disc_preservation_phase1",
 "entries": [
 {
+"title": "Air Conflicts: Vietnam",
+"title_id": "413307D9",
+"regions": ["NTSC-U", "PAL", "NTSC-J"],
+"disc_count": 1,
+"disc_layout": [],
+"disc_type": "Single Disc",
+"xenia_disc_swap_required": false,
+"notes": ""
+},
+  {
 "title": "JoJo's Bizarre Adventure HD Ver.",
 "title_id": "5841124E",
 "regions": ["NTSC-U", "PAL", "NTSC-J"],
 "disc_count": 1,
 "disc_layout": [],
 "disc_type": "story_swap",
-"xenia_disc_swap_required": true,
-"notes": "Classic sequential JRPG disc swapping"
+"xenia_disc_swap_required": false,
+"notes": ""
 },
 {
 "title": "N+",
