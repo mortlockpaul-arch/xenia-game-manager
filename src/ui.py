@@ -17,7 +17,7 @@ import keyring
 import requests
 from PySide6.QtCore import Qt, QEasingCurve, QPropertyAnimation, QRect, QThread, Signal, QObject, Slot, QTimer, QSize
 from PySide6.QtGui import QGuiApplication, QIcon
-from PySide6.QtWidgets import QMenu
+from PySide6.QtWidgets import QMenu, QScrollArea
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -30,19 +30,19 @@ from PySide6.QtWidgets import (
     QFrame, QGraphicsDropShadowEffect, QProgressBar, QCheckBox, QGridLayout,
 )
 
+import xboxunity_api
 from actions import DownloadArtifact
 from archive_window import ArchiveBrowser
 from config import save_config, load_config, load_xenia_manager_config, get_app_dir
 from db import Database, Compatibility
-from download import TUDownloadWorker
+from xboxunity_download import TitleUpdateWorker
 from edge_import import use_xenia_manager_content_folder_for_edge
 from extract import extract_archives
 from model import GameTableModel
 from remove_empty_folders import remove_empty_folders
 from updater import UpdateWorker, UpdateManager
 from utils import smart_title_case, xenia_edge_optimise_settings, show_differences, merge_toml
-from xboxunity_api import login_xboxunity, test_connectivity
-from xminst import XeniaManagerInstaller
+from xenix_manager_edge_install_defaults import XeniaManagerInstaller
 
 
 def resource_path(relative_path):
@@ -144,6 +144,219 @@ class ExtractWorker(QObject):
         finally:
             self.finished.emit()
 
+from pathlib import Path
+import string
+
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import (
+    QDialog,
+    QVBoxLayout,
+    QLabel,
+    QPushButton,
+    QHBoxLayout,
+)
+
+import shutil
+import string
+from pathlib import Path
+
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import (
+    QDialog,
+    QLabel,
+    QPushButton,
+    QVBoxLayout,
+    QHBoxLayout,
+    QFrame,
+)
+
+
+class DriveSelectionDialog(QDialog):
+
+    def __init__(self, app_name="Xenia Manager", default_drive="C"):
+        super().__init__()
+
+        self.app_name = app_name
+        self.selected_drive = default_drive.upper()
+
+        self.setWindowTitle(f"Install {app_name}")
+        self.setMinimumHeight(300)
+        self.setFixedWidth(660)
+
+        layout = QVBoxLayout(self)
+        layout.setSpacing(15)
+
+        title = QLabel(f"<h2>Install {app_name}</h2>")
+        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(title)
+
+        info = QLabel(
+            "Choose where you would like to install the application."
+        )
+        info.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(info)
+
+        drive_container = QWidget()
+
+        self.drive_layout = QHBoxLayout(drive_container)
+        self.drive_layout.setSpacing(8)
+        self.drive_layout.setContentsMargins(5, 5, 5, 5)
+        self.drive_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+
+        drive_container.setFixedHeight(100)
+        layout.addWidget(drive_container)
+
+        self.buttons = {}
+
+        for letter in string.ascii_uppercase:
+
+            drive = Path(f"{letter}:/")
+
+            if not drive.exists():
+                continue
+
+            try:
+                usage = shutil.disk_usage(drive)
+                free = usage.free / (1024 ** 3)
+                total = usage.total / (1024 ** 3)
+
+                text = (
+                    f"{letter}:\n"
+                    f"{free:.0f} GB free\n"
+                    f"{total:.0f} GB total"
+                )
+
+            except OSError:
+                text = f"{letter}:"
+
+            button = QPushButton(text)
+            button.setFixedSize(100, 80)
+            button.setSizePolicy(
+                QSizePolicy.Policy.Fixed,
+                QSizePolicy.Policy.Fixed
+            )
+            button.clicked.connect(
+                lambda checked=False, d=letter: self.select_drive(d)
+            )
+
+            self.buttons[letter] = button
+            self.drive_layout.addWidget(button)
+
+        drive_count = len(self.buttons)
+
+        button_width = 100
+        spacing = self.drive_layout.spacing()
+        margins = self.drive_layout.contentsMargins()
+
+        required_width = (
+                (drive_count * button_width) +
+                ((drive_count - 1) * spacing) +
+                margins.left() +
+                margins.right() +
+                40
+        )
+
+        self.setFixedWidth(max(660, required_width))
+
+        separator = QFrame()
+        separator.setFrameShape(QFrame.Shape.HLine)
+        separator.setFrameShadow(QFrame.Shadow.Sunken)
+        separator.setContentsMargins(10, 10, 10, 10)
+
+        layout.addSpacing(8)
+        layout.addWidget(separator)
+        layout.addSpacing(8)
+
+        self.path_label = QLabel()
+        self.path_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.path_label.setStyleSheet("""
+            QLabel {
+                font-size:13px;
+                padding:8px;
+            }
+        """)
+        layout.addWidget(self.path_label)
+
+        buttons = QHBoxLayout()
+
+        buttons.addStretch()
+
+        self.install_btn = QPushButton("✔ Install")
+        self.install_btn.clicked.connect(self.accept)
+
+        self.cancel_btn = QPushButton("✖ Cancel")
+        self.cancel_btn.clicked.connect(self.reject)
+        self.install_btn.setFixedSize(140, 32)
+        self.cancel_btn.setFixedSize(140, 32)
+        buttons.addWidget(self.install_btn)
+        buttons.addWidget(self.cancel_btn)
+
+        layout.addLayout(buttons)
+
+        self.install_btn.setStyleSheet("""
+        QPushButton {
+            background:#2ecc71;
+            color:white;
+            border:none;
+        }
+        QPushButton:hover {
+            background:#27ae60;
+        }
+        """)
+
+        self.cancel_btn.setStyleSheet("""
+        QPushButton {
+            background:#e74c3c;
+            color:white;
+            border:none;
+        }
+        QPushButton:hover {
+            background:#c0392b;
+        }
+        """)
+
+        self.select_drive(self.selected_drive)
+
+    def install_path(self):
+
+        folder = (
+            "xenia-manager"
+            if "Manager" in self.app_name
+            else "Xenia Edge"
+        )
+
+        return Path(f"{self.selected_drive}:/{folder}")
+
+    def select_drive(self, drive):
+
+        self.selected_drive = drive
+
+        for letter, button in self.buttons.items():
+
+            if letter == drive:
+                button.setStyleSheet("""
+                    QPushButton{
+                        background:#2ecc71;
+                        color:white;
+                        border:2px solid #27ae60;
+                        border-radius:10px;
+                        font-weight:bold;
+                    }
+                """)
+            else:
+                button.setStyleSheet("""
+                    QPushButton{
+                        background:#3498db;
+                        color:white;
+                        border:2px solid #2980b9;
+                        border-radius:10px;
+                        font-weight:bold;
+                    }
+                """)
+
+        self.path_label.setText(
+            f"<b>Installation Folder</b><br>{self.install_path()}"
+        )
 
 class GameLauncher(QMainWindow):
 
@@ -194,6 +407,7 @@ class GameLauncher(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.xbox_unity_api = None
         self.xenia_edge_installed: QCheckBox = QCheckBox()
         self.xenia_manager_installed: QCheckBox = QCheckBox()
         self.xenia_canary_installed: QCheckBox = QCheckBox()
@@ -1119,7 +1333,13 @@ class GameLauncher(QMainWindow):
         if not folder:
             self.log("Error: No Folder Selected")
             return
-        self.worker = TUDownloadWorker(
+        try:
+            self.login()
+        except Exception as e:
+            self.log(f"Unexpected error: {e}")
+            return
+
+        self.worker = TitleUpdateWorker(
             games=self.model.games,
             token=self.token,
             api_key=self.api_key,
@@ -1209,9 +1429,18 @@ class GameLauncher(QMainWindow):
 
     def install_xenia_manager_and_xenia_edge(self):
         self.config = load_config()
-        exe = Path(r"C:\xenia-manager") / "XeniaManager.exe"
-        install_path = exe.parent
+        install_path:Path = Path(self.config.get( "xenia_manager_path", ""))
+
         xenia_manager_installed = self.config.get("xenia_manager_installed", False)
+        if not xenia_manager_installed:
+            dialog = DriveSelectionDialog("Xenia Manager")
+
+            if dialog.exec():
+                install_path = Path(f"{dialog.selected_drive}:/xenia-manager")
+                print(install_path)
+
+        exe = Path(install_path / "XeniaManager.exe")
+        install_path = exe.parent
         if not exe.exists() and not xenia_manager_installed:
             installer = XeniaManagerInstaller()
             exe = installer.install(log_callback=self.log)
@@ -1228,7 +1457,15 @@ class GameLauncher(QMainWindow):
         self.launch_manager.setText(button_text)
         self.launch_manager.repaint()
 
-        exe = Path(r"C:\xenia-manager") / "emulators" / "Xenia Edge" / "xenia_edge.exe"
+        xenia_edge_installed = self.config.get("xenia_edge_installed", False)
+        if not xenia_edge_installed:
+            dialog = DriveSelectionDialog("Xenia Edge")
+
+            if dialog.exec():
+                install_path = Path(f"{dialog.selected_drive}:/Xenia Edge")
+                print(install_path)
+
+        exe = Path(install_path / "emulators" / "Xenia Edge" / "xenia_edge.exe")
         install_path = exe.parent
         xenia_edge_installed = self.config.get("xenia_edge_installed", False)
         if not exe.exists() and not xenia_edge_installed:
@@ -1259,6 +1496,7 @@ class GameLauncher(QMainWindow):
         self.load_saved_config()
 
     def login(self):
+        self.xbox_unity_api = xboxunity_api.XBoxUnity(log_callback=self.log)
         username = self.entry_user.text().strip()
         password = self.entry_pass.text().strip()
         api_key = self.entry_apikey.text().strip()
@@ -1266,38 +1504,42 @@ class GameLauncher(QMainWindow):
             webbrowser.open("https://xboxunity.net/")
             self.log("No API key provided. Opening XboxUnity...")
             return
+        if not password:
+            webbrowser.open("https://xboxunity.net/")
+            self.log("No password provided. Opening XboxUnity...")
+            return
         config = load_config()
 
         # Save API key mode (preferred)
-        if api_key:
-            config["api_key"] = api_key
-            config["username"] = username
-            config["password"] = password
-            save_config(config)
-
-            self.api_key = api_key
-            self.log("API Key saved.")
-
-            # optional connectivity check
-            try:
-                if test_connectivity():
-                    self.log("XboxUnity connectivity OK.")
-                else:
-                    self.log("WARNING: XboxUnity connectivity issue.")
-            except Exception as e:
-                self.log(f"Connectivity error: {e}")
-
-            return
+        # if api_key:
+        #     config["api_key"] = api_key
+        #     config["username"] = username
+        #     config["password"] = password
+        #     save_config(config)
+        #
+        #     self.api_key = api_key
+        #     self.log("API Key saved.")
+        #
+        #     # optional connectivity check
+        #     try:
+        #         if self.xbox_unity_api.test_connectivity():
+        #             self.log("XboxUnity connectivity OK.")
+        #         else:
+        #             self.log("WARNING: XboxUnity connectivity issue.")
+        #     except Exception as e:
+        #         self.log(f"Connectivity error: {e}")
+        #
+        #     return
 
         # Username/password login
         if not username or not password:
-            self.log("Login Error: Enter username/password or API key")
+            self.log("Login Error: Enter username/password")
             return
 
         self.log("Checking XboxUnity...")
 
         try:
-            if not test_connectivity():
+            if not self.xbox_unity_api.test_connectivity():
                 self.log("Error: Cannot reach XboxUnity")
                 return
         except Exception as e:
@@ -1306,7 +1548,7 @@ class GameLauncher(QMainWindow):
 
         self.log("Logging in...")
 
-        token = login_xboxunity(username, password)
+        token = self.xbox_unity_api.login_xboxunity(username, password)
 
         if token:
             self.token = token
