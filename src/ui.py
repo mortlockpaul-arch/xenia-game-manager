@@ -1402,6 +1402,26 @@ class GameLauncher(QMainWindow):
             self.xenia_manager_installed.setChecked(True)
             self.checkbox_changed(Qt.CheckState.Checked, "manager")
 
+            self.model.reload_config()
+
+            # Refresh only the artwork column
+            artwork_col = next(
+                i for i, (key, _) in enumerate(self.model.COLUMNS)
+                if key == "artwork_path"
+            )
+
+            top_left = self.model.index(0, artwork_col)
+            bottom_right = self.model.index(
+                self.model.rowCount() - 1,
+                artwork_col
+            )
+
+            self.model.dataChanged.emit(
+                top_left,
+                bottom_right,
+                [Qt.ItemDataRole.DecorationRole]
+            )
+
     def load_saved_config(self):
         self.config = load_config()
         self.set_checkbox("manager", self.config.get("xenia_manager_installed", False), save=False)

@@ -1,5 +1,5 @@
 # model.py
-
+import re
 from datetime import datetime
 from pathlib import Path
 
@@ -46,16 +46,102 @@ class GameTableModel(QAbstractTableModel):
         self.xenia_manager_path = Path(self.config["xenia_manager_path"])
         self.load()
 
+    def reload_config(self):
+        self.config = load_config()
+        self.xenia_manager_path = Path(self.config["xenia_manager_path"])
+
+    import re
+    from typing import cast
+    DISC_SUFFIX = re.compile(
+        r"\s*-\s*Disc\s+\d+\s*-\s*.*$",
+        re.IGNORECASE,
+    )
+
+    DISC_NUMBER = re.compile(
+        r"\(Disc\s+\d+\)",
+        re.IGNORECASE,
+    )
+
+    def normalise_disc_number(self, title: str) -> str:
+        """
+        Convert:
+        Game Name (Disc 4)
+        to:
+        Game Name (Disc 1)
+        """
+        return self.DISC_NUMBER.sub(
+            "(Disc 1)",
+            title,
+        )
+
+    def normalise_artwork_title(self, title: str) -> str:
+        """
+        Fix common naming differences.
+        """
+
+        replacements = {
+            ":": " - ",
+            "™": "",
+        }
+
+        for old, new in replacements.items():
+            title = title.replace(old, new)
+
+        # Remove duplicate spaces
+        title = " ".join(title.split())
+
+        return title.strip()
+
     def get_artwork_path(self, row):
-        title = row.get("title")
+        title = cast(str, row["title"])
 
         if not title:
             return None
 
+        title_remap_icon = {
+            "SEGA Rally™ Online Arcade": "SEGA Rally",
+            "Perfect Dark Zero™": "Perfect Dark Zero",
+            "Geometry Wars™: Retro Evolved": "Geometry Wars Retro Evolved",
+
+            # Specific exception
+            "Metal Gear Solid V: The Phantom Pain (Disc 1)":
+                "Metal Gear Solid V - The Phantom Pain (Disc 1)",
+        }
+
+        # Apply manual remaps first
+        artwork_title = title_remap_icon.get(title, title)
+
+        # Fix punctuation differences
+        artwork_title = self.normalise_artwork_title(
+            artwork_title
+        )
+
+        # Convert:
+        # Lost Odyssey - Disc 4 - Story End
+        # ->
+        # Lost Odyssey (Disc 1)
+        base_title = self.DISC_SUFFIX.sub(
+            " (Disc 1)",
+            artwork_title,
+        ).strip()
+
+        # Convert:
+        # Lost Odyssey (Disc 4)
+        # ->
+        # Lost Odyssey (Disc 1)
+        base_title = self.normalise_disc_number(
+            base_title
+        )
+
+        if base_title != title:
+            print(
+                f"Normalising artwork: '{title}' -> '{base_title}'"
+            )
+
         icon = (
                 self.xenia_manager_path
                 / "GameData"
-                / title
+                / base_title
                 / "Artwork"
                 / "icon.ico"
         )
