@@ -1,6 +1,7 @@
 # model.py
 
 from datetime import datetime
+from pathlib import Path
 
 from typing import cast, Any
 from PySide6.QtCore import (
@@ -8,8 +9,9 @@ from PySide6.QtCore import (
     QAbstractTableModel,
     QModelIndex
 )
-from PySide6.QtGui import QBrush, QColor, QFont
+from PySide6.QtGui import QBrush, QColor, QFont, QIcon
 
+from config import load_config
 from db import Database
 from utils import star, format_disc_type
 
@@ -18,20 +20,9 @@ ToolTipRole = Qt.ItemDataRole.ToolTipRole
 
 class GameTableModel(QAbstractTableModel):
 
-    HEADERS = [
-        "Game No."
-        "Favourite",
-        "Title",
-        "Game ID",
-        "Media ID",
-        "Discs",
-        "Type",
-        "Last Played",
-        "Play Count"
-    ]
-
     COLUMNS = [
         ("favourite", "Fav"),
+        ("artwork_path", "Icon"),
         ("title", "Title"),
         ("game_id", "Title ID"),
         ("media_id", "Media ID"),
@@ -51,7 +42,25 @@ class GameTableModel(QAbstractTableModel):
         from typing import Any
         self.db = Database()
         self.games: list[dict[str, Any]] = []
+        self.config = load_config()
+        self.xenia_manager_path = Path(self.config["xenia_manager_path"])
         self.load()
+
+    def get_artwork_path(self, row):
+        title = row.get("title")
+
+        if not title:
+            return None
+
+        icon = (
+                self.xenia_manager_path
+                / "GameData"
+                / title
+                / "Artwork"
+                / "icon.ico"
+        )
+
+        return icon if icon.exists() else None
 
     def load(self, search_text=""):
 
@@ -91,7 +100,7 @@ class GameTableModel(QAbstractTableModel):
         return section + 1
 
     def data(self, index, role=Qt.ItemDataRole.DisplayRole):
-        COMPATIBILITY = {
+        compatibility = {
             "Perfect": ("Perfect", "#2ecc71"),
             "Playable": ("Playable", "#27ae60"),
             "Gameplay": ("Gameplay", "#f1c40f"),
@@ -110,7 +119,7 @@ class GameTableModel(QAbstractTableModel):
         # Compatibility column special roles
         if key == "compatibility_rating":
             rating = row.get("compatibility_rating")
-            text, colour = COMPATIBILITY.get(rating, COMPATIBILITY[None])
+            text, colour = compatibility.get(rating, compatibility[None])
 
             if role == Qt.ItemDataRole.DisplayRole:
                 return text
@@ -126,8 +135,18 @@ class GameTableModel(QAbstractTableModel):
                 font.setBold(True)
                 return font
 
+        if role == Qt.ItemDataRole.DecorationRole:
+            if key == "artwork_path":
+                icon_path = self.get_artwork_path(row)
+
+                if icon_path:
+                    return QIcon(str(icon_path))
+
         if role == Qt.ItemDataRole.DisplayRole:
             value = row.get(key)
+
+            if key == "artwork_path":
+                return ""
 
             if key == "favourite":
                 return star(int(value or 0))
@@ -228,7 +247,6 @@ class GameTableModel(QAbstractTableModel):
 
         mapping = {
             0: "favourite",
-            1: "game_no",
             2: "title",
             3: "game_id",
             4: "media_id",
@@ -238,8 +256,8 @@ class GameTableModel(QAbstractTableModel):
             8: "play_count",
             9: "play_time",
             10: "disc_number",
-            12: "xenia_version",
-            13: "compatibility_rating",
+            11: "xenia_version",
+            12: "compatibility_rating",
         }
 
         field = mapping.get(column)

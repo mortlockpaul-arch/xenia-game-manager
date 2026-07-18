@@ -17,7 +17,7 @@ def load_xenia_manager_config():
     xenia_manager_config_path = Path.joinpath(xenia_manager_path, "config")
     xenia_manager_config = Path.joinpath(xenia_manager_config_path, "config.json")
     if not xenia_manager_config.exists():
-        return {}, xenia_manager_config
+        return {}, xenia_manager_path
     try:
         with open(xenia_manager_config, "r", encoding="utf-8") as f:
             config = json.load(f)

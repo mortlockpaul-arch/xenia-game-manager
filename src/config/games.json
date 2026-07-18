@@ -143,6 +143,29 @@
     }
   },
   {
+    "game_id": "58410A5C",
+    "alternative_id": [],
+    "media_id": "56A05058",
+    "title": "Adventures of Shuggy",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown"
+    },
+    "artwork": {
+      "background": "GameData\\Adventures of Shuggy\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Adventures of Shuggy\\Artwork\\Boxart.png",
+      "icon": "GameData\\Adventures of Shuggy\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\58410A5C\\000D0000\\86E8A55A767E0DC40090CFFA1EBCCE9C593E9D9158",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Adventures of Shuggy.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
     "game_id": "4E4D07D8",
     "alternative_id": [],
     "media_id": "4EFD55C4",
@@ -162,6 +185,29 @@
       "game": "H:\\roms\\xbox360\\Afro Samurai (Europe) (En,Fr,Es,It).zar",
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\AFRO SAMURAI.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
+    "game_id": "58410A06",
+    "alternative_id": [],
+    "media_id": "00000000",
+    "title": "AFTER BURNER CLIMAX",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown"
+    },
+    "artwork": {
+      "background": "GameData\\AFTER BURNER CLIMAX\\Artwork\\Background.jpg",
+      "boxart": "GameData\\AFTER BURNER CLIMAX\\Artwork\\Boxart.png",
+      "icon": "GameData\\AFTER BURNER CLIMAX\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\58410A06\\000D0000\\6840ACC01BAE9B0EBB40F577349428B04B9042A958",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\AFTER BURNER CLIMAX.config.toml",
       "custom_emulator_executable": null
     }
   },
@@ -1058,6 +1104,31 @@
     }
   },
   {
+    "game_id": "454108EF",
+    "alternative_id": [
+      "454188F0"
+    ],
+    "media_id": "1D93E609",
+    "title": "Bulletstorm",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/528",
+      "rating": "Gameplay"
+    },
+    "artwork": {
+      "background": "GameData\\Bulletstorm\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Bulletstorm\\Artwork\\Boxart.png",
+      "icon": "GameData\\Bulletstorm\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\Bulletstorm (USA, Europe) (En,Fr,De,Es,It,Pl,Ru).iso",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Bulletstorm.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
     "game_id": "5454081A",
     "alternative_id": [
       "54540832"
@@ -1435,6 +1506,31 @@
     }
   },
   {
+    "game_id": "584109BF",
+    "alternative_id": [
+      "584109BF"
+    ],
+    "media_id": "07EBEC04",
+    "title": "Command \u0026 Conquer Red Alert 3 Commanders Challenge",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown"
+    },
+    "artwork": {
+      "background": "GameData\\Command \u0026 Conquer Red Alert 3 Commanders Challenge\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Command \u0026 Conquer Red Alert 3 Commanders Challenge\\Artwork\\Boxart.png",
+      "icon": "GameData\\Command \u0026 Conquer Red Alert 3 Commanders Challenge\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\584109BF\\000D0000\\AF4E5C384CAD63FAA96EADE50F7A69CFFEE0DC6D58",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Command \u0026 Conquer Red Alert 3 Commanders Challenge.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
     "game_id": "4D5307DC",
     "alternative_id": [],
     "media_id": "596F9615",
@@ -1691,6 +1787,29 @@
       "game": "D:\\roms\\xbox360\\Deathsmiles (USA).iso",
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Deathsmiles.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
+    "game_id": "58410823",
+    "alternative_id": [],
+    "media_id": "00000000",
+    "title": "DEFENDER",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown"
+    },
+    "artwork": {
+      "background": "GameData\\DEFENDER\\Artwork\\Background.jpg",
+      "boxart": "GameData\\DEFENDER\\Artwork\\Boxart.png",
+      "icon": "GameData\\DEFENDER\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\58410823\\000D0000\\346322980D17D4A5E74B3E0191B61832F0A6BA2658",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\DEFENDER.config.toml",
       "custom_emulator_executable": null
     }
   },
@@ -2040,6 +2159,75 @@
     }
   },
   {
+    "game_id": "FFED2000",
+    "alternative_id": [],
+    "media_id": "30672AE2",
+    "title": "Fallout - New Vegas - Ultimate Edition (USA) (Disc 2)",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown"
+    },
+    "artwork": {
+      "background": "GameData\\Fallout - New Vegas - Ultimate Edition (USA) (Disc 2)\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Fallout - New Vegas - Ultimate Edition (USA) (Disc 2)\\Artwork\\Boxart.png",
+      "icon": "GameData\\Fallout - New Vegas - Ultimate Edition (USA) (Disc 2)\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\Fallout - New Vegas - Ultimate Edition (USA) (Disc 2).iso",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Fallout - New Vegas - Ultimate Edition (USA) (Disc 2).config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
+    "game_id": "425307D5",
+    "alternative_id": [],
+    "media_id": "66420EB4",
+    "title": "Fallout 3",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/839",
+      "rating": "Playable"
+    },
+    "artwork": {
+      "background": "GameData\\Fallout 3\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Fallout 3\\Artwork\\Boxart.png",
+      "icon": "GameData\\Fallout 3\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\Fallout 3 (USA).iso",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Fallout 3.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
+    "game_id": "FFED2000",
+    "alternative_id": [],
+    "media_id": "5749C425",
+    "title": "Fallout 3 - Game of the Year Edition (USA, Europe) (Disc 2)",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown"
+    },
+    "artwork": {
+      "background": "GameData\\Fallout 3 - Game of the Year Edition (USA, Europe) (Disc 2)\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Fallout 3 - Game of the Year Edition (USA, Europe) (Disc 2)\\Artwork\\Boxart.png",
+      "icon": "GameData\\Fallout 3 - Game of the Year Edition (USA, Europe) (Disc 2)\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\Fallout 3 - Game of the Year Edition (USA, Europe) (Disc 2).iso",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Fallout 3 - Game of the Year Edition (USA, Europe) (Disc 2).config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
     "game_id": "464507E1",
     "alternative_id": [],
     "media_id": "576D3D13",
@@ -2059,6 +2247,29 @@
       "game": "D:\\roms\\xbox360\\Farming Simulator 15 (USA, Europe) (En,Fr,De,Es,It,Nl,Pt,Pl,Ru).zar",
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Farming Simulator 15.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
+    "game_id": "415608ED",
+    "alternative_id": [],
+    "media_id": "7E4134DD",
+    "title": "Fast \u0026 Furious - Showdown",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown"
+    },
+    "artwork": {
+      "background": "GameData\\Fast \u0026 Furious - Showdown\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Fast \u0026 Furious - Showdown\\Artwork\\Boxart.png",
+      "icon": "GameData\\Fast \u0026 Furious - Showdown\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\Fast \u0026 Furious - Showdown (USA, Europe).iso",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Fast \u0026 Furious - Showdown.config.toml",
       "custom_emulator_executable": null
     }
   },
@@ -2447,6 +2658,29 @@
     }
   },
   {
+    "game_id": "58410817",
+    "alternative_id": [],
+    "media_id": "267CE7EE",
+    "title": "GYRUSS",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown"
+    },
+    "artwork": {
+      "background": "GameData\\GYRUSS\\Artwork\\Background.jpg",
+      "boxart": "GameData\\GYRUSS\\Artwork\\Boxart.png",
+      "icon": "GameData\\GYRUSS\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\58410817\\000D0000\\06EE7AE2FFF418AB1D65384A05CB1869CB1C4FB758",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\GYRUSS.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
     "game_id": "4B4E07D3",
     "alternative_id": [],
     "media_id": "67B56283",
@@ -2798,6 +3032,29 @@
     }
   },
   {
+    "game_id": "41560926",
+    "alternative_id": [],
+    "media_id": "5C2E5879",
+    "title": "Kings Quest The Complete Collection",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown"
+    },
+    "artwork": {
+      "background": "GameData\\Kings Quest The Complete Collection\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Kings Quest The Complete Collection\\Artwork\\Boxart.png",
+      "icon": "GameData\\Kings Quest The Complete Collection\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\Kings Quest The Complete Collection\\Compatibility \u0026 TU7\\41560926\\00007000\\9E5ED855D30A8B2A08E88C9623FCDD5E41",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Kings Quest The Complete Collection.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
     "game_id": "575207F1",
     "alternative_id": [],
     "media_id": "0223928C",
@@ -3125,6 +3382,29 @@
       "game": "H:\\roms\\xbox360\\Metro - Last Light (World) (En,Fr,De,Es,It,Nl,Pl,Ru,Cs).zar",
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Metro Last Light.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
+    "game_id": "415608D3",
+    "alternative_id": [],
+    "media_id": "5C2D0F09",
+    "title": "MIB - Alien Crisis",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown"
+    },
+    "artwork": {
+      "background": "GameData\\MIB - Alien Crisis\\Artwork\\Background.jpg",
+      "boxart": "GameData\\MIB - Alien Crisis\\Artwork\\Boxart.png",
+      "icon": "GameData\\MIB - Alien Crisis\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\MIB - Alien Crisis (USA, Europe) (En,Fr,De,Es,It).iso",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\MIB - Alien Crisis.config.toml",
       "custom_emulator_executable": null
     }
   },
@@ -3863,6 +4143,29 @@
     }
   },
   {
+    "game_id": "584108AD",
+    "alternative_id": [],
+    "media_id": "57E2F642",
+    "title": "R-Type Dimensions",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown"
+    },
+    "artwork": {
+      "background": "GameData\\R-Type Dimensions\\Artwork\\Background.jpg",
+      "boxart": "GameData\\R-Type Dimensions\\Artwork\\Boxart.png",
+      "icon": "GameData\\R-Type Dimensions\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\584108AD\\000D0000\\79A4BF150EBD4C60FBEAC4C50C0D4DE217E723EF",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\R-Type Dimensions.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
     "game_id": "425307EC",
     "alternative_id": [
       "425387EF"
@@ -3934,6 +4237,29 @@
       "game": "H:\\roms\\xbox360\\Rage (Europe) (Fr,De,Es,It) (Disc 3).iso",
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Rage (Disc 3).config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
+    "game_id": "584111E0",
+    "alternative_id": [],
+    "media_id": "5283ED50",
+    "title": "REAL STEEL",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/769",
+      "rating": "Gameplay"
+    },
+    "artwork": {
+      "background": "GameData\\REAL STEEL\\Artwork\\Background.jpg",
+      "boxart": "GameData\\REAL STEEL\\Artwork\\Boxart.png",
+      "icon": "GameData\\REAL STEEL\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\584111E0\\000D0000\\62939F79719792E4C7A3023F3C63E17428928B4D58",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\REAL STEEL.config.toml",
       "custom_emulator_executable": null
     }
   },
@@ -4148,6 +4474,29 @@
       "game": "D:\\roms\\xbox360\\Resident Evil - Revelations 2 (USA, Europe) (En,Ja,Fr,De,Es,It,Pt,Zh,Ko,Pl,Ru).zar",
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Resident Evil Revelations 2.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
+    "game_id": "53450839",
+    "alternative_id": [],
+    "media_id": "4389B19F",
+    "title": "Resonance of Fate",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/1163",
+      "rating": "Gameplay"
+    },
+    "artwork": {
+      "background": "GameData\\Resonance of Fate\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Resonance of Fate\\Artwork\\Boxart.png",
+      "icon": "GameData\\Resonance of Fate\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\Resonance of Fate (USA, Europe) (En,Ja,Fr,De,Es,It).iso",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Resonance of Fate.config.toml",
       "custom_emulator_executable": null
     }
   },
@@ -5553,6 +5902,52 @@
       "game": "D:\\roms\\xbox360\\Warhammer 40,000 - Space Marine.iso",
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Warhammer 40000 Space Marine.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
+    "game_id": "58410B27",
+    "alternative_id": [],
+    "media_id": "071344FB",
+    "title": "Warlords",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown"
+    },
+    "artwork": {
+      "background": "GameData\\Warlords\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Warlords\\Artwork\\Boxart.png",
+      "icon": "GameData\\Warlords\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\58410B27\\000D0000\\19762F0B0AEA4816763C1096B435B4B2692B2EC958",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Warlords.config.toml",
+      "custom_emulator_executable": null
+    }
+  },
+  {
+    "game_id": "584111DC",
+    "alternative_id": [],
+    "media_id": "18E1C9E4",
+    "title": "Warp",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/340",
+      "rating": "Gameplay"
+    },
+    "artwork": {
+      "background": "GameData\\Warp\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Warp\\Artwork\\Boxart.png",
+      "icon": "GameData\\Warp\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\584111DC\\000D0000\\6BAFFA3FA6EDD340C53FD7CB35281598B364358058",
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Warp.config.toml",
       "custom_emulator_executable": null
     }
   },
