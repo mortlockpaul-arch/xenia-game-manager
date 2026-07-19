@@ -381,18 +381,34 @@ class GameLauncher(QMainWindow):
         )
         self.extract_thread.start()
 
-    def check_for_updates(self):
+    def check_for_updates(self, name="Xenia Game Manager"):
 
-        self.update_worker = UpdateWorker()
-
+        self.update_worker = UpdateWorker(name=name)
+        self.update_worker.show_message.connect(
+            self.show_update_message
+        )
         self.update_worker.log.connect(self.log)
         self.update_worker.progress.connect(self.update_progress)
         self.update_worker.error.connect(self.log)
+        self.update_worker.quit_app.connect(self.close_app)
         self.update_worker.finished.connect(
             self.update_finished
         )
 
         self.update_worker.start()
+
+    from PySide6.QtWidgets import QMessageBox
+
+    def close_app(self):
+        self.statusBar().showMessage("Closing application...")
+        QTimer.singleShot(5000, self.close)
+
+    def show_update_message(self, title, message):
+        QMessageBox.information(
+            self,
+            title,
+            message,
+        )
 
     def update_finished(self):
         self.log("Update check complete")
@@ -453,6 +469,7 @@ class GameLauncher(QMainWindow):
         self.db = Database()
         self.db.init_db()
         self.model = GameTableModel()
+        self.model.log = self.log
         self.setFixedSize(1640, 950)
         self.build_ui()
         self.compatibility = Compatibility(self.db, self.log)
@@ -741,8 +758,12 @@ class GameLauncher(QMainWindow):
         self.xenia_edge_optimise_btn = QPushButton("Create Xenia Edge Optimised Settings")
         self.xenia_edge_optimise_btn.clicked.connect(self.on_optimize_xenia_clicked)
 
-        self.check_update_btn = QPushButton("Check for Updates")
-        self.check_update_btn.clicked.connect(self.check_for_updates)
+        self.check_edge_update_btn = QPushButton("Check for Xenia Edge Update")
+        self.check_edge_update_btn.clicked.connect(lambda: self.check_for_updates("Xenia Edge"))
+
+        self.check_manager_update_btn = QPushButton("Check for Xenia Game Manager Update")
+        self.check_manager_update_btn.clicked.connect(lambda: self.check_for_updates("Xenia Game Manager"))
+
         self.remove_clean_btn = QPushButton("Remove Empty Folders")
         self.remove_clean_btn.clicked.connect(self.remove_clean_folders)
 
@@ -750,12 +771,12 @@ class GameLauncher(QMainWindow):
         self.extract_downloaded_archives_btn.clicked.connect(self.extract_downloaded_archives)
 
         self.download_experimental_releases_btn = QPushButton("Download Experimental Releases")
-        self.download_experimental_releases_btn.clicked.connect(
-            self.download_experimental_releases
-        )
-        self.use_xenia_manager_content_for_edge_btn = QPushButton(
-            "Link Xenia Edge Content Folder")
+        self.download_experimental_releases_btn.clicked.connect(self.download_experimental_releases)
+        self.use_xenia_manager_content_for_edge_btn = QPushButton("Link Xenia Edge Content Folder")
         self.use_xenia_manager_content_for_edge_btn.clicked.connect(self.use_xenia_manager_content_for_edge)
+
+        self.reset_btn = QPushButton("Reset Game List")
+        self.reset_btn.clicked.connect(self.reset_database)
 
         tools_box.setLayout(tools_layout)
 
@@ -784,25 +805,35 @@ class GameLauncher(QMainWindow):
             self.xenia_edge_optimise_btn,
             self.use_xenia_manager_content_for_edge_btn,
             self.remove_clean_btn,
-            self.check_update_btn,
+            self.check_edge_update_btn,
+            self.check_manager_update_btn,
             self.extract_downloaded_archives_btn,
-            self.download_experimental_releases_btn
+            self.download_experimental_releases_btn,
+            self.reset_btn
         ]
 
         for index, button in enumerate(buttons):
             row = index // 2
             column = index % 2
 
-            button.setMinimumHeight(34)
-            button.setMaximumHeight(36)
+            button.setMinimumHeight(26)
+            button.setMaximumHeight(26)
             button.setStyleSheet("""
-                QPushButton {
-                    font-size: 10pt;
-                }
-            """)
+                    QPushButton {
+                        font-size: 8pt;
+                        padding: 0px 3px;
+                    }
+                    QPushButton:hover {
+                        padding: 0px 3px;
+                    }
+                """)
 
             tools_layout.addWidget(button, row, column)
         self.settings_drawer.hide()
+
+    def reset_database(self):
+        self.db.clear_db()
+        self.refresh()
 
     def download_experimental_releases(self):
         config = load_config()

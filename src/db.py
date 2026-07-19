@@ -411,17 +411,17 @@ class Database:
         else:
             raise Exception("Xenia Manager Not Installed")
 
-    @staticmethod
-    def find_game_icon(game_folder):
-        artwork = Path(game_folder) / "Artwork"
-
-        if not artwork.exists():
-            return None
-
-        for icon in artwork.glob("*.ico"):
-            return icon
-
-        return None
+    # @staticmethod
+    # def find_game_icon(game_folder):
+    #     artwork = Path(game_folder) / "Artwork"
+    #
+    #     if not artwork.exists():
+    #         return None
+    #
+    #     for icon in artwork.glob("*.ico"):
+    #         return icon
+    #
+    #     return None
     def import_games_from_edge_or_xenia_manager(self, xenia_version, games, log_callback=None):
         print(xenia_version)
         from edge_import import import_edge_games
@@ -466,10 +466,10 @@ class Database:
                     disc_number = detect_disc_number(file_path)
                     disc_type = "XBLA" if game_id.lower() in file_path.lower() else "DVD"
 
-                    game_path = Path(xenia_manager_path) / "GameData" / title
-                    icon = self.find_game_icon(game_path)
-                    if icon:
-                        print(icon)
+                    # game_path = Path(xenia_manager_path) / "GameData" / title
+                    # icon = self.find_game_icon(game_path)
+                    # if icon:
+                    #     print(icon)
 
                     con.execute("""
                         INSERT INTO games (

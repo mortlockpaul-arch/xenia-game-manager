@@ -3,6 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../optimized-settings" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../x360db" vcs="Git" />
+    <mapping directory="$USER_HOME$/PycharmProjects/x360db" vcs="Git" />
   </component>
 </project>
