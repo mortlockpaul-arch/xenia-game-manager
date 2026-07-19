@@ -1,9 +1,8 @@
 # model.py
-import re
 from datetime import datetime
 from pathlib import Path
-
 from typing import cast, Any
+
 from PySide6.QtCore import (
     Qt,
     QAbstractTableModel,
@@ -45,13 +44,13 @@ class GameTableModel(QAbstractTableModel):
         self.config = load_config()
         self.xenia_manager_path = Path(self.config["xenia_manager_path"])
         self.load()
+        self.log = None
 
     def reload_config(self):
         self.config = load_config()
         self.xenia_manager_path = Path(self.config["xenia_manager_path"])
 
     import re
-    from typing import cast
     DISC_SUFFIX = re.compile(
         r"\s*-\s*Disc\s+\d+\s*-\s*.*$",
         re.IGNORECASE,
@@ -102,7 +101,7 @@ class GameTableModel(QAbstractTableModel):
             "SEGA Rally™ Online Arcade": "SEGA Rally",
             "Perfect Dark Zero™": "Perfect Dark Zero",
             "Geometry Wars™: Retro Evolved": "Geometry Wars Retro Evolved",
-
+            "JoJo's Bizarre Adventure HD Ver.": "JOJOS BIZARRE ADVENTURE HD Ver",
             # Specific exception
             "Metal Gear Solid V: The Phantom Pain (Disc 1)":
                 "Metal Gear Solid V - The Phantom Pain (Disc 1)",
@@ -134,7 +133,7 @@ class GameTableModel(QAbstractTableModel):
         )
 
         if base_title != title:
-            print(
+            self.log(
                 f"Normalising artwork: '{title}' -> '{base_title}'"
             )
 
@@ -145,6 +144,9 @@ class GameTableModel(QAbstractTableModel):
                 / "Artwork"
                 / "icon.ico"
         )
+
+        if not icon.exists():
+            print(icon)
 
         return icon if icon.exists() else None
 
@@ -364,3 +366,6 @@ class GameTableModel(QAbstractTableModel):
                 [dict(row) for row in con.execute(query, params)]
             )
         self.layoutChanged.emit()
+
+    def log(self, param):
+        pass

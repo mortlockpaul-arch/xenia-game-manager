@@ -21,7 +21,9 @@ executables = [
 ]
 
 build_exe_options = {
-    "packages": [],
+    "packages": [
+        "jaraco.text",
+    ],
     "excludes": ["tkinter", "unittest"],
     "include_files": [
         (str(ROOT / "src" / "db"), "db"),
