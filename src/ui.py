@@ -29,6 +29,7 @@ from PySide6.QtWidgets import (
     QHeaderView, QPlainTextEdit, QGroupBox, QLabel, QSizePolicy, QMainWindow, QFormLayout, QToolButton, QFileDialog,
     QFrame, QGraphicsDropShadowEffect, QProgressBar, QCheckBox, QGridLayout,
 )
+from keyring.backends.Windows import WinVaultKeyring
 
 import xboxunity_api
 from actions import DownloadArtifact
@@ -676,6 +677,7 @@ class GameLauncher(QMainWindow):
         self.github_token.setEchoMode(QLineEdit.EchoMode.Password)
 
         # Load token from Windows Credential Manager
+        keyring.set_keyring(keyring.backends.Windows.WinVaultKeyring())
         token = keyring.get_password("Xenia Game Manager", "github_token")
         if token:
             self.github_token.setText(token)
@@ -683,6 +685,7 @@ class GameLauncher(QMainWindow):
         # Save token whenever it changes
         def save_github_token(text):
             if text:
+                keyring.set_keyring(WinVaultKeyring())
                 keyring.set_password("Xenia Game Manager", "github_token", text)
             else:
                 try:

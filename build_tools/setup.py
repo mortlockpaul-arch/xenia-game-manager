@@ -23,6 +23,9 @@ executables = [
 build_exe_options = {
     "packages": [
         "jaraco.text",
+        "keyring",
+        "keyring.backends.Windows",
+        "win32ctypes",
     ],
     "excludes": ["tkinter", "unittest"],
     "include_files": [
