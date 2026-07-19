@@ -1,9 +1,6 @@
 # utils.py
-import os
 
-from config import load_config, load_xenia_manager_config, get_app_dir
-
-import re
+from config import load_config, get_app_dir
 
 KEEP_UPPER = {
     "DLC", "HD", "XBLA", "USA", "PAL",
@@ -89,10 +86,6 @@ def smart_title_case(title):
 
     return " ".join(fix_word(w) for w in title.split())
 
-from pathlib import Path
-import shutil
-from pathlib import Path
-import shutil
 
 def xenia_edge_optimise_settings(log_callback = None):
 
@@ -112,7 +105,6 @@ def xenia_edge_optimise_settings(log_callback = None):
         else:
             log_callback(f"Copied {toml_file.name} -> {destination.name}")
 
-import re
 
 DISC_PATTERNS = [
     r"\(\s*(?:disc|disk|dvd|cd)\s*(\d+)\s*\)",
@@ -457,8 +449,6 @@ def install_title_update(
 
     return dest
 
-import json
-from difflib import unified_diff
 
 import json
 

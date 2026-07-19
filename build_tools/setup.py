@@ -1,37 +1,38 @@
-from cx_Freeze import setup, Executable
 from pathlib import Path
-from version import get_version
+from cx_Freeze import setup, Executable
 
-ROOT = Path(__file__).resolve().parent.parent
-
-APP_NAME = "Xenia Game Manager"
-VERSION = get_version()
-
-from sys import platform
-
-base = "gui" if platform == "win32" else None
+root = Path(__file__).parent.parent
 
 executables = [
     Executable(
-        script=str(ROOT / "src" / "main.py"),
-        base=base,
-        icon=str(ROOT / "src" / "assets" / "icons" / "app.ico"),
-        target_name=APP_NAME.replace(" ", ""),
+        script=str(root / "src" / "main.py"),
+        base="gui",
+        icon=str(root / "src" / "assets" / "icons" / "app.ico"),
+        target_name="Xenia Game Manager"
+    ),
+    Executable(
+        script=str(root / "src" / "main_updater.py"),
+        base=None,
+        icon=str(root / "src" / "assets" / "icons" / "app.ico"),
+        target_name="Xenia Game Manager Updater"
     )
 ]
 
 build_exe_options = {
     "packages": [
         "jaraco.text",
+        "keyring",
+        "keyring.backends.Windows",
+        "win32ctypes",
     ],
     "excludes": ["tkinter", "unittest"],
     "include_files": [
-        (str(ROOT / "src" / "db"), "db"),
-        (str(ROOT / "src" / "config"), "config"),
-        (str(ROOT / "src" / "assets" / "icons"), "assets/icons"),
-        (str(ROOT / "src" / "assets" / "settings"), "assets/settings"),
-        (str(ROOT / "src" / "assets" / "zip"), "assets/zip"),
-        (str(ROOT / "src" / "assets" / "default"), "assets/default"),
+        (str(root / "src" / "db"), "db"),
+        (str(root / "src" / "config"), "config"),
+        (str(root / "src" / "assets" / "icons"), "assets/icons"),
+        (str(root / "src" / "assets" / "settings"), "assets/settings"),
+        (str(root / "src" / "assets" / "zip"), "assets/zip"),
+        (str(root / "src" / "assets" / "default"), "assets/default"),
     ],
     "optimize": 2,
 }
@@ -46,7 +47,7 @@ bdist_msi_options = {
     "product_name": "Xenia Game Manager",
     "data": {
     "Icon": [
-        ("IconId", str(ROOT / "src" / "assets" / "icons" / "app.ico")),
+        ("IconId", str(root / "src" / "assets" / "icons" / "app.ico")),
     ],
     "Shortcut": [
         (
@@ -82,9 +83,9 @@ bdist_msi_options = {
 }
 
 setup(
-    name=APP_NAME,
-    version=VERSION,
-    description=APP_NAME,
+    name="Xenia Game Manager",
+    version="0.9.5",
+    description="Xenia Game Manager",
     author="Xenia Game Manager",
     options={
         "build_exe": build_exe_options,

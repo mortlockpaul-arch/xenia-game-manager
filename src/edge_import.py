@@ -1,11 +1,6 @@
-from pathlib import Path
-import tomllib
-from sys import exception
+import shutil
 
 from config import load_config, load_xenia_manager_config
-
-import shutil
-from pathlib import Path
 
 
 def use_xenia_manager_content_folder_for_edge(log_callback=None):

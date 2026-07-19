@@ -1,13 +1,13 @@
+import json
 import os
 import subprocess
 from pathlib import Path
 from typing import cast, Any
 from urllib.parse import urlparse
-import json
-import requests
 
-from PySide6.QtCore import QObject, Signal, QThread, QTimer
-from PySide6.QtWidgets import QApplication, QMessageBox, QWidget
+import requests
+from PySide6.QtCore import QObject, Signal, QThread
+from PySide6.QtWidgets import QWidget
 from packaging.version import Version, InvalidVersion
 from requests import Timeout, Session
 from requests.exceptions import HTTPError, RequestException
@@ -268,11 +268,11 @@ class UpdateManager(QObject):
         asset_match:str = ""
 
         if name == "Xenia Game Manager":
-            if Path("portable.txt").exists():
+            if Path(get_app_dir() / "portable.txt").exists():
                 asset_match = "portable"
             else:
                 asset_match = ".msi"
-        if name == "Xenia Edge":
+        # if name == "Xenia Edge":
             edge_path = Path(self.config["xenia_edge_path"])
             # if Path(edge_path / "portable.txt").exists():
             #     asset_match = "portable"

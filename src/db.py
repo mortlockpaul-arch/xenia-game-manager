@@ -1,17 +1,14 @@
 # db.py
+import json
 import shutil
 import sqlite3
-import json
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
 
 import requests
-from PySide6.QtWidgets import QMessageBox
-from cx_Freeze import exception
 
-import edge_import
-from config import load_config, load_xenia_manager_config, get_app_dir
+from config import load_config, get_app_dir
 from utils import detect_disc_number, strip_disc_suffix
 
 DB_PATH = "db/games.db"
@@ -210,7 +207,6 @@ class Database:
             ]
 
     from contextlib import contextmanager
-    import sqlite3
 
     @contextmanager
     def get_db(self):

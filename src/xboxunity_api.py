@@ -1,5 +1,6 @@
-import requests
 import os
+
+import requests
 
 BASE_URL = "https://xboxunity.net/Api"
 WEB_BASE_URL = "https://xboxunity.net"

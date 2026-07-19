@@ -1,5 +1,6 @@
 # main.py
 import sys
+
 from PySide6.QtWidgets import QApplication
 
 from db import Database

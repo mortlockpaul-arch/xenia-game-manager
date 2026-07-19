@@ -2,6 +2,7 @@
 import logging
 import os
 import shutil
+import string
 import subprocess
 import sys
 import threading
@@ -15,33 +16,40 @@ from pathlib import Path
 
 import keyring
 import requests
-from PySide6.QtCore import Qt, QEasingCurve, QPropertyAnimation, QRect, QThread, Signal, QObject, Slot, QTimer, QSize
+from PySide6.QtCore import QEasingCurve, QPropertyAnimation, QRect, QThread, Signal, QObject, Slot, QTimer, QSize
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QGuiApplication, QIcon
-from PySide6.QtWidgets import QMenu, QScrollArea
 from PySide6.QtWidgets import (
-    QWidget,
+    QDialog,
+    QLabel,
+    QPushButton,
     QVBoxLayout,
     QHBoxLayout,
+    QFrame,
+)
+from PySide6.QtWidgets import QMenu
+from PySide6.QtWidgets import (
+    QWidget,
     QLineEdit,
-    QPushButton,
     QTableView,
     QMessageBox,
-    QHeaderView, QPlainTextEdit, QGroupBox, QLabel, QSizePolicy, QMainWindow, QFormLayout, QToolButton, QFileDialog,
-    QFrame, QGraphicsDropShadowEffect, QProgressBar, QCheckBox, QGridLayout,
+    QHeaderView, QPlainTextEdit, QGroupBox, QSizePolicy, QMainWindow, QFormLayout, QToolButton, QFileDialog,
+    QGraphicsDropShadowEffect, QProgressBar, QCheckBox, QGridLayout,
 )
+from keyring.backends.Windows import WinVaultKeyring
 
 import xboxunity_api
 from actions import DownloadArtifact
 from archive_window import ArchiveBrowser
 from config import save_config, load_config, load_xenia_manager_config, get_app_dir
 from db import Database, Compatibility
-from xboxunity_download import TitleUpdateWorker
 from edge_import import use_xenia_manager_content_folder_for_edge
 from extract import extract_archives
 from model import GameTableModel
 from remove_empty_folders import remove_empty_folders
 from updater import UpdateWorker, UpdateManager
 from utils import smart_title_case, xenia_edge_optimise_settings, show_differences, merge_toml
+from xboxunity_download import TitleUpdateWorker
 from xenix_manager_edge_install_defaults import XeniaManagerInstaller
 
 
@@ -144,31 +152,7 @@ class ExtractWorker(QObject):
         finally:
             self.finished.emit()
 
-from pathlib import Path
-import string
 
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (
-    QDialog,
-    QVBoxLayout,
-    QLabel,
-    QPushButton,
-    QHBoxLayout,
-)
-
-import shutil
-import string
-from pathlib import Path
-
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (
-    QDialog,
-    QLabel,
-    QPushButton,
-    QVBoxLayout,
-    QHBoxLayout,
-    QFrame,
-)
 
 
 class DriveSelectionDialog(QDialog):
@@ -397,8 +381,6 @@ class GameLauncher(QMainWindow):
 
         self.update_worker.start()
 
-    from PySide6.QtWidgets import QMessageBox
-
     def close_app(self):
         self.statusBar().showMessage("Closing application...")
         QTimer.singleShot(5000, self.close)
@@ -412,7 +394,7 @@ class GameLauncher(QMainWindow):
 
     def update_finished(self):
         self.log("Update check complete")
-
+        self.load_saved_config()
         self.update_worker.deleteLater()
 
     def update_progress(self, done, total):
@@ -429,7 +411,7 @@ class GameLauncher(QMainWindow):
         self.xenia_canary_installed: QCheckBox = QCheckBox()
         self.xenia_netplay_installed: QCheckBox = QCheckBox()
         self.extract_downloaded_archives_btn = None
-        self.config = None
+        self.config = load_config()
         self.archive_button = None
         self.launch_edge = None
         self.launch_manager = None
@@ -460,8 +442,9 @@ class GameLauncher(QMainWindow):
         self.fix_titles_btn = None
         self.search = None
         self.table = None
+        v = self.config["game_manager_version"]
         self.setWindowTitle(
-            "Xenia Game Manager"
+            f"Xenia Game Manager {v}"
         )
         icon_path = resource_path("assets/icons/app.ico")
         self.setWindowIcon(QIcon(icon_path))
@@ -676,6 +659,7 @@ class GameLauncher(QMainWindow):
         self.github_token.setEchoMode(QLineEdit.EchoMode.Password)
 
         # Load token from Windows Credential Manager
+        keyring.set_keyring(keyring.backends.Windows.WinVaultKeyring())
         token = keyring.get_password("Xenia Game Manager", "github_token")
         if token:
             self.github_token.setText(token)
@@ -683,6 +667,7 @@ class GameLauncher(QMainWindow):
         # Save token whenever it changes
         def save_github_token(text):
             if text:
+                keyring.set_keyring(WinVaultKeyring())
                 keyring.set_password("Xenia Game Manager", "github_token", text)
             else:
                 try:

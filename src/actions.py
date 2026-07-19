@@ -1,10 +1,7 @@
-import os
 import time
 from pathlib import Path
-import requests
 
-from config import load_config
-from extract import extract_archives
+import requests
 
 
 class DownloadArtifact:

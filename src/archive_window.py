@@ -1,21 +1,18 @@
 import os
 import re
-import requests
 from urllib.parse import quote
 
+import requests
 from PySide6.QtCore import (
-    Qt,
     QThread,
     Signal,
     QSortFilterProxyModel,
 )
-
 from PySide6.QtGui import (
     QColor,
     QStandardItem,
     QStandardItemModel, QBrush, QIcon,
 )
-
 from PySide6.QtWidgets import (
     QDialog,
     QVBoxLayout,
@@ -69,12 +66,10 @@ class Loader(QThread):
 
         self.finishedLoading.emit()
 
-from PySide6.QtWidgets import QStyledItemDelegate, QStyleOptionButton, QStyle
-from PySide6.QtCore import Qt, QRect
 
 from PySide6.QtWidgets import QStyledItemDelegate, QStyleOptionButton, QStyle
 from PySide6.QtCore import Qt, QRect
-import sys
+
 
 def resource_path(relative_path):
     if getattr(sys, "frozen", False):

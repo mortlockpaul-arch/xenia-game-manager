@@ -1,5 +1,6 @@
-import requests
 from urllib.parse import quote
+
+import requests
 
 ITEMS = [f"XBOX_360_DLC_{i}" for i in range(1, 6)]
 
