@@ -1,0 +1,8 @@
+# Title Name: Need for Speed: Carbon
+# Title ID: 454107EC
+
+[APU]
+apu = "sdl" # Fixes audio
+
+[GPU]
+framerate_limit = 120 # Caps the framerate to 60

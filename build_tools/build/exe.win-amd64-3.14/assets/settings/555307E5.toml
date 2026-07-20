@@ -1,0 +1,5 @@
+# Title Name: Naruto - Rise Of A Ninja
+# Title ID: 555307E5
+
+[GPU]
+clear_memory_page_state = true # Fixes warped graphics in game

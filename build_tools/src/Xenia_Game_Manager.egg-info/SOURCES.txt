@@ -1,0 +1,5 @@
+setup.py
+src/Xenia_Game_Manager.egg-info/PKG-INFO
+src/Xenia_Game_Manager.egg-info/SOURCES.txt
+src/Xenia_Game_Manager.egg-info/dependency_links.txt
+src/Xenia_Game_Manager.egg-info/top_level.txt
