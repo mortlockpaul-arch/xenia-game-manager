@@ -12,7 +12,7 @@ executables = [
     ),
     Executable(
         script=str(root / "src" / "main_updater.py"),
-        base=None,
+        base="console",
         icon=str(root / "src" / "assets" / "icons" / "app.ico"),
         target_name="Xenia Game Manager Updater"
     )

@@ -8,10 +8,14 @@ import time
 from datetime import datetime
 from pathlib import Path
 
+import ui
+from config import get_app_dir, load_config
+from extract import extract_archives
+
 
 def wait_for_process(pid: int, timeout: int = 30):
     """Wait for the main application to exit."""
-    print(f"Waiting for process {pid}...")
+
 
     try:
         import psutil
@@ -19,6 +23,7 @@ def wait_for_process(pid: int, timeout: int = 30):
         while timeout > 0:
             if not psutil.pid_exists(pid):
                 return
+            logging.info(f"Waiting for process {pid}...{timeout}")
             time.sleep(1)
             timeout -= 1
     except ImportError:
@@ -27,7 +32,7 @@ def wait_for_process(pid: int, timeout: int = 30):
 
 
 def copy_files(source: Path, target: Path):
-    print(f"Updating {target}")
+    logging.info(f"Updating {target}")
 
     for item in source.iterdir():
         dst = target / item.name
@@ -37,43 +42,66 @@ def copy_files(source: Path, target: Path):
         else:
             shutil.copy2(item, dst)
 
-    print("Files copied.")
+    logging.info("Files copied.")
 
 
 def launch_program(target: Path):
-    exe = target / "Xenia Game Manager.exe"
+    exe = target
 
     if exe.exists():
-        print(f"Launching {exe.name}")
+        logging.info(f"Launching {exe.name}")
         subprocess.Popen([str(exe)])
     else:
-        print("Executable not found.")
-
-
-    def log(message: str = "", console_log: bool=True, log_log:bool=True, clear_console:bool=False):
-        timestamp = datetime.now().strftime("%H:%M:%S")
-        if log_log: logging.info(message)
-        return
+        logging.info("Executable not found.")
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--zip", required=True, help="Extracted update folder")
-    parser.add_argument("--target", required=True, help="Installation folder")
-    parser.add_argument("--pid", type=int, required=True, help="PID of running app")
+    parser.add_argument("--zip", required=False, help="Extracted update folder", default="C:/xenia-game-manager-portable/xenia-game-manager-portable.zip")
+    parser.add_argument("--target", required=False, help="Installation folder", default="C:/xenia-game-manager-portable/")
+    parser.add_argument("--source", required=False, help="Source folder", default="C:/xenia-game-manager-portable/")
+    parser.add_argument("--exe", required=False, help="Executable", default="C:/xenia-game-manager-portable/Xenia Game Manager.exe")
+    parser.add_argument("--pid", type=int, required=False, help="PID of running app", default=6992)
 
     args = parser.parse_args()
 
-    source = Path(args.zip)
-    target = Path(args.target)
+    import logging
+    import sys
+    log_dir = get_app_dir() / "logs"
+    log_dir.mkdir(exist_ok=True)
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        handlers=[
+            logging.FileHandler(log_dir / "xenia_manager.log", encoding="utf-8"),
+            logging.StreamHandler(sys.stdout),  # Console output
+        ],
+    )
 
-    wait_for_process(args.pid)
+    config = load_config()
+    zip_file = Path(args.zip)
+    target = Path(args.target)
+    exe = Path(args.exe)
+    source = Path(args.source)
+    pid = args.pid
+
+    default_exe_path = Path(config["xenia_game_manager_portable_path"])
+    if not exe.exists(): exe = default_exe_path
+    if pid != 1: wait_for_process(pid)
+
+    if zip_file.exists():
+        message = f"Extracting {zip_file}..."
+        logging.info(message)
+        if extract_archives(zip_file.parent, remove_archives=False) != 1:
+            return False
 
     try:
-        copy_files(source, target)
-        launch_program(target)
-        print("Update complete.")
+        if source != target: copy_files(source, target)
+        if exe.exists():
+            time.sleep(5)
+            launch_program(exe)
+        logging.info("Update complete.")
     except Exception as e:
-        print(f"Update failed: {e}")
+        logging.info(f"Update failed: {e}")
         input("Press Enter to exit...")
         sys.exit(1)
 

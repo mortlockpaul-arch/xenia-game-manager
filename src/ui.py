@@ -1,4 +1,5 @@
 # ui.py
+import json
 import logging
 import os
 import shutil
@@ -1226,6 +1227,9 @@ class GameLauncher(QMainWindow):
         self.search.setFixedWidth(250)
         toolbar.addWidget(self.search)
 
+        self.netplay_button = QPushButton("Netplay Compatible Games")
+        self.netplay_button.clicked.connect(self.netplay_compatibility)
+
         self.browser_button = QPushButton("Show Netplay Webpage")
         self.browser_button.clicked.connect(lambda: self.open_web_page(url="https://xenia-netplay-2a0298c0e3f4.herokuapp.com/"))
 
@@ -1253,6 +1257,7 @@ class GameLauncher(QMainWindow):
         self.btn_tu.clicked.connect(self.search_and_download_tus)
         self.archive_button = QPushButton("DLC Downloader")
         self.archive_button.clicked.connect(self.open_archive_browser)
+        toolbar.addWidget(self.netplay_button)
         toolbar.addWidget(self.refresh_btn)
         toolbar.addWidget(self.browser_button)
         toolbar.addWidget(self.browser_close_button)
@@ -1369,6 +1374,33 @@ class GameLauncher(QMainWindow):
 
         self.apply_style()
 
+    def netplay_compatibility(self):
+        games = self.model.games
+
+        config_file = get_app_dir() / "config" / "netplay.json"
+
+        try:
+            with open(config_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except Exception:
+            self.log("Netplay Info Missing")
+            return
+        netplay_games = data["games"]
+        netplay_lookup = {
+            game["title_id"].upper(): game
+            for game in netplay_games
+            if game.get("title_id")
+        }
+
+        filtered_games = [
+            game
+            for game in self.model.games
+            if game.get("game_id", "").upper() in netplay_lookup
+        ]
+
+        self.model.games = filtered_games
+        self.model.layoutChanged.emit()  # or whatever your model uses
+        return
 
     def launch_game_double_clicked(self):
         try:
