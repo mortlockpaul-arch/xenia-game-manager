@@ -1,1 +1,6 @@
 
+/build_tools/build/
+/build_tools/dist/
+/build_tools/src/
+/src/downloads/
+/src/logs/
