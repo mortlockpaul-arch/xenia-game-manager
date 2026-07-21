@@ -16,16 +16,17 @@ from pathlib import Path
 
 import keyring
 import requests
-from PySide6.QtCore import QEasingCurve, QPropertyAnimation, QRect, QThread, Signal, QObject, Slot, QTimer, QSize
+from PySide6.QtCore import QEasingCurve, QPropertyAnimation, QRect, QThread, Signal, QObject, Slot, QTimer, QSize, QUrl
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QGuiApplication, QIcon
+from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import (
     QDialog,
     QLabel,
     QPushButton,
     QVBoxLayout,
     QHBoxLayout,
-    QFrame,
+    QFrame, QStackedWidget,
 )
 from PySide6.QtWidgets import QMenu
 from PySide6.QtWidgets import (
@@ -405,6 +406,8 @@ class GameLauncher(QMainWindow):
 
     def __init__(self):
         super().__init__()
+
+
         self.xbox_unity_api = None
         self.xenia_edge_installed: QCheckBox = QCheckBox()
         self.xenia_manager_installed: QCheckBox = QCheckBox()
@@ -454,7 +457,9 @@ class GameLauncher(QMainWindow):
         self.model = GameTableModel()
         self.model.log = self.log
         self.setFixedSize(1640, 950)
+
         self.build_ui()
+
         self.compatibility = Compatibility(self.db, self.log)
         self.setup_logging()
 
@@ -936,8 +941,6 @@ class GameLauncher(QMainWindow):
                 self.log(f"Network error: {e}")
                 self.log(traceback.format_exc())
 
-
-
     def use_xenia_manager_content_for_edge(self):
         try:
             use_xenia_manager_content_folder_for_edge(log_callback=self.log)
@@ -1181,14 +1184,28 @@ class GameLauncher(QMainWindow):
             self.worker.error.connect(self.log)
             self.worker.start()
 
+    from PySide6.QtCore import QUrl
+
+    def open_web_page(self, url: str):
+        self.browser.load(QUrl(url))
+        self.stack.setCurrentWidget(self.browser)
+
+        self.browser_button.hide()
+        self.browser_close_button.show()
+
+    def close_web_page(self):
+        self.stack.setCurrentWidget(self.main_page)
+
+        self.browser_close_button.hide()
+        self.browser_button.show()
+
     def build_ui(self):
         central = QWidget()
         self.setCentralWidget(central)
-        self.create_settings_drawer()
-        main_layout = QVBoxLayout(central)
-        main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        # ================= LOGIN =================
+        main_layout = QVBoxLayout(central)
+        self.create_settings_drawer()
+        main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         # ================= TOOLBAR =================
         toolbar = QHBoxLayout()
@@ -1205,6 +1222,12 @@ class GameLauncher(QMainWindow):
         self.search.textChanged.connect(self.search_changed)
         self.search.setFixedWidth(250)
         toolbar.addWidget(self.search)
+
+        self.browser_button = QPushButton("Show Netplay Webpage")
+        self.browser_button.clicked.connect(lambda: self.open_web_page(url="https://xenia-netplay-2a0298c0e3f4.herokuapp.com/"))
+
+        self.browser_close_button = QPushButton("Back to Game Manager")
+        self.browser_close_button.clicked.connect(self.close_web_page)
 
         self.refresh_btn = QPushButton("Refresh")
         self.refresh_btn.clicked.connect(self.refresh)
@@ -1228,6 +1251,8 @@ class GameLauncher(QMainWindow):
         self.archive_button = QPushButton("DLC Downloader")
         self.archive_button.clicked.connect(self.open_archive_browser)
         toolbar.addWidget(self.refresh_btn)
+        toolbar.addWidget(self.browser_button)
+        toolbar.addWidget(self.browser_close_button)
         toolbar.addWidget(self.launch_manager)
         toolbar.addWidget(self.launch_edge)
         toolbar.addWidget(self.archive_button)
@@ -1258,8 +1283,23 @@ class GameLauncher(QMainWindow):
         layout.addLayout(current_layout)
 
         toolbar.addWidget(progress_widget)
-        # 🔥 IMPORTANT: attach toolbar to main layout
+
         main_layout.addLayout(toolbar)
+
+        # ---------- Stack ----------
+        self.stack = QStackedWidget()
+        main_layout.addWidget(self.stack)
+
+        # ---------- Main page ----------
+        self.main_page = QWidget()
+        page_layout = QVBoxLayout(self.main_page)
+        page_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.stack.addWidget(self.main_page)
+
+        # ---------- Browser ----------
+        self.browser = QWebEngineView()
+        self.stack.addWidget(self.browser)
 
         # -------------------------
         # Table
@@ -1319,12 +1359,13 @@ class GameLauncher(QMainWindow):
 
         self.table.verticalHeader().hide()
 
-        main_layout.addWidget(self.table)
+        page_layout.addWidget(self.table)
 
         self.table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.table.customContextMenuRequested.connect(self.show_table_menu)
 
         self.apply_style()
+
 
     def launch_game_double_clicked(self):
         try:

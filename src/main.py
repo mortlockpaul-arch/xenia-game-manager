@@ -1,4 +1,6 @@
 # main.py
+import os
+
 import sys
 
 from PySide6.QtWidgets import QApplication
@@ -36,6 +38,7 @@ def main():
     app = QApplication(sys.argv)
     print(game_count())
     print(disc_count())
+    print(str(os.getpid()))
     window = GameLauncher()
     window.show()
     sys.exit(app.exec())

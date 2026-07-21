@@ -328,7 +328,7 @@ class UpdateManager(QObject):
                     f"Installing {asset_name}..."
                 )
         if name == "Xenia Game Manager":
-            updater_path = get_app_dir() / "xenia-game-manager_updater.exe"
+            updater_path = get_app_dir() / "Xenia Game Manager Updater.exe"
             if asset_path.suffix.lower() in {".zip", ".7z"}:
                 self._log(f"Extracting {asset_name}...")
                 if extract_archives(asset_path.parent) != 1:
