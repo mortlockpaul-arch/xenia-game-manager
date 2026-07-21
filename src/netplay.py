@@ -6,7 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 
 URL = "https://github.com/AdrianCassar/xenia-canary/wiki/Netplay-Compatibility"
-OUT_FILE = Path("netplay.json")
+OUT_FILE = Path("config/netplay.json")
 
 TITLE_ID_RE = re.compile(r"\b([0-9A-F]{8})\b", re.IGNORECASE)
 

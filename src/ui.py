@@ -372,7 +372,14 @@ class GameLauncher(QMainWindow):
         self.update_worker.show_message.connect(
             self.show_update_message
         )
-        self.update_worker.log.connect(self.log)
+        self.update_worker.log.connect(
+            lambda message: self.log(
+                message=message,
+                console_log=False,
+                log_log=True,
+                clear_console=True,
+            )
+        )
         self.update_worker.progress.connect(self.update_progress)
         self.update_worker.error.connect(self.log)
         self.update_worker.quit_app.connect(self.close_app)
@@ -454,8 +461,10 @@ class GameLauncher(QMainWindow):
 
         self.db = Database()
         self.db.init_db()
+
         self.model = GameTableModel()
-        self.model.log = self.log
+        self.model.log.connect(self.log)
+
         self.setFixedSize(1640, 950)
 
         self.build_ui()
@@ -519,7 +528,8 @@ class GameLauncher(QMainWindow):
             level=logging.INFO,
             format="%(asctime)s | %(levelname)s | %(message)s",
             datefmt="%Y-%m-%d %H:%M:%S",
-            force=True,   # <-- add this
+            force=True,
+            encoding="utf-8",
         )
 
     def create_settings_drawer(self):

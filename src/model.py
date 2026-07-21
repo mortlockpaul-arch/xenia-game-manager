@@ -1,4 +1,5 @@
 # model.py
+import logging
 from datetime import datetime
 from pathlib import Path
 from typing import cast, Any
@@ -6,7 +7,7 @@ from typing import cast, Any
 from PySide6.QtCore import (
     Qt,
     QAbstractTableModel,
-    QModelIndex
+    QModelIndex, Signal
 )
 from PySide6.QtGui import QBrush, QColor, QFont, QIcon
 
@@ -18,6 +19,8 @@ DisplayRole = Qt.ItemDataRole.DisplayRole
 ToolTipRole = Qt.ItemDataRole.ToolTipRole
 
 class GameTableModel(QAbstractTableModel):
+
+    log = Signal(str, bool, bool, bool)
 
     COLUMNS = [
         ("favourite", "Fav"),
@@ -44,7 +47,6 @@ class GameTableModel(QAbstractTableModel):
         self.config = load_config()
         self.xenia_manager_path = Path(self.config["xenia_manager_path"])
         self.load()
-        self.log = None
 
     def reload_config(self):
         self.config = load_config()
@@ -119,23 +121,17 @@ class GameTableModel(QAbstractTableModel):
         # Lost Odyssey - Disc 4 - Story End
         # ->
         # Lost Odyssey (Disc 1)
-        base_title = self.DISC_SUFFIX.sub(
-            " (Disc 1)",
-            artwork_title,
-        ).strip()
+        base_title = self.DISC_SUFFIX.sub(" (Disc 1)", artwork_title,).strip()
 
         # Convert:
         # Lost Odyssey (Disc 4)
         # ->
         # Lost Odyssey (Disc 1)
-        base_title = self.normalise_disc_number(
-            base_title
-        )
+        base_title = self.normalise_disc_number(base_title)
 
         if base_title != title:
-            self.log(
-                f"Normalising artwork: '{title}' -> '{base_title}'"
-            )
+            message = f"Normalising artwork: '{title}' -> '{base_title}'"
+            self.log.emit(message, False, True, False)
 
         icon = (
                 self.xenia_manager_path
@@ -146,8 +142,8 @@ class GameTableModel(QAbstractTableModel):
         )
 
         if not icon.exists():
-            print(icon)
-
+            message = f"Icon not found: '{base_title}'"
+            self.log.emit(message, False, True, False)
         return icon if icon.exists() else None
 
     def load(self, search_text=""):
@@ -366,6 +362,3 @@ class GameTableModel(QAbstractTableModel):
                 [dict(row) for row in con.execute(query, params)]
             )
         self.layoutChanged.emit()
-
-    def log(self, param):
-        pass

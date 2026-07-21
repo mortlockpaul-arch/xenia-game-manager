@@ -18,7 +18,7 @@ from extract import extract_archives
 
 class UpdateWorker(QThread):
 
-    log = Signal(str)
+    log = Signal(str, bool, bool, bool)
     progress = Signal(int, int)
     update_finished = Signal()
     error = Signal(str)
@@ -36,10 +36,18 @@ class UpdateWorker(QThread):
         self.updater.show_message.connect(
             self.show_message
         )
-        self.updater.log.connect(self.log)
-        self.updater.progress.connect(self.progress)
-        self.updater.finished.connect(self.update_finished)
-        self.updater.error.connect(self.error)
+        self.updater.log.connect(
+            lambda message, console_log, log_log, clear_console:
+            self.log.emit(
+                message,
+                False,  # override console_log
+                log_log,
+                clear_console,
+            )
+        )
+        self.updater.progress.connect(self.progress.emit)
+        self.updater.finished.connect(self.update_finished.emit)
+        self.updater.error.connect(self.error.emit)
         self.updater.quit_app.connect(self.quit_app.emit)
         try:
             self.updater.check_for_updates(name=self.name)
@@ -51,11 +59,8 @@ class UpdateWorker(QThread):
             self.quit()
 
 class UpdateManager(QObject):
-    """
-    Handles application updates.
-    """
 
-    log = Signal(str)
+    log = Signal(str, bool, bool, bool)
     progress = Signal(int, int)
     finished = Signal()
     error = Signal(str)
@@ -70,10 +75,6 @@ class UpdateManager(QObject):
         })
         self.config = load_config()
         self.parent = parent
-
-    def _log(self, message: str):
-        self.log.emit(message)
-
 
     def _progress(self, done: int, total: int | None):
         self.progress.emit(done, total or 0)
@@ -123,15 +124,15 @@ class UpdateManager(QObject):
 
         r = requests.get(url, headers=headers, cookies=cookies, stream=True)
         total = int(r.headers.get("Content-Length", 0))
-        self._log(f"Downloading: {path.name} ({self.human_size(total)})")
+        message = f"Downloading: {path} ({self.human_size(total)})"
+        self.log.emit(message, True, True, False)
 
-        if print_debug:
-            self._log(str(r.status_code))
-            self._log(str(r.headers.get("Content-Type")))
-            self._log(str(r.headers.get("Content-Length")))
-            self._log(str(r.status_code))
-            self._log(str(r.url))
-            self._log(r.text[:1000])
+        self.log.emit(str(r.status_code), False, True, False)
+        self.log.emit(str(r.headers.get("Content-Type")), False, True, False)
+        self.log.emit(str(r.headers.get("Content-Length")), False, True, False)
+        self.log.emit(str(r.status_code), False, True, False)
+        self.log.emit(str(r.url), False, True, False)
+        self.log.emit(r.text[:1000], False, True, False)
 
         r.raise_for_status()
 
@@ -171,21 +172,7 @@ class UpdateManager(QObject):
         version: str = data["tag_name"]
         return version
 
-
-    def check_for_github_update(
-            self,
-            url,
-            current_version,
-            asset_index=0,
-            asset_match=None,
-    ):
-        """
-        Checks GitHub for a newer release.
-
-        Returns:
-            (latest_version, download_url) if an update is available,
-            otherwise None.
-        """
+    def check_for_github_update(self, url, current_version, asset_index=0, asset_match=None,):
         response = self.session.get(url, timeout=30)
         try:
             response.raise_for_status()
@@ -268,16 +255,16 @@ class UpdateManager(QObject):
         asset_match:str = ""
 
         if name == "Xenia Game Manager":
-            if Path(get_app_dir() / "portable.txt").exists():
-                asset_match = "portable"
+            if Path(get_app_dir() / "config" / "portable.txt").exists():
+                asset_match = ".zip"
             else:
                 asset_match = ".msi"
-        # if name == "Xenia Edge":
+        if name == "Xenia Edge":
             edge_path = Path(self.config["xenia_edge_path"])
-            # if Path(edge_path / "portable.txt").exists():
-            #     asset_match = "portable"
-            # else:
-            #     asset_match = ".msi"
+            if Path(edge_path / "portable.txt").exists():
+                asset_match = ".zip"
+            else:
+                asset_match = ".zip"
 
         result = self.check_for_github_update(
             url=github_url,
@@ -288,9 +275,11 @@ class UpdateManager(QObject):
 
         if not result:
             if name == "Xenia Game Manager":
-                self._log(f"No {name} {asset_match} update available")
+                message = f"No {name} {asset_match} update available"
+                self.log.emit(message, True, True, False)
             if name == "Xenia Edge":
-                self._log(f"No {name} {asset_match} update available")
+                message = f"No {name} {asset_match} update available"
+                self.log.emit(message, True, True, False)
             return False
 
         latest_version, asset_url = result
@@ -300,9 +289,10 @@ class UpdateManager(QObject):
                 urlparse(asset_url).path
             ).name
 
-        self._log(f"{name} Update found: {current_version} -> {latest_version}")
+        message = f"{name} Update found: {current_version} -> {latest_version}"
+        self.log.emit(message, True, True, False)
 
-        if asset_match != "portable":
+        if asset_match != ".zip":
             asset_path = Path.home() / "downloads" / asset_name
         else:
             asset_path = (Path(install_path) / asset_name)
@@ -319,7 +309,8 @@ class UpdateManager(QObject):
 
         if name == "Xenia Edge":
             if asset_path.suffix.lower() in {".zip", ".7z"}:
-                self._log(f"Extracting {asset_name}...")
+                message = f"Extracting {asset_name}..."
+                self.log.emit(message, True, True, False)
                 if extract_archives(asset_path.parent) != 1:
                     self.error.emit(f"Failed extracting {asset_name}")
                     return False
@@ -330,10 +321,10 @@ class UpdateManager(QObject):
         if name == "Xenia Game Manager":
             updater_path = get_app_dir() / "Xenia Game Manager Updater.exe"
             if asset_path.suffix.lower() in {".zip", ".7z"}:
-                self._log(f"Extracting {asset_name}...")
-                if extract_archives(asset_path.parent) != 1:
-                    self.error.emit(f"Failed extracting {asset_name}")
-                    return False
+                # self._log(f"Extracting {asset_name}...")
+                # if extract_archives(asset_path.parent) != 1:
+                #     self.error.emit(f"Failed extracting {asset_name}")
+                #     return False
                 zip_path = asset_path.parent
                 install_dir = updater_path.parent
                 self.show_message.emit(
@@ -345,6 +336,10 @@ class UpdateManager(QObject):
                 # msg.setWindowTitle("Update Ready")
                 # msg.setText(f"Installing {asset_name}...")
                 # msg.exec()
+                self.log.emit(str(updater_path))
+                self.log.emit(str(zip_path))
+                self.log.emit(str(install_dir))
+                self.log.emit(str(os.getpid()))
                 subprocess.Popen(
                     [
                         str(updater_path),
@@ -382,6 +377,6 @@ class UpdateManager(QObject):
                 self.quit_app.emit()
 
 
-        self._log(f"{name} Updated to {latest_version}")
-
+        message = f"{name} Updated to {latest_version}"
+        self.log.emit(message, True, True, False)
         return True
