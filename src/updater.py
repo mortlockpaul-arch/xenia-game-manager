@@ -36,15 +36,7 @@ class UpdateWorker(QThread):
         self.updater.show_message.connect(
             self.show_message
         )
-        self.updater.log.connect(
-            lambda message, console_log, log_log, clear_console:
-            self.log.emit(
-                message,
-                False,  # override console_log
-                log_log,
-                clear_console,
-            )
-        )
+        self.updater.log.connect(self.log.emit)
         self.updater.progress.connect(self.progress.emit)
         self.updater.finished.connect(self.update_finished.emit)
         self.updater.error.connect(self.error.emit)
