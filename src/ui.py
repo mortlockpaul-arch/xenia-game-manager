@@ -372,14 +372,7 @@ class GameLauncher(QMainWindow):
         self.update_worker.show_message.connect(
             self.show_update_message
         )
-        self.update_worker.log.connect(
-            lambda message: self.log(
-                message=message,
-                console_log=False,
-                log_log=True,
-                clear_console=True,
-            )
-        )
+        self.update_worker.log.connect(self.log)
         self.update_worker.progress.connect(self.update_progress)
         self.update_worker.error.connect(self.log)
         self.update_worker.quit_app.connect(self.close_app)
