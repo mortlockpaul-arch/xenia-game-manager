@@ -70,6 +70,8 @@ class Loader(QThread):
 from PySide6.QtWidgets import QStyledItemDelegate, QStyleOptionButton, QStyle
 from PySide6.QtCore import Qt, QRect
 
+import os
+import sys
 
 def resource_path(relative_path):
     if getattr(sys, "frozen", False):

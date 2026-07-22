@@ -1267,30 +1267,37 @@ class GameLauncher(QMainWindow):
         toolbar.addWidget(self.btn_tu)
 
         # ================= PROGRESS =================
-        progress_widget = QWidget()
-
-        self.overall_label = QLabel("Overall")
-        self.current_label = QLabel("Current File")
-
         self.progress_overall = QProgressBar()
         self.progress_current = QProgressBar()
+        self.current_label = QLabel("Current File")
+        self.overall_label = QLabel("Overall")
+        progress_widget = QWidget()
 
-        overall_layout = QVBoxLayout()
-        overall_layout.setContentsMargins(0, 0, 0, 0)
-        overall_layout.addWidget(self.overall_label)
-        overall_layout.addWidget(self.progress_overall)
+        progress_layout = QHBoxLayout(progress_widget)
+        progress_layout.setContentsMargins(0, 0, 0, 0)
 
-        current_layout = QVBoxLayout()
-        current_layout.setContentsMargins(0, 0, 0, 0)
-        current_layout.addWidget(self.current_label)
-        current_layout.addWidget(self.progress_current)
+        progress_layout.addStretch()
 
-        layout = QHBoxLayout(progress_widget)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.addLayout(overall_layout)
-        layout.addLayout(current_layout)
+        progress_layout.addWidget(self.overall_label)
+        progress_layout.addWidget(self.progress_overall)
 
-        toolbar.addWidget(progress_widget)
+        progress_layout.addSpacing(30)
+
+        progress_layout.addWidget(self.current_label)
+        progress_layout.addWidget(self.progress_current)
+
+        progress_layout.addStretch()
+
+
+        # ================= TOOLBAR + PROGRESS =================
+        toolbar_container = QWidget()
+        toolbar_container_layout = QVBoxLayout(toolbar_container)
+        toolbar_container_layout.setContentsMargins(0, 0, 0, 0)
+
+        toolbar_container_layout.addLayout(toolbar)
+        toolbar_container_layout.addWidget(progress_widget)
+
+        main_layout.addWidget(toolbar_container)
 
         main_layout.addLayout(toolbar)
 

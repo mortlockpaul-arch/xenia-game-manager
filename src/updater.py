@@ -59,14 +59,13 @@ class UpdateManager(QObject):
     show_message = Signal(str, str)  # title, message
     quit_app = Signal()
 
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self):
+        super().__init__()
         self.session = Session()
         self.session.headers.update({
             "Accept": "application/vnd.github+json",
         })
         self.config = load_config()
-        self.parent = parent
 
     def _progress(self, done: int, total: int | None):
         self.progress.emit(done, total or 0)
@@ -349,7 +348,6 @@ class UpdateManager(QObject):
                 self.quit_app.emit()
 
             if asset_path.suffix.lower() in {".msi", ".exe"}:
-                parent = cast(QWidget, self.parent)
                 self.show_message.emit(
                     "Update Ready",
                     f"Installing {asset_name}..."
