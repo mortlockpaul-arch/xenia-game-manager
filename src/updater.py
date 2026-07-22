@@ -295,8 +295,6 @@ class UpdateManager(QObject):
             self.error.emit(f"Download failed: {e}")
             return False
 
-        self.config[version_key] = latest_version
-        save_config(self.config)
 
         if name == "Xenia Edge":
             if asset_path.suffix.lower() in {".zip", ".7z"}:
@@ -309,8 +307,11 @@ class UpdateManager(QObject):
                     "Update Ready",
                     f"Installing {asset_name}..."
                 )
+                self.config[version_key] = latest_version
+                save_config(self.config)
+
         if name == "Xenia Game Manager":
-            updater_path = get_app_dir() / "Xenia Game Manager Updater.exe"
+            updater_path = Path(install_path) / "Xenia Game Manager Updater.exe"
             if asset_path.suffix.lower() in {".zip", ".7z"}:
                 # self._log(f"Extracting {asset_name}...")
                 # if extract_archives(asset_path.parent) != 1:
@@ -327,11 +328,15 @@ class UpdateManager(QObject):
                 # msg.setWindowTitle("Update Ready")
                 # msg.setText(f"Installing {asset_name}...")
                 # msg.exec()
-                self.log.emit(str(updater_path))
-                self.log.emit(str(zip_path))
-                self.log.emit(str(install_dir))
-                self.log.emit(str(os.getpid()))
-                subprocess.Popen(
+                message = str(updater_path)
+                self.log.emit(message, True, True, False)
+                message = str(zip_path)
+                self.log.emit(message, True, True, False)
+                message = str(install_dir)
+                self.log.emit(message, True, True, False)
+                message = str(os.getpid())
+                self.log.emit(message, True, True, False)
+                subprocess.run(
                     [
                         str(updater_path),
                         "--zip",
@@ -340,10 +345,11 @@ class UpdateManager(QObject):
                         str(install_dir),
                         "--pid",
                         str(os.getpid()),
-                    ],
-                    creationflags=subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP,
-                    close_fds=True,
+                        "--version",
+                        str(latest_version),
+                    ]
                 )
+
 
                 self.quit_app.emit()
 

@@ -20,17 +20,29 @@ class Compatibility:
         self.compatibility = None
         root = get_app_dir()
         self.compatibility_file = root / "config" / "compatibility.json"
-        if self.compatibility_file.exists():
-            modified = datetime.fromtimestamp(self.compatibility_file.stat().st_mtime)
 
-            if datetime.now() - modified >= timedelta(days=1):
-                (log_call_back or print)(f"File {self.compatibility_file} is 1 day old or older. Downloading compatibility data.")
-                self.download_compatibility()
+        needs_download = (
+                not self.compatibility_file.exists()
+                or datetime.now() - datetime.fromtimestamp(self.compatibility_file.stat().st_mtime) >= timedelta(days=1)
+        )
+
+        if needs_download:
+            if self.compatibility_file.exists():
+                (log_call_back or print)(
+                    f"File {self.compatibility_file} is over 1 day old. Downloading compatibility data."
+                )
             else:
-                (log_call_back or print)(f"File {self.compatibility_file} is not 1 day old or older. Not downloading compatibility data.")
-        else:
-            (log_call_back or print)(f"File {self.compatibility_file} does not exist. Downloading compatibility data.")
+                (log_call_back or print)(
+                    f"File {self.compatibility_file} does not exist. Downloading compatibility data."
+                )
+
             self.download_compatibility()
+        else:
+            modified = datetime.fromtimestamp(self.compatibility_file.stat().st_mtime)
+            (log_call_back or print)(
+                f"Compatibility data is up to date "
+                f"(last updated {modified:%Y-%m-%d %H:%M:%S})."
+            )
 
         self.db = db
 

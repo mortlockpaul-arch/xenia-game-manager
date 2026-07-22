@@ -12,9 +12,9 @@
     "xenia_netplay_installed": false,
     "xenia_mousehook_path": "",
     "xenia_mousehook_installed": false
-    "xenia_edge_version": "5796dd4",
-    "game_manager_version": "0.9.6",
-    "xenia_game_manager_portable_path": "C:/xenia-game-manager/",
+    "xenia_edge_version": "",
+    "game_manager_version": "0.9.9",
+    "xenia_game_manager_portable_path": "C:/xenia-game-manager-portable/",
     "xenia_edge_url": "https://api.github.com/repos/has207/xenia-edge/releases/latest",
     "xenia_game_compatibility_url": "https://api.github.com/repos/xenia-canary/game-compatibility/releases/latest",
     "xenia_game_manager_url": "https://api.github.com/repos/mortlockpaul-arch/xenia-game-manager/releases/latest"

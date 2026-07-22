@@ -9,7 +9,7 @@ from datetime import datetime
 from pathlib import Path
 
 import ui
-from config import get_app_dir, load_config
+from config import get_app_dir, load_config, save_config
 from extract import extract_archives
 
 
@@ -59,7 +59,8 @@ def main():
     parser.add_argument("--zip", required=False, help="Extracted update folder", default="C:/xenia-game-manager-portable/xenia-game-manager-portable.zip")
     parser.add_argument("--target", required=False, help="Installation folder", default="C:/xenia-game-manager-portable/")
     parser.add_argument("--source", required=False, help="Source folder", default="C:/xenia-game-manager-portable/")
-    parser.add_argument("--exe", required=False, help="Executable", default="C:/xenia-game-manager-portable/Xenia Game Manager.exe")
+    parser.add_argument("--exe", required=False, help="Executable", default="Xenia Game Manager.exe")
+    parser.add_argument("--version", required=False, help="Version", default="0.0.0")
     parser.add_argument("--pid", type=int, required=False, help="PID of running app", default=6992)
 
     args = parser.parse_args()
@@ -77,32 +78,34 @@ def main():
         ],
     )
 
-    config = load_config()
     zip_file = Path(args.zip)
     target = Path(args.target)
     exe = Path(args.exe)
     source = Path(args.source)
     pid = args.pid
+    version = args.version
 
-    default_exe_path = Path(config["xenia_game_manager_portable_path"])
-    if not exe.exists(): exe = default_exe_path
+    config = load_config()
+    default_exe = Path(config["xenia_game_manager_portable_path"]) / "Xenia Game Manager.exe"
+    if not exe.exists(): exe = default_exe
     if pid != 1: wait_for_process(pid)
 
     if zip_file.exists():
         message = f"Extracting {zip_file}..."
         logging.info(message)
-        if extract_archives(zip_file.parent, remove_archives=False) != 1:
+        if extract_archives(zip_file.parent, remove_archives=True) != 1:
             return False
-
+        config["game_manager_version"] = version
+        save_config(config)
     try:
         if source != target: copy_files(source, target)
         if exe.exists():
             time.sleep(5)
             launch_program(exe)
         logging.info("Update complete.")
+        sys.exit(1)
     except Exception as e:
         logging.info(f"Update failed: {e}")
-        input("Press Enter to exit...")
         sys.exit(1)
 
 
