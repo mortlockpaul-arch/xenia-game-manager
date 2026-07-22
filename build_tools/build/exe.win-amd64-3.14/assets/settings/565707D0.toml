@@ -1,5 +1,0 @@
-# Title Name: Lollipop Chainsaw
-# Title ID: 565707D0
-
-[GPU]
-occlusion_query = "strict" # Fixes unoccluded lens flares

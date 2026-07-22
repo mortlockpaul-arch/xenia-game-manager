@@ -1,5 +1,0 @@
-# Title Name: NCAA Football 14
-# Title ID: 454109B6
-
-[GPU]
-readback_resolve = "full" # Fixes the textures

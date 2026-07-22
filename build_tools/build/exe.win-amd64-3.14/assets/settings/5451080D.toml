@@ -1,5 +1,0 @@
-# Title Name: Red Faction Guerrilla
-# Title ID: 5451080D
-
-[GPU]
-vsync = false # Unlocks FPS (Combined with Framerate Limit set to 0).

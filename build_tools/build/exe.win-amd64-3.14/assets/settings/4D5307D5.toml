@@ -1,5 +1,0 @@
-# Title Name: Gears of War
-# Title ID: 4D5307D5
-
-[GPU]
-vsync = false # Unlocks framerate (Combined with framerate limit set to 0)

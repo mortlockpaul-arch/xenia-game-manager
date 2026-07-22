@@ -1,8 +1,0 @@
-# Title Name: Tomb Raider: Legend
-# Title ID: 534307D4
-
-[APU]
-use_dedicated_xma_thread = false # Fixes softlocking (combined with xma_decoder = "new")
-
-[GPU]
-framerate_limit = 120 # Caps the framerate to 60
