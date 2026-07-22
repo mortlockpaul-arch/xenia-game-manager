@@ -32,7 +32,7 @@ class UpdateWorker(QThread):
 
     def run(self):
 
-        self.updater = UpdateManager(self)
+        self.updater = UpdateManager()
         self.updater.show_message.connect(
             self.show_message
         )
@@ -53,7 +53,7 @@ class UpdateWorker(QThread):
 class UpdateManager(QObject):
 
     log = Signal(str, bool, bool, bool)
-    progress = Signal(int, int, str)
+    progress = Signal(int, int)
     finished = Signal()
     error = Signal(str)
     show_message = Signal(str, str)  # title, message
@@ -67,8 +67,8 @@ class UpdateManager(QObject):
         })
         self.config = load_config()
 
-    def _progress(self, done: int, total: int | None, file:str):
-        self.progress.emit(done, total or 0, file)
+    def _progress(self, done: int, total: int | None):
+        self.progress.emit(done, total or 0)
     # ---------------------------------------------------------
     # Utilities
     # ---------------------------------------------------------
@@ -118,12 +118,12 @@ class UpdateManager(QObject):
         message = f"Downloading: {path} ({self.human_size(total)})"
         self.log.emit(message, True, True, False)
 
-        self.log.emit(str(r.status_code), False, True, False)
-        self.log.emit(str(r.headers.get("Content-Type")), False, True, False)
-        self.log.emit(str(r.headers.get("Content-Length")), False, True, False)
-        self.log.emit(str(r.status_code), False, True, False)
-        self.log.emit(str(r.url), False, True, False)
-        self.log.emit(r.text[:1000], False, True, False)
+        # self.log.emit(str(r.status_code), False, True, False)
+        # self.log.emit(str(r.headers.get("Content-Type")), False, True, False)
+        # self.log.emit(str(r.headers.get("Content-Length")), False, True, False)
+        # self.log.emit(str(r.status_code), False, True, False)
+        # self.log.emit(str(r.url), False, True, False)
+        # self.log.emit(r.text[:1000], False, True, False)
 
         r.raise_for_status()
 
@@ -132,7 +132,7 @@ class UpdateManager(QObject):
 
         done = 0
 
-        self._progress(done=done, total=total, file=path)
+        self._progress(done=done, total=total)
 
         with open(path, "wb") as f:
             for chunk in r.iter_content(chunk_size=1024 * 1024):

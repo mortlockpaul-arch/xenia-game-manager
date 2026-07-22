@@ -92,28 +92,29 @@ class DownloadWorker(QThread):
 
     def __init__(self, files):
         super().__init__()
+        self.updater = None
         self.files = files
 
     def run(self):
         downloads_dir = Path.cwd() / "downloads"
         downloads_dir.mkdir(exist_ok=True)
 
+        self.updater = UpdateManager()
+
+        self.updater.log.connect(self.log)
+        self.updater.progress.connect(self.overall_progress)
+        self.updater.finished.connect(self.finished)
+        self.updater.error.connect(self.error)
+
         try:
             for i, file in enumerate(self.files, 1):
                 destination = downloads_dir / file["filename"]
 
-                self.overall_progress.emit(
+                self.file_progress.emit(
                     i,
                     len(self.files),
                     file["filename"]
                 )
-
-                self.updater = UpdateManager()
-
-                self.updater.log.connect(self.log)
-                self.updater.progress.connect(self.file_progress)
-                self.updater.finished.connect(self.finished)
-                self.updater.error.connect(self.error)
 
                 self.updater.download_file(
                     url=file["url"],
@@ -1271,23 +1272,42 @@ class GameLauncher(QMainWindow):
         self.progress_current = QProgressBar()
         self.current_label = QLabel("Current File")
         self.overall_label = QLabel("Overall")
+
+        for bar in (self.progress_overall, self.progress_current):
+            bar.setMinimumWidth(250)
+            bar.setMaximumHeight(18)
+            bar.setTextVisible(True)
+
         progress_widget = QWidget()
 
         progress_layout = QHBoxLayout(progress_widget)
-        progress_layout.setContentsMargins(0, 0, 0, 0)
+        progress_layout.setContentsMargins(10, 0, 10, 5)
 
         progress_layout.addStretch()
 
         progress_layout.addWidget(self.overall_label)
         progress_layout.addWidget(self.progress_overall)
 
-        progress_layout.addSpacing(30)
+        progress_layout.addSpacing(20)
 
         progress_layout.addWidget(self.current_label)
         progress_layout.addWidget(self.progress_current)
 
-        progress_layout.addStretch()
 
+        self.progress_overall.setSizePolicy(
+            QSizePolicy.Policy.Expanding,
+            QSizePolicy.Policy.Fixed
+        )
+
+        self.progress_current.setSizePolicy(
+            QSizePolicy.Policy.Expanding,
+            QSizePolicy.Policy.Fixed
+        )
+        self.progress_overall.setRange(0, 100)
+        self.progress_current.setRange(0, 100)
+
+        self.progress_overall.setValue(0)
+        self.progress_current.setValue(0)
 
         # ================= TOOLBAR + PROGRESS =================
         toolbar_container = QWidget()
