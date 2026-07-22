@@ -1,8 +1,10 @@
 import os
+from pathlib import Path
 
 from PySide6.QtCore import QThread, Signal
 
 import xboxunity_api
+from config import get_app_dir
 
 
 class TitleUpdateWorker(QThread):
@@ -11,7 +13,7 @@ class TitleUpdateWorker(QThread):
     game_progress = Signal(int, int)     # game index, total games
     finished = Signal(dict)
 
-    def __init__(self, games, token=None, api_key=None, output_folder=""):
+    def __init__(self, games, token=None, api_key=None, output_folder: Path = get_app_dir() / "downloads" / "tus"):
         super().__init__()
         self.games = games
         self.token = token

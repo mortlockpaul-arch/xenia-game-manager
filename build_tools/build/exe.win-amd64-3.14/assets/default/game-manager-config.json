@@ -11,8 +11,7 @@
     "xenia_netplay_path": "",
     "xenia_netplay_installed": false,
     "xenia_mousehook_path": "",
-    "xenia_mousehook_installed": false,
-    "xenia_title_updates_path": "",
+    "xenia_mousehook_installed": false
     "xenia_edge_version": "5796dd4",
     "game_manager_version": "0.9.6",
     "xenia_game_manager_portable_path": "C:/xenia-game-manager/",

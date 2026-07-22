@@ -40,7 +40,7 @@ class XBoxUnity:
             return False
     
     
-    def login_xboxunity(self, username, password):
+    def login_xbox_unity(self, username = None, password = None):
         """Login using username/password and return token"""
     
         url = f"{BASE_URL}/Auth/Login"

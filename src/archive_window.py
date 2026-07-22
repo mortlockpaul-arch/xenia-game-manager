@@ -25,6 +25,7 @@ from PySide6.QtWidgets import (
     QHeaderView,
 )
 
+import updater
 from db import Database
 
 ARCHIVES = [
@@ -538,7 +539,9 @@ class ArchiveBrowser(QDialog):
         #
         # game = self.games.get(title_id, "")
 
-        size = int(file.get("size", 0)) / 1024 / 1024
+        # size = int(file.get("size", 0)) / 1024 / 1024
+        size = int(file.get("size", 0))
+        size = updater.UpdateManager.human_size(size)
 
         check_item = QStandardItem()
         check_item.setCheckable(True)
@@ -555,7 +558,7 @@ class ArchiveBrowser(QDialog):
             QStandardItem(disc_type),
             QStandardItem(file["archive"]),
             QStandardItem(filename),
-            QStandardItem(f"{size:.2f}"),
+            QStandardItem(f"{size}"),
             QStandardItem(file.get("format", "")),
         ]
 

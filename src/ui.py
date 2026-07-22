@@ -409,7 +409,8 @@ class GameLauncher(QMainWindow):
     def __init__(self):
         super().__init__()
 
-
+        self.browse_btn_xenia = None
+        self.xenia_manager_path = None
         self.xbox_unity_api = None
         self.xenia_edge_installed: QCheckBox = QCheckBox()
         self.xenia_manager_installed: QCheckBox = QCheckBox()
@@ -421,7 +422,7 @@ class GameLauncher(QMainWindow):
         self.launch_edge = None
         self.launch_manager = None
         self.update_worker = None
-        self.xenia_title_updates_path = None
+        # self.xenia_title_updates_path = None
         self.use_xenia_manager_content_for_edge_btn = None
         self.import_edge_btn = None
         self.console = None
@@ -557,31 +558,31 @@ class GameLauncher(QMainWindow):
         # ---------------- LOGIN BOX ----------------
         # login_box = QGroupBox("Login XboxUnity / API Key")
         # login_box.setFixedWidth(520)
-        xboxunity_row = QHBoxLayout()
-        login_form = QFormLayout()
-
-        self.entry_user = QLineEdit()
-        self.entry_pass = QLineEdit()
-        self.entry_pass.setEchoMode(QLineEdit.EchoMode.Password)
-        self.entry_apikey = QLineEdit()
-
-        self.entry_user.setPlaceholderText("Xbox Unity Username")
-        self.entry_pass.setPlaceholderText("Xbox Unity Password")
-        self.entry_apikey.setPlaceholderText("Xbox Unity API Key")
-
-        login_form.addRow("Username", self.entry_user)
-        login_form.addRow("Password", self.entry_pass)
-        login_form.addRow("API Key", self.entry_apikey)
-        #
-        self.login_btn = QPushButton("Login")
-        self.login_btn.clicked.connect(self.login)
-        login_form.addRow(self.login_btn)
-
-        group = QGroupBox("Xbox Unity")
-        group.setLayout(login_form)
-
-        xboxunity_row.addWidget(group)
-        layout.addLayout(xboxunity_row)
+        # xboxunity_row = QHBoxLayout()
+        # login_form = QFormLayout()
+        # 
+        # self.entry_user = QLineEdit()
+        # self.entry_pass = QLineEdit()
+        # self.entry_pass.setEchoMode(QLineEdit.EchoMode.Password)
+        # self.entry_apikey = QLineEdit()
+        # 
+        # self.entry_user.setPlaceholderText("Xbox Unity Username")
+        # self.entry_pass.setPlaceholderText("Xbox Unity Password")
+        # self.entry_apikey.setPlaceholderText("Xbox Unity API Key")
+        # 
+        # login_form.addRow("Username", self.entry_user)
+        # login_form.addRow("Password", self.entry_pass)
+        # login_form.addRow("API Key", self.entry_apikey)
+        # #
+        # self.login_btn = QPushButton("Login")
+        # self.login_btn.clicked.connect(self.login)
+        # login_form.addRow(self.login_btn)
+        # 
+        # group = QGroupBox("Xbox Unity")
+        # group.setLayout(login_form)
+        # 
+        # xboxunity_row.addWidget(group)
+        # layout.addLayout(xboxunity_row)
 
         # ---------------- XENIA MANAGER PATH ----------------
         layout.addWidget(QLabel("Xenia Manager Folder"))
@@ -643,19 +644,19 @@ class GameLauncher(QMainWindow):
             layout.addLayout(row)
 
         # ---------------- TITLE UPDATE PATH ----------------
-        layout.addWidget(QLabel("Title Updates Folder"))
-
-        title_updates_row = QHBoxLayout()
-        self.xenia_title_updates_path = QLineEdit()
-        self.xenia_title_updates_path.setPlaceholderText("Title Updates location...")
-
-        browse_btn_title_updates = QPushButton("Browse")
-        browse_btn_title_updates.clicked.connect(partial(self.pick_xenia_path, button_name="title_updates"))
-
-        title_updates_row.addWidget(self.xenia_title_updates_path)
-        title_updates_row.addWidget(browse_btn_title_updates)
-
-        layout.addLayout(title_updates_row)
+        # layout.addWidget(QLabel("Title Updates Folder"))
+        #
+        # title_updates_row = QHBoxLayout()
+        # self.xenia_title_updates_path = QLineEdit()
+        # self.xenia_title_updates_path.setPlaceholderText("Title Updates location...")
+        #
+        # browse_btn_title_updates = QPushButton("Browse")
+        # browse_btn_title_updates.clicked.connect(partial(self.pick_xenia_path, button_name="title_updates"))
+        #
+        # title_updates_row.addWidget(self.xenia_title_updates_path)
+        # title_updates_row.addWidget(browse_btn_title_updates)
+        #
+        # layout.addLayout(title_updates_row)
 
         # ---------------- GITHUB TOKEN ----------------
         import keyring
@@ -811,11 +812,11 @@ class GameLauncher(QMainWindow):
             row = index // 2
             column = index % 2
 
-            button.setMinimumHeight(26)
-            button.setMaximumHeight(26)
+            button.setMinimumHeight(35)
+            button.setMaximumHeight(35)
             button.setStyleSheet("""
                     QPushButton {
-                        font-size: 8pt;
+                        font-size: 10pt;
                         padding: 0px 3px;
                     }
                     QPushButton:hover {
@@ -1419,11 +1420,14 @@ class GameLauncher(QMainWindow):
             if game.get("title_id")
         }
 
-        filtered_games = [
-            game
-            for game in self.model.games
-            if game.get("game_id", "").upper() in netplay_lookup
-        ]
+        filtered_games = []
+
+        for game in self.model.games:
+            title_id = game.get("game_id", "").upper()
+
+            if title_id in netplay_lookup:
+                game["xenia_version"] = "Netplay"
+                filtered_games.append(game)
 
         self.model.games = filtered_games
         self.model.layoutChanged.emit()  # or whatever your model uses
@@ -1447,22 +1451,16 @@ class GameLauncher(QMainWindow):
         if not self.model.games:
             self.log("Error: No games loaded")
             return
-        config = load_config()
-        folder = config["xenia_title_updates_path"]
-        if not folder:
-            self.log("Error: No Folder Selected")
-            return
-        try:
-            self.login()
-        except Exception as e:
-            self.log(f"Unexpected error: {e}")
-            return
+        # try:
+        #     self.login()
+        # except Exception as e:
+        #     self.log(f"Unexpected error: {e}")
+        #     return
 
         self.worker = TitleUpdateWorker(
             games=self.model.games,
             token=self.token,
-            api_key=self.api_key,
-            output_folder=folder
+            api_key=self.api_key
         )
         self.worker.log.connect(self.log)
         self.worker.progress.connect(self.update_file_progress)
@@ -1548,9 +1546,9 @@ class GameLauncher(QMainWindow):
         self.set_checkbox("netplay", self.config.get("xenia_netplay_installed", False), save=False)
         self.set_checkbox("mousehook", self.config.get("xenia_mousehook_installed", False), save=False)
         self.set_checkbox("edge", self.config.get("xenia_edge_installed", False), save=False)
-        self.entry_user.setText(self.config.get("username", ""))
-        self.entry_pass.setText(self.config.get("password", ""))
-        self.entry_apikey.setText(self.config.get("api_key", ""))
+        # self.entry_user.setText(self.config.get("username", ""))
+        # self.entry_pass.setText(self.config.get("password", ""))
+        # self.entry_apikey.setText(self.config.get("api_key", ""))
         self.xenia_manager_path.setText(self.config.get("xenia_manager_path", ""))
         self.xenia_canary_path.setText(self.config.get("xenia_canary_path", ""))
         self.xenia_netplay_path.setText(self.config.get("xenia_netplay_path", ""))
@@ -1561,8 +1559,8 @@ class GameLauncher(QMainWindow):
         self.xenia_netplay_version.setText(self.config.get("xenia_netplay_version", ""))
         self.xenia_mousehook_version.setText(self.config.get("xenia_mousehook_version", ""))
         self.xenia_edge_version.setText(self.config.get("xenia_edge_version", ""))
-
-        self.xenia_title_updates_path.setText(self.config.get("xenia_title_updates_path", ""))
+        #
+        # self.xenia_title_updates_path.setText(self.config.get("xenia_title_updates_path", ""))
         if self.config.get("api_key"):
             self.api_key = self.config["api_key"]
 
@@ -1636,18 +1634,13 @@ class GameLauncher(QMainWindow):
 
     def login(self):
         self.xbox_unity_api = xboxunity_api.XBoxUnity(log_callback=self.log)
-        username = self.entry_user.text().strip()
-        password = self.entry_pass.text().strip()
-        api_key = self.entry_apikey.text().strip()
-        if not api_key:
-            webbrowser.open("https://xboxunity.net/")
-            self.log("No API key provided. Opening XboxUnity...")
-            return
-        if not password:
-            webbrowser.open("https://xboxunity.net/")
-            self.log("No password provided. Opening XboxUnity...")
-            return
-        config = load_config()
+        # username = self.entry_user.text().strip()
+        # password = self.entry_pass.text().strip()
+        # api_key = self.entry_apikey.text().strip()
+        # if not api_key or not password or not username:
+        #     webbrowser.open("https://xboxunity.net/")
+        #     self.log("No API key provided. Opening XboxUnity...")
+        # config = load_config()
 
         # Save API key mode (preferred)
         # if api_key:
@@ -1671,9 +1664,9 @@ class GameLauncher(QMainWindow):
         #     return
 
         # Username/password login
-        if not username or not password:
-            self.log("Login Error: Enter username/password")
-            return
+        # if not username or not password:
+        #     self.log("Login Error: Enter username/password")
+        #     return
 
         self.log("Checking XboxUnity...")
 
@@ -1685,23 +1678,23 @@ class GameLauncher(QMainWindow):
             self.log(str(e))
             return
 
-        self.log("Logging in...")
-
-        token = self.xbox_unity_api.login_xboxunity(username, password)
-
-        if token:
-            self.token = token
-            self.api_key = None
-
-            config["username"] = username
-            config["password"] = password
-            config.pop("api_key", None)
-
-            save_config(config)
-
-            self.log("Login successful.")
-        else:
-            self.log("Login Failed: Invalid credentials")
+        # self.log("Logging in...")
+        #
+        # token = self.xbox_unity_api.login_xbox_unity(username, password)
+        #
+        # if token:
+        #     self.token = token
+        #     self.api_key = None
+        #
+        #     config["username"] = username
+        #     config["password"] = password
+        #     config.pop("api_key", None)
+        #
+        #     save_config(config)
+        #
+        #     self.log("Login successful.")
+        # else:
+        #     self.log("Login Failed: Invalid credentials")
 
     def show_table_menu(self, pos):
         index = self.table.indexAt(pos)
