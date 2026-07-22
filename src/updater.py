@@ -53,7 +53,7 @@ class UpdateWorker(QThread):
 class UpdateManager(QObject):
 
     log = Signal(str, bool, bool, bool)
-    progress = Signal(int, int)
+    progress = Signal(int, int, str)
     finished = Signal()
     error = Signal(str)
     show_message = Signal(str, str)  # title, message
@@ -67,8 +67,8 @@ class UpdateManager(QObject):
         })
         self.config = load_config()
 
-    def _progress(self, done: int, total: int | None):
-        self.progress.emit(done, total or 0)
+    def _progress(self, done: int, total: int | None, file:str):
+        self.progress.emit(done, total or 0, file)
     # ---------------------------------------------------------
     # Utilities
     # ---------------------------------------------------------
@@ -132,7 +132,7 @@ class UpdateManager(QObject):
 
         done = 0
 
-        self._progress(done=done, total=total)
+        self._progress(done=done, total=total, file=path)
 
         with open(path, "wb") as f:
             for chunk in r.iter_content(chunk_size=1024 * 1024):

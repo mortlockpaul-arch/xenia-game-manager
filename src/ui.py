@@ -85,8 +85,8 @@ class WidgetInfo:
 
 class DownloadWorker(QThread):
     log = Signal(str)
-    overall_progress = Signal(int, int, str)
-    file_progress = Signal(int, int)
+    overall_progress = Signal(int, int)
+    file_progress = Signal(int, int, str)
     finished = Signal()
     error = Signal(str)
 
@@ -1181,8 +1181,8 @@ class GameLauncher(QMainWindow):
             files = dlg.selected_files()
 
             self.worker = DownloadWorker(files)
-            self.worker.overall_progress.connect(self.update_file_progress)
-            self.worker.file_progress.connect(self.update_download_progress)
+            self.worker.overall_progress.connect(self.update_overall_progress)
+            self.worker.file_progress.connect(self.update_file_progress)
             self.worker.log.connect(self.log)
             self.worker.finished.connect(lambda: self.log("Finished"))
             self.worker.error.connect(self.log)
@@ -1456,7 +1456,7 @@ class GameLauncher(QMainWindow):
         self.progress_current.setValue(done)
         self.current_label.setText(f"{filename} ({done}/{total})")
 
-    def update_download_progress(self, done, total):
+    def update_overall_progress(self, done, total):
         self.progress_overall.setMaximum(total)
         self.progress_overall.setValue(done)
         self.overall_label.setText(f"({self.human_size(done)}/{self.human_size(total)})")
