@@ -265,81 +265,6 @@ from pathlib import Path
 import struct
 
 
-class STFSPackage:
-    def __init__(self, path):
-        self.path = Path(path)
-
-        with open(path, "rb") as f:
-            self.magic = f.read(4).decode(
-                "ascii",
-                errors="ignore"
-            )
-
-            if self.magic not in (
-                    "CON ",
-                    "LIVE",
-                    "PIRS"
-            ):
-                raise ValueError(
-                    "Not an STFS package"
-                )
-
-            #
-            # Content Type
-            #
-
-            f.seek(0x344)
-
-            self.content_type = struct.unpack(
-                ">I",
-                f.read(4)
-            )[0]
-
-            #
-            # Title ID
-            #
-
-            f.seek(0x360)
-
-            self.title_id = struct.unpack(
-                ">I",
-                f.read(4)
-            )[0]
-
-            #
-            # Media ID
-            #
-
-            f.seek(0x36C)
-
-            self.media_id = struct.unpack(
-                ">I",
-                f.read(4)
-            )[0]
-
-            #
-            # Display name
-            #
-
-            f.seek(0x411)
-
-            self.display_name = (
-                f.read(0x80)
-                .decode(
-                    "utf-16-be",
-                    errors="ignore"
-                )
-                .rstrip("\x00")
-            )
-
-    @property
-    def title_id_hex(self):
-        return f"{self.title_id:08X}"
-
-    @property
-    def media_id_hex(self):
-        return f"{self.media_id:08X}"
-
 
 def read_stfs_header(path):
     with open(path, "rb") as f:
@@ -416,10 +341,6 @@ def detect_profiles(content_dir: Path):
     return sorted(profiles, key=lambda p: p["xuid"])
 
 
-import shutil
-from pathlib import Path
-
-
 def install_title_update(
         stfs_file,
         xenia_content_root):
@@ -448,9 +369,6 @@ def install_title_update(
     )
 
     return dest
-
-
-import json
 
 
 def show_game_diff(file1, file2, log_call_back):

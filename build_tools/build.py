@@ -6,6 +6,8 @@ import uuid
 import zipfile
 from pathlib import Path
 
+from config import load_config, save_config
+
 root = Path(__file__).parent
 print (root)
 
@@ -31,10 +33,10 @@ def zip_portable():
             zipf.writestr("portable.txt", "")
     print("portable zip created: ", out_zip)
 
-def create_defaults():
+def create_defaults(version):
     print("Creating default game manager database and configuration files...")
 
-    base_path = root / "src"
+    base_path = root.parent / "src"
     default_path = base_path / "assets" / "default"
 
     db_dir = base_path / "db"
@@ -75,6 +77,10 @@ def create_defaults():
     # Configuration
     default_config = default_path / "game-manager-config.json"
     config_target = config_dir / "game-manager-config.json"
+
+    config = load_config(default_path)
+    config["game_manager_version"] = version
+    save_config(config, default_path)
 
     backup_existing(config_target)
 
@@ -136,7 +142,7 @@ def copy_updater():
     else:
         print(f"Updated {copied} file(s).")
 
-create_defaults()
+create_defaults(version="0.9.9")
 copy_optimized_settings()
 
 # Build the executable

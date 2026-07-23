@@ -19,4 +19,6 @@ dependencies = [
     "pip>=26.1.2",
     "beautifulsoup4>=4.15.0",
     "psutil>=7.2.2",
+    "pyqt6-sip>=13.11.1",
+    "dnfile>=0.18.0",
 ]

@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="main" type="PythonConfigurationType" factoryName="Python" editBeforeRun="true" activateToolWindowBeforeRun="false" focusToolWindowBeforeRun="true" nameIsGenerated="true">
-    <module name="xenia-game-manager" />
+    <module name="xenia-game-manager@1" />
     <selectedOptions>
       <option name="environmentVariables" visible="false" />
       <option name="envPaths" visible="false" />

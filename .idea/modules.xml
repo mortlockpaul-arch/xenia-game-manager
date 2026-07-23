@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/xenia-game-manager.iml" filepath="$PROJECT_DIR$/.idea/xenia-game-manager.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../xenia-game-manager-updater/.idea/xenia-game-manager-updater.iml" filepath="$PROJECT_DIR$/../xenia-game-manager-updater/.idea/xenia-game-manager-updater.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/xenia-game-manager-updater.iml" filepath="$PROJECT_DIR$/.idea/xenia-game-manager-updater.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/xenia-game-manager@1.iml" filepath="$PROJECT_DIR$/.idea/xenia-game-manager@1.iml" />
     </modules>
   </component>
 </project>
