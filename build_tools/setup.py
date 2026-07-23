@@ -1,7 +1,9 @@
 from pathlib import Path
 from cx_Freeze import setup, Executable
 
-root = Path(__file__).parent.parent
+from config import get_app_dir
+
+root = get_app_dir()
 
 executables = [
     Executable(

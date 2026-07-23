@@ -6,10 +6,9 @@ import uuid
 import zipfile
 from pathlib import Path
 
-from config import load_config, save_config
+from config import load_config, save_config, get_app_dir
 
-root = Path(__file__).parent
-print (root)
+root = get_app_dir()
 
 def generate_guid():
     return str(uuid.uuid4())
@@ -36,7 +35,7 @@ def zip_portable():
 def create_defaults(version):
     print("Creating default game manager database and configuration files...")
 
-    base_path = root.parent / "src"
+    base_path = root / "src"
     default_path = base_path / "assets" / "default"
 
     db_dir = base_path / "db"

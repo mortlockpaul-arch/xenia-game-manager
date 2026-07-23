@@ -7,7 +7,7 @@ from pathlib import Path
 def get_app_dir() -> Path:
     if getattr(sys, "frozen", False):
         return Path(sys.executable).parent  # Frozen executable directory
-    return Path(__file__).resolve().parent  # Script directory
+    return Path(__file__).resolve().parent.parent  # Script directory
 
 
 def load_xenia_manager_config():
