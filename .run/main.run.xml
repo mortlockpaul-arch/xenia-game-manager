@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="main" type="PythonConfigurationType" factoryName="Python" editBeforeRun="true" activateToolWindowBeforeRun="false" focusToolWindowBeforeRun="true" nameIsGenerated="true">
-    <module name="xenia-game-manager@1" />
+    <module name="xenia-game-manager" />
     <selectedOptions>
       <option name="environmentVariables" visible="false" />
       <option name="envPaths" visible="false" />
@@ -8,6 +8,9 @@
     <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
+    <envs>
+      <env name="PYTHONUNBUFFERED" value="1" />
+    </envs>
     <option name="SDK_HOME" value="" />
     <option name="SDK_NAME" value="uv (xenia-game-manager) (2)" />
     <option name="WORKING_DIRECTORY" value="C:\PycharmProjects\xenia-game-manager\src" />

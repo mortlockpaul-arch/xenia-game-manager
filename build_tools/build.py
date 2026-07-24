@@ -1,4 +1,5 @@
 import filecmp
+import logging
 import shutil
 import subprocess
 import sys
@@ -19,7 +20,7 @@ def zip_portable():
     # Remove the dist folder if it exists
     if out_zip.parent.exists():
         shutil.rmtree(out_zip.parent)
-        print("Deleting existing folder:", out_zip.parent)
+        logging.info(f"Deleting existing folder: {out_zip}")
     out_zip.parent.mkdir(exist_ok=True)
 
     with zipfile.ZipFile(out_zip, "w", zipfile.ZIP_DEFLATED) as zipf:
@@ -30,10 +31,10 @@ def zip_portable():
             # Add portable.txt to the root of the ZIP
         if not (build_dir / "portable.txt").exists():
             zipf.writestr("portable.txt", "")
-    print("portable zip created: ", out_zip)
+    logging.info(f"portable zip created: {out_zip}")
 
 def create_defaults(version):
-    print("Creating default game manager database and configuration files...")
+    logging.info("Creating default game manager database and configuration files...")
 
     base_path = root / "src"
     default_path = base_path / "assets" / "default"
@@ -49,16 +50,16 @@ def create_defaults(version):
 
     def backup_existing(path: Path):
         if not path.exists():
-            print(f"  No existing file to back up: {path.name}")
+            logging.info(f"  No existing file to back up: {path.name}")
             return
 
         backup = backup_dir / path.name
 
         if backup.exists():
-            print(f"  Removing old backup: {backup.name}")
+            logging.info(f"  Removing old backup: {backup.name}")
             backup.unlink()
 
-        print(f"  Backing up {path.name} -> {backup}")
+        logging.info(f"  Backing up {path.name} -> {backup}")
         shutil.move(path, backup)
 
     # Database
@@ -68,10 +69,10 @@ def create_defaults(version):
     backup_existing(db_target)
 
     if default_db.exists():
-        print(f"  Installing default database: {db_target}")
+        logging.info(f"  Installing default database: {db_target}")
         shutil.copy2(default_db, db_target)
     else:
-        print(f"  Default database not found: {default_db}")
+        logging.info(f"  Default database not found: {default_db}")
 
     # Configuration
     default_config = default_path / "game-manager-config.json"
@@ -84,12 +85,12 @@ def create_defaults(version):
     backup_existing(config_target)
 
     if default_config.exists():
-        print(f"  Installing default configuration: {config_target}")
+        logging.info(f"  Installing default configuration: {config_target}")
         shutil.copy2(default_config, config_target)
     else:
-        print(f"  Default configuration not found: {default_config}")
+        logging.info(f"  Default configuration not found: {default_config}")
 
-    print("Done.")
+    logging.info("Done.")
 
 def copy_optimized_settings():
     settings_dest = root / "src" / "assets" / "settings"
@@ -109,12 +110,12 @@ def copy_optimized_settings():
         if not dst.exists() or not filecmp.cmp(src, dst, shallow=False):
             shutil.copy2(src, dst)
             copied += 1
-            print(f"Copied: {dst}")
+            logging.info(f"Copied: {dst}")
 
     if copied == 0:
-        print("All optimized settings are already up to date.")
+        logging.info("All optimized settings are already up to date.")
     else:
-        print(f"Updated {copied} file(s).")
+        logging.info(f"Updated {copied} file(s).")
 
 def copy_updater():
     settings_dest = root / "build_tools/build/exe.win-amd64-3.14"
@@ -134,12 +135,23 @@ def copy_updater():
         if not dst.exists() or not filecmp.cmp(src, dst, shallow=False):
             shutil.copy2(src, dst)
             copied += 1
-            print(f"Copied: {dst}")
+            logging.info(f"Copied: {dst}")
 
     if copied == 0:
-        print("Updater is already up to date.")
+        logging.info("Updater is already up to date.")
     else:
-        print(f"Updated {copied} file(s).")
+        logging.info(f"Updated {copied} file(s).")
+
+log_dir = get_app_dir() / "logs"
+log_dir.mkdir(exist_ok=True)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler(log_dir / "xenia_manager.log", encoding="utf-8"),
+        logging.StreamHandler(sys.stdout),  # Console output
+    ],
+)
 
 create_defaults(version="0.9.9")
 copy_optimized_settings()
@@ -147,7 +159,7 @@ copy_optimized_settings()
 # Build the executable
 subprocess.run([sys.executable, "setup.py", "build_exe"], check=True)
 
-zip_portable()
-
 # Build the MSI
 subprocess.run([sys.executable, "setup.py", "bdist_msi"], check=True)
+
+zip_portable()
