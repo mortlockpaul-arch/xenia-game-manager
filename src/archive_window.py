@@ -32,18 +32,52 @@ ARCHIVES = [
     *[f"XBOX_360_DLC_{i}" for i in range(1, 6)],
     "XBOX_360_XBLA_DLC",
 ]
+ARCHIVES_XBLIG = [
+    *[f"microsoft_xbox360_digital_part{i}" for i in range(1, 5)],
+    "xblig_neowarez",
+]
+
+class ArchiveSortProxyModel(QSortFilterProxyModel):
+    def lessThan(self, left, right):
+        if left.column() == 6:
+            l = left.data(Qt.ItemDataRole.UserRole) or 0
+            r = right.data(Qt.ItemDataRole.UserRole) or 0
+            return int(l) < int(r)
+
+        return super().lessThan(left, right)
+
+class SizeItem(QStandardItem):
+    def __init__(self, size):
+        super().__init__(updater.UpdateManager.human_size(size))
+        self.size = size
+
+    def __lt__(self, other):
+        if isinstance(other, SizeItem):
+            return self.size < other.size
+        return super().__lt__(other)
 
 class Loader(QThread):
 
+    name_parameter = "DLC"
     fileFound = Signal(dict)
     progress = Signal(int, int)
     finishedLoading = Signal()
 
+    def __init__(self, name_parameter="DLC", parent=None):
+        super().__init__(parent)
+
+        self.name_parameter = name_parameter
+        self.archives = (
+            ARCHIVES
+            if self.name_parameter == "DLC"
+            else ARCHIVES_XBLIG
+        )
+
     def run(self):
 
-        total = len(ARCHIVES)
+        total = len(self.archives)
 
-        for index, archive in enumerate(ARCHIVES, start=1):
+        for index, archive in enumerate(self.archives, start=1):
 
             try:
 
@@ -222,13 +256,13 @@ class ArchiveBrowser(QDialog):
         }
         """)
 
-    def __init__(self, db, parent=None):
+    def __init__(self, db, parent=None, name_parameter="DLC"):
 
         super().__init__(parent)
 
         self.db = db
-
-        self.setWindowTitle("Archive.org DLC Browser")
+        self.name_parameter = name_parameter
+        self.setWindowTitle(f"Archive.org {name_parameter} Browser")
         self.resize(1200, 700)
         icon_path = resource_path("assets/icons/app.ico")
         self.setWindowIcon(QIcon(icon_path))
@@ -269,7 +303,7 @@ class ArchiveBrowser(QDialog):
             "Format",
         ])
 
-        self.proxy = QSortFilterProxyModel()
+        self.proxy = ArchiveSortProxyModel()
         self.proxy.setSourceModel(self.model)
         self.proxy.setFilterCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
         self.proxy.setFilterKeyColumn(-1)
@@ -372,7 +406,7 @@ class ArchiveBrowser(QDialog):
 
         self.model.removeRows(0, self.model.rowCount())
 
-        self.loader = Loader()
+        self.loader = Loader(name_parameter=self.name_parameter)
 
         self.loader.fileFound.connect(self.add_file)
         self.loader.progress.connect(self.update_progress)
@@ -541,7 +575,7 @@ class ArchiveBrowser(QDialog):
 
         # size = int(file.get("size", 0)) / 1024 / 1024
         size = int(file.get("size", 0))
-        size = updater.UpdateManager.human_size(size)
+
 
         check_item = QStandardItem()
         check_item.setCheckable(True)
@@ -551,6 +585,11 @@ class ArchiveBrowser(QDialog):
             Qt.ItemDataRole.CheckStateRole
         )
 
+        size = int(file.get("size", 0))
+
+        size_item = QStandardItem(updater.UpdateManager.human_size(size))
+        size_item.setData(size, Qt.ItemDataRole.UserRole)
+
         row = [
             check_item,
             QStandardItem(game),
@@ -558,7 +597,7 @@ class ArchiveBrowser(QDialog):
             QStandardItem(disc_type),
             QStandardItem(file["archive"]),
             QStandardItem(filename),
-            QStandardItem(f"{size}"),
+            size_item,
             QStandardItem(file.get("format", "")),
         ]
 
@@ -571,7 +610,7 @@ class ArchiveBrowser(QDialog):
                 "game": game,
                 "size": file.get("size", 0),
             },
-            Qt.UserRole,
+            Qt.ItemDataRole.UserRole,
         )
 
         if title_id:
@@ -584,12 +623,12 @@ class ArchiveBrowser(QDialog):
     def check_all(self):
 
         for row in range(self.model.rowCount()):
-            self.model.item(row, 0).setCheckState(Qt.Checked)
+            self.model.item(row, 0).setCheckState(Qt.CheckState.Checked)
 
     def uncheck_all(self):
 
         for row in range(self.model.rowCount()):
-            self.model.item(row, 0).setCheckState(Qt.Unchecked)
+            self.model.item(row, 0).setCheckState(Qt.CheckState.Unchecked)
 
     def selected_files(self):
 
@@ -597,10 +636,10 @@ class ArchiveBrowser(QDialog):
 
         for row in range(self.model.rowCount()):
 
-            if self.model.item(row, 0).checkState() == Qt.Checked:
+            if self.model.item(row, 0).checkState() == Qt.CheckState.Checked:
 
                 files.append(
-                    self.model.item(row, 5).data(Qt.UserRole)
+                    self.model.item(row, 5).data(Qt.ItemDataRole.UserRole)
                 )
 
         return files
@@ -610,8 +649,8 @@ if __name__ == "__main__":
     from PySide6.QtWidgets import QApplication
 
     app = QApplication(sys.argv)
-    db = Database()
-    dlg = ArchiveBrowser(db=db)
+    dbase = Database()
+    dlg = ArchiveBrowser(db=dbase)
     dlg.exec()
 
     print(dlg.selected_files())

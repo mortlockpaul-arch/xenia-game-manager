@@ -3,54 +3,91 @@ from pathlib import Path
 
 from config import get_app_dir
 
+from PySide6.QtCore import QObject, Signal, Slot
+
+
+class ExtractWorker(QObject):
+    finished = Signal()
+    log = Signal(str)
+
+    def __init__(self, folders):
+        super().__init__()
+        self.folders = folders
+
+    @Slot()
+    def run(self):
+        try:
+            for folder in self.folders:
+                count = extract_archives(
+                    folder=folder,
+                    log_callback=self.log.emit,
+                    remove_archives=True,
+                )
+                self.finished.emit(count)
+        finally:
+            self.finished.emit()
+
 
 def extract_archives(folder, log_callback=None, subfolder=False, remove_archives=True):
-    """
-    Extract .zip, .7z, .rar archives into subfolders named after the archive.
-    Deletes archive only if extraction succeeds.
-    """
+
+    def log(msg):
+        if log_callback:
+            log_callback(msg)
+        else:
+            print(msg)
+
     folder = Path(folder)
-    msg = f"Folder: {folder.name}"
-    (log_callback or print)(msg)
+
+    log(f"Folder: {folder.name}")
+
     count = 0
-    root = get_app_dir()
     seven_zip_path = Path(get_app_dir()) / "assets" / "zip" / "7z.exe"
+
     for archive in folder.iterdir():
+
         if archive.suffix.lower() not in {".zip", ".7z", ".rar"}:
             continue
 
-        if subfolder: output_dir = folder / archive.stem
-        else: output_dir = folder
-        msg = f"Archive: {archive.name}"
-        (log_callback or print)(msg)
+        output_dir = folder / archive.stem if subfolder else folder
+
+        root = get_app_dir() / "downloads"
+        relative_path = Path(archive).relative_to(root.parent)
+        log(f"Archive: {relative_path}")
+
         output_dir.mkdir(parents=True, exist_ok=True)
 
         cmd = [
-            seven_zip_path,
-            "x",                      # extract with full paths
+            str(seven_zip_path),
+            "x",
             str(archive),
             f"-o{output_dir}",
-            "-y",                     # assume yes
+            "-y",
         ]
 
         try:
-            result = subprocess.run(cmd, capture_output=True, text=True)
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True
+            )
 
             if result.returncode == 0:
-                if remove_archives: archive.unlink()
+
+                if remove_archives:
+                    archive.unlink()
+
                 count += 1
-                msg = f"Extracted: {archive.name}"
-                (log_callback or print)(msg)
+                log(f"Extracted: {relative_path}")
+
             else:
-                msg = f"Failed: {archive.name}\n{result.stderr}"
-                archive.unlink()
-                (log_callback or print)(msg)
+                log(f"Failed: {relative_path}\n{result.stderr}")
 
         except Exception as e:
-            msg = f"Error: {archive.name} ({e})"
-            (log_callback or print)(msg)
+            log(f"Error: {relative_path} ({e})")
 
-    if count == 0: (log_callback or print)(f"No archives found in {folder}")
+    if count == 0:
+        log(f"No archives found in {folder}")
+
     return count
 
 if __name__ == "__main__":

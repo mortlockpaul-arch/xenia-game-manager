@@ -1,10 +1,13 @@
 # ui.py
+import io
 import json
 import logging
 import os
 import shutil
 import string
 import subprocess
+from contextlib import redirect_stdout
+
 import sys
 import threading
 import time
@@ -48,6 +51,7 @@ from db import Database, Compatibility
 from edge_import import use_xenia_manager_content_folder_for_edge
 from extract import extract_archives
 from model import GameTableModel
+from package_window import XBLIG_Dialog, move_folders_to_type, QtLogger
 from remove_empty_folders import remove_empty_folders
 from updater import UpdateWorker, UpdateManager
 from utils import smart_title_case, xenia_edge_optimise_settings, show_differences, merge_toml
@@ -85,8 +89,8 @@ class WidgetInfo:
 
 class DownloadWorker(QThread):
     log = Signal(str)
-    overall_progress = Signal(int, int)
-    file_progress = Signal(int, int, str)
+    overall_progress = Signal(object)
+    file_progress = Signal(object)
     finished = Signal()
     error = Signal(str)
 
@@ -96,7 +100,7 @@ class DownloadWorker(QThread):
         self.files = files
 
     def run(self):
-        downloads_dir = Path.cwd() / "downloads"
+        downloads_dir = get_app_dir() / "downloads"
         downloads_dir.mkdir(exist_ok=True)
 
         self.updater = UpdateManager()
@@ -110,11 +114,11 @@ class DownloadWorker(QThread):
             for i, file in enumerate(self.files, 1):
                 destination = downloads_dir / file["filename"]
 
-                self.file_progress.emit(
+                self.file_progress.emit((
                     i,
                     len(self.files),
                     file["filename"]
-                )
+                ))
 
                 self.updater.download_file(
                     url=file["url"],
@@ -125,7 +129,8 @@ class DownloadWorker(QThread):
             extract_archives(
                 downloads_dir,
                 self.log.emit,
-                remove_archives=False
+                subfolder=True,
+                remove_archives=True
             )
 
         except Exception as e:
@@ -135,25 +140,6 @@ class DownloadWorker(QThread):
         self.finished.emit()
 
 
-class ExtractWorker(QObject):
-    finished = Signal()
-    log = Signal(str)
-
-    def __init__(self, folders):
-        super().__init__()
-        self.folders = folders
-
-    @Slot()
-    def run(self):
-        try:
-            for folder in self.folders:
-                extract_archives(
-                    folder=folder,
-                    log_callback=self.log.emit,
-                    remove_archives=True,
-                )
-        finally:
-            self.finished.emit()
 
 
 
@@ -345,16 +331,33 @@ class DriveSelectionDialog(QDialog):
             f"<b>Installation Folder</b><br>{self.install_path()}"
         )
 
+
+class SignalLogger(io.TextIOBase):
+
+    def __init__(self, signal):
+        super().__init__()
+        self.signal = signal
+
+    def write(self, text):
+        text = text.strip()
+
+        if text:
+            self.signal.emit(text)
+
+        return len(text)
+
+    def flush(self):
+        pass
+
 class GameLauncher(QMainWindow):
 
     def extract_downloaded_archives(self):
-        base_dir = Path(__file__).resolve().parent
-
+        base_dir = get_app_dir()
         self.extract_thread = QThread()
         self.extract_worker = ExtractWorker(
             [
                 Path.home() / "Downloads",
-                base_dir / "Downloads",
+                base_dir / "downloads",
             ]
         )
         self.extract_downloaded_archives_btn.setEnabled(False)
@@ -409,6 +412,7 @@ class GameLauncher(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.archive_xblig_button = None
         self.browse_btn_xenia = None
         self.xenia_manager_path = None
         self.xbox_unity_api = None
@@ -774,6 +778,10 @@ class GameLauncher(QMainWindow):
         self.reset_btn = QPushButton("Reset Game List")
         self.reset_btn.clicked.connect(self.reset_database)
 
+
+        self.reorg_btn = QPushButton("Re-Organize Downloads")
+        self.reorg_btn.clicked.connect(self.re_org_downloads)
+
         tools_box.setLayout(tools_layout)
 
         layout.addWidget(tools_box)
@@ -805,7 +813,8 @@ class GameLauncher(QMainWindow):
             self.check_manager_update_btn,
             self.extract_downloaded_archives_btn,
             self.download_experimental_releases_btn,
-            self.reset_btn
+            self.reset_btn,
+            self.reorg_btn
         ]
 
         for index, button in enumerate(buttons):
@@ -827,10 +836,71 @@ class GameLauncher(QMainWindow):
             tools_layout.addWidget(button, row, column)
         self.settings_drawer.hide()
 
+    def re_org_downloads(self):
+        self.reorg_thread = QThread()
+        self.reorg_worker = self.ReOrgWorker(
+            get_app_dir() / "downloads"
+        )
+
+        self.reorg_worker.moveToThread(self.reorg_thread)
+
+        # thread starts -> worker runs
+        self.reorg_thread.started.connect(
+            self.reorg_worker.run
+        )
+
+        # logs go to your UI
+        self.reorg_worker.log.connect(
+            self.log
+        )
+
+        self.reorg_worker.error.connect(
+            lambda e: self.log(f"Error: {e}")
+        )
+
+        # cleanup
+        self.reorg_worker.finished.connect(
+            self.reorg_thread.quit
+        )
+
+        self.reorg_worker.finished.connect(
+            self.reorg_worker.deleteLater
+        )
+
+        self.reorg_thread.finished.connect(
+            self.reorg_thread.deleteLater
+        )
+
+        self.reorg_thread.start()
+
     def reset_database(self):
         self.db.clear_db()
         self.refresh()
 
+    from contextlib import redirect_stdout
+    import io
+
+
+    class ReOrgWorker(QObject):
+        log = Signal(str)
+        finished = Signal()
+        error = Signal(str)
+
+        def __init__(self, path):
+            super().__init__()
+            self.path = path
+
+        @Slot()
+        def run(self):
+            try:
+                with redirect_stdout(SignalLogger(self.log)):
+                    move_folders_to_type(self.path)
+
+            except Exception as e:
+                self.error.emit(str(e))
+
+            finally:
+                self.finished.emit()
     def download_experimental_releases(self):
         config = load_config()
         self.log(clear_console=True)
@@ -1175,9 +1245,13 @@ class GameLauncher(QMainWindow):
             cwd=os.path.dirname(exe)
         )
 
-    def open_archive_browser(self):
+    def open_archive_browser(self, name):
+        if name == "XBLIG_EMULATOR":
+            xblig_emulator = XBLIG_Dialog()
+            xblig_emulator.exec()
+            return
 
-        dlg = ArchiveBrowser(self.db, self)
+        dlg = ArchiveBrowser(self.db, self, name_parameter=name)
 
         if dlg.exec():
             files = dlg.selected_files()
@@ -1258,7 +1332,11 @@ class GameLauncher(QMainWindow):
         self.btn_tu = QPushButton("Download Title Updates")
         self.btn_tu.clicked.connect(self.search_and_download_tus)
         self.archive_button = QPushButton("DLC Downloader")
-        self.archive_button.clicked.connect(self.open_archive_browser)
+        self.archive_button.clicked.connect(partial(self.open_archive_browser, "DLC"))
+        self.archive_xblig_button = QPushButton("XBLIG Downloader")
+        self.archive_xblig_button.clicked.connect(partial(self.open_archive_browser, "XBLIG"))
+        self.archive_xbligemu_button = QPushButton("XBLIG Emulator")
+        self.archive_xbligemu_button.clicked.connect(partial(self.open_archive_browser, "XBLIG_EMULATOR"))
         toolbar.addWidget(self.netplay_button)
         toolbar.addWidget(self.refresh_btn)
         toolbar.addWidget(self.browser_button)
@@ -1266,8 +1344,9 @@ class GameLauncher(QMainWindow):
         toolbar.addWidget(self.launch_manager)
         toolbar.addWidget(self.launch_edge)
         toolbar.addWidget(self.archive_button)
+        toolbar.addWidget(self.archive_xblig_button)
+        toolbar.addWidget(self.archive_xbligemu_button)
         toolbar.addWidget(self.btn_tu)
-
         # ================= PROGRESS =================
         self.progress_overall = QProgressBar()
         self.progress_current = QProgressBar()
@@ -1275,40 +1354,33 @@ class GameLauncher(QMainWindow):
         self.overall_label = QLabel("Overall")
 
         for bar in (self.progress_overall, self.progress_current):
-            bar.setMinimumWidth(250)
             bar.setMaximumHeight(18)
             bar.setTextVisible(True)
+            bar.setSizePolicy(
+                QSizePolicy.Policy.Expanding,
+                QSizePolicy.Policy.Fixed
+            )
+            bar.setRange(0, 100)
+            bar.setValue(0)
 
         progress_widget = QWidget()
-
         progress_layout = QHBoxLayout(progress_widget)
         progress_layout.setContentsMargins(10, 0, 10, 5)
+        progress_layout.setSpacing(20)
 
-        progress_layout.addStretch()
+        # Left side
+        overall_layout = QHBoxLayout()
+        overall_layout.addWidget(self.overall_label)
+        overall_layout.addWidget(self.progress_overall)
 
-        progress_layout.addWidget(self.overall_label)
-        progress_layout.addWidget(self.progress_overall)
+        # Right side
+        current_layout = QHBoxLayout()
+        current_layout.addWidget(self.current_label)
+        current_layout.addWidget(self.progress_current)
 
-        progress_layout.addSpacing(20)
-
-        progress_layout.addWidget(self.current_label)
-        progress_layout.addWidget(self.progress_current)
-
-
-        self.progress_overall.setSizePolicy(
-            QSizePolicy.Policy.Expanding,
-            QSizePolicy.Policy.Fixed
-        )
-
-        self.progress_current.setSizePolicy(
-            QSizePolicy.Policy.Expanding,
-            QSizePolicy.Policy.Fixed
-        )
-        self.progress_overall.setRange(0, 100)
-        self.progress_current.setRange(0, 100)
-
-        self.progress_overall.setValue(0)
-        self.progress_current.setValue(0)
+        # Each group gets 50% of the width
+        progress_layout.addLayout(overall_layout, 1)
+        progress_layout.addLayout(current_layout, 1)
 
         # ================= TOOLBAR + PROGRESS =================
         toolbar_container = QWidget()
@@ -1469,15 +1541,33 @@ class GameLauncher(QMainWindow):
 
         self.worker.start()
 
-    def update_file_progress(self, done, total, filename):
-        self.progress_current.setMaximum(total)
-        self.progress_current.setValue(done)
-        self.current_label.setText(f"{filename} ({done}/{total})")
+    def update_file_progress(self, progress):
+        done, total, filename = progress
+        if total:
+            percent = int(done * 100 / total)
+        else:
+            percent = 0
 
-    def update_overall_progress(self, done, total):
-        self.progress_overall.setMaximum(total)
-        self.progress_overall.setValue(done)
-        self.overall_label.setText(f"({self.human_size(done)}/{self.human_size(total)})")
+        self.progress_current.setRange(0, 100)
+        self.progress_current.setValue(percent)
+
+        self.current_label.setText(
+            f"{filename} ({self.human_size(done)} / {self.human_size(total)})"
+        )
+
+    def update_overall_progress(self, progress):
+        done, total = progress
+        if total:
+            percent = int(done * 100 / total)
+        else:
+            percent = 0
+
+        self.progress_overall.setRange(0, 100)
+        self.progress_overall.setValue(percent)
+
+        self.overall_label.setText(
+            f"{self.human_size(done)} / {self.human_size(total)} ({percent}%)"
+        )
 
     def update_game_progress(self, current, total):
         self.log(f"Game progress: {current}/{total}")

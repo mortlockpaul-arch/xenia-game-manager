@@ -11,8 +11,10 @@ from config import load_config, save_config, get_app_dir
 
 root = get_app_dir()
 
+
 def generate_guid():
     return str(uuid.uuid4())
+
 
 def zip_portable():
     build_dir = Path(root / "build") / "exe.win-amd64-3.14"
@@ -32,6 +34,7 @@ def zip_portable():
         if not (build_dir / "portable.txt").exists():
             zipf.writestr("portable.txt", "")
     logging.info(f"portable zip created: {out_zip}")
+
 
 def create_defaults(version):
     logging.info("Creating default game manager database and configuration files...")
@@ -92,6 +95,7 @@ def create_defaults(version):
 
     logging.info("Done.")
 
+
 def copy_optimized_settings():
     settings_dest = root / "src" / "assets" / "settings"
     settings_source_dir = Path(r"C:\Users\mortl\Documents\PycharmProjects\optimized-settings\settings")
@@ -117,6 +121,7 @@ def copy_optimized_settings():
     else:
         logging.info(f"Updated {copied} file(s).")
 
+
 def copy_updater():
     settings_dest = root / "build_tools/build/exe.win-amd64-3.14"
     settings_source_dir = Path(r"C:\Users\mortl\PycharmProjects\xenia-game-manager-updater\build\exe.win-amd64-3.14")
@@ -141,6 +146,7 @@ def copy_updater():
         logging.info("Updater is already up to date.")
     else:
         logging.info(f"Updated {copied} file(s).")
+
 
 log_dir = get_app_dir() / "logs"
 log_dir.mkdir(exist_ok=True)

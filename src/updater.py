@@ -53,7 +53,7 @@ class UpdateWorker(QThread):
 class UpdateManager(QObject):
 
     log = Signal(str, bool, bool, bool)
-    progress = Signal(int, int)
+    progress = Signal(object)
     finished = Signal()
     error = Signal(str)
     show_message = Signal(str, str)  # title, message
@@ -68,7 +68,7 @@ class UpdateManager(QObject):
         self.config = load_config()
 
     def _progress(self, done: int, total: int | None):
-        self.progress.emit(done, total or 0)
+        self.progress.emit((done, total or 0))
     # ---------------------------------------------------------
     # Utilities
     # ---------------------------------------------------------
@@ -113,9 +113,37 @@ class UpdateManager(QObject):
             }
             cookies = None
 
+        path = Path(path)
+
+        # Archive already exists
+        if path.exists() and path.is_file():
+            self.log.emit(
+                f"Archive exists: downloads/{path.name}",
+                True,
+                True,
+                False
+            )
+            return
+
+        # Check extracted folder anywhere below downloads
+        root = get_app_dir() / "downloads"
+        extract_name = path.stem
+
+        for folder in root.rglob(extract_name):
+            if folder.is_dir():
+                self.log.emit(
+                    f"Already extracted: {folder.relative_to(root)}",
+                    True,
+                    True,
+                    False
+                )
+                return
+
         r = requests.get(url, headers=headers, cookies=cookies, stream=True)
         total = int(r.headers.get("Content-Length", 0))
-        message = f"Downloading: {path} ({self.human_size(total)})"
+        root = get_app_dir() / "downloads"
+        relative_path = Path(path).relative_to(root.parent)
+        message = f"Downloading: {relative_path} ({self.human_size(total)})"
         self.log.emit(message, True, True, False)
 
         # self.log.emit(str(r.status_code), False, True, False)

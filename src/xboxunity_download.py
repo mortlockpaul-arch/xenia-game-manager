@@ -13,7 +13,7 @@ class TitleUpdateWorker(QThread):
     game_progress = Signal(int, int)     # game index, total games
     finished = Signal(dict)
 
-    def __init__(self, games, token=None, api_key=None, output_folder: Path = get_app_dir() / "downloads" / "tus"):
+    def __init__(self, games, token=None, api_key=None, output_folder: Path = get_app_dir() / "downloads" / "TUS"):
         super().__init__()
         self.games = games
         self.token = token

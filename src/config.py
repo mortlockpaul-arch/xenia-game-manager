@@ -7,7 +7,7 @@ from pathlib import Path
 def get_app_dir() -> Path:
     if getattr(sys, "frozen", False):
         return Path(sys.executable).parent  # Frozen executable directory
-    return Path(__file__).resolve().parent.parent  # Script directory
+    return Path(__file__).resolve().parent  # Script directory
 
 
 def load_xenia_manager_config():
@@ -24,7 +24,7 @@ def load_xenia_manager_config():
         raise RuntimeError(f"Config Load Error: {e}") from e
     return config, xenia_manager_path
 
-def load_config(config_dir = os.path.join(get_app_dir(), "config")):
+def load_config(config_dir = Path(get_app_dir(),"config")):
     config_file = os.path.join(config_dir, "game-manager-config.json")
     try:
         with open(config_file, "r", encoding="utf-8") as f:
@@ -33,7 +33,7 @@ def load_config(config_dir = os.path.join(get_app_dir(), "config")):
         raise RuntimeError(f"Config Load Error: {e}") from e
 
 
-def save_config(data: dict, config_dir = os.path.join(get_app_dir(), "config")):
+def save_config(data: dict, config_dir = Path(get_app_dir(),"config")):
     config_file = os.path.join(config_dir, "game-manager-config.json")
     try:
         with open(config_file, "w", encoding="utf-8") as f:
