@@ -49,7 +49,7 @@ bdist_msi_options = {
     "product_name": "Xenia Game Manager",
     "data": {
     "Icon": [
-        ("IconId", str(root / "src" / "assets" / "icons" / "app.ico")),
+        ("IconId", str(root / "assets" / "icons" / "app.ico")),
     ],
     "Shortcut": [
         (

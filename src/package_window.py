@@ -1,4 +1,7 @@
+import json
 import shutil
+import subprocess
+
 import sys
 
 from config import get_app_dir
@@ -19,7 +22,7 @@ from PySide6.QtWidgets import (
     QTextEdit,
     QFormLayout,
     QGroupBox,
-    QHeaderView, QApplication,
+    QHeaderView, QApplication, QMessageBox,
 )
 
 def find_xblig_packages(root: str | Path):
@@ -239,6 +242,37 @@ def move_folders_to_type(root):
         print(f"Moving {folder} -> {dest}")
         shutil.move(str(folder), str(dest))
 
+from pathlib import Path
+import subprocess
+
+ILSPY_CMD = get_app_dir() / "assets" / "tools" / "ILSpy" / "ILSpyCmd.exe"
+ILSPY_GUI = get_app_dir() / "assets"/ "tools" / "ILSpy" / "ILSpy.exe"
+
+import os
+
+def open_solution(project_dir: Path):
+    for csproj in project_dir.glob("*.csproj"):
+        os.startfile(csproj)
+        return
+
+
+def decompile_project(exe: Path):
+    output_dir = exe.parent / "decompiled"
+    output_dir.mkdir(exist_ok=True)
+
+    subprocess.run(
+        [
+            str(ILSPY_CMD),
+            str(exe),
+            "--project",
+            "-o",
+            str(output_dir),
+        ],
+        check=True,
+    )
+
+    return output_dir
+
 def cleanup_nested_categories(root):
     root = Path(root)
 
@@ -290,38 +324,83 @@ def cleanup_nested_categories(root):
                 pass
 
 import io
+import io
 
 class QtLogger(io.TextIOBase):
-    def __init__(self, signal):
-        self.signal = signal
+    def __init__(self, callback):
+        super().__init__()
+        self.callback = callback
+        self._buffer = ""
 
-    def write(self, text: str) -> int:
-        text = text.rstrip("\n")
-        if text:
-            self.signal.emit(text, False, False, False)
+    def write(self, text):
+        self._buffer += text
+
+        while "\n" in self._buffer:
+            line, self._buffer = self._buffer.split("\n", 1)
+            if line:
+                self.callback(line)
+
         return len(text)
 
-    def flush(self) -> None:
+    def flush(self):
+        if self._buffer:
+            self.callback(self._buffer)
+            self._buffer = ""
+
+    def reconfigure(self, **kwargs):
+        # ignore stdout reconfigure calls
         pass
 
     @property
     def encoding(self):
         return "utf-8"
 
-    def writable(self) -> bool:
-        return True
+import json
+
+CACHE_FILE = get_app_dir() / "cache" / "xblig_games.json"
+ROOT = get_app_dir() / "downloads" / "XBLIG"
+
+
+def get_folder_mtime(path):
+    return max((p.stat().st_mtime for p in path.rglob("*")), default=0)
+
+
+def save_cache(games):
+    CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
+
+    data = {
+        "mtime": get_folder_mtime(ROOT),
+        "games": games,
+    }
+
+    with open(CACHE_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4, ensure_ascii=False, default=str)
+
+
+def load_cache():
+    if not CACHE_FILE.exists():
+        return None
+
+    try:
+        with open(CACHE_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"Failed to load cache: {e}")
+        return None
 
 class XBLIG_Dialog(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
 
+        self._last_mtime = None
+        self._cache = None
         self.close_btn = None
-        self.games = None
+        self.games = []
         self.setWindowTitle("XBLIG Emulator")
         self.resize(1100, 750)
-
         self.build_ui()
+        self.rescan_games()
 
     def print_games(self):
         for i, game in enumerate(self.games, 1):
@@ -335,12 +414,61 @@ class XBLIG_Dialog(QDialog):
 
             print()
 
-    def rescan_games(self):
-        self.log.append("Scanning...")
+    from pathlib import Path
+    def get_selected_game(self):
+        indexes = self.game_table.selectionModel().selectedRows()
 
-        self.games = find_xblig_packages(get_app_dir() / "downloads" / "XBLIG")
+        if not indexes:
+            return None
+
+        row = indexes[0].row()
+
+        return self.games[row]
+
+    def decompile_selected(self):
+        game = self.get_selected_game()
+
+        exe = game.get("exe")
+        if not exe:
+            QMessageBox.warning(self, "No Executable",
+                                "Extract the game first.")
+            return
+
+        exe = Path(exe)
+
+        self.log.append(f"Generating Visual Studio project for {exe.name}...")
+
+        try:
+            project_dir = decompile_project(exe)
+        except subprocess.CalledProcessError as e:
+            QMessageBox.critical(self, "ILSpy", str(e))
+            return
+
+        self.log.append("Visual Studio project created.")
+
+        subprocess.Popen(["explorer", str(project_dir)])
+
+
+    def rescan_games(self, force=False):
+        self.log.append("Checking game cache...")
+
+        current_mtime = get_folder_mtime(ROOT)
+
+        cache = None if force else load_cache()
+
+        if (
+                cache
+                and cache.get("mtime") == current_mtime
+        ):
+            self.games = cache["games"]
+            self.log.append(f"Loaded {len(self.games)} games from cache.")
+        else:
+            self.log.append("Scanning folders...")
+            self.games = find_xblig_packages(ROOT)
+            save_cache(self.games)
+            self.log.append("Cache updated.")
+
         self.load_games(self.games)
-
         self.log.append(f"Found {len(self.games)} games.")
 
     def game_selected(self):
@@ -354,12 +482,14 @@ class XBLIG_Dialog(QDialog):
 
         self.title_lbl.setText(game["title"])
         self.titleid_lbl.setText(game["title_id"])
-        self.virtualid_lbl.setText(game["virtual_title_id"])
+        self.virtualid_lbl.setText(
+            game.get("virtual_title_id", "")
+        )
         self.exe_lbl.setText(str(game["exe"]))
         self.xml_lbl.setText(str(game["xml"]))
 
     def extract_missing(self):
-        print(f"\nFound {len(self.games)} Xbox Live Indie Games\n")
+        self.log.append(f"\nFound {len(self.games)} Xbox Live Indie Games\n")
         for i, game in enumerate(self.games, 1):
 
             # Auto extract missing games
@@ -368,6 +498,11 @@ class XBLIG_Dialog(QDialog):
 
                 if extracted:
                     game["extracted"] = str(extracted)
+            else:
+                self.log.append(f"Skipping {game.get("title")}")
+
+    def log_message(self, message):
+        self.log.append(message)
 
     def extract_xblig_package(self, game):
         package = game.get("package")
@@ -381,7 +516,7 @@ class XBLIG_Dialog(QDialog):
             print(f"Package missing: {package}")
             return None
 
-        print(f"Extracting: {package}")
+        self.log.append(f"Extracting: {package}")
 
         from stfs_extract import extract_live_pirs
 
@@ -393,7 +528,7 @@ class XBLIG_Dialog(QDialog):
         try:
             from contextlib import redirect_stdout
 
-            with redirect_stdout(QtLogger(self.log)):
+            with redirect_stdout(QtLogger(self.log_message)):
                 extract_live_pirs(package, extracted_path)
 
             print(f"Extracted to: {extracted_path}")
@@ -405,8 +540,6 @@ class XBLIG_Dialog(QDialog):
         return extracted_path
 
     def load_games(self, games):
-        self.games = games
-
         self.game_table.setRowCount(0)
 
         for game in games:
@@ -429,6 +562,7 @@ class XBLIG_Dialog(QDialog):
 
     def build_selected(self):
         self.log.append("Building selected game...")
+        self.decompile_selected()
 
     def launch_selected(self):
         self.log.append("Launching selected game...")
@@ -628,6 +762,6 @@ if __name__ == "__main__":
     cleanup_nested_categories(r"C:\PycharmProjects\xenia-game-manager\src\downloads")
 
     move_folders_to_type(get_app_dir() / "downloads")
-
-    exe = Path(get_app_dir() / "downloads" / "XBLIG" / "Alien Jelly (World) (XBLIG)/584E07D2/00000002/62F2648203AAB1C526B538091DF3BBE8CFC6E7E758_extracted/584E07D1/Game.exe")
-    if exe.exists(): read_bytes(exe)
+    #
+    # exe = Path(get_app_dir() / "downloads" / "XBLIG" / "Alien Jelly (World) (XBLIG)/584E07D2/00000002/62F2648203AAB1C526B538091DF3BBE8CFC6E7E758_extracted/584E07D1/Game.exe")
+    # if exe.exists(): read_bytes(exe)
