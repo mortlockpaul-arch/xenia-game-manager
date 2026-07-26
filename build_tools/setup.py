@@ -29,8 +29,8 @@ build_exe_options = {
     ],
     "excludes": ["tkinter", "unittest"],
     "include_files": [
-        (str(root  / "db"), "db"),
-        (str(root  / "config"), "config"),
+        (str(root / "db"), "db"),
+        (str(root / "config"), "config"),
         (str(root / "assets"), "assets"),
     ],
     "optimize": 2,
@@ -92,3 +92,4 @@ setup(
     },
     executables=executables,
 )
+

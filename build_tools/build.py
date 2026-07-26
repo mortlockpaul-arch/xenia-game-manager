@@ -10,19 +10,18 @@ from pathlib import Path
 from config import load_config, save_config, get_app_dir
 
 root = get_app_dir()
-
+current_folder = Path(__file__).parent
 
 def generate_guid():
     return str(uuid.uuid4())
 
 
 def zip_portable():
-    build_dir = Path(root / "build") / "exe.win-amd64-3.14"
-    out_zip = Path(root / "dist") / "xenia-game-manager-portable.zip"
-    # Remove the dist folder if it exists
-    if out_zip.parent.exists():
-        shutil.rmtree(out_zip.parent)
-        logging.info(f"Deleting existing folder: {out_zip}")
+    build_dir = Path(current_folder / "build") / "exe.win-amd64-3.14"
+    out_zip = Path(current_folder / "dist") / "xenia-game-manager-portable.zip"
+    if out_zip.exists():
+        out_zip.unlink()
+        logging.info(f"Deleting existing portable zip: {out_zip}")
     out_zip.parent.mkdir(exist_ok=True)
 
     with zipfile.ZipFile(out_zip, "w", zipfile.ZIP_DEFLATED) as zipf:
@@ -97,7 +96,7 @@ def create_defaults(version):
 
 
 def copy_optimized_settings():
-    settings_dest = root / "src" / "assets" / "settings"
+    settings_dest = root / "assets" / "settings"
     settings_source_dir = Path(r"C:\Users\mortl\Documents\PycharmProjects\optimized-settings\settings")
 
     settings_dest.mkdir(parents=True, exist_ok=True)
