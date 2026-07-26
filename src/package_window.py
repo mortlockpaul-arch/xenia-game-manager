@@ -9,7 +9,7 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 from line_profiler_pycharm import profile
-from PySide6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QRect
+from PySide6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QRect, QThread, Signal
 from PySide6.QtWidgets import (
     QDialog,
     QVBoxLayout,
@@ -25,160 +25,6 @@ from PySide6.QtWidgets import (
     QGroupBox,
     QHeaderView, QApplication, QMessageBox, QSizePolicy, QFrame, QGraphicsDropShadowEffect,
 )
-
-def find_xblig_packages(root: str | Path):
-
-    root = Path(root)
-    games = []
-
-    STFS_MAGIC = {
-        b"CON ",
-        b"LIVE",
-        b"PIRS",
-    }
-
-    def is_stfs(path: Path):
-        try:
-            with path.open("rb") as f:
-                return f.read(4) in STFS_MAGIC
-        except Exception:
-            return False
-
-
-    def parse_xml(xml_file: Path):
-
-        data = {}
-
-        if not xml_file.exists():
-            return data
-
-        try:
-            tree = ET.parse(xml_file)
-            root_xml = tree.getroot()
-
-            title_info = root_xml.find(".//TitleInfo")
-
-            if title_info is not None:
-                data["title"] = title_info.attrib.get("Name")
-                data["virtual_title_id"] = title_info.attrib.get(
-                    "VirtualTitleID"
-                )
-                data["xml_title_id"] = title_info.attrib.get(
-                    "TitleID"
-                )
-                data["image_path"] = title_info.attrib.get(
-                    "ImagePath"
-                )
-
-        except Exception as e:
-            print(f"XML error {xml_file}: {e}")
-
-        return data
-
-
-    # scan game folders first
-    for game_folder in root.iterdir():
-
-        if not game_folder.is_dir():
-            continue
-
-        folder_title = game_folder.name
-
-
-        packages = []
-
-        # find STFS packages inside this game folder
-        for package in game_folder.rglob("*"):
-
-            if package.is_file() and is_stfs(package):
-                packages.append(package)
-
-
-        if not packages:
-            continue
-
-
-        for package in packages:
-
-            title_id = None
-            content_type = None
-
-            try:
-                content_type = package.parent.name
-                title_id = package.parent.parent.name
-            except:
-                pass
-
-
-            extracted = package.parent / "extracted"
-
-
-            game_info = (
-                extracted / "GameInfo.xml"
-            )
-
-
-            xml_data = parse_xml(game_info)
-
-
-            # title priority
-            title = (
-                xml_data.get("title")
-                or folder_title
-                or package.stem
-            )
-
-            exe_file = None
-
-            if extracted.exists():
-                for exe in extracted.rglob("*.exe"):
-                    exe_file = exe
-                    break
-
-            games.append({
-
-                "title": title,
-
-                "folder_title": folder_title,
-
-                "title_id": title_id,
-
-                "content_type": content_type,
-
-                "content_name":
-                    "Xbox Live Indie Game",
-
-                "package": package,
-
-                "extracted": (
-                    extracted
-                    if extracted.exists()
-                    else None
-                ),
-
-                "game_root": (
-                    extracted
-                    if extracted.exists()
-                    else package.parent
-                ),
-
-                "exe": (
-                    exe_file
-                    if isinstance(exe_file, Path) and exe_file.exists()
-                    else None
-                ),
-
-                "xml": (
-                    game_info
-                    if game_info.exists()
-                    else None
-                ),
-
-                **xml_data
-            })
-
-
-    return games
 
 def read_bytes(file_path: Path):
     with open(file_path, "rb") as f:
@@ -399,6 +245,150 @@ class ClickOverlay(QWidget):
 
 class XBLIG_Dialog(QDialog):
 
+    def find_xblig_packages(self, root: str | Path):
+
+        root = Path(root)
+        games = []
+
+        STFS_MAGIC = {
+            b"CON ",
+            b"LIVE",
+            b"PIRS",
+        }
+
+        def is_stfs(path: Path):
+            try:
+                with path.open("rb") as f:
+                    return f.read(4) in STFS_MAGIC
+            except Exception:
+                return False
+
+        def parse_xml(xml_file: Path):
+
+            data = {}
+
+            if not xml_file.exists():
+                return data
+
+            try:
+                tree = ET.parse(xml_file)
+                root_xml = tree.getroot()
+
+                title_info = root_xml.find(".//TitleInfo")
+
+                if title_info is not None:
+                    data["title"] = title_info.attrib.get("Name")
+                    data["virtual_title_id"] = title_info.attrib.get(
+                        "VirtualTitleID"
+                    )
+                    data["xml_title_id"] = title_info.attrib.get(
+                        "TitleID"
+                    )
+                    data["image_path"] = title_info.attrib.get(
+                        "ImagePath"
+                    )
+
+            except Exception as e:
+                print(f"XML error {xml_file}: {e}")
+
+            return data
+
+        # scan game folders first
+        for game_folder in root.iterdir():
+
+            if not game_folder.is_dir():
+                continue
+            self.log_message(f"Checking Folder {game_folder}")
+            folder_title = game_folder.name
+
+            packages = []
+
+            # find STFS packages inside this game folder
+            for package in game_folder.rglob("*"):
+
+                if package.is_file() and is_stfs(package):
+                    packages.append(package)
+
+            if not packages:
+                continue
+
+            for package in packages:
+
+                title_id = None
+                content_type = None
+
+                try:
+                    content_type = package.parent.name
+                    title_id = package.parent.parent.name
+                except:
+                    pass
+
+                extracted = package.parent / "extracted"
+
+                game_info = (
+                        extracted / "GameInfo.xml"
+                )
+
+                xml_data = parse_xml(game_info)
+
+                # title priority
+                title = (
+                        xml_data.get("title")
+                        or folder_title
+                        or package.stem
+                )
+
+                exe_file = None
+
+                if extracted.exists():
+                    for exe in extracted.rglob("*.exe"):
+                        exe_file = exe
+                        break
+
+                games.append({
+
+                    "title": title,
+
+                    "folder_title": folder_title,
+
+                    "title_id": title_id,
+
+                    "content_type": content_type,
+
+                    "content_name":
+                        "Xbox Live Indie Game",
+
+                    "package": package,
+
+                    "extracted": (
+                        extracted
+                        if extracted.exists()
+                        else None
+                    ),
+
+                    "game_root": (
+                        extracted
+                        if extracted.exists()
+                        else package.parent
+                    ),
+
+                    "exe": (
+                        exe_file
+                        if isinstance(exe_file, Path) and exe_file.exists()
+                        else None
+                    ),
+
+                    "xml": (
+                        game_info
+                        if game_info.exists()
+                        else None
+                    ),
+
+                    **xml_data
+                })
+        self.log_message(f"Scanner Found {len(games)} XBLIG Games")
+        return games
+
     def resizeEvent(self, event):
         super().resizeEvent(event)
 
@@ -568,6 +558,60 @@ class XBLIG_Dialog(QDialog):
 
         subprocess.Popen(["explorer", str(project_dir)])
 
+    from PySide6.QtCore import QObject, QThread, Signal
+
+    class ScanWorker(QObject):
+        finished = Signal(list)
+        log = Signal(str)
+
+        def __init__(self, root, scan_func, force=False):
+            super().__init__()
+            self.root = root
+            self.force = force
+            self.scan_func = scan_func
+
+        def run(self):
+            self.log.emit("Checking game cache...")
+
+            current_mtime = get_folder_mtime(ROOT)
+            cache = None if self.force else load_cache()
+
+            if cache and cache.get("mtime") == current_mtime:
+                games = cache["games"]
+                self.log.emit(f"Loaded {len(games)} games from cache.")
+            else:
+                self.log.emit("Scanning folders...")
+                games = self.scan_func(self.root)
+                save_cache(games)
+                self.log.emit("Cache updated.")
+
+            self.finished.emit(games)
+
+    def rescan_games_responsive(self, force=False):
+
+        self.scan_btn.setEnabled(False)
+
+        self.thread = QThread(self)
+        self.worker = self.ScanWorker(ROOT,self.find_xblig_packages, force)
+
+        self.worker.moveToThread(self.thread)
+
+        self.thread.started.connect(self.worker.run)
+
+        self.worker.log.connect(self.log_message)
+        self.worker.finished.connect(self.scan_finished)
+
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread.finished.connect(self.thread.deleteLater)
+
+        self.thread.start()
+
+    def scan_finished(self, games):
+        self.games = games
+        self.load_games(self.games)
+        self.log_message(f"Loaded {len(self.games)} games.")
+        self.scan_btn.setEnabled(True)
 
     def rescan_games(self, force=False):
         self.log_message("Checking game cache...")
@@ -581,12 +625,12 @@ class XBLIG_Dialog(QDialog):
             self.log_message(f"Loaded {len(self.games)} games from cache.")
         else:
             self.log_message("Scanning folders...")
-            self.games = find_xblig_packages(ROOT)
+            self.games = self.find_xblig_packages(ROOT)
             save_cache(self.games)
             self.log_message("Cache updated.")
 
         self.load_games(self.games)
-        self.log_message(f"Found {len(self.games)} games.")
+        self.log_message(f"Loaded {len(self.games)} games.")
 
     def game_selected(self):
 
@@ -855,7 +899,7 @@ class XBLIG_Dialog(QDialog):
 
         toolbar = QHBoxLayout()
         self.scan_btn = QPushButton("Scan Games")
-        self.scan_btn.clicked.connect(self.rescan_games)
+        self.scan_btn.clicked.connect(self.rescan_games_responsive)
 
         self.extract_btn = QPushButton("Extract Missing")
         self.extract_btn.clicked.connect(self.extract_missing)

@@ -2,7 +2,7 @@
     "username": "",
     "password": "",
     "api_key": "",
-    "xenia_manager_path": ".",
+    "xenia_manager_path": "C:\\xenia-manager",
     "xenia_canary_path": "",
     "xenia_manager_installed": true,
     "xenia_edge_path": "C:\\Xenia Edge\\emulators\\Xenia Edge",
