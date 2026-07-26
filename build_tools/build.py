@@ -153,6 +153,7 @@ log_dir.mkdir(exist_ok=True)
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
     handlers=[
         logging.FileHandler(log_dir / "xenia_manager.log", encoding="utf-8"),
         logging.StreamHandler(sys.stdout),  # Console output

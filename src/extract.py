@@ -8,7 +8,7 @@ from PySide6.QtCore import QObject, Signal, Slot
 
 class ExtractWorker(QObject):
     finished = Signal()
-    log = Signal(str)
+    log_window = Signal(str)
 
     def __init__(self, folders):
         super().__init__()
@@ -20,7 +20,7 @@ class ExtractWorker(QObject):
             for folder in self.folders:
                 count = extract_archives(
                     folder=folder,
-                    log_callback=self.log.emit,
+                    log_callback=self.log_window.emit,
                     remove_archives=True,
                 )
                 self.finished.emit(count)

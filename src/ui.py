@@ -49,7 +49,7 @@ from archive_window import ArchiveBrowser
 from config import save_config, load_config, load_xenia_manager_config, get_app_dir
 from db import Database, Compatibility
 from edge_import import use_xenia_manager_content_folder_for_edge
-from extract import extract_archives
+from extract import extract_archives, ExtractWorker
 from model import GameTableModel
 from package_window import XBLIG_Dialog, move_folders_to_type, QtLogger
 from remove_empty_folders import remove_empty_folders
@@ -138,11 +138,6 @@ class DownloadWorker(QThread):
             return
 
         self.finished.emit()
-
-
-
-
-
 
 class DriveSelectionDialog(QDialog):
 
@@ -412,6 +407,8 @@ class GameLauncher(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.launch_edge = None
+        self.extract_worker = None
         self.archive_xblig_button = None
         self.browse_btn_xenia = None
         self.xenia_manager_path = None
@@ -423,8 +420,8 @@ class GameLauncher(QMainWindow):
         self.extract_downloaded_archives_btn = None
         self.config = load_config()
         self.archive_button = None
-        self.launch_edge = None
-        self.launch_manager = None
+        # self.launch_edge = QPushButton()
+        # self.launch_manager = QPushButton()
         self.update_worker = None
         # self.xenia_title_updates_path = None
         self.use_xenia_manager_content_for_edge_btn = None
@@ -514,8 +511,8 @@ class GameLauncher(QMainWindow):
                 "xenia_mousehook_path",
             ),
         }
-        QTimer.singleShot(5000, self.install_xenia_manager_and_xenia_edge)
-        QTimer.singleShot(10000, self.load_saved_config)
+        # QTimer.singleShot(5000, self.install_xenia_manager_and_xenia_edge)
+        QTimer.singleShot(5000, self.load_saved_config)
 
     @staticmethod
     def setup_logging():
@@ -1279,23 +1276,34 @@ class GameLauncher(QMainWindow):
         self.browser_close_button = QPushButton("Back to Game Manager")
         self.browser_close_button.clicked.connect(self.close_web_page)
 
+        self.browser_button.show()
+        self.browser_close_button.hide()
+
         self.refresh_btn = QPushButton("Refresh")
         self.refresh_btn.clicked.connect(self.refresh)
         #
         self.config = load_config()
         xenia_manager_installed = self.config["xenia_manager_installed"]
         button_text = "Launch Xenia Manager"
+        self.launch_manager = QPushButton(button_text)
         if not xenia_manager_installed:
             button_text = "Install Xenia Manager"
-        self.launch_manager = QPushButton(button_text)
-        self.launch_manager.clicked.connect(partial(self.launch_program, "manager"))
+            self.launch_manager.clicked.connect(partial(self.install_xenia_manager_and_xenia_edge, "manager"))
+            self.launch_manager.setText(button_text)
+        else:
+            self.launch_manager.clicked.connect(partial(self.launch_program, "manager"))
 
         xenia_edge_installed = self.config["xenia_edge_installed"]
         button_text = "Launch Xenia Edge"
+        self.launch_edge = QPushButton(button_text)
         if not xenia_edge_installed:
             button_text = "Install Xenia Edge"
-        self.launch_edge = QPushButton(button_text)
-        self.launch_edge.clicked.connect(partial(self.launch_program, "edge"))
+            self.launch_edge.clicked.connect(partial(self.install_xenia_manager_and_xenia_edge, "edge"))
+            self.launch_edge.setText(button_text)
+        else:
+            self.launch_edge.clicked.connect(partial(self.launch_program, "edge"))
+        
+
         self.btn_tu = QPushButton("Download Title Updates")
         self.btn_tu.clicked.connect(self.search_and_download_tus)
         self.archive_button = QPushButton("DLC Downloader")
@@ -1621,71 +1629,79 @@ class GameLauncher(QMainWindow):
         if self.config.get("api_key"):
             self.api_key = self.config["api_key"]
 
-    def install_xenia_manager_and_xenia_edge(self):
-        self.config = load_config()
-        install_path:Path = Path(self.config.get( "xenia_manager_path", ""))
+    def install_xenia_manager_and_xenia_edge(self, name="manager"):
+        if name == "manager":
+            self.config = load_config()
+            install_path:Path = Path(self.config.get( "xenia_manager_path", ""))
 
-        xenia_manager_installed = self.config.get("xenia_manager_installed", False)
-        if not xenia_manager_installed:
-            dialog = DriveSelectionDialog("Xenia Manager")
+            xenia_manager_installed = self.config.get("xenia_manager_installed", False)
+            if not xenia_manager_installed:
+                dialog = DriveSelectionDialog("Xenia Manager")
 
-            if dialog.exec():
-                install_path = Path(f"{dialog.selected_drive}:/xenia-manager")
-                print(install_path)
+                if dialog.exec() == QDialog.DialogCode.Accepted:
+                    install_path = Path(f"{dialog.selected_drive}:/xenia-manager")
+                else:
+                    return
 
-        exe = Path(install_path / "XeniaManager.exe")
-        install_path = exe.parent
-        if not exe.exists() and not xenia_manager_installed:
-            installer = XeniaManagerInstaller()
-            exe = installer.install(log_callback=self.log)
+            exe = Path(install_path / "XeniaManager.exe")
+            install_path = exe.parent
+            if not exe.exists() and not xenia_manager_installed:
+                installer = XeniaManagerInstaller()
+                exe = installer.install(log_callback=self.log)
 
-        if exe and exe.exists():
-            self.config["xenia_manager_installed"] = True
-            self.config["xenia_manager_path"] = str(install_path)
-            save_config(self.config)
+            if exe and exe.exists():
+                self.config["xenia_manager_installed"] = True
+                self.config["xenia_manager_path"] = str(install_path)
+                save_config(self.config)
 
-        self.config = load_config()
-        xenia_manager_installed = self.config.get("xenia_manager_installed", False)
+            self.config = load_config()
+            xenia_manager_installed = self.config.get("xenia_manager_installed", False)
 
-        button_text = "Launch Xenia Manager" if xenia_manager_installed else "Install Xenia Manager"
-        self.launch_manager.setText(button_text)
-        self.launch_manager.repaint()
+            button_text = "Launch Xenia Manager" if xenia_manager_installed else "Install Xenia Manager"
+            self.launch_manager.setText(button_text)
+            self.launch_edge.clicked.connect(partial(self.launch_program, "manager"))
+            self.launch_manager.repaint()
 
-        xenia_edge_installed = self.config.get("xenia_edge_installed", False)
-        if not xenia_edge_installed:
-            dialog = DriveSelectionDialog("Xenia Edge")
+        if name == "edge":
+            self.config = load_config()
+            install_path: Path = Path(self.config.get("xenia_edge_path", ""))
+            xenia_edge_installed = self.config.get("xenia_edge_installed", False)
+            if not xenia_edge_installed:
+                dialog = DriveSelectionDialog("Xenia Edge")
 
-            if dialog.exec():
-                install_path = Path(f"{dialog.selected_drive}:/Xenia Edge")
-                print(install_path)
+                if dialog.exec() == QDialog.DialogCode.Accepted:
+                    install_path = Path(f"{dialog.selected_drive}:/Xenia Edge")
+                else:
+                    return
 
-        exe = Path(install_path / "emulators" / "Xenia Edge" / "xenia_edge.exe")
-        install_path = exe.parent
-        xenia_edge_installed = self.config.get("xenia_edge_installed", False)
-        if not exe.exists() and not xenia_edge_installed:
-            installer = XeniaManagerInstaller()
-            installer.GITHUB_API = "https://api.github.com/repos/has207/xenia-edge/releases/latest"
-            installer.INSTALL_PATH = install_path
-            installer.MANAGER_OR_EDGE = "Edge"
+            exe = Path(install_path / "emulators" / "Xenia Edge" / "xenia_edge.exe")
+            install_path = exe.parent
+            xenia_edge_installed = self.config.get("xenia_edge_installed", False)
+            if not exe.exists() and not xenia_edge_installed:
+                installer = XeniaManagerInstaller()
+                installer.GITHUB_API = "https://api.github.com/repos/has207/xenia-edge/releases/latest"
+                installer.INSTALL_PATH = install_path
+                installer.MANAGER_OR_EDGE = "Edge"
 
-            exe = installer.install(log_callback=self.log)
+                exe = installer.install(log_callback=self.log)
 
-        if exe and exe.exists():
-            # Create portable.txt
-            portable_file = install_path / "portable.txt"
-            portable_file.touch(exist_ok=True)
+            if exe and exe.exists():
+                # Create portable.txt
+                portable_file = install_path / "portable.txt"
+                portable_file.touch(exist_ok=True)
 
-            self.config["xenia_edge_installed"] = True
-            self.config["xenia_edge_path"] = str(install_path)
-            save_config(self.config)
+                self.config["xenia_edge_installed"] = True
+                self.config["xenia_edge_path"] = str(install_path)
+                save_config(self.config)
 
-        # Refresh config state
-        self.config = load_config()
-        xenia_edge_installed = self.config.get("xenia_edge_installed", False)
+            # Refresh config state
+            self.config = load_config()
+            xenia_edge_installed = self.config.get("xenia_edge_installed", False)
 
-        button_text = "Launch Xenia Edge" if xenia_edge_installed else "Install Xenia Edge"
-        self.launch_edge.setText(button_text)
-        self.launch_edge.repaint()
+            button_text = "Launch Xenia Edge" if xenia_edge_installed else "Install Xenia Edge"
+            self.launch_edge.setText(button_text)
+            self.launch_edge.clicked.connect(partial(self.launch_program, "edge"))
+            self.launch_edge.repaint()
 
         self.load_saved_config()
 
