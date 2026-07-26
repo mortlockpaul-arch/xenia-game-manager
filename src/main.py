@@ -2,12 +2,13 @@
 import os
 
 import sys
+from PySide6.QtGui import QIcon
 
 from PySide6.QtWidgets import QApplication
 
 from db import Database
 from ui import GameLauncher
-
+from line_profiler_pycharm import profile
 
 def game_count():
     db = Database()
@@ -25,17 +26,11 @@ def disc_count():
             "SELECT COUNT(*) FROM discs"
         ).fetchone()[0]
 
+@profile
 def main():
-    import ctypes
-    appid = "PaulMortlock.XeniaGameManager"
-    set_appid = getattr(
-        ctypes.windll.shell32,
-        "SetCurrentProcessExplicitAppUserModelID",
-        None,
-    )
-    if set_appid:
-        set_appid(appid)
+
     app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon("assets/icons/app.ico"))
     print(game_count())
     print(disc_count())
     print(str(os.getpid()))

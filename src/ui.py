@@ -361,7 +361,7 @@ class GameLauncher(QMainWindow):
             ]
         )
         self.extract_downloaded_archives_btn.setEnabled(False)
-        self.extract_worker.log.connect(self.log)
+        self.extract_worker.log_window.connect(self.log)
         self.extract_worker.moveToThread(self.extract_thread)
         self.extract_thread.started.connect(self.extract_worker.run)
         self.extract_worker.finished.connect(self.extract_thread.quit)
@@ -554,41 +554,8 @@ class GameLauncher(QMainWindow):
             }
         """)
 
-        layout = QVBoxLayout(self.settings_drawer)
-        #
-        # title = QLabel("Settings")
-        # layout.addWidget(title)
-
-        # ---------------- LOGIN BOX ----------------
-        # login_box = QGroupBox("Login XboxUnity / API Key")
-        # login_box.setFixedWidth(520)
-        # xboxunity_row = QHBoxLayout()
-        # login_form = QFormLayout()
-        # 
-        # self.entry_user = QLineEdit()
-        # self.entry_pass = QLineEdit()
-        # self.entry_pass.setEchoMode(QLineEdit.EchoMode.Password)
-        # self.entry_apikey = QLineEdit()
-        # 
-        # self.entry_user.setPlaceholderText("Xbox Unity Username")
-        # self.entry_pass.setPlaceholderText("Xbox Unity Password")
-        # self.entry_apikey.setPlaceholderText("Xbox Unity API Key")
-        # 
-        # login_form.addRow("Username", self.entry_user)
-        # login_form.addRow("Password", self.entry_pass)
-        # login_form.addRow("API Key", self.entry_apikey)
-        # #
-        # self.login_btn = QPushButton("Login")
-        # self.login_btn.clicked.connect(self.login)
-        # login_form.addRow(self.login_btn)
-        # 
-        # group = QGroupBox("Xbox Unity")
-        # group.setLayout(login_form)
-        # 
-        # xboxunity_row.addWidget(group)
-        # layout.addLayout(xboxunity_row)
-
         # ---------------- XENIA MANAGER PATH ----------------
+        layout = QVBoxLayout(self.settings_drawer)
         layout.addWidget(QLabel("Xenia Manager Folder"))
 
         xenia_row = QHBoxLayout()

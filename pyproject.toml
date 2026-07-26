@@ -21,4 +21,5 @@ dependencies = [
     "psutil>=7.2.2",
     "pyqt6-sip>=13.11.1",
     "dnfile>=0.18.0",
+    "line-profiler-pycharm>=1.2.0",
 ]

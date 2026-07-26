@@ -8,7 +8,8 @@ from config import get_app_dir
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
-from PySide6.QtCore import Qt
+from line_profiler_pycharm import profile
+from PySide6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QRect
 from PySide6.QtWidgets import (
     QDialog,
     QVBoxLayout,
@@ -22,7 +23,7 @@ from PySide6.QtWidgets import (
     QTextEdit,
     QFormLayout,
     QGroupBox,
-    QHeaderView, QApplication, QMessageBox,
+    QHeaderView, QApplication, QMessageBox, QSizePolicy, QFrame, QGraphicsDropShadowEffect,
 )
 
 def find_xblig_packages(root: str | Path):
@@ -388,19 +389,137 @@ def load_cache():
         print(f"Failed to load cache: {e}")
         return None
 
+class ClickOverlay(QWidget):
+    def __init__(self, launcher):
+        super().__init__(launcher)
+        self.launcher = launcher
+
+    def mousePressEvent(self, event):
+        self.launcher.hide_settings_drawer()
+
 class XBLIG_Dialog(QDialog):
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+
+        if hasattr(self, "settings_drawer"):
+            self.settings_drawer.setGeometry(
+                self.width() - self.settings_drawer.width(),
+                0,
+                self.settings_drawer.width(),
+                self.height()
+            )
+
+        if hasattr(self, "overlay"):
+            self.overlay.setGeometry(
+                0,
+                0,
+                self.width(),
+                self.height()
+            )
+
+    def apply_style(self):
+
+        self.setStyleSheet("""
+           QWidget {
+               background: #202124;
+               color: white;
+               font-size: 10pt;
+           }
+
+           QLineEdit {
+               padding: 6px;
+               background: #2d2f31;
+               border: 1px solid #555;
+           }
+
+           QPushButton {
+               padding: 6px;
+               background: #3c4043;
+               border: 1px solid #666;
+           }
+
+           QPushButton:hover {
+               background: #4b5054;
+           }
+
+           QTableView {
+               background: #1e1e1e;
+               alternate-background-color: #292929;
+               gridline-color: #444;
+           }
+
+           QHeaderView::section {
+               background: #3c4043;
+               padding: 6px;
+               border: 1px solid #555;
+           }
+
+           QGroupBox {
+               font-size: 14px;
+               font-weight: bold;
+               color: #e5e5e5;
+               border: 1px solid #2a2a2a;
+               border-radius: 10px;
+               margin-top: 12px;
+               padding: 10px;
+               background-color: #1e1e1e;
+           }
+
+           QGroupBox::title {
+               subcontrol-origin: margin;
+               left: 10px;
+               padding: 0 5px;
+           }
+
+           QLabel {
+               color: #cfcfcf;
+               font-size: 12px;
+           }
+
+           QLineEdit {
+               background-color: #2b2b2b;
+               border: 1px solid #3a3a3a;
+               border-radius: 6px;
+               padding: 6px 10px;
+               color: #ffffff;
+               selection-background-color: #0078d7;
+           }
+
+           QLineEdit:focus {
+               border: 1px solid #0078d7;
+           }
+
+           QPushButton {
+               background-color: #2d2d2d;
+               border: 1px solid #3a3a3a;
+               padding: 6px;
+               border-radius: 6px;
+               color: #ffffff;
+           }
+
+           QPushButton:hover {
+               background-color: #3a3a3a;
+           }
+
+           QPushButton:pressed {
+               background-color: #0078d7;
+           }
+           """)
 
     def __init__(self, parent=None):
         super().__init__(parent)
-
+        self.drawer_open = False
         self._last_mtime = None
         self._cache = None
         self.close_btn = None
         self.games = []
         self.setWindowTitle("XBLIG Emulator")
         self.resize(1100, 750)
+
         self.build_ui()
-        self.rescan_games()
+        self.create_settings_drawer()
+        self.apply_style()
 
     def print_games(self):
         for i, game in enumerate(self.games, 1):
@@ -437,7 +556,7 @@ class XBLIG_Dialog(QDialog):
 
         exe = Path(exe)
 
-        self.log.append(f"Generating Visual Studio project for {exe.name}...")
+        self.log_message(f"Generating Visual Studio project for {exe.name}...")
 
         try:
             project_dir = decompile_project(exe)
@@ -445,32 +564,29 @@ class XBLIG_Dialog(QDialog):
             QMessageBox.critical(self, "ILSpy", str(e))
             return
 
-        self.log.append("Visual Studio project created.")
+        self.log_message("Visual Studio project created.")
 
         subprocess.Popen(["explorer", str(project_dir)])
 
 
     def rescan_games(self, force=False):
-        self.log.append("Checking game cache...")
+        self.log_message("Checking game cache...")
 
         current_mtime = get_folder_mtime(ROOT)
 
         cache = None if force else load_cache()
 
-        if (
-                cache
-                and cache.get("mtime") == current_mtime
-        ):
+        if cache and cache.get("mtime") == current_mtime:
             self.games = cache["games"]
-            self.log.append(f"Loaded {len(self.games)} games from cache.")
+            self.log_message(f"Loaded {len(self.games)} games from cache.")
         else:
-            self.log.append("Scanning folders...")
+            self.log_message("Scanning folders...")
             self.games = find_xblig_packages(ROOT)
             save_cache(self.games)
-            self.log.append("Cache updated.")
+            self.log_message("Cache updated.")
 
         self.load_games(self.games)
-        self.log.append(f"Found {len(self.games)} games.")
+        self.log_message(f"Found {len(self.games)} games.")
 
     def game_selected(self):
 
@@ -481,16 +597,32 @@ class XBLIG_Dialog(QDialog):
 
         game = self.games[row]
 
+        root = get_app_dir() / "downloads"
+
+
         self.title_lbl.setText(game["title"])
-        self.titleid_lbl.setText(game["title_id"])
+        self.titleid_lbl.setText(
+            str(game.get("title_id") or "-")
+        )
         self.virtualid_lbl.setText(
             game.get("virtual_title_id", "")
         )
-        self.exe_lbl.setText(str(game["exe"]))
-        self.xml_lbl.setText(str(game["xml"]))
+        if game.get("exe"):
+            relative_path = Path(str(game["exe"])).relative_to(root.parent)
+            self.exe_lbl.setText(str(relative_path))
+        else:
+            self.exe_lbl.setText("-")
+        if game.get("xml"):
+            relative_path = Path(str(game["xml"])).relative_to(root.parent)
+            self.xml_lbl.setText(str(relative_path))
+        else:
+            self.xml_lbl.setText("-")
+
+        if not self.drawer_open:
+            self.show_settings_drawer()
 
     def extract_missing(self):
-        self.log.append(f"\nFound {len(self.games)} Xbox Live Indie Games\n")
+        self.log_message(f"\nFound {len(self.games)} Xbox Live Indie Games\n")
         for i, game in enumerate(self.games, 1):
 
             # Auto extract missing games
@@ -500,10 +632,10 @@ class XBLIG_Dialog(QDialog):
                 if extracted:
                     game["extracted"] = str(extracted)
             else:
-                self.log.append(f"Skipping {game.get("title")}")
+                self.log_message(f"Skipping {game.get("title")}")
 
     def log_message(self, message):
-        self.log.append(message)
+        self.log_window.append(message)
 
     def extract_xblig_package(self, game):
         package = game.get("package")
@@ -517,7 +649,7 @@ class XBLIG_Dialog(QDialog):
             print(f"Package missing: {package}")
             return None
 
-        self.log.append(f"Extracting: {package}")
+        self.log_message(f"Extracting: {package}")
 
         from stfs_extract import extract_live_pirs
 
@@ -562,17 +694,156 @@ class XBLIG_Dialog(QDialog):
                 Path(game["exe"]).name if game["exe"] else ""))
 
     def build_selected(self):
-        self.log.append("Building selected game...")
+        self.log_message("Building selected game...")
         self.decompile_selected()
 
     def launch_selected(self):
-        self.log.append("Launching selected game...")
+        self.log_message("Launching selected game...")
 
     def refresh_games(self):
         self.load_games(self.games)
 
     def open_selected_folder(self):
-        self.log.append("Opening game folder...")
+        self.log_message("Opening game folder...")
+
+    from PySide6.QtCore import QRect, QPropertyAnimation, QEasingCurve
+
+    def show_settings_drawer(self):
+        self.drawer_open = True
+        self.settings_drawer.show()
+
+        self.overlay.show()
+        self.overlay.raise_()
+        self.settings_drawer.raise_()
+
+        w = self.settings_drawer.width()
+
+        self.anim = QPropertyAnimation(self.settings_drawer, b"geometry")
+        self.anim.setDuration(250)
+        self.anim.setEasingCurve(QEasingCurve.Type.OutCubic)
+
+        self.anim.setStartValue(
+            QRect(self.width(), 0, w, self.height())
+        )
+        self.anim.setEndValue(
+            QRect(self.width() - w, 0, w, self.height())
+        )
+
+        self.anim.start()
+
+    def hide_settings_drawer(self):
+        self.drawer_open = False
+        w = self.settings_drawer.width()
+
+        self.anim = QPropertyAnimation(self.settings_drawer, b"geometry")
+        self.anim.setDuration(250)
+        self.anim.setEasingCurve(QEasingCurve.Type.InCubic)
+
+        self.anim.setStartValue(
+            QRect(self.width() - w, 0, w, self.height())
+        )
+        self.anim.setEndValue(
+            QRect(self.width(), 0, w, self.height())
+        )
+
+        self.anim.finished.connect(self.overlay.hide)
+        self.anim.start()
+
+    def create_settings_drawer(self):
+
+        self.overlay = ClickOverlay(self)
+        self.overlay.setStyleSheet("background-color: rgba(0,0,0,120);")
+        self.overlay.hide()
+
+        self.settings_drawer = QFrame(self)
+        self.settings_drawer.setObjectName("settingsDrawer")
+        self.settings_drawer.setFixedWidth(750)
+
+        drawer_layout = QVBoxLayout(self.settings_drawer)
+        drawer_layout.setContentsMargins(20, 20, 20, 20)
+        drawer_layout.setSpacing(15)
+
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(40)
+        shadow.setOffset(-5, 0)
+        self.settings_drawer.setGraphicsEffect(shadow)
+
+        header = QHBoxLayout()
+
+        title = QLabel("Game Details")
+        title.setStyleSheet("font-size:16px;font-weight:bold")
+
+        close = QPushButton("✕")
+        close.clicked.connect(self.hide_settings_drawer)
+
+        header.addWidget(title)
+        header.addStretch()
+        header.addWidget(close)
+
+        drawer_layout.addLayout(header)
+
+        # Game Information
+
+        info_group = QGroupBox("Game Information")
+        info_group.setSizePolicy(
+            QSizePolicy.Policy.Preferred,
+            QSizePolicy.Policy.Maximum
+        )
+        form = QFormLayout(info_group)
+        form.setContentsMargins(8, 8, 8, 8)
+        form.setVerticalSpacing(4)
+
+        self.title_lbl = QLabel("-")
+        self.titleid_lbl = QLabel("-")
+        self.virtualid_lbl = QLabel("-")
+        self.exe_lbl = QLabel("-")
+        self.xml_lbl = QLabel("-")
+        self.status_lbl = QLabel("-")
+
+        form.addRow("Title", self.title_lbl)
+        form.addRow("Title ID", self.titleid_lbl)
+        form.addRow("Virtual ID", self.virtualid_lbl)
+        form.addRow("Executable", self.exe_lbl)
+        form.addRow("GameInfo.xml", self.xml_lbl)
+        form.addRow("Status", self.status_lbl)
+
+        drawer_layout.addWidget(info_group)
+
+        action_group = QGroupBox("Actions")
+        action_group.setSizePolicy(
+            QSizePolicy.Policy.Preferred,
+            QSizePolicy.Policy.Maximum
+        )
+        actions = QHBoxLayout(action_group)
+        actions.setContentsMargins(8, 8, 8, 8)
+        self.run_btn = QPushButton("Launch Game")
+        self.validate_btn = QPushButton("Validate")
+        self.open_folder_btn = QPushButton("Open Folder")
+        self.open_xml_btn = QPushButton("Open XML")
+        self.export_btn = QPushButton("Export JSON")
+
+        actions.addWidget(self.run_btn)
+        actions.addWidget(self.validate_btn)
+        actions.addWidget(self.open_folder_btn)
+        actions.addWidget(self.open_xml_btn)
+        actions.addWidget(self.export_btn)
+        actions.addStretch()
+        #
+        # right_layout.addWidget(action_group, 0)
+        # right_layout.addStretch(1)
+        #
+        # splitter.addWidget(left)
+        # splitter.addWidget(right)
+        #
+        # splitter.setStretchFactor(0, 3)
+        # splitter.setStretchFactor(1, 1)
+        #
+        # splitter.addWidget(left)
+        # main_layout.addWidget(splitter)
+
+        drawer_layout.addWidget(action_group)
+        drawer_layout.addStretch()
+        self.settings_drawer.hide()
 
     def build_ui(self):
 
@@ -601,12 +872,16 @@ class XBLIG_Dialog(QDialog):
         self.open_folder_btn = QPushButton("Open Folder")
         self.open_folder_btn.clicked.connect(self.open_selected_folder)
 
+        self.close_btn = QPushButton("Close")
+        self.close_btn.clicked.connect(self.close)
+
         toolbar.addWidget(self.scan_btn)
         toolbar.addWidget(self.extract_btn)
         toolbar.addWidget(self.build_btn)
         toolbar.addWidget(self.launch_btn)
         toolbar.addWidget(self.refresh_btn)
         toolbar.addWidget(self.open_folder_btn)
+        toolbar.addWidget(self.close_btn)
         toolbar.addStretch()
 
         main_layout.addLayout(toolbar)
@@ -615,7 +890,7 @@ class XBLIG_Dialog(QDialog):
         # Splitter
         #
 
-        splitter = QSplitter(Qt.Horizontal)
+        splitter = QSplitter(Qt.Orientation.Horizontal)
 
         ###########################################################
         # LEFT SIDE
@@ -624,122 +899,64 @@ class XBLIG_Dialog(QDialog):
         left = QWidget()
         left_layout = QVBoxLayout(left)
 
+        left = QWidget()
+        left_layout = QVBoxLayout(left)
+
+        # Splitter so table gets most of the space
+        left_splitter = QSplitter(Qt.Orientation.Vertical)
+
+        #
+        # Game Table
+        #
+
         self.game_table = QTableWidget(0, 4)
 
-        self.game_table.setHorizontalHeaderLabels(
-            [
-                "Title",
-                "Status",
-                "Extracted",
-                "Executable",
-            ]
-        )
+        self.game_table.setHorizontalHeaderLabels([
+            "Title",
+            "Status",
+            "Extracted",
+            "Executable",
+        ])
 
         header = self.game_table.horizontalHeader()
-        header.setSectionResizeMode(0, QHeaderView.Stretch)
-        header.setSectionResizeMode(1, QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(2, QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(3, QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        header.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
 
         self.game_table.setSelectionBehavior(QTableWidget.SelectRows)
         self.game_table.setSelectionMode(QTableWidget.SingleSelection)
         self.game_table.setEditTriggers(QTableWidget.NoEditTriggers)
 
-        left_layout.addWidget(self.game_table)
-        self.game_table.itemSelectionChanged.connect(
-            self.game_selected
-        )
-        ###########################################################
-        # RIGHT SIDE
-        ###########################################################
+        self.game_table.itemSelectionChanged.connect(self.game_selected)
 
-        right = QWidget()
-        right_layout = QVBoxLayout(right)
-
-        #
-        # Game Information
-        #
-
-        info_group = QGroupBox("Game Information")
-
-        form = QFormLayout(info_group)
-
-        self.title_lbl = QLabel("-")
-        self.titleid_lbl = QLabel("-")
-        self.virtualid_lbl = QLabel("-")
-        self.exe_lbl = QLabel("-")
-        self.xml_lbl = QLabel("-")
-        self.status_lbl = QLabel("-")
-
-        form.addRow("Title", self.title_lbl)
-        form.addRow("Title ID", self.titleid_lbl)
-        form.addRow("Virtual ID", self.virtualid_lbl)
-        form.addRow("Executable", self.exe_lbl)
-        form.addRow("GameInfo.xml", self.xml_lbl)
-        form.addRow("Status", self.status_lbl)
-
-        right_layout.addWidget(info_group)
-
-        #
-        # Actions
-        #
-
-        action_group = QGroupBox("Actions")
-
-        actions = QVBoxLayout(action_group)
-
-        self.run_btn = QPushButton("Launch Game")
-        self.validate_btn = QPushButton("Validate")
-        self.open_folder_btn = QPushButton("Open Folder")
-        self.open_xml_btn = QPushButton("Open XML")
-        self.export_btn = QPushButton("Export JSON")
-
-        actions.addWidget(self.run_btn)
-        actions.addWidget(self.validate_btn)
-        actions.addWidget(self.open_folder_btn)
-        actions.addWidget(self.open_xml_btn)
-        actions.addWidget(self.export_btn)
-        actions.addStretch()
-
-        right_layout.addWidget(action_group)
-
-        splitter.addWidget(left)
-        splitter.addWidget(right)
-
-        splitter.setStretchFactor(0, 3)
-        splitter.setStretchFactor(1, 1)
-
-        main_layout.addWidget(splitter)
+        left_splitter.addWidget(self.game_table)
 
         #
         # Log Window
         #
 
         log_group = QGroupBox("Log")
-
         log_layout = QVBoxLayout(log_group)
 
-        self.log = QTextEdit()
-        self.log.setReadOnly(True)
+        self.log_window = QTextEdit()
+        self.log_window.setReadOnly(True)
 
-        log_layout.addWidget(self.log)
+        log_layout.addWidget(self.log_window)
 
-        main_layout.addWidget(log_group)
+        left_splitter.addWidget(log_group)
 
-        #
-        # Bottom Buttons
-        #
+        # Table gets ~80%, log gets ~20%
+        left_splitter.setStretchFactor(0, 5)
+        left_splitter.setStretchFactor(1, 1)
 
-        bottom = QHBoxLayout()
+        left_layout.addWidget(left_splitter)
 
-        bottom.addStretch()
+        splitter.addWidget(left)
 
-        self.close_btn = QPushButton("Close")
-        self.close_btn.clicked.connect(self.close)
+        splitter.setStretchFactor(0, 1)
 
-        bottom.addWidget(self.close_btn)
-
-        main_layout.addLayout(bottom)
+        main_layout.addWidget(splitter)
 
         self.game_table.selectRow(0)
 

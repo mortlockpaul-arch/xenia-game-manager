@@ -159,7 +159,8 @@ logging.basicConfig(
     ],
 )
 
-create_defaults(version="0.9.9")
+create_defaults(version="1.0.0")
+
 copy_optimized_settings()
 
 # Build the executable
