@@ -425,6 +425,7 @@ class XBLIG_Dialog(QDialog):
 
         return self.games[row]
 
+
     def decompile_selected(self):
         game = self.get_selected_game()
 
