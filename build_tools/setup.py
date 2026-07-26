@@ -7,15 +7,15 @@ root = get_app_dir()
 
 executables = [
     Executable(
-        script=str(root / "src" / "main.py"),
+        script=str(root / "main.py"),
         base="gui",
-        icon=str(root / "src" / "assets" / "icons" / "app.ico"),
+        icon=str(root  / "assets" / "icons" / "app.ico"),
         target_name="Xenia Game Manager"
     ),
     Executable(
-        script=str(root / "src" / "main_updater.py"),
+        script=str(root  / "main_updater.py"),
         base="console",
-        icon=str(root / "src" / "assets" / "icons" / "app.ico"),
+        icon=str(root  / "assets" / "icons" / "app.ico"),
         target_name="Xenia Game Manager Updater"
     )
 ]
@@ -29,12 +29,12 @@ build_exe_options = {
     ],
     "excludes": ["tkinter", "unittest"],
     "include_files": [
-        (str(root / "src" / "db"), "db"),
-        (str(root / "src" / "config"), "config"),
-        (str(root / "src" / "assets" / "icons"), "assets/icons"),
-        (str(root / "src" / "assets" / "settings"), "assets/settings"),
-        (str(root / "src" / "assets" / "zip"), "assets/zip"),
-        (str(root / "src" / "assets" / "default"), "assets/default"),
+        (str(root  / "db"), "db"),
+        (str(root  / "config"), "config"),
+        (str(root  / "assets" / "icons"), "assets/icons"),
+        (str(root  / "assets" / "settings"), "assets/settings"),
+        (str(root  / "assets" / "zip"), "assets/zip"),
+        (str(root  / "assets" / "default"), "assets/default"),
     ],
     "optimize": 2,
 }

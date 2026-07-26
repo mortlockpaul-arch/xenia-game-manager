@@ -39,7 +39,7 @@ def zip_portable():
 def create_defaults(version):
     logging.info("Creating default game manager database and configuration files...")
 
-    base_path = root / "src"
+    base_path = root
     default_path = base_path / "assets" / "default"
 
     db_dir = base_path / "db"
