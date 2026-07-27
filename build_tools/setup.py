@@ -10,14 +10,20 @@ executables = [
         script=str(root / "main.py"),
         base="gui",
         icon=str(root  / "assets" / "icons" / "app.ico"),
-        target_name="Xenia Game Manager"
+        target_name="xenia-game-manager"
     ),
     Executable(
         script=str(root  / "main_updater.py"),
         base="console",
         icon=str(root  / "assets" / "icons" / "app.ico"),
-        target_name="Xenia Game Manager Updater"
-    )
+        target_name="xenia-game-manager-updater"
+    ),
+    Executable(
+            script=str(root  / "package_window.py"),
+            base="gui",
+            icon=str(root  / "assets" / "icons" / "app.ico"),
+            target_name="xenia-xblig-emulator"
+        )
 ]
 
 build_exe_options = {

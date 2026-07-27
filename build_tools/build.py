@@ -146,7 +146,6 @@ def copy_updater():
     else:
         logging.info(f"Updated {copied} file(s).")
 
-
 log_dir = get_app_dir() / "logs"
 log_dir.mkdir(exist_ok=True)
 logging.basicConfig(

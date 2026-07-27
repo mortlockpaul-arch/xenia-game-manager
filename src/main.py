@@ -1,3 +1,6 @@
+import faulthandler
+
+faulthandler.enable()
 # main.py
 import os
 
@@ -10,6 +13,8 @@ from db import Database
 from ui import GameLauncher
 from line_profiler_pycharm import profile
 
+
+import sys
 def game_count():
     db = Database()
     db.init_db()

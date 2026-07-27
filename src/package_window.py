@@ -204,32 +204,29 @@ class QtLogger(io.TextIOBase):
 
 import json
 
-CACHE_FILE = get_app_dir() / "cache" / "xblig_games.json"
-ROOT = get_app_dir() / "downloads" / "XBLIG"
-
 
 def get_folder_mtime(path):
     return max((p.stat().st_mtime for p in path.rglob("*")), default=0)
 
-
 def save_cache(games):
-    CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
-
+    cache_file = get_app_dir() / "cache" / "xblig_games.json"
+    cache_file.parent.mkdir(parents=True, exist_ok=True)
+    root = get_app_dir() / "downloads" / "XBLIG"
     data = {
-        "mtime": get_folder_mtime(ROOT),
+        "mtime": get_folder_mtime(root),
         "games": games,
     }
 
-    with open(CACHE_FILE, "w", encoding="utf-8") as f:
+    with open(cache_file, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4, ensure_ascii=False, default=str)
 
-
 def load_cache():
-    if not CACHE_FILE.exists():
+    cache_file = get_app_dir() / "cache" / "xblig_games.json"
+    if not cache_file.exists():
         return None
 
     try:
-        with open(CACHE_FILE, "r", encoding="utf-8") as f:
+        with open(cache_file, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
         print(f"Failed to load cache: {e}")
@@ -245,7 +242,7 @@ class ClickOverlay(QWidget):
 
 class XBLIG_Dialog(QDialog):
 
-    def find_xblig_packages(self, root: str | Path):
+    def find_xblig_packages(self, root: str | Path, log=None):
 
         root = Path(root)
         games = []
@@ -298,7 +295,7 @@ class XBLIG_Dialog(QDialog):
 
             if not game_folder.is_dir():
                 continue
-            self.log_message(f"Checking Folder {game_folder}")
+            if log: log(f"Checking Folder {game_folder}")
             folder_title = game_folder.name
 
             packages = []
@@ -561,6 +558,7 @@ class XBLIG_Dialog(QDialog):
     from PySide6.QtCore import QObject, QThread, Signal
 
     class ScanWorker(QObject):
+
         finished = Signal(list)
         log = Signal(str)
 
@@ -571,28 +569,50 @@ class XBLIG_Dialog(QDialog):
             self.scan_func = scan_func
 
         def run(self):
-            self.log.emit("Checking game cache...")
 
-            current_mtime = get_folder_mtime(ROOT)
-            cache = None if self.force else load_cache()
+            try:
+                self.log.emit("Checking game cache...")
 
-            if cache and cache.get("mtime") == current_mtime:
-                games = cache["games"]
-                self.log.emit(f"Loaded {len(games)} games from cache.")
-            else:
-                self.log.emit("Scanning folders...")
-                games = self.scan_func(self.root)
-                save_cache(games)
-                self.log.emit("Cache updated.")
+                current_mtime = get_folder_mtime(self.root)
+                cache = None if self.force else load_cache()
 
-            self.finished.emit(games)
+                if cache and cache.get("mtime") == current_mtime:
+                    games = cache["games"]
+                    for game in games:
+                        for key in [
+                            "package",
+                            "extracted",
+                            "game_root",
+                            "exe",
+                            "xml"
+                        ]:
+                            if game.get(key):
+                                game[key] = Path(game[key])
+                    self.log.emit(
+                        f"Loaded {len(games)} games from cache."
+                    )
+
+                else:
+                    self.log.emit("Scanning folders...")
+
+                    games = self.scan_func(self.root, self.log.emit)
+
+                    save_cache(games)
+
+                    self.log.emit("Cache updated.")
+
+                self.finished.emit(games)
+
+            except Exception as e:
+                self.log.emit(f"Scanner error: {e}")
+                self.finished.emit([])
 
     def rescan_games_responsive(self, force=False):
-
+        root = get_app_dir() / "downloads" / "XBLIG"
         self.scan_btn.setEnabled(False)
 
         self.thread = QThread(self)
-        self.worker = self.ScanWorker(ROOT,self.find_xblig_packages, force)
+        self.worker = self.ScanWorker(root,self.find_xblig_packages, force)
 
         self.worker.moveToThread(self.thread)
 
@@ -613,24 +633,24 @@ class XBLIG_Dialog(QDialog):
         self.log_message(f"Loaded {len(self.games)} games.")
         self.scan_btn.setEnabled(True)
 
-    def rescan_games(self, force=False):
-        self.log_message("Checking game cache...")
-
-        current_mtime = get_folder_mtime(ROOT)
-
-        cache = None if force else load_cache()
-
-        if cache and cache.get("mtime") == current_mtime:
-            self.games = cache["games"]
-            self.log_message(f"Loaded {len(self.games)} games from cache.")
-        else:
-            self.log_message("Scanning folders...")
-            self.games = self.find_xblig_packages(ROOT)
-            save_cache(self.games)
-            self.log_message("Cache updated.")
-
-        self.load_games(self.games)
-        self.log_message(f"Loaded {len(self.games)} games.")
+    # def rescan_games(self, force=False):
+    #     self.log_message("Checking game cache...")
+    #     root = get_app_dir() / "downloads" / "XBLIG"
+    #     current_mtime = get_folder_mtime(root)
+    #
+    #     cache = None if force else load_cache()
+    #
+    #     if cache and cache.get("mtime") == current_mtime:
+    #         self.games = cache["games"]
+    #         self.log_message(f"Loaded {len(self.games)} games from cache.")
+    #     else:
+    #         self.log_message("Scanning folders...")
+    #         self.games = self.find_xblig_packages(ROOT)
+    #         save_cache(self.games)
+    #         self.log_message("Cache updated.")
+    #
+    #     self.load_games(self.games)
+    #     self.log_message(f"Loaded {len(self.games)} games.")
 
     def game_selected(self):
 
