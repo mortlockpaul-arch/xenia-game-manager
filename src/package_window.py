@@ -815,8 +815,6 @@ class XBLIG_Dialog(QDialog):
             print(f"Package missing: {package}")
             return None
 
-        self.log_message(f"Extracting: {package}")
-
         from stfs_extract import extract_live_pirs
 
         # Create extracted folder beside package
