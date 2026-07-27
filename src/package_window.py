@@ -110,7 +110,7 @@ def open_solution(project_dir: Path):
 
 
 def decompile_project(exe: Path):
-    output_dir = exe.parent.parent / "decompiled"
+    output_dir = exe.parent.parent.parent / "decompiled"
     output_dir.mkdir(exist_ok=True)
 
     subprocess.run(
