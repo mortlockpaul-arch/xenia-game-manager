@@ -27,8 +27,9 @@ class ConvertXnaProjects:
         - Adds FNA NuGet package
         - Keeps local DLL references
         - Backs up original csproj
-        """
-        self.log_message(f"Converting base {project_base} XBLIG to FNA")
+        # """
+        # project_base = get_app_dir() / "downloads"
+        # self.log_message(f"Converting base {project_base} XBLIG to FNA")
         project_path = Path(project_path)
         self.log_message(f"Converting project {project_path} XBLIG to FNA")
         if not project_path.exists():
