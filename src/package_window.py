@@ -1,6 +1,9 @@
 import json
+import logging
 import shutil
 import subprocess
+from dataclasses import dataclass, asdict
+from typing import cast
 
 import sys
 
@@ -25,6 +28,9 @@ from PySide6.QtWidgets import (
     QGroupBox,
     QHeaderView, QApplication, QMessageBox, QSizePolicy, QFrame, QGraphicsDropShadowEffect,
 )
+
+from convert_xna_projects import ConvertXnaProjects
+
 
 def read_bytes(file_path: Path):
     with open(file_path, "rb") as f:
@@ -104,7 +110,7 @@ def open_solution(project_dir: Path):
 
 
 def decompile_project(exe: Path):
-    output_dir = exe.parent / "decompiled"
+    output_dir = exe.parent.parent / "decompiled"
     output_dir.mkdir(exist_ok=True)
 
     subprocess.run(
@@ -204,30 +210,48 @@ class QtLogger(io.TextIOBase):
 
 import json
 
-
 def get_folder_mtime(path):
     return max((p.stat().st_mtime for p in path.rglob("*")), default=0)
 
 def save_cache(games):
     cache_file = get_app_dir() / "cache" / "xblig_games.json"
     cache_file.parent.mkdir(parents=True, exist_ok=True)
+
     root = get_app_dir() / "downloads" / "XBLIG"
+
     data = {
         "mtime": get_folder_mtime(root),
-        "games": games,
+        "games": [
+            game.to_dict()
+            for game in games
+        ],
     }
 
     with open(cache_file, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4, ensure_ascii=False, default=str)
+        json.dump(
+            data,
+            f,
+            indent=4,
+            ensure_ascii=False
+        )
 
 def load_cache():
     cache_file = get_app_dir() / "cache" / "xblig_games.json"
+
     if not cache_file.exists():
         return None
 
     try:
         with open(cache_file, "r", encoding="utf-8") as f:
-            return json.load(f)
+            data = json.load(f)
+
+        data["games"] = [
+            XBLIGGame.from_dict(game)
+            for game in data.get("games", [])
+        ]
+
+        return data
+
     except Exception as e:
         print(f"Failed to load cache: {e}")
         return None
@@ -239,6 +263,70 @@ class ClickOverlay(QWidget):
 
     def mousePressEvent(self, event):
         self.launcher.hide_settings_drawer()
+from dataclasses import dataclass, fields
+from pathlib import Path
+
+
+@dataclass
+class XBLIGGame:
+    title: str
+    folder_title: str | None = None
+    title_id: str | None = None
+    virtual_title_id: str | None = None
+    xml_title_id: str | None = None
+
+    content_type: str | None = None
+    content_name: str | None = None
+
+    package: Path | None = None
+    extracted: Path | None = None
+    game_root: Path | None = None
+
+    exe: Path | None = None
+    xml: Path | None = None
+    decompiled: Path | None = None
+
+    # add your remaining fields here
+
+    def __post_init__(self):
+        if isinstance(self.package, str):
+            self.package = Path(self.package)
+    def to_dict(self):
+        data = {}
+
+        for field in fields(self):
+            value = getattr(self, field.name)
+
+            if isinstance(value, Path):
+                value = str(value)
+
+            data[field.name] = value
+
+        return data
+
+
+    @classmethod
+    def from_dict(cls, data):
+        path_fields = {
+            "package",
+            "extracted",
+            "game_root",
+            "exe",
+            "xml",
+            "decompiled",
+        }
+
+        converted = {}
+
+        for field in fields(cls):
+            value = data.get(field.name)
+
+            if field.name in path_fields and value:
+                value = Path(value)
+
+            converted[field.name] = value
+
+        return cls(**converted)
 
 class XBLIG_Dialog(QDialog):
 
@@ -341,48 +429,25 @@ class XBLIG_Dialog(QDialog):
                     for exe in extracted.rglob("*.exe"):
                         exe_file = exe
                         break
+                decomp = package.parent / "extracted" / "decompiled"
 
-                games.append({
-
-                    "title": title,
-
-                    "folder_title": folder_title,
-
-                    "title_id": title_id,
-
-                    "content_type": content_type,
-
-                    "content_name":
-                        "Xbox Live Indie Game",
-
-                    "package": package,
-
-                    "extracted": (
-                        extracted
-                        if extracted.exists()
-                        else None
-                    ),
-
-                    "game_root": (
-                        extracted
-                        if extracted.exists()
-                        else package.parent
-                    ),
-
-                    "exe": (
-                        exe_file
-                        if isinstance(exe_file, Path) and exe_file.exists()
-                        else None
-                    ),
-
-                    "xml": (
-                        game_info
-                        if game_info.exists()
-                        else None
-                    ),
-
-                    **xml_data
-                })
+                games.append(
+                    XBLIGGame(
+                        title=title,
+                        folder_title=folder_title,
+                        title_id=title_id,
+                        virtual_title_id=xml_data.get("virtual_title_id"),
+                        xml_title_id=xml_data.get("xml_title_id"),
+                        content_type=content_type,
+                        content_name="Xbox Live Indie Game",
+                        package=package,
+                        extracted=extracted if extracted.exists() else None,
+                        game_root=extracted if extracted.exists() else package.parent,
+                        exe=exe_file,
+                        xml=game_info if game_info.exists() else None,
+                        decompiled=decomp if decomp.exists() else None,
+                    )
+                )
         self.log_message(f"Scanner Found {len(games)} XBLIG Games")
         return games
 
@@ -500,7 +565,7 @@ class XBLIG_Dialog(QDialog):
         self._last_mtime = None
         self._cache = None
         self.close_btn = None
-        self.games = []
+        self.games: list[XBLIGGame] = []
         self.setWindowTitle("XBLIG Emulator")
         self.resize(1100, 750)
 
@@ -508,6 +573,17 @@ class XBLIG_Dialog(QDialog):
         self.create_settings_drawer()
         self.apply_style()
 
+        log_dir = get_app_dir() / "logs"
+        log_dir.mkdir(exist_ok=True)
+        logging.basicConfig(
+            level=logging.INFO,
+            format="%(asctime)s - %(levelname)s - %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S",
+            handlers=[
+                logging.FileHandler(log_dir / "xenia_manager.log", encoding="utf-8"),
+                logging.StreamHandler(sys.stdout),  # Console output
+            ],
+        )
     def print_games(self):
         for i, game in enumerate(self.games, 1):
             print("=" * 80)
@@ -521,7 +597,9 @@ class XBLIG_Dialog(QDialog):
             print()
 
     from pathlib import Path
-    def get_selected_game(self):
+    from typing import Optional
+
+    def get_selected_game(self) -> Optional[XBLIGGame]:
         indexes = self.game_table.selectionModel().selectedRows()
 
         if not indexes:
@@ -531,22 +609,50 @@ class XBLIG_Dialog(QDialog):
 
         return self.games[row]
 
+    from dataclasses import dataclass
+    from pathlib import Path
+
+
+    def convert_selected_folders(self):
+        game = self.get_selected_game()
+
+        if not game:
+            return
+
+        decompiled = game.decompiled
+
+        if decompiled is None:
+            QMessageBox.warning(
+                self,
+                "Not Decompiled",
+                "Please decompile the game first."
+            )
+            return
+
+        converter = ConvertXnaProjects(get_app_dir(), self.log_message)
+        converter.convert_folder_single_folder(decompiled)
+
+    def convert_folders(self):
+        game = self.get_selected_game()
+        root = get_app_dir() / "downloads" / "XBLIG"
+        converter = ConvertXnaProjects(get_app_dir(), self.log_message)
+        converter.convert_folder_all_folders(root)
 
     def decompile_selected(self):
         game = self.get_selected_game()
-
-        exe = game.get("exe")
+        if not game:
+            return
+        exe = game.get("exe","")
         if not exe:
-            QMessageBox.warning(self, "No Executable",
-                                "Extract the game first.")
+            QMessageBox.warning(self, "No Executable", "Extract the game first.")
             return
 
         exe = Path(exe)
-
         self.log_message(f"Generating Visual Studio project for {exe.name}...")
 
         try:
             project_dir = decompile_project(exe)
+            game.decompiled = str(project_dir)
         except subprocess.CalledProcessError as e:
             QMessageBox.critical(self, "ILSpy", str(e))
             return
@@ -568,26 +674,39 @@ class XBLIG_Dialog(QDialog):
             self.force = force
             self.scan_func = scan_func
 
+        from pathlib import Path
+
         def run(self):
 
             try:
                 self.log.emit("Checking game cache...")
 
+                games:list[XBLIGGame] = []
                 current_mtime = get_folder_mtime(self.root)
                 cache = None if self.force else load_cache()
 
                 if cache and cache.get("mtime") == current_mtime:
-                    games = cache["games"]
-                    for game in games:
-                        for key in [
-                            "package",
-                            "extracted",
-                            "game_root",
-                            "exe",
-                            "xml"
-                        ]:
-                            if game.get(key):
-                                game[key] = Path(game[key])
+                    games = []
+
+                    for data in cache["games"]:
+                        games.append(
+                            XBLIGGame(
+                                title=data["title"],
+                                folder_title=data.get("folder_title"),
+                                title_id=data.get("title_id"),
+                                virtual_title_id=data.get("virtual_title_id"),
+                                xml_title_id=data.get("xml_title_id"),
+                                content_type=data.get("content_type"),
+                                content_name=data.get("content_name"),
+                                package=Path(data["package"]) if data.get("package") else None,
+                                extracted=Path(data["extracted"]) if data.get("extracted") else None,
+                                game_root=Path(data["game_root"]) if data.get("game_root") else None,
+                                exe=Path(data["exe"]) if data.get("exe") else None,
+                                xml=Path(data["xml"]) if data.get("xml") else None,
+                                decompiled=Path(data["decompiled"]) if data.get("decompiled") else None,
+                            )
+                        )
+
                     self.log.emit(
                         f"Loaded {len(games)} games from cache."
                     )
@@ -595,11 +714,16 @@ class XBLIG_Dialog(QDialog):
                 else:
                     self.log.emit("Scanning folders...")
 
-                    games = self.scan_func(self.root, self.log.emit)
+                    if not self.root.exists():
+                        self.log.emit(f"Folder {self.root} does not exist.")
+                    else:
+                        games = self.scan_func(
+                            self.root,
+                            self.log.emit
+                        )
 
-                    save_cache(games)
-
-                    self.log.emit("Cache updated.")
+                        save_cache(games)
+                        self.log.emit("Cache updated.")
 
                 self.finished.emit(games)
 
@@ -663,21 +787,24 @@ class XBLIG_Dialog(QDialog):
 
         root = get_app_dir() / "downloads"
 
+        self.title_lbl.setText(game.title)
 
-        self.title_lbl.setText(game["title"])
         self.titleid_lbl.setText(
-            str(game.get("title_id") or "-")
+            game.title_id or "-"
         )
+
         self.virtualid_lbl.setText(
-            game.get("virtual_title_id", "")
+            game.virtual_title_id or "-"
         )
-        if game.get("exe"):
-            relative_path = Path(str(game["exe"])).relative_to(root.parent)
+
+        if game.exe:
+            relative_path = game.exe.relative_to(root.parent)
             self.exe_lbl.setText(str(relative_path))
         else:
             self.exe_lbl.setText("-")
-        if game.get("xml"):
-            relative_path = Path(str(game["xml"])).relative_to(root.parent)
+
+        if game.xml:
+            relative_path = game.xml.relative_to(root.parent)
             self.xml_lbl.setText(str(relative_path))
         else:
             self.xml_lbl.setText("-")
@@ -690,19 +817,22 @@ class XBLIG_Dialog(QDialog):
         for i, game in enumerate(self.games, 1):
 
             # Auto extract missing games
-            if game.get("extracted") is None and game.get("package"):
+            if game.extracted is None and game.package:
                 extracted = self.extract_xblig_package(game)
 
                 if extracted:
-                    game["extracted"] = str(extracted)
+                    game.extracted = extracted
             else:
                 self.log_message(f"Skipping {game.get("title")}")
 
     def log_message(self, message):
         self.log_window.append(message)
 
-    def extract_xblig_package(self, game):
-        package = game.get("package")
+    def log_message_log(self, message):
+        logging.info(f"{message}")
+
+    def extract_xblig_package(self, game: XBLIGGame):
+        package = game.package
 
         if not package:
             return None
@@ -725,7 +855,7 @@ class XBLIG_Dialog(QDialog):
         try:
             from contextlib import redirect_stdout
 
-            with redirect_stdout(QtLogger(self.log_message)):
+            with redirect_stdout(QtLogger(self.log_message_log)):
                 extract_live_pirs(package, extracted_path)
 
             print(f"Extracted to: {extracted_path}")
@@ -736,26 +866,28 @@ class XBLIG_Dialog(QDialog):
 
         return extracted_path
 
-    def load_games(self, games):
+    def load_games(self, games: list[XBLIGGame]):
         self.game_table.setRowCount(0)
 
         for game in games:
             row = self.game_table.rowCount()
             self.game_table.insertRow(row)
 
-            ready = (
-                    game["exe"] is not None
-                    and game["xml"] is not None
-            )
-
+            ready = game.exe is not None and game.xml is not None
             status = "Ready" if ready else "Needs Build"
 
-            self.game_table.setItem(row, 0, QTableWidgetItem(game["title"]))
+            self.game_table.setItem(row, 0, QTableWidgetItem(game.title))
             self.game_table.setItem(row, 1, QTableWidgetItem(status))
-            self.game_table.setItem(row, 2, QTableWidgetItem(
-                "Yes" if game["extracted"] else "No"))
-            self.game_table.setItem(row, 3, QTableWidgetItem(
-                Path(game["exe"]).name if game["exe"] else ""))
+            self.game_table.setItem(
+                row, 2, QTableWidgetItem("Yes" if game.extracted else "No")
+            )
+            self.game_table.setItem(
+                row, 3, QTableWidgetItem(game.exe.name if game.exe else "")
+            )
+            self.game_table.setItem(
+                row, 4,
+                QTableWidgetItem(game.decompiled.name if game.decompiled else "")
+            )
 
     def build_selected(self):
         self.log_message("Building selected game...")
@@ -973,20 +1105,22 @@ class XBLIG_Dialog(QDialog):
         # Game Table
         #
 
-        self.game_table = QTableWidget(0, 4)
+        self.game_table = QTableWidget(0, 5)
 
         self.game_table.setHorizontalHeaderLabels([
             "Title",
             "Status",
             "Extracted",
             "Executable",
+            "Decompiled",
         ])
 
         header = self.game_table.horizontalHeader()
-        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(4, QHeaderView.ResizeMode.ResizeToContents)
 
         self.game_table.setSelectionBehavior(QTableWidget.SelectRows)
         self.game_table.setSelectionMode(QTableWidget.SingleSelection)

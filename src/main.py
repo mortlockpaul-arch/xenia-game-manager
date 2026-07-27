@@ -1,6 +1,6 @@
-import faulthandler
-
-faulthandler.enable()
+# import faulthandler
+#
+# faulthandler.enable()
 # main.py
 import os
 

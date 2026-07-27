@@ -521,7 +521,7 @@
     "alternative_id": [],
     "media_id": "78B89007",
     "title": "Alan Wakes American Nightmare",
-    "playtime": 0.623027545,
+    "playtime": 2.0467618316666667,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "https://github.com/xenia-canary/game-compatibility/issues/353",
@@ -553,7 +553,7 @@
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
-    "last_played": null
+    "last_played": "2026-07-26T07:09:56.9766052+01:00"
   },
   {
     "game_id": "45410916",
@@ -2788,7 +2788,7 @@
     ],
     "media_id": "02C977C2",
     "title": "Dead Island",
-    "playtime": 105.23168665,
+    "playtime": 106.32409798166667,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "https://github.com/xenia-canary/game-compatibility/issues/819",
@@ -2820,7 +2820,7 @@
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
-    "last_played": null
+    "last_played": "2026-07-26T07:12:26.8231894+01:00"
   },
   {
     "game_id": "4B4D07F2",
@@ -3596,7 +3596,7 @@
     "alternative_id": [],
     "media_id": "30672AE2",
     "title": "Fallout - New Vegas - Ultimate Edition (USA) (Disc 2)",
-    "playtime": 0,
+    "playtime": 0.635569945,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "",
@@ -3628,7 +3628,7 @@
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
-    "last_played": null
+    "last_played": "2026-07-26T07:04:58.7300893+01:00"
   },
   {
     "game_id": "425307D5",
@@ -3674,7 +3674,7 @@
     "alternative_id": [],
     "media_id": "5749C425",
     "title": "Fallout 3 - Game of the Year Edition (USA, Europe) (Disc 2)",
-    "playtime": 0,
+    "playtime": 0.8630007066666666,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "",
@@ -3706,7 +3706,7 @@
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
-    "last_played": null
+    "last_played": "2026-07-26T07:05:41.5109044+01:00"
   },
   {
     "game_id": "464507E1",
@@ -4115,7 +4115,7 @@
     ],
     "media_id": "52AC485A",
     "title": "Gears of War 3",
-    "playtime": 6.550866063333333,
+    "playtime": 13.423223633333333,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "https://github.com/xenia-canary/game-compatibility/issues/39",
@@ -4147,7 +4147,7 @@
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
-    "last_played": null
+    "last_played": "2026-07-25T04:41:51.0726146+01:00"
   },
   {
     "game_id": "415608AF",
@@ -4278,8 +4278,8 @@
     "playtime": 3.4841014416666667,
     "xenia_version": "Canary",
     "compatibility": {
-      "url": "",
-      "rating": "Unknown",
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/1167",
+      "rating": "Gameplay",
       "mousehook": {
         "rating": "Unknown",
         "notes": ""
@@ -5345,8 +5345,8 @@
     "playtime": 0,
     "xenia_version": "Canary",
     "compatibility": {
-      "url": "https://github.com/xenia-canary/game-compatibility/issues/4",
-      "rating": "Gameplay",
+      "url": "",
+      "rating": "Unknown",
       "mousehook": {
         "rating": "Unknown",
         "notes": ""
@@ -6161,7 +6161,7 @@
     ],
     "media_id": "70A2E689",
     "title": "Omerta - City of Gangsters",
-    "playtime": 0,
+    "playtime": 3.1159068983333333,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "",
@@ -6193,7 +6193,7 @@
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
-    "last_played": null
+    "last_played": "2026-07-26T07:06:24.6080905+01:00"
   },
   {
     "game_id": "445007EA",
@@ -8325,7 +8325,7 @@
     "alternative_id": [],
     "media_id": "61FBCD98",
     "title": "Silent Hill - Homecoming",
-    "playtime": 0,
+    "playtime": 4.1870357616666665,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "https://github.com/xenia-canary/game-compatibility/issues/296",
@@ -8357,7 +8357,7 @@
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
-    "last_played": null
+    "last_played": "2026-07-25T04:49:00.454457+01:00"
   },
   {
     "game_id": "454108E6",
@@ -9715,7 +9715,7 @@
     "alternative_id": [],
     "media_id": "071344FB",
     "title": "Warlords",
-    "playtime": 0,
+    "playtime": 1.6374561983333333,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "",
@@ -9747,7 +9747,7 @@
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
-    "last_played": null
+    "last_played": "2026-07-25T04:10:15.8272734+01:00"
   },
   {
     "game_id": "584111DC",

@@ -30,7 +30,7 @@ from PySide6.QtWidgets import (
     QPushButton,
     QVBoxLayout,
     QHBoxLayout,
-    QFrame, QStackedWidget,
+    QFrame, QStackedWidget, QComboBox,
 )
 from PySide6.QtWidgets import QMenu
 from PySide6.QtWidgets import (
@@ -674,6 +674,15 @@ class GameLauncher(QMainWindow):
 
         layout.addLayout(github_row)
 
+        layout.addWidget(QLabel("Netplay Web API"))
+
+        net_row = QHBoxLayout()
+        self.netplay_api_choice = QComboBox()
+        self.netplay_api_choice.addItem("https://xboxpreservation.org/")
+        self.netplay_api_choice.addItem("https://xenia-netplay-2a0298c0e3f4.herokuapp.com/")
+        net_row.addWidget(self.netplay_api_choice)
+        layout.addLayout(net_row)
+
         self.xenia_manager_installed.setToolTip(
             "<b>Xenia Manager</b><br>"
             "Enable this if <b>Xenia Manager</b> is installed.<br>"
@@ -1271,7 +1280,7 @@ class GameLauncher(QMainWindow):
         self.netplay_button.clicked.connect(self.netplay_compatibility)
 
         self.browser_button = QPushButton("Show Netplay Webpage")
-        self.browser_button.clicked.connect(lambda: self.open_web_page(url="https://xenia-netplay-2a0298c0e3f4.herokuapp.com/"))
+        self.browser_button.clicked.connect(lambda: self.open_web_page(url=self.netplay_api_choice.currentText()))
 
         self.browser_close_button = QPushButton("Back to Game Manager")
         self.browser_close_button.clicked.connect(self.close_web_page)
