@@ -789,12 +789,13 @@ class XBLIG_Dialog(QDialog):
 
             # Auto extract missing games
             if game.extracted is None and game.package:
+                self.log_message(f"Extracting {game.package}")
                 extracted = self.extract_xblig_package(game)
-
                 if extracted:
                     game.extracted = extracted
+                    self.log_message(f"Success")
             else:
-                self.log_message(f"Skipping {game.get("title")}")
+                self.log_message(f"Skipping {game.title}")
 
     def log_message(self, message):
         self.log_window.append(message)
