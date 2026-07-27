@@ -1031,7 +1031,7 @@ class XBLIG_Dialog(QDialog):
         self.convert_one_btn.clicked.connect(self.convert_selected_folders)
 
         self.convert_all_btn = QPushButton("Convert (All Unconverted) Game to FNA Project")
-        self.convert_all_btn.clicked.connect(self.convert_all_folders)
+        self.convert_all_btn.clicked.connect(self.convert_folders)
 
         self.launch_btn = QPushButton("Launch")
         self.launch_btn.clicked.connect(self.launch_selected)

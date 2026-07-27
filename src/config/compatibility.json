@@ -126,14 +126,15 @@
     "issue": 1166,
     "id": "57520835",
     "title": "LEGO Marvel Super Heroes",
-    "updated": "2026-07-23T23:23:30Z",
-    "state": "Gameplay",
+    "updated": "2026-07-26T21:45:42Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
       "others": [
         "gpu-drawing-corrupt",
+        "apu-silent",
         "gpu-readback",
         "gpu-occlusion-query"
       ]
@@ -10174,7 +10175,7 @@
     "issue": 490,
     "id": "58410957",
     "title": "Call of Duty Classic",
-    "updated": "2026-07-23T23:05:14Z",
+    "updated": "2026-07-27T16:16:50Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -10209,7 +10210,7 @@
     "issue": 487,
     "id": "415608E1",
     "title": "The Walking Dead: Survival Instinct",
-    "updated": "2026-06-28T19:48:19Z",
+    "updated": "2026-07-27T17:46:29Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -10220,7 +10221,8 @@
         "apu-silent",
         "tech-engine-infernal",
         "tech-middleware-wwise",
-        "backwards-compatibility-unsupported"
+        "backwards-compatibility-unsupported",
+        "requires_render_target_rov_fsi"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/487"
@@ -10265,7 +10267,7 @@
     "issue": 484,
     "id": "464F0803",
     "title": "Sniper Elite 3: Ultimate Edition",
-    "updated": "2026-07-12T10:52:06Z",
+    "updated": "2026-07-27T17:47:10Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -10276,7 +10278,8 @@
         "cpu-timing",
         "tech-engine-asura",
         "backwards-compatibility-unsupported",
-        "crash-random"
+        "crash-random",
+        "requires_render_target_rov_fsi"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/484"
@@ -10461,7 +10464,7 @@
     "issue": 469,
     "id": "4E4D083D",
     "title": "Soulcalibur V",
-    "updated": "2026-07-20T14:04:48Z",
+    "updated": "2026-07-27T02:12:51Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -11481,7 +11484,7 @@
     "issue": 409,
     "id": "4D53084D",
     "title": "Forza Motorsport 3",
-    "updated": "2026-07-14T11:13:44Z",
+    "updated": "2026-07-27T03:15:13Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -14284,7 +14287,7 @@
     "issue": 247,
     "id": "5451082C",
     "title": "Warhammer 40,000: Space Marine",
-    "updated": "2026-07-15T11:19:34Z",
+    "updated": "2026-07-27T17:45:48Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -14296,7 +14299,8 @@
         "tech-middleware-scaleform",
         "backwards-compatibility-unsupported",
         "gpu-viz-query",
-        "gpu-occlusion-querybatch"
+        "gpu-occlusion-querybatch",
+        "requires_render_target_rov_fsi"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/247"
@@ -15057,7 +15061,7 @@
     "issue": 198,
     "id": "4C4107D1",
     "title": "LEGO Star Wars II",
-    "updated": "2024-09-21T11:04:48Z",
+    "updated": "2026-07-27T17:33:55Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -16993,7 +16997,7 @@
     "issue": 51,
     "id": "545108B4",
     "title": "WWE 13",
-    "updated": "2026-07-01T12:21:00Z",
+    "updated": "2026-07-27T07:04:25Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -17604,7 +17608,7 @@
     "issue": 6,
     "id": "4D5307DF",
     "title": "Blue Dragon",
-    "updated": "2026-07-25T06:33:52Z",
+    "updated": "2026-07-27T16:50:33Z",
     "state": "Gameplay",
     "labels": {
       "state": [
