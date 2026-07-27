@@ -642,17 +642,15 @@ class XBLIG_Dialog(QDialog):
         game = self.get_selected_game()
         if not game:
             return
-        exe = game.get("exe","")
+        exe = game.exe
         if not exe:
             QMessageBox.warning(self, "No Executable", "Extract the game first.")
             return
-
-        exe = Path(exe)
         self.log_message(f"Generating Visual Studio project for {exe.name}...")
 
         try:
             project_dir = decompile_project(exe)
-            game.decompiled = str(project_dir)
+            game.decompiled = project_dir
         except subprocess.CalledProcessError as e:
             QMessageBox.critical(self, "ILSpy", str(e))
             return
