@@ -686,45 +686,16 @@ class XBLIG_Dialog(QDialog):
                 cache = None if self.force else load_cache()
 
                 if cache and cache.get("mtime") == current_mtime:
-                    games = []
-
-                    for data in cache["games"]:
-                        games.append(
-                            XBLIGGame(
-                                title=data["title"],
-                                folder_title=data.get("folder_title"),
-                                title_id=data.get("title_id"),
-                                virtual_title_id=data.get("virtual_title_id"),
-                                xml_title_id=data.get("xml_title_id"),
-                                content_type=data.get("content_type"),
-                                content_name=data.get("content_name"),
-                                package=Path(data["package"]) if data.get("package") else None,
-                                extracted=Path(data["extracted"]) if data.get("extracted") else None,
-                                game_root=Path(data["game_root"]) if data.get("game_root") else None,
-                                exe=Path(data["exe"]) if data.get("exe") else None,
-                                xml=Path(data["xml"]) if data.get("xml") else None,
-                                decompiled=Path(data["decompiled"]) if data.get("decompiled") else None,
-                            )
-                        )
-
-                    self.log.emit(
-                        f"Loaded {len(games)} games from cache."
-                    )
-
+                    games = cache["games"]
+                    self.log.emit(f"Loaded {len(games)} games from cache.")
                 else:
                     self.log.emit("Scanning folders...")
-
                     if not self.root.exists():
                         self.log.emit(f"Folder {self.root} does not exist.")
                     else:
-                        games = self.scan_func(
-                            self.root,
-                            self.log.emit
-                        )
-
+                        games = self.scan_func(self.root, self.log.emit)
                         save_cache(games)
                         self.log.emit("Cache updated.")
-
                 self.finished.emit(games)
 
             except Exception as e:
