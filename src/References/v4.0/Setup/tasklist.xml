@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<TME xmlns="http://tempuri.org/TME.xsd">
+  <TaskProcessors>
+    <TaskProcessor Id="EXE" />
+    <TaskProcessor Id="MSI" ProgressDevianceThreshold="100" />
+    <TaskProcessor Id="NET" />
+  </TaskProcessors>
+  <TaskLists>
+    <TaskList Id="Install" DisplayName="Install">
+      <Tasks>
+        <Task Id="CopyRedistFiles" Type="MSI" Data="MsiPath=redists.msi;MsiOperation=Install;ContinueOnFailure=False" DisplayName="Copying prerequisite files" />
+        <Task Id="InstallPanoramaRedist" Type="MSI" Data="MsiPath=%_ProgramFiles%\Microsoft XNA\XNA Game Studio\v4.0\Setup\XLiveRedist.msi;MsiOperation=Install;CheckOnInstall={8FB1B528-E260-451E-9B55-E9152F94B80B};ContinueOnFailure=False" DisplayName="Installing Microsoft Games for Windows - LIVE Redistributable" />
+        <Task Id="InstallXNARedist" Type="MSI" Data="MsiPath=%_ProgramFiles%\Microsoft XNA\XNA Game Studio\v4.0\Redist\XNA FX Redist\xnafx40_redist.msi;MsiOperation=Install;CheckOnInstall={2BFC7AA0-544C-4E3A-8796-67F3BE655BE9};ContinueOnFailure=False" DisplayName="Installing XNA Framework Redistributable 4.0" />
+        <Task Id="InstallXnaLiveProxy" Type="MSI" Data="MsiPath=%_ProgramFiles%\Microsoft XNA\XNA Game Studio\v4.0\Setup\xnaliveproxy.msi;MsiOperation=Install;ContinueOnFailure=False" DisplayName="Copying XNA Game Studio files" />
+        <Task Id="InstallPlatformTools" Type="MSI" Data="MsiPath={0666E46E-A860-4353-BE6D-13AA72FABB57};MsiAlternatePath=%_ProgramFiles%\Microsoft XNA\XNA Game Studio\v4.0\Setup\xnags_platform_tools.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus;ContinueOnFailure=False" DisplayName="Installing XNA Game Studio Platform Tools" />
+        <Task Id="InstallSharedFiles" Type="MSI" Data="MsiPath=%_ProgramFiles%\Microsoft XNA\XNA Game Studio\v4.0\Setup\xnags_shared.msi;MsiOperation=Install;ContinueOnFailure=False" DisplayName="Copying XNA Game Studio files" />
+        <Task Id="InstallDocs" Type="MSI" Data="MsiPath=%_ProgramFiles%\Microsoft XNA\XNA Game Studio\v4.0\Setup\xnags_documentation.msi;MsiOperation=Install;ContinueOnFailure=False" DisplayName="Merging help documentation" />
+        <Task Id="InstallVS" Type="MSI" Data="MsiPath=%_ProgramFiles%\Microsoft XNA\XNA Game Studio\v4.0\Setup\xnags_visualstudio.msi;MsiOperation=Install;ContinueOnFailure=False" DisplayName="Installing files for Visual Studio 2010" />
+        <Task Id="InstallARP" Type="MSI" Data="MsiPath=arpentry.msi;MsiOperation=Install;ContinueOnFailure=False" DisplayName="Caching installer files" />
+      </Tasks>
+    </TaskList>
+    <TaskList Id="Reinstall" DisplayName="Reinstall">
+      <Tasks>
+        <Task Id="CopyRedistFiles" Type="MSI" Data="MsiPath={68BD57D3-D606-411E-A7E0-3EB6EA5660F6};MsiAlternatePath=redists.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus" DisplayName="Copying prerequisite files" />
+        <Task Id="InstallPanoramaRedist" Type="MSI" Data="MsiPath=%_ProgramFiles%\Microsoft XNA\XNA Game Studio\v4.0\Setup\XLiveRedist.msi;MsiOperation=Install;CheckOnInstall={8FB1B528-E260-451E-9B55-E9152F94B80B};ContinueOnFailure=False" DisplayName="Installing Microsoft Games for Windows - LIVE Redistributable" />
+        <Task Id="InstallXNARedist" Type="MSI" Data="MsiPath=%_ProgramFiles%\Microsoft XNA\XNA Game Studio\v4.0\Redist\XNA FX Redist\xnafx40_redist.msi;MsiOperation=Install;CheckOnInstall={2BFC7AA0-544C-4E3A-8796-67F3BE655BE9};ContinueOnFailure=False" DisplayName="Installing XNA Framework Redistributable 4.0" />
+        <Task Id="RepairXnaLiveProxy" Type="MSI" Data="MsiPath={01C79EF3-DE84-4B56-B638-8BEA0D507506};MsiAlternatePath=%_ProgramFiles%\Microsoft XNA\XNA Game Studio\v4.0\Setup\xnaliveproxy.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus" DisplayName="Copying XNA Game Studio files" />
+        <Task Id="RepairPlatformTools" Type="MSI" Data="MsiPath={0666E46E-A860-4353-BE6D-13AA72FABB57};MsiAlternatePath=%_ProgramFiles%\Microsoft XNA\XNA Game Studio\v4.0\Setup\xnags_platform_tools.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus" DisplayName="Installing XNA Game Studio Platform Tools" />
+        <Task Id="RepairSharedFiles" Type="MSI" Data="MsiPath={08C84CC6-E7FD-4B2D-BBF9-B02CC90EE031};MsiAlternatePath=%_ProgramFiles%\Microsoft XNA\XNA Game Studio\v4.0\Setup\xnags_shared.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus" DisplayName="Copying XNA Game Studio files" />
+        <Task Id="RepairDocs" Type="MSI" Data="MsiPath={3F4EB5FE-B5BE-4069-A5A8-6D9262E1B379};MsiAlternatePath=%_ProgramFiles%\Microsoft XNA\XNA Game Studio\v4.0\Setup\xnags_documentation.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus" DisplayName="Merging help documentation" />
+        <Task Id="RepairVS" Type="MSI" Data="MsiPath={8C496FBF-DB4A-468D-A3A1-15E127382218};MsiAlternatePath=%_ProgramFiles%\Microsoft XNA\XNA Game Studio\v4.0\Setup\xnags_visualstudio.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus" DisplayName="Installing files for Visual Studio 2010" />
+      </Tasks>
+    </TaskList>
+    <TaskList Id="Uninstall" DisplayName="Uninstall">
+      <Tasks>
+        <Task Id="RemoveSharedFiles" Type="MSI" Data="MsiPath={08C84CC6-E7FD-4B2D-BBF9-B02CC90EE031};MsiOperation=Uninstall" DisplayName="Removing XNA Game Studio files" />
+        <Task Id="RemoveXnaLiveProxy" Type="MSI" Data="MsiPath={01C79EF3-DE84-4B56-B638-8BEA0D507506};MsiOperation=Uninstall" DisplayName="Removing XNA Game Studio files" />
+        <Task Id="RemoveDocs" Type="MSI" Data="MsiPath={3F4EB5FE-B5BE-4069-A5A8-6D9262E1B379};MsiOperation=Uninstall" DisplayName="Removing help documentation" />
+        <Task Id="RemoveVS" Type="MSI" Data="MsiPath={8C496FBF-DB4A-468D-A3A1-15E127382218};MsiOperation=Uninstall" DisplayName="Removing files for Visual Studio 2010" />
+        <Task Id="RemoveRedistFiles" Type="MSI" Data="MsiPath={68BD57D3-D606-411E-A7E0-3EB6EA5660F6};MsiOperation=Uninstall" DisplayName="Removing prerequisite files" />
+        <Task Id="RemoveARP" Type="MSI" Data="MsiPath={73BE04D9-BA0E-4BAF-9C9D-677278BDB3DC};MsiOperation=Uninstall" DisplayName="Removing installer files" />
+      </Tasks>
+    </TaskList>
+  </TaskLists>
+</TME>

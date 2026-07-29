@@ -1,7 +1,11 @@
 import json
 import logging
+import random
 import shutil
 import subprocess
+from xml.etree import ElementTree as ET
+
+import time
 from dataclasses import dataclass, asdict
 from typing import cast
 
@@ -29,7 +33,65 @@ from PySide6.QtWidgets import (
     QHeaderView, QApplication, QMessageBox, QSizePolicy, QFrame, QGraphicsDropShadowEffect,
 )
 
-from convert_xna_projects import ConvertXnaProjects
+from convert_xna_projects import FNA_VERSION
+
+ALBA = Path(get_app_dir() / "assets/tools/xnb_conversion/Alba.XnaConvert.0.1.2/Alba.XnaConvert.exe")
+
+def convert_xnb_folder(content_dir, output_dir):
+    content_dir = Path(content_dir)
+    output_dir = Path(output_dir)
+    print("content_dir:", content_dir)
+    print("output_dir:", output_dir)
+
+    failed = []
+    #
+    # for xnb_file in content_dir.rglob("*.xnb"):
+    #     relative = xnb_file.relative_to(content_dir)
+    #     out_file = output_dir / relative
+    #     out_file.parent.mkdir(parents=True, exist_ok=True)
+    # print("xnb_file:", xnb_file)
+    # print("out_file:", out_file)
+    # print(f"Converting: {xnb_file}")
+
+    try:
+        result = subprocess.run(
+            [
+                str(ALBA),
+                "convert",
+                "-v", "4",
+                "-d", str(content_dir),
+                "-o", str(output_dir),
+                "-r"
+            ],
+            capture_output=True,
+            text=True
+        )
+
+        if result.returncode != 0:
+            print(f"FAILED: {content_dir}")
+            print("STDOUT:", result.stdout)
+            print("STDERR:", result.stderr)
+            failed.append(content_dir)
+        else:
+            print("OK")
+            if result.stdout.strip():
+                print(result.stdout)
+
+    except Exception as e:
+        print(f"ERROR running ALBA on {content_dir}")
+        print(e)
+        failed.append(content_dir)
+
+    print("\n===================")
+    print("Conversion complete")
+    print(f"Failed files: {len(failed)}")
+
+    if failed:
+        print("\nFailed XNB files:")
+        for f in failed:
+            print(f)
+
+    return failed
 
 
 def read_bytes(file_path: Path):
@@ -277,6 +339,8 @@ class XBLIGGame:
 
     content_type: str | None = None
     content_name: str | None = None
+    content_converted: str = "No"
+    content_format: str = "xnb content"
 
     package: Path | None = None
     extracted: Path | None = None
@@ -286,11 +350,21 @@ class XBLIGGame:
     xml: Path | None = None
     decompiled: Path | None = None
 
-    # add your remaining fields here
+    # def __init__(self):
 
     def __post_init__(self):
-        if isinstance(self.package, str):
-            self.package = Path(self.package)
+        for field in (
+                "package",
+                "extracted",
+                "game_root",
+                "exe",
+                "xml",
+                "decompiled",
+        ):
+            value = getattr(self, field)
+            if isinstance(value, str):
+                setattr(self, field, Path(value))
+
     def to_dict(self):
         data = {}
 
@@ -328,12 +402,278 @@ class XBLIGGame:
 
         return cls(**converted)
 
+
+class ConvertXnaProjects:
+
+    def __init__(self, project_path, log, games):
+        self.project_path = Path(project_path)
+        self.log = log
+        self.log_signal = Signal(log, str)
+        self.games = games
+
+    def log_message(self, message):
+        self.log(message)
+
+    def convert_xblig_to_fna(self, project_path):
+        """
+        Convert an ILSpy decompiled XBLIG XNA project to an FNA project.
+
+        - Changes target framework
+        - Removes XNA references
+        - Adds FNA NuGet package
+        - Keeps local DLL references
+        - Backs up original csproj
+        # """
+        # project_base = get_app_dir() / "downloads"
+        # self.log_message(f"Converting base {project_base} XBLIG to FNA")
+        project_path = Path(project_path)
+        self.log_message(f"Converting project {project_path} XBLIG to FNA")
+        if not project_path.exists():
+            raise FileNotFoundError(project_path)
+
+        if project_path.suffix.lower() != ".csproj":
+            raise ValueError("Expected .csproj file")
+
+        print(f"Converting: {project_path.name}")
+
+        backup = project_path.with_suffix(".xna.csproj")
+
+        if not backup.exists():
+            shutil.copy(project_path, backup)
+            print(f"Backup created: {backup.name}")
+
+        tree = ET.parse(project_path)
+        root = tree.getroot()
+
+        # MSBuild namespace handling
+        ns = ""
+
+        if root.tag.startswith("{"):
+            ns = root.tag.split("}")[0] + "}"
+
+        def tag(name):
+            return f"{ns}{name}"
+
+        # -------------------------------------------------
+        # Fix Target Framework
+        # -------------------------------------------------
+
+        for propgroup in root.findall(tag("PropertyGroup")):
+
+            target = propgroup.find(tag("TargetFramework"))
+
+            if target is not None:
+                print("  Updating framework")
+                target.text = "net8.0-windows"
+
+            lang = propgroup.find(tag("LangVersion"))
+
+            if lang is not None:
+                lang.text = "latest"
+
+        # -------------------------------------------------
+        # Remove XNA Referencesx
+        # -------------------------------------------------
+
+        xna_names = [
+            "Microsoft.Xna.Framework",
+            "Microsoft.Xna.Framework.Game",
+            "Microsoft.Xna.Framework.Graphics",
+            "Microsoft.Xna.Framework.Audio",
+            "Microsoft.Xna.Framework.Net",
+            "Microsoft.Xna.Framework.Storage",
+            "Microsoft.Xna.Framework.Xact",
+            "Microsoft.Xna.Framework.GamerServices",
+        ]
+
+        for itemgroup in root.findall(tag("ItemGroup")):
+
+            for reference in list(itemgroup.findall(tag("Reference"))):
+
+                name = reference.attrib.get("Include", "")
+
+                if any(x in name for x in xna_names):
+                    print(f"  Removing {name}")
+                    itemgroup.remove(reference)
+
+        # -------------------------------------------------
+        # Add FNA PackageReference
+        # -------------------------------------------------
+
+        has_fna = False
+
+        for package in root.findall(f".//{tag('PackageReference')}"):
+
+            if package.attrib.get("Include") == "FNA":
+                has_fna = True
+
+        if not has_fna:
+            print("  Adding FNA package")
+
+            package_group = ET.Element(tag("ItemGroup"))
+
+            package = ET.SubElement(
+                package_group,
+                tag("PackageReference")
+            )
+
+            package.attrib["Include"] = "FNA"
+            package.attrib["Version"] = FNA_VERSION
+
+            root.append(package_group)
+
+        # -------------------------------------------------
+        # Write file
+        # -------------------------------------------------
+
+        ET.indent(tree, space="  ")
+
+        tree.write(
+            project_path,
+            encoding="utf-8",
+            xml_declaration=True
+        )
+
+        print("Done\n")
+
+    def copy_content_folder(self, folder):
+        source = folder
+        destination = folder.parent / "content_backup"
+        if destination.exists() and destination.is_dir():
+            shutil.rmtree(destination)
+        shutil.copytree(source, destination)
+
+    def convert_content(self, game:XBLIGGame):
+        if game.decompiled is not None:
+            folder = game.decompiled
+            self.method_name(game)
+
+    def convert_project_single_folder(self, folder):
+        try:
+            # backup project
+            if (folder.parent.parent / "decompiled_backup").exists():
+                shutil.rmtree(folder.parent.parent / "decompiled_backup")
+            shutil.copytree(folder.parent, folder.parent.parent / "decompiled_backup")
+            self.convert_xblig_to_fna(folder)
+            self.add_xna_compat(folder.parent)
+            self.remove_xna_usings(folder.parent)
+
+        except Exception as e:
+            print(
+                f"FAILED {folder}: {e}"
+            )
+
+    def method_name(self, game:XBLIGGame):
+        if game.extracted is not None:
+            folder = game.extracted
+            content_folder = folder / "584E07D1" / "Content"
+            # self.copy_content_folder(content_folder)
+            output = content_folder.parent / "Content_Output"
+            if content_folder.exists():
+                convert_xnb_folder(content_folder, output)
+            else:
+                print(f"No Content folder found: {content_folder}")
+
+    def convert_projects_all_folders(self, folder):
+        """
+        Convert every csproj below a folder.
+        """
+
+        projects = self.get_cs_project_folders(folder)
+
+        print(f"Found {len(projects)} projects")
+
+        for project in projects:
+            try:
+                self.convert_project_single_folder(project)
+            except Exception as e:
+                print(
+                    f"FAILED {project}: {e}"
+                )
+
+    def get_cs_project_folders(self, folder) -> list[Path]:
+        folder = Path(folder)
+
+        return [
+            csproj
+            for csproj in folder.rglob("*.csproj")
+        ]
+
+    xna_using_files = [
+        "Microsoft.Xna.Framework.Net",
+        "Microsoft.Xna.Framework.GamerServices",
+        "Microsoft.Xna.Framework.Storage"
+    ]
+
+    xna_net_types = [
+        "PacketWriter",
+        "PacketReader",
+        "NetworkSession",
+        "NetworkGamer",
+        "LocalNetworkGamer",
+        "AvailableNetworkSession"
+    ]
+
+    from pathlib import Path
+    import shutil
+
+    def add_xna_compat(self, project_folder):
+        project_folder = Path(project_folder)
+
+        compat_source = Path(get_app_dir() / "assets" / "XNACompat")
+
+        compat_dest = project_folder / "XNACompat"
+
+        compat_dest.mkdir(
+            exist_ok=True
+        )
+
+        for file in compat_source.glob("*.cs"):
+            shutil.copy(
+                file,
+                compat_dest / file.name
+            )
+
+        print(
+            "Added XNA compatibility layer"
+        )
+
+    def remove_xna_usings(self, folder):
+        folder = Path(folder)
+
+        for cs in folder.rglob("*.cs"):
+
+            text = cs.read_text(
+                encoding="utf-8",
+                errors="ignore"
+            )
+
+            original = text
+
+            for u in self.xna_using_files:
+                text = text.replace(
+                    f"using {u};",
+                    ""
+                )
+
+            if text != original:
+                print("Patched", cs.name)
+
+                cs.write_text(
+                    text,
+                    encoding="utf-8"
+                )
+
+    def log(self, message):
+        print(message)
+
+
 class XBLIG_Dialog(QDialog):
 
     def find_xblig_packages(self, root: str | Path, log=None):
 
         root = Path(root)
-        games = []
+        games: list[XBLIGGame] = []
 
         STFS_MAGIC = {
             b"CON ",
@@ -612,6 +952,11 @@ class XBLIG_Dialog(QDialog):
     from dataclasses import dataclass
     from pathlib import Path
 
+    def get_random_games(self):
+        random.seed(time.time())
+        random.shuffle(self.games)
+        random_project = self.games[0]
+        return random_project
 
     def convert_selected_folders(self):
         game = self.get_selected_game()
@@ -629,19 +974,27 @@ class XBLIG_Dialog(QDialog):
             )
             return
 
-        converter = ConvertXnaProjects(get_app_dir(), self.log_message)
-        converter.convert_folder_single_folder(decompiled)
+        converter = ConvertXnaProjects(get_app_dir(), self.log_message, self.games)
+        converter.convert_project_single_folder(decompiled)
 
     def convert_folders(self):
         game = self.get_selected_game()
         root = get_app_dir() / "downloads" / "XBLIG"
-        converter = ConvertXnaProjects(get_app_dir(), self.log_message)
-        converter.convert_folder_all_folders(root)
+        converter = ConvertXnaProjects(get_app_dir(), self.log_message, self.games)
+        converter.convert_projects_all_folders(root)
+
+    def convert_content(self):
+        game = self.get_selected_game()
+        if game is not None:
+            root = get_app_dir() / "downloads" / "XBLIG"
+            converter = ConvertXnaProjects(get_app_dir(), self.log_message, self.games)
+            converter.method_name(game)
 
     def decompile_selected(self):
         game = self.get_selected_game()
         if not game:
             return
+
         exe = game.exe
         if not exe:
             QMessageBox.warning(self, "No Executable", "Extract the game first.")
@@ -787,11 +1140,12 @@ class XBLIG_Dialog(QDialog):
 
             # Auto extract missing games
             if game.extracted is None and game.package:
-                self.log_message(f"Extracting {game.package}")
+
                 extracted = self.extract_xblig_package(game)
                 if extracted:
                     game.extracted = extracted
-                    self.log_message(f"Success")
+                    self.log_message(f"Extracted {game.title} Successfully")
+                    save_cache(self.games)
             else:
                 self.log_message(f"Skipping {game.title}")
 
@@ -844,21 +1198,32 @@ class XBLIG_Dialog(QDialog):
             ready = game.exe is not None and game.xml is not None
             status = "Ready" if ready else "Needs Build"
 
+            columns = [
+                "Title",
+                "Status",
+                "Extracted",
+                "Decompiled",
+                "Executable",
+                "Content Converted",
+                "Content Format"
+            ]
+
+            d = game.decompiled.name if game.decompiled else ""
+
             self.game_table.setItem(row, 0, QTableWidgetItem(game.title))
             self.game_table.setItem(row, 1, QTableWidgetItem(status))
-            self.game_table.setItem(
-                row, 2, QTableWidgetItem("Yes" if game.extracted else "No")
-            )
-            self.game_table.setItem(
-                row, 3, QTableWidgetItem(game.exe.name if game.exe else "")
-            )
-            self.game_table.setItem(
-                row, 4,
-                QTableWidgetItem(game.decompiled.name if game.decompiled else "")
-            )
+            self.game_table.setItem(row, 2, QTableWidgetItem("Yes" if game.extracted else "No"))
+            self.game_table.setItem(row, 4, QTableWidgetItem(game.exe.name if game.exe else ""))
+            self.game_table.setItem(row, 3, QTableWidgetItem(d))
+            self.game_table.setItem(row, 5, QTableWidgetItem(game.content_converted))
+            self.game_table.setItem(row, 6, QTableWidgetItem(game.content_format))
 
     def build_selected(self):
-        self.log_message("Building selected game...")
+        self.log_message("Decompiling selected game...")
+        self.decompile_selected()
+
+    def build_content(self):
+        self.log_message("Building Game Content...")
         self.decompile_selected()
 
     def launch_selected(self):
@@ -1024,8 +1389,14 @@ class XBLIG_Dialog(QDialog):
         self.extract_btn = QPushButton("Extract Missing")
         self.extract_btn.clicked.connect(self.extract_missing)
 
-        self.build_btn = QPushButton("Build Game")
+        self.build_btn = QPushButton("Decompile Game")
         self.build_btn.clicked.connect(self.build_selected)
+
+        self.random_btn = QPushButton("Random Game")
+        self.random_btn.clicked.connect(self.build_selected)
+
+        self.build_content_btn = QPushButton("Convert Content")
+        self.build_content_btn.clicked.connect(self.convert_content)
 
         self.convert_one_btn = QPushButton("Convert (Selected) Game to FNA Project")
         self.convert_one_btn.clicked.connect(self.convert_selected_folders)
@@ -1054,6 +1425,8 @@ class XBLIG_Dialog(QDialog):
         toolbar.addWidget(self.refresh_btn)
         toolbar.addWidget(self.open_folder_btn)
         toolbar.addWidget(self.close_btn)
+        toolbar.addWidget(self.random_btn)
+        toolbar.addWidget(self.build_content_btn)
         toolbar.addStretch()
 
         main_layout.addLayout(toolbar)
@@ -1081,15 +1454,18 @@ class XBLIG_Dialog(QDialog):
         # Game Table
         #
 
-        self.game_table = QTableWidget(0, 5)
+        self.game_table = QTableWidget(0, 7)
 
-        self.game_table.setHorizontalHeaderLabels([
+        columns = [
             "Title",
             "Status",
             "Extracted",
-            "Executable",
             "Decompiled",
-        ])
+            "Executable",
+            "Content Converted",
+            "Content Format"
+        ]
+        self.game_table.setHorizontalHeaderLabels(columns)
 
         header = self.game_table.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
@@ -1097,6 +1473,8 @@ class XBLIG_Dialog(QDialog):
         header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(4, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(5, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(6, QHeaderView.ResizeMode.ResizeToContents)
 
         self.game_table.setSelectionBehavior(QTableWidget.SelectRows)
         self.game_table.setSelectionMode(QTableWidget.SingleSelection)
@@ -1157,3 +1535,5 @@ if __name__ == "__main__":
     #
     # exe = Path(get_app_dir() / "downloads" / "XBLIG" / "Alien Jelly (World) (XBLIG)/584E07D2/00000002/62F2648203AAB1C526B538091DF3BBE8CFC6E7E758_extracted/584E07D1/Game.exe")
     # if exe.exists(): read_bytes(exe)
+
+

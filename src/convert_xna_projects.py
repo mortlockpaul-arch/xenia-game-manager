@@ -1,253 +1,87 @@
-from pathlib import Path
-import xml.etree.ElementTree as ET
-import shutil
-
-from PySide6.QtCore import Signal
-
 from config import get_app_dir
 
 FNA_VERSION = "25.0.0"
 
-class ConvertXnaProjects:
+from pathlib import Path
+import shutil
 
-    def __init__(self, project_path, log):
-        self.project_path = Path(project_path)
-        self.log = log
-        self.log_signal = Signal(log, str)
+DEST = Path("References")
 
-    def log_message(self, message):
-        self.log(message)
+GAC_FOLDERS = [
+    Path(r"C:\Windows\assembly"),
+    Path(r"C:\Windows\Microsoft.NET\assembly"),
+    Path(r"C:\WINDOWS\assembly\GAC_32")
+]
 
-    def convert_xblig_to_fna(self, project_path):
-        """
-        Convert an ILSpy decompiled XBLIG XNA project to an FNA project.
-
-        - Changes target framework
-        - Removes XNA references
-        - Adds FNA NuGet package
-        - Keeps local DLL references
-        - Backs up original csproj
-        # """
-        # project_base = get_app_dir() / "downloads"
-        # self.log_message(f"Converting base {project_base} XBLIG to FNA")
-        project_path = Path(project_path)
-        self.log_message(f"Converting project {project_path} XBLIG to FNA")
-        if not project_path.exists():
-            raise FileNotFoundError(project_path)
-
-        if project_path.suffix.lower() != ".csproj":
-            raise ValueError("Expected .csproj file")
-
-        print(f"Converting: {project_path.name}")
-
-        backup = project_path.with_suffix(".xna.csproj")
-
-        if not backup.exists():
-            shutil.copy(project_path, backup)
-            print(f"Backup created: {backup.name}")
-
-        tree = ET.parse(project_path)
-        root = tree.getroot()
-
-        # MSBuild namespace handling
-        ns = ""
-
-        if root.tag.startswith("{"):
-            ns = root.tag.split("}")[0] + "}"
-
-        def tag(name):
-            return f"{ns}{name}"
-
-        # -------------------------------------------------
-        # Fix Target Framework
-        # -------------------------------------------------
-
-        for propgroup in root.findall(tag("PropertyGroup")):
-
-            target = propgroup.find(tag("TargetFramework"))
-
-            if target is not None:
-                print("  Updating framework")
-                target.text = "net8.0-windows"
-
-            lang = propgroup.find(tag("LangVersion"))
-
-            if lang is not None:
-                lang.text = "latest"
-
-        # -------------------------------------------------
-        # Remove XNA References
-        # -------------------------------------------------
-
-        xna_names = [
-            "Microsoft.Xna.Framework",
-            "Microsoft.Xna.Framework.Game",
-            "Microsoft.Xna.Framework.Graphics",
-            "Microsoft.Xna.Framework.Audio",
-            "Microsoft.Xna.Framework.Net",
-            "Microsoft.Xna.Framework.Storage",
-            "Microsoft.Xna.Framework.Xact",
-            "Microsoft.Xna.Framework.GamerServices",
-        ]
-
-        for itemgroup in root.findall(tag("ItemGroup")):
-
-            for reference in list(itemgroup.findall(tag("Reference"))):
-
-                name = reference.attrib.get("Include", "")
-
-                if any(x in name for x in xna_names):
-                    print(f"  Removing {name}")
-                    itemgroup.remove(reference)
-
-        # -------------------------------------------------
-        # Add FNA PackageReference
-        # -------------------------------------------------
-
-        has_fna = False
-
-        for package in root.findall(f".//{tag('PackageReference')}"):
-
-            if package.attrib.get("Include") == "FNA":
-                has_fna = True
-
-        if not has_fna:
-            print("  Adding FNA package")
-
-            package_group = ET.Element(tag("ItemGroup"))
-
-            package = ET.SubElement(
-                package_group,
-                tag("PackageReference")
-            )
-
-            package.attrib["Include"] = "FNA"
-            package.attrib["Version"] = FNA_VERSION
-
-            root.append(package_group)
-
-        # -------------------------------------------------
-        # Write file
-        # -------------------------------------------------
-
-        ET.indent(tree, space="  ")
-
-        tree.write(
-            project_path,
-            encoding="utf-8",
-            xml_declaration=True
-        )
-
-        print("Done\n")
-
-    def convert_folder_single_folder(self, folder):
-        try:
-            self.convert_xblig_to_fna(folder)
-            self.add_xna_compat(folder.parent)
-        except Exception as e:
-            print(
-                f"FAILED {folder}: {e}"
-            )
-
-    def convert_folder_all_folders(self, folder):
-        """
-        Convert every csproj below a folder.
-        """
-
-        projects = self.get_project_folders(folder)
-
-        print(f"Found {len(projects)} projects")
-
-        for project in projects:
-            try:
-                self.convert_xblig_to_fna(project)
-                self.add_xna_compat(project.parent)
-            except Exception as e:
-                print(
-                    f"FAILED {project}: {e}"
-                )
-
-    def get_project_folders(self, folder) -> list[Path]:
-        folder = Path(folder)
-
-        projects = list(folder.rglob("*.csproj"))
-        return projects
-
-    xna_using_files = [
-        "Microsoft.Xna.Framework.Net",
-        "Microsoft.Xna.Framework.GamerServices",
-        "Microsoft.Xna.Framework.Storage"
+def find_xna_assemblies():
+    roots = [
+        r"C:\Windows\assembly",
+        r"C:\Windows\Microsoft.NET\assembly",
     ]
 
-    xna_net_types = [
-        "PacketWriter",
-        "PacketReader",
-        "NetworkSession",
-        "NetworkGamer",
-        "LocalNetworkGamer",
-        "AvailableNetworkSession"
-    ]
+    assemblies = {}
 
-    from pathlib import Path
-    import shutil
+    for root in roots:
+        if not os.path.exists(root):
+            continue
 
-    def add_xna_compat(self, project_folder):
-        project_folder = Path(project_folder)
+        for dirpath, _, filenames in os.walk(root):
+            for filename in filenames:
+                if filename.startswith("Microsoft.Xna.") and filename.endswith(".dll"):
+                    path = Path(dirpath) / filename
+                    assemblies.setdefault(filename, []).append(path)
 
-        compat_source = Path(get_app_dir() / "assets" / "XNACompat")
+    return assemblies
 
-        compat_dest = project_folder / "XNACompat"
 
-        compat_dest.mkdir(
-            exist_ok=True
-        )
+def method_name():
+    assemblies = find_xna_assemblies()
+    for name, paths in sorted(assemblies.items()):
+        print(name)
+        for p in paths:
+            print("   ", p)
 
-        for file in compat_source.glob("*.cs"):
-            shutil.copy(
-                file,
-                compat_dest / file.name
-            )
+def copy_xna_assemblies():
+    DEST.mkdir(exist_ok=True)
 
-        print(
-            "Added XNA compatibility layer"
-        )
+    assemblies = find_xna_assemblies()
 
-    def remove_xna_usings(self, folder):
-        folder = Path(folder)
+    if not assemblies:
+        print("No XNA assemblies found.")
+        return
 
-        for cs in folder.rglob("*.cs"):
+    print(f"Found {len(assemblies)} assemblies:\n")
 
-            text = cs.read_text(
-                encoding="utf-8",
-                errors="ignore"
-            )
+    for name, paths in assemblies.items():
+        for src in paths:
+            version = src.parent.name.replace("__", "_")
+            dst = DEST / version
+            dst.mkdir(parents=True, exist_ok=True)
 
-            original = text
+            shutil.copy2(src, dst / name)
+            print(f"Copied {name}")
+            print(f"    {src}")
 
-            for u in xna_using_files:
-                text = text.replace(
-                    f"using {u};",
-                    ""
-                )
+    print(f"\nDone. Assemblies copied to {DEST.resolve()}")
 
-            if text != original:
-                print("Patched", cs.name)
-
-                cs.write_text(
-                    text,
-                    encoding="utf-8"
-                )
-
-    def log(self, message):
-        print(message)
+def copy_check_xna_assemblies():
+    assembly_folder = root / "References"
+    if not assembly_folder.exists():
+        copy_xna_assemblies()
 
 if __name__ == "__main__":
+    root = get_app_dir()
+    copy_check_xna_assemblies()
+
     def log(message):
         print(message)
-    all_folders = False
-    project_base = get_app_dir() / "downloads"
-    converter = ConvertXnaProjects(get_app_dir(), log)
-    projects = converter.get_project_folders(project_base)
-    convert_project = projects[6]
-    converter.convert_folder_single_folder(convert_project)
-    if all_folders: converter.convert_folder_all_folders(get_app_dir() / "downloads")
+
+    # project_base = root / "downloads"
+    # converter = ConvertXnaProjects(root, log)
+    # projects = converter.get_cs_project_folders(project_base)
+    #
+    # if not projects:
+    #     print("No projects found")
+    #     exit(1)
+
+    # Error: Could not find reference: Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=51c3bfb2db46012c

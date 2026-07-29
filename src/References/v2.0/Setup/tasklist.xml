@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<TME xmlns="http://tempuri.org/TME.xsd">
+  <TaskProcessors>
+    <TaskProcessor Id="EXE" />
+    <TaskProcessor Id="MSI" ProgressDevianceThreshold="100" />
+    <TaskProcessor Id="NET" />
+  </TaskProcessors>
+  <TaskLists>
+    <TaskList Id="Install" DisplayName="Install">
+      <Tasks>
+        <Task Id="CopyRedistFiles" Type="MSI" Data="MsiPath=redists.msi;MsiOperation=Install;ContinueOnFailure=False" DisplayName="Copying prerequisite files" />
+        <Task Id="InstallOrRepairPanoramaRedist" Type="MSI" Data="MsiPath={D1B01DC9-CBAF-45F9-A387-7D00C11B630E};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v2.0\Setup\XLiveRedist.msi;MsiOperation=Repair;ContinueOnFailure=False" DisplayName="Installing Games for Windows - LIVE Redist" />
+        <Task Id="RunDXRedistSetup" Type="EXE" Data="=@EXEPath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v2.0\Redist\DX Redist\DXSETUP.exe@EXEArguments=/silent@ReturnAction=FailOnNonZero@RebootOnReturnCode=1" DisplayName="Installing DirectX Redist" />
+        <Task Id="InstallOrRepairXNARedist" Type="MSI" Data="MsiPath={245F6C7A-0C22-4de0-8202-2AAA620A1D3A};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v2.0\Redist\XNA FX Redist\xnafx20_redist.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus;ContinueOnFailure=False" DisplayName="Installing XNA Game Studio 2.0 Redist" />
+        <Task Id="InstallXnaLiveProxy" Type="MSI" Data="MsiPath=xnaliveproxy.msi;MsiOperation=Install;ContinueOnFailure=False" DisplayName="Copying XNA Game Studio files" />
+        <Task Id="InstallSharedFiles" Type="MSI" Data="MsiPath=xnags_shared.msi;MsiOperation=Install;ContinueOnFailure=False" DisplayName="Copying XNA Game Studio files" />
+        <Task Id="InstallSpacewars" Type="MSI" Data="MsiPath=spacewar.msi;MsiOperation=Install;ContinueOnFailure=False" DisplayName="Copying starter kits" />
+        <Task Id="InstallDocs" Type="MSI" Data="MsiPath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v2.0\Setup\xnags_documentation.msi;MsiOperation=Install;ContinueOnFailure=False" DisplayName="Merging help documentation" />
+        <Task Id="InstallExpress" Type="MSI" Data="MsiPath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v2.0\Setup\xnags_vcsexpress.msi;MsiOperation=Install;ContinueOnFailure=True" DisplayName="Installing files for C# 2005 Express" />
+        <Task Id="InstallUplevel" Type="MSI" Data="MsiPath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v2.0\Setup\xnags_devenv.msi;MsiOperation=Install;ContinueOnFailure=True" DisplayName="Installing files for Visual Studio 2005" />
+        <Task Id="InstallARP" Type="MSI" Data="MsiPath=arpentry.msi;MsiOperation=Install;ContinueOnFailure=False" DisplayName="Caching installer files" />
+      </Tasks> 
+    </TaskList>
+    <TaskList Id="Reinstall" DisplayName="Reinstall">
+      <Tasks>
+        <Task Id="CopyRedistFiles" Type="MSI" Data="MsiPath={31EA6FCB-6C53-4ba7-BE88-9BA788899C2C};MsiOperation=Repair" DisplayName="Copying prerequisite files" />
+        <Task Id="RepairPanoramaRedist" Type="MSI" Data="MsiPath={D1B01DC9-CBAF-45F9-A387-7D00C11B630E};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v2.0\Setup\XLiveRedist.msi;MsiOperation=Repair" DisplayName="Installing Games for Windows - LIVE Redist" />
+        <Task Id="RunDXRedistSetup" Type="EXE" Data="=@EXEPath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v2.0\Redist\DX Redist\DXSETUP.exe@EXEArguments=/silent@ReturnAction=FailOnNonZero@RebootOnReturnCode=1" DisplayName="Installing DirectX Redist"/>
+        <Task Id="RepairXNARedist" Type="MSI" Data="MsiPath={245F6C7A-0C22-4DE0-8202-2AAA620A1D3A};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v2.0\Redist\XNA FX Redist\xnafx20_redist.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus;ContinueOnFailure=False" DisplayName="Installing XNA Game Studio 2.0 Redist" />
+        <Task Id="RepairXnaLiveProxy" Type="MSI" Data="MsiPath={9B96628C-8898-4FEd-9612-25631C27AB13};MsiOperation=Repair" DisplayName="Copying XNA Game Studio files" />
+        <Task Id="RepairSharedFiles" Type="MSI" Data="MsiPath={C18DA187-6C0D-4B8E-99AE-74D5C588AFB6};MsiOperation=Repair" DisplayName="Copying XNA Game Studio files" />
+        <Task Id="RepairSpacewars" Type="MSI" Data="MsiPath={3432C2AA-BB3E-44B3-B5ED-EF36E0241100};MsiOperation=Repair" DisplayName="Copying starter kits" />
+        <Task Id="RepairDocs" Type="MSI" Data="MsiPath={3B5A6E00-2B27-4E1A-8A33-E3A40DEFD4DC};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v2.0\Setup\xnags_documentation.msi;MsiOperation=Repair" DisplayName="Merging help documentation" />
+        <Task Id="RepairExpress" Type="MSI" Data="MsiPath={C357E2C9-091F-4B12-BB1C-2E7B19112BC4};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v2.0\Setup\xnags_vcsexpress.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus" DisplayName="Installing files for C# 2005 Express" />
+        <Task Id="RepairUplevel" Type="MSI" Data="MsiPath={2A5A6D00-2B27-4E1A-8A33-E3A40DFDF3EB};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v2.0\Setup\xnags_devenv.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus" DisplayName="Installing files for Visual Studio 2005" />
+      </Tasks>
+    </TaskList>
+    <TaskList Id="Uninstall" DisplayName="Uninstall">
+      <Tasks>
+        <Task Id="RemoveSharedFiles" Type="MSI" Data="MsiPath={C18DA187-6C0D-4b8e-99AE-74D5C588AFB6};MsiOperation=Uninstall" DisplayName="Removing XNA Game Studio files" />
+        <Task Id="RemoveXnaLiveProxy" Type="MSI" Data="MsiPath={9B96628C-8898-4FEd-9612-25631C27AB13};MsiOperation=Uninstall" DisplayName="Removing XNA Game Studio files" />
+        <Task Id="RemoveSpacewars" Type="MSI" Data="MsiPath={3432C2AA-BB3E-44B3-B5ED-EF36E0241100};MsiOperation=Uninstall" DisplayName="Removing starter kits" />
+        <Task Id="RemoveDocs" Type="MSI" Data="MsiPath={3B5A6E00-2B27-4E1A-8A33-E3A40DEFD4DC};MsiOperation=Uninstall" DisplayName="Removing help documentation" />
+        <Task Id="RemoveUplevel" Type="MSI" Data="MsiPath={2A5A6D00-2B27-4E1A-8A33-E3A40DFDF3EB};MsiOperation=Uninstall" DisplayName="Removing files for Visual Studio 2005" />
+        <Task Id="RemoveExpress" Type="MSI" Data="MsiPath={C357E2C9-091F-4B12-BB1C-2E7B19112BC4};MsiOperation=Uninstall" DisplayName="Removing files for C# 2005 Express" />
+        <Task Id="RemoveRedistFiles" Type="MSI" Data="MsiPath={31EA6FCB-6C53-4BA7-BE88-9BA788899C2C};MsiOperation=Uninstall" DisplayName="Removing redist files" />
+        <Task Id="RemoveARP" Type="MSI" Data="MsiPath={070B87FB-CD1A-45AA-9E5E-484E5964C6ED};MsiOperation=Uninstall" DisplayName="Removing installer files" />
+      </Tasks>
+    </TaskList>
+  </TaskLists>
+</TME>
