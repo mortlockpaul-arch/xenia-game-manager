@@ -1327,7 +1327,7 @@ class XBLIG_Dialog(QDialog):
                 content_dir,
                 game.decompiled / "Content",
             )
-            
+
         # if options["convert_content"]:
         #
         # if options["convert_csproj"]:
