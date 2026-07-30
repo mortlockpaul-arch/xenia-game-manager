@@ -13,6 +13,41 @@ GAC_FOLDERS = [
     Path(r"C:\WINDOWS\assembly\GAC_32")
 ]
 
+from dataclasses import dataclass
+import struct
+
+@dataclass
+class XNBHeader:
+    platform: str
+    version: int
+    flags: int
+    file_size: int
+
+def read_header(f):
+    if f.read(3) != b"XNB":
+        raise ValueError("Not an XNB")
+
+    platform = f.read(1).decode("ascii")
+    version = struct.unpack("<B", f.read(1))[0]
+    flags = struct.unpack("<B", f.read(1))[0]
+    file_size = struct.unpack("<I", f.read(4))[0]
+
+    return XNBHeader(platform, version, flags, file_size)
+
+with open("MainMenu.xnb", "rb") as f:
+    header = read_header(f)
+    print(header)
+
+def inspect_xnb():
+    with open("MenuWheel.xnb", "rb") as f:
+        magic = f.read(3)
+        platform = chr(f.read(1)[0])
+        version = f.read(1)[0]
+        flags = f.read(1)[0]
+        size = int.from_bytes(f.read(4), "little")
+
+    print(magic, platform, version, flags, size)
+
 def find_xna_assemblies():
     roots = [
         r"C:\Windows\assembly",
@@ -70,8 +105,8 @@ def copy_check_xna_assemblies():
         copy_xna_assemblies()
 
 if __name__ == "__main__":
-    root = get_app_dir()
-    copy_check_xna_assemblies()
+    # root = get_app_dir()
+    # copy_check_xna_assemblies()
 
     def log(message):
         print(message)

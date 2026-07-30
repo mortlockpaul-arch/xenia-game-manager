@@ -30,18 +30,28 @@ from PySide6.QtWidgets import (
     QTextEdit,
     QFormLayout,
     QGroupBox,
-    QHeaderView, QApplication, QMessageBox, QSizePolicy, QFrame, QGraphicsDropShadowEffect,
+    QHeaderView, QApplication, QMessageBox, QSizePolicy, QFrame, QGraphicsDropShadowEffect, QCheckBox,
 )
 
 from convert_xna_projects import FNA_VERSION
 
-ALBA = Path(get_app_dir() / "assets/tools/xnb_conversion/Alba.XnaConvert.0.1.2/Alba.XnaConvert.exe")
+def convert_xnb_folder_alba(game:XBLIGGame):
+    if game.extracted is None:
+        print(f"Game not extracted: {game}")
+        return None
+    folder = game.extracted
+    content_dir = folder / "584E07D1" / "Content"
+    # copy_content_folder(content_dir)
+    output_dir = content_dir.parent / "Content_Output"
+    if not content_dir.exists():
+        print(f"No Content folder found: {content_dir}")
 
-def convert_xnb_folder(content_dir, output_dir):
     content_dir = Path(content_dir)
     output_dir = Path(output_dir)
     print("content_dir:", content_dir)
     print("output_dir:", output_dir)
+
+    alba = Path(get_app_dir() / "assets/tools/xnb_conversion/Alba.XnaConvert.0.1.2/Alba.XnaConvert.exe")
 
     failed = []
     #
@@ -56,7 +66,7 @@ def convert_xnb_folder(content_dir, output_dir):
     try:
         result = subprocess.run(
             [
-                str(ALBA),
+                str(alba),
                 "convert",
                 "-v", "4",
                 "-d", str(content_dir),
@@ -160,8 +170,6 @@ def move_folders_to_type(root):
 from pathlib import Path
 import subprocess
 
-ILSPY_CMD = get_app_dir() / "assets" / "tools" / "ILSpy" / "ILSpyCmd.exe"
-ILSPY_GUI = get_app_dir() / "assets"/ "tools" / "ILSpy" / "ILSpy.exe"
 
 import os
 
@@ -174,14 +182,16 @@ def open_solution(project_dir: Path):
 def decompile_project(exe: Path):
     output_dir = exe.parent.parent.parent / "decompiled"
     output_dir.mkdir(exist_ok=True)
+    ilspy_cmd = get_app_dir() / "assets" / "tools" / "ILSpy" / "ILSpyCmd.exe"
+    ilspy_gui = get_app_dir() / "assets" / "tools" / "ILSpy" / "ILSpy.exe"
 
     subprocess.run(
         [
-            str(ILSPY_CMD),
+            str(ilspy_cmd),
             str(exe),
-            "--project",
-            "-o",
-            str(output_dir),
+            "-p",
+            "-o",str(output_dir),
+            "-l","latest"
         ],
         check=True,
     )
@@ -403,6 +413,14 @@ class XBLIGGame:
         return cls(**converted)
 
 
+def copy_content_folder(folder, dest):
+    source = folder
+    # destination = folder.parent / "content_backup"
+    # if destination.exists() and destination.is_dir():
+    #     shutil.rmtree(destination)
+    shutil.copytree(folder, dest)
+
+
 class ConvertXnaProjects:
 
     def __init__(self, project_path, log, games):
@@ -536,17 +554,10 @@ class ConvertXnaProjects:
 
         print("Done\n")
 
-    def copy_content_folder(self, folder):
-        source = folder
-        destination = folder.parent / "content_backup"
-        if destination.exists() and destination.is_dir():
-            shutil.rmtree(destination)
-        shutil.copytree(source, destination)
-
-    def convert_content(self, game:XBLIGGame):
-        if game.decompiled is not None:
-            folder = game.decompiled
-            self.method_name(game)
+    # def convert_content(self, game:XBLIGGame):
+    #     if game.decompiled is not None:
+    #         folder = game.decompiled
+    #         self.method_name(game)
 
     def convert_project_single_folder(self, folder):
         try:
@@ -563,16 +574,16 @@ class ConvertXnaProjects:
                 f"FAILED {folder}: {e}"
             )
 
-    def method_name(self, game:XBLIGGame):
-        if game.extracted is not None:
-            folder = game.extracted
-            content_folder = folder / "584E07D1" / "Content"
-            # self.copy_content_folder(content_folder)
-            output = content_folder.parent / "Content_Output"
-            if content_folder.exists():
-                convert_xnb_folder(content_folder, output)
-            else:
-                print(f"No Content folder found: {content_folder}")
+    # def method_name(self, game:XBLIGGame):
+    #     if game.extracted is not None:
+    #         folder = game.extracted
+    #         content_folder = folder / "584E07D1" / "Content"
+    #         # self.copy_content_folder(content_folder)
+    #         output = content_folder.parent / "Content_Output"
+    #         if content_folder.exists():
+    #
+    #         else:
+    #             print(f"No Content folder found: {content_folder}")
 
     def convert_projects_all_folders(self, folder):
         """
@@ -988,12 +999,12 @@ class XBLIG_Dialog(QDialog):
         if game is not None:
             root = get_app_dir() / "downloads" / "XBLIG"
             converter = ConvertXnaProjects(get_app_dir(), self.log_message, self.games)
-            converter.method_name(game)
+            convert_xnb_folder_alba(game)
 
-    def decompile_selected(self):
-        game = self.get_selected_game()
-        if not game:
-            return
+    def decompile_selected(self, game:XBLIGGame, open_explorer:bool=True):
+        # game = self.get_selected_game()
+        # if not game:
+        #     return
 
         exe = game.exe
         if not exe:
@@ -1010,7 +1021,7 @@ class XBLIG_Dialog(QDialog):
 
         self.log_message("Visual Studio project created.")
 
-        subprocess.Popen(["explorer", str(project_dir)])
+        if open_explorer: subprocess.Popen(["explorer", str(project_dir)])
 
     from PySide6.QtCore import QObject, QThread, Signal
 
@@ -1218,13 +1229,115 @@ class XBLIG_Dialog(QDialog):
             self.game_table.setItem(row, 5, QTableWidgetItem(game.content_converted))
             self.game_table.setItem(row, 6, QTableWidgetItem(game.content_format))
 
-    def build_selected(self):
-        self.log_message("Decompiling selected game...")
-        self.decompile_selected()
+    from PySide6.QtWidgets import (
+        QDialog,
+        QVBoxLayout,
+        QGroupBox,
+        QCheckBox,
+        QPushButton,
+        QHBoxLayout,
+        QApplication,
+    )
 
-    def build_content(self):
-        self.log_message("Building Game Content...")
-        self.decompile_selected()
+    class BuildSelectedDialog(QDialog):
+        def __init__(self, parent=None):
+            super().__init__(parent)
+
+            self.setWindowTitle("Build Selected Game")
+            self.resize(420, 280)
+
+            layout = QVBoxLayout(self)
+
+            # Build options
+            options_group = QGroupBox("Build Options")
+            options_layout = QVBoxLayout(options_group)
+
+            self.decompile_check = QCheckBox("Decompile executable")
+            self.convert_csproj_check = QCheckBox("Convert project (.csproj)")
+            self.convert_content_check = QCheckBox("Convert XNA content")
+            self.open_vs_check = QCheckBox("Open project in Visual Studio")
+            self.open_explorer_check = QCheckBox("Open project folder in Explorer")
+
+            # Sensible defaults
+            self.decompile_check.setChecked(True)
+            self.convert_csproj_check.setChecked(True)
+            self.convert_content_check.setChecked(True)
+
+            options_layout.addWidget(self.decompile_check)
+            options_layout.addWidget(self.convert_csproj_check)
+            options_layout.addWidget(self.convert_content_check)
+            options_layout.addWidget(self.open_vs_check)
+            options_layout.addWidget(self.open_explorer_check)
+
+            layout.addWidget(options_group)
+
+            layout.addStretch()
+
+            # Buttons
+            button_layout = QHBoxLayout()
+            button_layout.addStretch()
+
+            self.run_button = QPushButton("Run")
+            self.cancel_button = QPushButton("Cancel")
+
+            self.run_button.clicked.connect(self.accept)
+            self.cancel_button.clicked.connect(self.reject)
+
+            button_layout.addWidget(self.run_button)
+            button_layout.addWidget(self.cancel_button)
+
+            layout.addLayout(button_layout)
+
+        def options(self):
+            """Return selected options."""
+            return {
+                "decompile": self.decompile_check.isChecked(),
+                "convert_csproj": self.convert_csproj_check.isChecked(),
+                "convert_content": self.convert_content_check.isChecked(),
+                "open_visual_studio": self.open_vs_check.isChecked(),
+                "open_explorer": self.open_explorer_check.isChecked(),
+            }
+
+
+    def build_selected(self):
+        game = self.get_selected_game()
+        if not game:
+            return
+        if game.extracted is None:
+            self.log_message("Extracted game not found.")
+            return
+        # decompile options
+        # convert csproj
+        # convert content
+        # open in visual studio
+        # open in explorer
+        # run button cancel button
+        dlg = self.BuildSelectedDialog()
+        if not dlg.exec():
+            return
+
+        options = dlg.options()
+
+        if options["decompile"]:
+            self.log_message("Decompiling selected game...")
+            self.decompile_selected(game)
+            assert game.decompiled is not None
+            content_dir = game.extracted / "584E07D1" / "Content"
+            copy_content_folder(
+                content_dir,
+                game.decompiled / "Content",
+            )
+            
+        # if options["convert_content"]:
+        #
+        # if options["convert_csproj"]:
+        #
+        # if options["open_visual_studio"]:
+
+        # folder = game.extracted
+        # content_dir = folder / "584E07D1" / "Content"
+        # assert game.decompiled is not None
+        # copy_content_folder(content_dir, game.decompiled / "Content")
 
     def launch_selected(self):
         self.log_message("Launching selected game...")
@@ -1395,11 +1508,11 @@ class XBLIG_Dialog(QDialog):
         self.random_btn = QPushButton("Random Game")
         self.random_btn.clicked.connect(self.build_selected)
 
-        self.build_content_btn = QPushButton("Convert Content")
-        self.build_content_btn.clicked.connect(self.convert_content)
-
-        self.convert_one_btn = QPushButton("Convert (Selected) Game to FNA Project")
-        self.convert_one_btn.clicked.connect(self.convert_selected_folders)
+        # self.build_content_btn = QPushButton("Convert Content")
+        # self.build_content_btn.clicked.connect(self.convert_content)
+        #
+        # self.convert_one_btn = QPushButton("Convert (Selected) Game to FNA Project")
+        # self.convert_one_btn.clicked.connect(self.convert_selected_folders)
 
         self.convert_all_btn = QPushButton("Convert (All Unconverted) Game to FNA Project")
         self.convert_all_btn.clicked.connect(self.convert_folders)
@@ -1419,14 +1532,12 @@ class XBLIG_Dialog(QDialog):
         toolbar.addWidget(self.scan_btn)
         toolbar.addWidget(self.extract_btn)
         toolbar.addWidget(self.build_btn)
-        toolbar.addWidget(self.convert_one_btn)
         toolbar.addWidget(self.convert_all_btn)
         toolbar.addWidget(self.launch_btn)
         toolbar.addWidget(self.refresh_btn)
         toolbar.addWidget(self.open_folder_btn)
         toolbar.addWidget(self.close_btn)
         toolbar.addWidget(self.random_btn)
-        toolbar.addWidget(self.build_content_btn)
         toolbar.addStretch()
 
         main_layout.addLayout(toolbar)

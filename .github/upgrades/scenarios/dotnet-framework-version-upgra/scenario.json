@@ -1,0 +1,9 @@
+{
+  "scenarioId": "dotnet-framework-version-upgrade",
+  "operationId": "a114e041-2200-4710-8fc6-d815bc9bccd4",
+  "description": "Upgrade .NET Framework projects to .NET Framework 4.8.1 (net481), staying on full .NET Framework without migrating to modern .NET (net8.0\u002B). Use when user explicitly asks to upgrade to .NET Framework 4.8.1, upgrade to the latest .NET Framework version, or stay on full/Windows .NET Framework. Preserves legacy vs SDK-style project format unless the user explicitly requests SDK-style conversion.\n",
+  "startTime": "2026-07-30T20:54:15.8515034Z",
+  "lastUpdateTime": "2026-07-30T20:54:15.9345221Z",
+  "properties": {},
+  "folderPath": ""
+}
