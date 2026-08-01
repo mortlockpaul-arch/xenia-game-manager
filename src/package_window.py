@@ -3,6 +3,7 @@ import logging
 import random
 import shutil
 import subprocess
+from functools import partial
 from xml.etree import ElementTree as ET
 
 import time
@@ -30,7 +31,8 @@ from PySide6.QtWidgets import (
     QTextEdit,
     QFormLayout,
     QGroupBox,
-    QHeaderView, QApplication, QMessageBox, QSizePolicy, QFrame, QGraphicsDropShadowEffect, QCheckBox,
+    QHeaderView, QApplication, QMessageBox, QSizePolicy, QFrame, QGraphicsDropShadowEffect, QCheckBox, QButtonGroup,
+    QRadioButton,
 )
 
 from convert_xna_projects import FNA_VERSION
@@ -178,23 +180,30 @@ def open_solution(project_dir: Path):
         os.startfile(csproj)
         return
 
+from pathlib import Path
+import subprocess
 
-def decompile_project(exe: Path):
+
+def decompile_project(exe: Path, use_gui: bool = False) -> Path:
     output_dir = exe.parent.parent.parent / "decompiled"
-    output_dir.mkdir(exist_ok=True)
-    ilspy_cmd = get_app_dir() / "assets" / "tools" / "ILSpy" / "ILSpyCmd.exe"
-    ilspy_gui = get_app_dir() / "assets" / "tools" / "ILSpy" / "ILSpy.exe"
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-    subprocess.run(
-        [
-            str(ilspy_cmd),
-            str(exe),
-            "-p",
-            "-o",str(output_dir),
-            "-l","latest"
-        ],
-        check=True,
-    )
+    ilspy_cmd = get_app_dir() / "assets" / "tools" / "ILSpy" / "ILSpyCmd.exe"
+    ilspy_gui = get_app_dir() / "assets" / "tools" / "ILSpy_Gui" / "ILSpy.exe"
+
+    ilspy = ilspy_gui if use_gui else ilspy_cmd
+
+    args = [
+        str(ilspy),
+        str(exe),
+        "-p",
+        "-o", str(output_dir),
+    ]
+
+    if not use_gui:
+        args.extend(["-lv", "latest"])   # use -lv, not -l
+
+    subprocess.run(args, check=True, cwd=get_app_dir())
 
     return output_dir
 
@@ -1001,7 +1010,7 @@ class XBLIG_Dialog(QDialog):
             converter = ConvertXnaProjects(get_app_dir(), self.log_message, self.games)
             convert_xnb_folder_alba(game)
 
-    def decompile_selected(self, game:XBLIGGame, open_explorer:bool=True):
+    def decompile_selected(self, game: XBLIGGame, open_explorer: bool = True, use_gui=False):
         # game = self.get_selected_game()
         # if not game:
         #     return
@@ -1013,7 +1022,7 @@ class XBLIG_Dialog(QDialog):
         self.log_message(f"Generating Visual Studio project for {exe.name}...")
 
         try:
-            project_dir = decompile_project(exe)
+            project_dir = decompile_project(exe, use_gui=use_gui)
             game.decompiled = project_dir
         except subprocess.CalledProcessError as e:
             QMessageBox.critical(self, "ILSpy", str(e))
@@ -1252,18 +1261,43 @@ class XBLIG_Dialog(QDialog):
             options_group = QGroupBox("Build Options")
             options_layout = QVBoxLayout(options_group)
 
+            # Decompile
             self.decompile_check = QCheckBox("Decompile executable")
+            self.decompile_check.setChecked(True)
+            options_layout.addWidget(self.decompile_check)
+
+            # Decompile sub-options
+            decompile_layout = QVBoxLayout()
+            decompile_layout.setContentsMargins(24, 0, 0, 0)
+
+            self.decompile_cli = QRadioButton("Use ILSpy command line")
+            self.decompile_gui = QRadioButton("Use ILSpy GUI")
+
+            self.decompile_cli.setChecked(True)
+
+            group = QButtonGroup(self)
+            group.addButton(self.decompile_cli)
+            group.addButton(self.decompile_gui)
+
+            decompile_layout.addWidget(self.decompile_cli)
+            decompile_layout.addWidget(self.decompile_gui)
+
+            options_layout.addLayout(decompile_layout)
+
             self.convert_csproj_check = QCheckBox("Convert project (.csproj)")
             self.convert_content_check = QCheckBox("Convert XNA content")
             self.open_vs_check = QCheckBox("Open project in Visual Studio")
             self.open_explorer_check = QCheckBox("Open project folder in Explorer")
 
-            # Sensible defaults
-            self.decompile_check.setChecked(True)
             self.convert_csproj_check.setChecked(True)
             self.convert_content_check.setChecked(True)
 
-            options_layout.addWidget(self.decompile_check)
+            self.decompile_check.toggled.connect(self.decompile_cli.setEnabled)
+            self.decompile_check.toggled.connect(self.decompile_gui.setEnabled)
+
+            self.decompile_cli.setEnabled(True)
+            self.decompile_gui.setEnabled(True)
+
             options_layout.addWidget(self.convert_csproj_check)
             options_layout.addWidget(self.convert_content_check)
             options_layout.addWidget(self.open_vs_check)
@@ -1289,9 +1323,9 @@ class XBLIG_Dialog(QDialog):
             layout.addLayout(button_layout)
 
         def options(self):
-            """Return selected options."""
             return {
                 "decompile": self.decompile_check.isChecked(),
+                "decompile_gui": self.decompile_gui.isChecked(),
                 "convert_csproj": self.convert_csproj_check.isChecked(),
                 "convert_content": self.convert_content_check.isChecked(),
                 "open_visual_studio": self.open_vs_check.isChecked(),
@@ -1320,13 +1354,11 @@ class XBLIG_Dialog(QDialog):
 
         if options["decompile"]:
             self.log_message("Decompiling selected game...")
-            self.decompile_selected(game)
+            self.decompile_selected(game, open_explorer=True,use_gui=options["decompile_gui"])
+
             assert game.decompiled is not None
             content_dir = game.extracted / "584E07D1" / "Content"
-            copy_content_folder(
-                content_dir,
-                game.decompiled / "Content",
-            )
+            copy_content_folder(content_dir, game.decompiled / "Content",)
             
         # if options["convert_content"]:
         #
@@ -1346,7 +1378,14 @@ class XBLIG_Dialog(QDialog):
         self.load_games(self.games)
 
     def open_selected_folder(self):
-        self.log_message("Opening game folder...")
+        game: XBLIGGame | None = self.get_selected_game()
+
+        if not game or not game.game_root or not game.game_root.exists():
+            self.log_message("No valid game folder selected.")
+            return
+
+        subprocess.Popen(["explorer", str(game.game_root)])
+        self.log_message(f"Opened: {game.game_root}")
 
     from PySide6.QtCore import QRect, QPropertyAnimation, QEasingCurve
 
@@ -1390,6 +1429,38 @@ class XBLIG_Dialog(QDialog):
 
         self.anim.finished.connect(self.overlay.hide)
         self.anim.start()
+
+    from pathlib import Path
+    import shutil
+
+    def delete_game_files(self, files: str):
+        game = self.get_selected_game()
+        if game is None:
+            return
+
+        attrs = {
+            "decompiled": "decompiled",
+            "extracted": "extracted",
+        }
+
+        attr = attrs.get(files)
+        if attr is None:
+            return
+
+        path = getattr(game, attr)
+
+        try:
+            if path and path.exists():
+                shutil.rmtree(path)
+                self.log_message(f"Deleted: {path}")
+
+            setattr(game, attr, None)
+
+        except PermissionError as e:
+            self.log_message(f"Unable to delete '{path}': {e}")
+            return
+
+        self.load_games(self.games)
 
     def create_settings_drawer(self):
 
@@ -1459,13 +1530,16 @@ class XBLIG_Dialog(QDialog):
         actions = QHBoxLayout(action_group)
         actions.setContentsMargins(8, 8, 8, 8)
         self.run_btn = QPushButton("Launch Game")
-        self.validate_btn = QPushButton("Validate")
+        # self.validate_btn = QPushButton("Validate")
         self.open_folder_btn = QPushButton("Open Folder")
-        self.open_xml_btn = QPushButton("Open XML")
-        self.export_btn = QPushButton("Export JSON")
+        self.open_folder_btn.clicked.connect(self.open_selected_folder)
+        self.open_xml_btn = QPushButton("Delete Extracted Game Files")
+        self.open_xml_btn.clicked.connect(partial(self.delete_game_files, "extracted"))
+        self.export_btn = QPushButton("Delete Decompiled Game Files")
+        self.export_btn.clicked.connect(partial(self.delete_game_files, "decompiled"))
 
         actions.addWidget(self.run_btn)
-        actions.addWidget(self.validate_btn)
+        # actions.addWidget(self.validate_btn)
         actions.addWidget(self.open_folder_btn)
         actions.addWidget(self.open_xml_btn)
         actions.addWidget(self.export_btn)
@@ -1522,9 +1596,9 @@ class XBLIG_Dialog(QDialog):
 
         self.refresh_btn = QPushButton("Refresh")
         self.refresh_btn.clicked.connect(self.refresh_games)
-
-        self.open_folder_btn = QPushButton("Open Folder")
-        self.open_folder_btn.clicked.connect(self.open_selected_folder)
+        #
+        # self.open_folder_btn = QPushButton("Open Folder")
+        # self.open_folder_btn.clicked.connect(self.open_selected_folder)
 
         self.close_btn = QPushButton("Close")
         self.close_btn.clicked.connect(self.close)
@@ -1535,7 +1609,6 @@ class XBLIG_Dialog(QDialog):
         toolbar.addWidget(self.convert_all_btn)
         toolbar.addWidget(self.launch_btn)
         toolbar.addWidget(self.refresh_btn)
-        toolbar.addWidget(self.open_folder_btn)
         toolbar.addWidget(self.close_btn)
         toolbar.addWidget(self.random_btn)
         toolbar.addStretch()
