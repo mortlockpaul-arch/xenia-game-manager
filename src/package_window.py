@@ -133,25 +133,26 @@ import subprocess
 
 
 def decompile_project(exe: Path, use_gui: bool = False) -> Path:
-    output_dir = exe.parent.parent.parent / "decompiled"
-    output_dir.mkdir(parents=True, exist_ok=True)
+    with ToolManager("decompiler"):
+        output_dir = exe.parent.parent.parent / "decompiled"
+        output_dir.mkdir(parents=True, exist_ok=True)
 
-    ilspy_cmd = get_app_dir() / "assets" / "tools" / "ILSpy" / "ILSpyCmd.exe"
-    ilspy_gui = get_app_dir() / "assets" / "tools" / "ILSpy_Gui" / "ILSpy.exe"
+        ilspy_cmd = get_app_dir() / "assets" / "tools" / "ILSpy" / "ILSpyCmd.exe"
+        ilspy_gui = get_app_dir() / "assets" / "tools" / "ILSpy_Gui" / "ILSpy.exe"
 
-    ilspy = ilspy_gui if use_gui else ilspy_cmd
+        ilspy = ilspy_gui if use_gui else ilspy_cmd
 
-    args = [
-        str(ilspy),
-        str(exe),
-        "-p",
-        "-o", str(output_dir),
-    ]
+        args = [
+            str(ilspy),
+            str(exe),
+            "-p",
+            "-o", str(output_dir),
+        ]
 
-    if not use_gui:
-        args.extend(["-lv", "latest"])   # use -lv, not -l
+        if not use_gui:
+            args.extend(["-lv", "latest"])   # use -lv, not -l
 
-    subprocess.run(args, check=True, cwd=get_app_dir())
+        subprocess.run(args, check=True, cwd=get_app_dir())
 
     return output_dir
 
@@ -377,6 +378,140 @@ def copy_content_folder(folder, dest):
     #     shutil.rmtree(destination)
     shutil.copytree(folder, dest)
 
+def get_7zip() -> Path:
+    seven_zip = (
+            get_app_dir()
+            / "assets"
+            / "zip"
+            / "7z.exe"
+    )
+
+    if not seven_zip.exists():
+        raise FileNotFoundError(f"7-Zip not found: {seven_zip}")
+
+    return seven_zip
+
+def compress_tools_folder(
+        tools_dir: Path,
+        archive: Path | None = None,
+        delete_original: bool = False,
+) -> Path:
+
+    tools_dir = Path(tools_dir)
+
+    if archive is None:
+        archive = tools_dir.with_suffix(".7z")
+
+    if archive.exists():
+        archive.unlink()
+
+    subprocess.run(
+        [
+            str(get_7zip()),
+            "a",
+            "-t7z",
+            "-mx=9",
+            "-m0=lzma2",
+            "-mmt=on",
+            "-ms=on",
+            str(archive),
+            str(tools_dir),
+        ],
+        check=True,
+    )
+
+    if delete_original:
+        shutil.rmtree(tools_dir)
+
+    return archive
+
+def ensure_tools_extracted(
+        archive: Path,
+        destination: Path,
+) -> None:
+
+    if destination.exists():
+        return
+
+    destination.parent.mkdir(parents=True, exist_ok=True)
+
+    subprocess.run(
+        [
+            str(get_7zip()),
+            "x",
+            str(archive),
+            f"-o{destination.parent}",
+            "-y",
+        ],
+        check=True,
+    )
+
+from pathlib import Path
+import shutil
+import subprocess
+
+def compress_tool(name: str):
+    tools_root = get_app_dir() / "assets" / "tools"
+
+    folder = tools_root / name
+    archive = tools_root / f"{name}.7z"
+
+    subprocess.run(
+        [
+            str(get_7zip()),
+            "a",
+            "-t7z",
+            "-mx=9",
+            "-m0=lzma2",
+            "-mmt=on",
+            "-ms=on",
+            str(archive),
+            str(folder),
+        ],
+        check=True,
+    )
+
+def ensure_tool_extracted(name: str) -> Path:
+    """
+    Ensure a bundled tool archive has been extracted.
+
+    Returns the extracted folder.
+    """
+
+    tools_root = get_app_dir() / "assets" / "tools"
+
+    folder = tools_root / name
+    archive = tools_root / f"{name}.7z"
+
+    if folder.exists():
+        return folder
+
+    subprocess.run(
+        [
+            str(get_7zip()),
+            "x",
+            str(archive),
+            f"-o{tools_root}",
+            "-y",
+        ],
+        check=True,
+    )
+
+    return folder
+
+class ToolManager:
+
+    def __init__(self, *tools: str):
+        self.tools = tools
+
+    def __enter__(self):
+        for tool in self.tools:
+            ensure_tool_extracted(tool)
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        for tool in self.tools:
+            compress_tool(tool)
 
 class ConvertXnaProjects(QObject):
 
@@ -388,6 +523,11 @@ class ConvertXnaProjects(QObject):
         super().__init__()
         self.project_path = Path(project_path)
         self.games = games
+
+    from pathlib import Path
+    import shutil
+    import subprocess
+
 
     def log_message(self, message):
         self.log_signal.emit(message)
@@ -545,10 +685,10 @@ class ConvertXnaProjects(QObject):
 
         alba = (
                 get_app_dir()
-                / "assets/tools/xnb_conversion/Alba.XnaConvert.0.1.2/Alba.XnaConvert.exe"
+                / "assets/tools/conversion/Alba.XnaConvert.0.1.2/Alba.XnaConvert.exe"
         )
 
-        xnb_cli = (get_app_dir() / "assets/tools/xnb_conversion/xnbcli-windows-x64/xnbcli.exe")
+        xnb_cli = (get_app_dir() / "assets/tools/conversion/xnbcli-windows-x64/xnbcli.exe")
 
         xnb_extractor = Path("C:/xnb-extractor/bin/x86/Debug/net481/XnbExtractor.exe")
 
@@ -1055,7 +1195,7 @@ class XBLIG_Dialog(QDialog):
         self._cache = None
         self.close_btn = None
         self.games: list[XBLIGGame] = []
-        self.setWindowTitle("XBLIG Emulator")
+        self.setWindowTitle("XBLIG Rebuilder")
         self.resize(1100, 750)
 
         self.build_ui()
@@ -1155,14 +1295,15 @@ class XBLIG_Dialog(QDialog):
         self.validate3_btn.setDisabled(True)
         game = self.get_selected_game()
         if game:
-            converter = ConvertXnaProjects(get_app_dir(), self.games)
+            with ToolManager("conversion"):
+                converter = ConvertXnaProjects(get_app_dir(), self.games)
 
-            converter.log_signal.connect(self.log_message_log)
-            converter.progress_signal.connect(self.progress_bar.setValue)
-            converter.finished_signal.connect(self.tool_finished)
+                converter.log_signal.connect(self.log_message_log)
+                converter.progress_signal.connect(self.progress_bar.setValue)
+                converter.finished_signal.connect(self.tool_finished)
 
-            self.progress_bar.setRange(0, 0)  # Busy animation
-            self.run_in_background(converter.convert_xnb_folder_tools, game, tool_id)
+                self.progress_bar.setRange(0, 0)  # Busy animation
+                self.run_in_background(converter.convert_xnb_folder_tools, game, tool_id)
 
     def tool_finished(self, result: ConversionResult):
         self.progress_bar.setRange(0, 100)

@@ -1219,9 +1219,9 @@ class GameLauncher(QMainWindow):
         )
 
     def open_archive_browser(self, name):
-        if name == "XBLIG_EMULATOR":
-            xblig_emulator = XBLIG_Dialog()
-            xblig_emulator.exec()
+        if name == "XBLIG_REBUILDER":
+            xblig_rebuilder = XBLIG_Dialog()
+            xblig_rebuilder.exec()
             return
 
         dlg = ArchiveBrowser(self.db, self, name_parameter=name)
@@ -1319,8 +1319,8 @@ class GameLauncher(QMainWindow):
         self.archive_button.clicked.connect(partial(self.open_archive_browser, "DLC"))
         self.archive_xblig_button = QPushButton("XBLIG Downloader")
         self.archive_xblig_button.clicked.connect(partial(self.open_archive_browser, "XBLIG"))
-        self.archive_xbligemu_button = QPushButton("XBLIG Emulator")
-        self.archive_xbligemu_button.clicked.connect(partial(self.open_archive_browser, "XBLIG_EMULATOR"))
+        self.archive_xbligemu_button = QPushButton("XBLIG Rebuilder")
+        self.archive_xbligemu_button.clicked.connect(partial(self.open_archive_browser, "XBLIG_REBUILDER"))
         toolbar.addWidget(self.netplay_button)
         toolbar.addWidget(self.refresh_btn)
         toolbar.addWidget(self.browser_button)
