@@ -35,7 +35,7 @@ from PySide6.QtWidgets import (
     QFormLayout,
     QGroupBox,
     QHeaderView, QApplication, QMessageBox, QSizePolicy, QFrame, QGraphicsDropShadowEffect, QCheckBox, QButtonGroup,
-    QRadioButton, QProgressBar,
+    QRadioButton, QProgressBar, QPlainTextEdit,
 )
 
 from convert_xna_projects import FNA_VERSION
@@ -471,6 +471,7 @@ def compress_tool(name: str):
         check=True,
     )
 
+
 def ensure_tool_extracted(name: str) -> Path:
     """
     Ensure a bundled tool archive has been extracted.
@@ -499,10 +500,18 @@ def ensure_tool_extracted(name: str) -> Path:
 
     return folder
 
+def cleanup_tool(name: str):
+    tools_root = get_app_dir() / "assets" / "tools"
+    folder = tools_root / name
+
+    if folder.exists():
+        shutil.rmtree(folder)
+
 class ToolManager:
 
-    def __init__(self, *tools: str):
+    def __init__(self, *tools: str, cleanup: bool = True):
         self.tools = tools
+        self.cleanup = cleanup
 
     def __enter__(self):
         for tool in self.tools:
@@ -510,8 +519,9 @@ class ToolManager:
         return self
 
     def __exit__(self, exc_type, exc, tb):
-        for tool in self.tools:
-            compress_tool(tool)
+        if self.cleanup:
+            for tool in self.tools:
+                cleanup_tool(tool)
 
 class ConvertXnaProjects(QObject):
 
@@ -2037,12 +2047,10 @@ class XBLIG_Dialog(QDialog):
 
         from PySide6.QtWidgets import QTextEdit
 
-        self.log_window = QTextEdit()
+        self.log_window = QPlainTextEdit()
         self.log_window.setReadOnly(True)
-        self.log_window.setLineWrapMode(QTextEdit.NoWrap)
-
-        font = QFont("Consolas", 9)
-        self.log_window.setFont(font)
+        self.log_window.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
+        self.log_window.setFont(QFont("Consolas", 9))
 
         log_layout.addWidget(self.log_window)
 

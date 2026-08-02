@@ -8,6 +8,7 @@ import zipfile
 from pathlib import Path
 
 from config import load_config, save_config, get_app_dir
+from package_window import compress_tool, ToolManager
 
 root = get_app_dir()
 current_folder = Path(__file__).parent
@@ -158,7 +159,15 @@ logging.basicConfig(
     ],
 )
 
-create_defaults(version="1.0.0")
+create_defaults(version="1.0.4")
+#
+# compress_tool("conversion")
+# compress_tool("decompiler")
+
+with ToolManager("conversion"):
+    print("Conversion is complete.")
+with ToolManager("decompiler"):
+    print("Decompiler is complete.")
 
 copy_optimized_settings()
 

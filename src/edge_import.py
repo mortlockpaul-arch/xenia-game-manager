@@ -6,6 +6,9 @@ from config import load_config, load_xenia_manager_config
 def use_xenia_manager_content_folder_for_edge(log_callback=None):
     config = load_config()
     manager_config, xenia_manager_path = load_xenia_manager_config()
+    if manager_config == {}:
+        raise RuntimeError("Configure Xenia Manager No Configuration Exists")
+        return
     unified_content: bool = (manager_config["emulators"]["settings"]["unified_content"])
     if not unified_content:
         raise RuntimeError(
@@ -22,36 +25,60 @@ def use_xenia_manager_content_folder_for_edge(log_callback=None):
         edge_content = edge_path / "content"
 
     content_paths = {
-        "edge_content": edge_content,
-        "canary_content": Path(config["xenia_canary_path"]) / "content",
-        "netplay_content": Path(config["xenia_netplay_path"]) / "content",
-        "mouse_hook_content": Path(config["xenia_mousehook_path"]) / "content",
+        "Xenia Edge": edge_content,
+        "Xenia Canary": Path(config["xenia_canary_path"]) / "content",
+        "Xenia Netplay": Path(config["xenia_netplay_path"]) / "content",
+        "Xenia Mouse Hook": Path(config["xenia_mousehook_path"]) / "content",
     }
 
-    for name, path in content_paths.items():
+    log = log_callback or print
+
+    log(f"Using unified content folder: {manager_target}")
+
+    for emulator, path in content_paths.items():
+
         if path.is_symlink():
-            if path.resolve() != manager_target:
-                (log_callback or print)(f"{name}: Incorrect symlink ({path.readlink()})")
+            target = path.resolve()
+
+            if target != manager_target:
+                log(f"{emulator}: Incorrect content link detected.")
+                log(f"  Current: {target}")
+                log(f"  Expected: {manager_target}")
+
                 path.unlink()
                 path.symlink_to(manager_content, target_is_directory=True)
-                (log_callback or print)(f"{name}: Fixed -> {manager_content}")
-        if path.is_symlink():
-            (log_callback or print)(f"{name} points to: {path.readlink()}")
-            (log_callback or print)(f"{name} resolved to: {path.resolve()}")
+
+                log(f"{emulator}: Content link updated.")
+            else:
+                log(f"{emulator}: Already using the unified content folder.")
+
             continue
-        if path.exists() and not path.is_symlink():
-            (log_callback or print)(f"Moving content and creating symlink for {name}")
+
+        if path.exists():
+            log(f"{emulator}: Migrating existing content...")
+
+            moved = 0
+
             for item in path.iterdir():
                 destination = manager_content / item.name
+
                 if not destination.exists():
                     shutil.move(str(item), str(destination))
+                    moved += 1
+
             path.unlink()
             path.symlink_to(manager_content, target_is_directory=True)
-        if not path.exists():
-            (log_callback or print)(f"{name}: Missing folder, creating symlink -> {manager_content}")
 
+            log(
+                f"{emulator}: Migrated {moved} item(s) and linked to the unified content folder."
+            )
+
+        else:
+            log(f"{emulator}: Creating content link.")
             path.parent.mkdir(parents=True, exist_ok=True)
             path.symlink_to(manager_content, target_is_directory=True)
+
+    log("All configured Xenia variants now use the unified Xenia Manager content folder.")
 
 from pathlib import Path
 import tomllib

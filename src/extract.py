@@ -51,7 +51,7 @@ def extract_archives(folder, log_callback=None, subfolder=False, remove_archives
         output_dir = folder / archive.stem if subfolder else folder
 
         root = get_app_dir() / "downloads"
-        relative_path = Path(archive).relative_to(root.parent)
+        relative_path = Path(archive).relative_to(folder)
         log(f"Archive: {relative_path}")
 
         output_dir.mkdir(parents=True, exist_ok=True)

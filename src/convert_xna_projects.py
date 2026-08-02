@@ -34,9 +34,9 @@ def read_header(f):
 
     return XNBHeader(platform, version, flags, file_size)
 
-with open("MainMenu.xnb", "rb") as f:
-    header = read_header(f)
-    print(header)
+# with open("MainMenu.xnb", "rb") as f:
+#     header = read_header(f)
+#     print(header)
 
 def inspect_xnb():
     with open("MenuWheel.xnb", "rb") as f:

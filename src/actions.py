@@ -1,3 +1,5 @@
+import errno
+
 import time
 from pathlib import Path
 
@@ -89,10 +91,20 @@ class DownloadArtifact:
 
         path = Path(output_dir) / f"{artifact['name']}.zip"
 
-        with open(path, "wb") as f:
-            for chunk in r.iter_content(8192):
-                if chunk:
-                    f.write(chunk)
+        try:
+            with open(path, "wb") as f:
+                for chunk in r.iter_content(8192):
+                    if chunk:
+                        f.write(chunk)
+        except OSError as e:
+            # if e.errno == errno.ENOSPC:
+            #     self.log("Download failed: the destination drive is out of disk space.")
+            # else:
+            #     self.log(f"Download failed: {e}")
+            raise
+        except Exception as e:
+            # self.log(f"Error downloading '{path}': {e}")
+            raise
 
         self.log(f"Downloaded: {path}")
 

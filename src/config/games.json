@@ -268,7 +268,7 @@
       "icon": "GameData\\Adventures of Shuggy\\Artwork\\Icon.ico"
     },
     "file_locations": {
-      "game": "H:\\roms\\xbox360\\58410A5C\\000D0000\\86E8A55A767E0DC40090CFFA1EBCCE9C593E9D9158",
+      "game": "F:\\xbox360\\58410A5C\\000D0000\\86E8A55A767E0DC40090CFFA1EBCCE9C593E9D9158",
       "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Adventures of Shuggy.config.toml",
@@ -321,7 +321,7 @@
     "alternative_id": [],
     "media_id": "00000000",
     "title": "AFTER BURNER CLIMAX",
-    "playtime": 0,
+    "playtime": 5.780132953333333,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "",
@@ -346,14 +346,14 @@
       "icon": "GameData\\AFTER BURNER CLIMAX\\Artwork\\Icon.ico"
     },
     "file_locations": {
-      "game": "H:\\roms\\xbox360\\58410A06\\000D0000\\6840ACC01BAE9B0EBB40F577349428B04B9042A958",
+      "game": "F:\\xbox360\\58410A06\\000D0000\\6840ACC01BAE9B0EBB40F577349428B04B9042A958",
       "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\AFTER BURNER CLIMAX.config.toml",
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
-    "last_played": null
+    "last_played": "2026-07-30T04:10:50.9897565+01:00"
   },
   {
     "game_id": "4B5907E0",
@@ -683,7 +683,7 @@
     "alternative_id": [],
     "media_id": "5E632CAC",
     "title": "Alien Breed 3 Descent",
-    "playtime": 21.633705628333335,
+    "playtime": 55.658868389999995,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "",
@@ -715,7 +715,7 @@
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
-    "last_played": null
+    "last_played": "2026-07-27T04:03:04.9422959+01:00"
   },
   {
     "game_id": "58410964",
@@ -751,6 +751,45 @@
       "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Alien Breed Episode 1.config.toml",
+      "custom_emulator_executable": null
+    },
+    "last_played_disc": 1,
+    "last_played": null
+  },
+  {
+    "game_id": "58411222",
+    "alternative_id": [],
+    "media_id": "56492DCF",
+    "title": "Alien Spidy",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/920",
+      "rating": "Gameplay",
+      "mousehook": {
+        "rating": "Unknown",
+        "notes": ""
+      },
+      "netplay": {
+        "status": {
+          "working_public": null,
+          "tested_locally": null,
+          "only_local": null,
+          "systemlink": null
+        },
+        "comments": ""
+      }
+    },
+    "artwork": {
+      "background": "GameData\\Alien Spidy\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Alien Spidy\\Artwork\\Boxart.png",
+      "icon": "GameData\\Alien Spidy\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "C:\\PycharmProjects\\xenia-game-manager\\src\\downloads\\XBLA\\Alien Spidy (World) (XBLA)\\58411222\\000D0000\\C026DAE3A3E93E948B64EE95B3FE7F9C898DB4FD58",
+      "additional_discs": [],
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Alien Spidy.config.toml",
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
@@ -1110,6 +1149,45 @@
       ],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Asteroids \u0026 Asteroids Deluxe.config.toml",
+      "custom_emulator_executable": null
+    },
+    "last_played_disc": 1,
+    "last_played": null
+  },
+  {
+    "game_id": "5841084E",
+    "alternative_id": [],
+    "media_id": "0C7DEB7B",
+    "title": "Asteroids \u0026 Asteroids Deluxe (1)",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown",
+      "mousehook": {
+        "rating": "Unknown",
+        "notes": ""
+      },
+      "netplay": {
+        "status": {
+          "working_public": null,
+          "tested_locally": null,
+          "only_local": null,
+          "systemlink": null
+        },
+        "comments": ""
+      }
+    },
+    "artwork": {
+      "background": "GameData\\Asteroids \u0026 Asteroids Deluxe (1)\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Asteroids \u0026 Asteroids Deluxe (1)\\Artwork\\Boxart.png",
+      "icon": "GameData\\Asteroids \u0026 Asteroids Deluxe (1)\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "F:\\xbox360\\5841084E\\000D0000\\CD3859AD0DA2CCA597B4C7883E0CF1EE1855BE2558",
+      "additional_discs": [],
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Asteroids \u0026 Asteroids Deluxe (1).config.toml",
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
@@ -2067,11 +2145,53 @@
     "last_played": null
   },
   {
+    "game_id": "415608C3",
+    "alternative_id": [
+      "415608F2",
+      "415688E7"
+    ],
+    "media_id": "05C7492A",
+    "title": "Call of Duty - Black Ops II",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/193",
+      "rating": "Playable",
+      "mousehook": {
+        "rating": "Fair",
+        "notes": ""
+      },
+      "netplay": {
+        "status": {
+          "working_public": "fail",
+          "tested_locally": null,
+          "only_local": null,
+          "systemlink": "ok"
+        },
+        "comments": "Systemlink works without a server."
+      }
+    },
+    "artwork": {
+      "background": "GameData\\Call of Duty - Black Ops II\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Call of Duty - Black Ops II\\Artwork\\Boxart.png",
+      "icon": "GameData\\Call of Duty - Black Ops II\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "F:\\xbox360\\Call of Duty - Black Ops II (World).iso",
+      "additional_discs": [],
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Call of Duty - Black Ops II.config.toml",
+      "custom_emulator_executable": null
+    },
+    "last_played_disc": 1,
+    "last_played": null
+  },
+  {
     "game_id": "415607E6",
     "alternative_id": [],
     "media_id": "15E8CF88",
     "title": "Call of Duty 4 - Modern Warfare",
-    "playtime": 0,
+    "playtime": 49.21634035333334,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "https://github.com/xenia-canary/game-compatibility/issues/140",
@@ -2103,7 +2223,7 @@
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
-    "last_played": null
+    "last_played": "2026-07-27T04:41:32.1389732+01:00"
   },
   {
     "game_id": "5553083C",
@@ -2538,7 +2658,7 @@
       "icon": "GameData\\Command \u0026 Conquer Red Alert 3 Commanders Challenge\\Artwork\\Icon.ico"
     },
     "file_locations": {
-      "game": "H:\\roms\\xbox360\\584109BF\\000D0000\\AF4E5C384CAD63FAA96EADE50F7A69CFFEE0DC6D58",
+      "game": "F:\\xbox360\\584109BF\\000D0000\\AF4E5C384CAD63FAA96EADE50F7A69CFFEE0DC6D58",
       "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Command \u0026 Conquer Red Alert 3 Commanders Challenge.config.toml",
@@ -2581,6 +2701,45 @@
       "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Crackdown.config.toml",
+      "custom_emulator_executable": null
+    },
+    "last_played_disc": 1,
+    "last_played": null
+  },
+  {
+    "game_id": "45410968",
+    "alternative_id": [],
+    "media_id": "4F4EA672",
+    "title": "Crysis",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/507",
+      "rating": "Gameplay",
+      "mousehook": {
+        "rating": "Unknown",
+        "notes": ""
+      },
+      "netplay": {
+        "status": {
+          "working_public": null,
+          "tested_locally": null,
+          "only_local": null,
+          "systemlink": null
+        },
+        "comments": ""
+      }
+    },
+    "artwork": {
+      "background": "GameData\\Crysis\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Crysis\\Artwork\\Boxart.png",
+      "icon": "GameData\\Crysis\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "C:\\PycharmProjects\\xenia-game-manager\\src\\downloads\\GOD\\Crysis (World) (GOD)\\45410968\\00007000\\801FA873A37D786F8DB0879D89FCEF5245",
+      "additional_discs": [],
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Crysis.config.toml",
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
@@ -2984,6 +3143,45 @@
     "last_played": null
   },
   {
+    "game_id": "584111E5",
+    "alternative_id": [],
+    "media_id": "32DCC9AF",
+    "title": "DeathSpank The Baconing",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/903",
+      "rating": "Gameplay",
+      "mousehook": {
+        "rating": "Unknown",
+        "notes": ""
+      },
+      "netplay": {
+        "status": {
+          "working_public": null,
+          "tested_locally": null,
+          "only_local": null,
+          "systemlink": null
+        },
+        "comments": ""
+      }
+    },
+    "artwork": {
+      "background": "GameData\\DeathSpank The Baconing\\Artwork\\Background.jpg",
+      "boxart": "GameData\\DeathSpank The Baconing\\Artwork\\Boxart.png",
+      "icon": "GameData\\DeathSpank The Baconing\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "C:\\PycharmProjects\\xenia-game-manager\\src\\downloads\\XBLA\\Baconing, The (World) (XBLA)\\584111E5\\000D0000\\A3985FF65EA37E61491F735313BA33839F75F78B58",
+      "additional_discs": [],
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\DeathSpank The Baconing.config.toml",
+      "custom_emulator_executable": null
+    },
+    "last_played_disc": 1,
+    "last_played": null
+  },
+  {
     "game_id": "58410823",
     "alternative_id": [],
     "media_id": "00000000",
@@ -3013,7 +3211,7 @@
       "icon": "GameData\\DEFENDER\\Artwork\\Icon.ico"
     },
     "file_locations": {
-      "game": "H:\\roms\\xbox360\\58410823\\000D0000\\346322980D17D4A5E74B3E0191B61832F0A6BA2658",
+      "game": "F:\\xbox360\\58410823\\000D0000\\346322980D17D4A5E74B3E0191B61832F0A6BA2658",
       "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\DEFENDER.config.toml",
@@ -3021,6 +3219,45 @@
     },
     "last_played_disc": 1,
     "last_played": null
+  },
+  {
+    "game_id": "58410A5D",
+    "alternative_id": [],
+    "media_id": "04F7A921",
+    "title": "Destination Arcade",
+    "playtime": 3.14386445,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown",
+      "mousehook": {
+        "rating": "Unknown",
+        "notes": ""
+      },
+      "netplay": {
+        "status": {
+          "working_public": null,
+          "tested_locally": null,
+          "only_local": null,
+          "systemlink": null
+        },
+        "comments": ""
+      }
+    },
+    "artwork": {
+      "background": "GameData\\Destination Arcade\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Destination Arcade\\Artwork\\Boxart.png",
+      "icon": "GameData\\Destination Arcade\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "C:\\PycharmProjects\\xenia-game-manager\\src\\downloads\\DLC\\Destination Arcade (World) (App)\\58410A5D\\000D0000\\E112F9FC1430628241B59CFC3211AB0A7802659258",
+      "additional_discs": [],
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Destination Arcade.config.toml",
+      "custom_emulator_executable": null
+    },
+    "last_played_disc": 1,
+    "last_played": "2026-08-02T05:15:49.6521439+01:00"
   },
   {
     "game_id": "535107FA",
@@ -3263,6 +3500,45 @@
     },
     "last_played_disc": 1,
     "last_played": null
+  },
+  {
+    "game_id": "584108EF",
+    "alternative_id": [],
+    "media_id": "3B520BDB",
+    "title": "Double D Dodgeball",
+    "playtime": 1.4025090133333333,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/696",
+      "rating": "Gameplay",
+      "mousehook": {
+        "rating": "Unknown",
+        "notes": ""
+      },
+      "netplay": {
+        "status": {
+          "working_public": null,
+          "tested_locally": "ok",
+          "only_local": null,
+          "systemlink": null
+        },
+        "comments": "Player \u0026 Ranked works"
+      }
+    },
+    "artwork": {
+      "background": "GameData\\Double D Dodgeball\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Double D Dodgeball\\Artwork\\Boxart.png",
+      "icon": "GameData\\Double D Dodgeball\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "C:\\PycharmProjects\\xenia-game-manager\\src\\downloads\\XBLA\\Double D Dodgeball (World) (XBLA)\\584108EF\\000D0000\\612BBF2E1B82082A692D2B5C656B6AC5A70E02F958",
+      "additional_discs": [],
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Double D Dodgeball.config.toml",
+      "custom_emulator_executable": null
+    },
+    "last_played_disc": 1,
+    "last_played": "2026-08-02T05:31:09.2567235+01:00"
   },
   {
     "game_id": "5345085A",
@@ -4456,7 +4732,7 @@
       "icon": "GameData\\GYRUSS\\Artwork\\Icon.ico"
     },
     "file_locations": {
-      "game": "H:\\roms\\xbox360\\58410817\\000D0000\\06EE7AE2FFF418AB1D65384A05CB1869CB1C4FB758",
+      "game": "F:\\xbox360\\58410817\\000D0000\\06EE7AE2FFF418AB1D65384A05CB1869CB1C4FB758",
       "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\GYRUSS.config.toml",
@@ -4624,6 +4900,45 @@
       ],
       "patch": null,
       "config": "Emulators\\Xenia Netplay\\config\\Hydro Thunder Hurricane.config.toml",
+      "custom_emulator_executable": null
+    },
+    "last_played_disc": 1,
+    "last_played": null
+  },
+  {
+    "game_id": "5841096A",
+    "alternative_id": [],
+    "media_id": "1F4C5091",
+    "title": "Hydro Thunder Hurricane (1)",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/738",
+      "rating": "Gameplay",
+      "mousehook": {
+        "rating": "Unknown",
+        "notes": ""
+      },
+      "netplay": {
+        "status": {
+          "working_public": null,
+          "tested_locally": null,
+          "only_local": null,
+          "systemlink": null
+        },
+        "comments": ""
+      }
+    },
+    "artwork": {
+      "background": "GameData\\Hydro Thunder Hurricane (1)\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Hydro Thunder Hurricane (1)\\Artwork\\Boxart.png",
+      "icon": "GameData\\Hydro Thunder Hurricane (1)\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "F:\\xbox360\\5841096A\\000D0000\\17EE90959CCE5C680E1B7D3DB92A616D807CFA8358",
+      "additional_discs": [],
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Hydro Thunder Hurricane (1).config.toml",
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
@@ -4905,6 +5220,45 @@
     "last_played": null
   },
   {
+    "game_id": "58411247",
+    "alternative_id": [],
+    "media_id": "386BEEC7",
+    "title": "Jet Set Radio (1)",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown",
+      "mousehook": {
+        "rating": "Unknown",
+        "notes": ""
+      },
+      "netplay": {
+        "status": {
+          "working_public": null,
+          "tested_locally": null,
+          "only_local": null,
+          "systemlink": null
+        },
+        "comments": ""
+      }
+    },
+    "artwork": {
+      "background": "GameData\\Jet Set Radio (1)\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Jet Set Radio (1)\\Artwork\\Boxart.png",
+      "icon": "GameData\\Jet Set Radio (1)\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "C:\\PycharmProjects\\xenia-game-manager\\src\\downloads\\XBLA\\Jet Set Radio (World) (XBLA)\\58411247\\000D0000\\8885C3EC05FD920A80B8ED48A8A6777EC5483FA558",
+      "additional_discs": [],
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Jet Set Radio (1).config.toml",
+      "custom_emulator_executable": null
+    },
+    "last_played_disc": 1,
+    "last_played": null
+  },
+  {
     "game_id": "5841124E",
     "alternative_id": [],
     "media_id": "21C046EF",
@@ -4973,10 +5327,88 @@
       "icon": "GameData\\Joust\\Artwork\\Icon.ico"
     },
     "file_locations": {
-      "game": "H:\\roms\\xbox360\\584107D8\\000D0000\\49A43028F0D56A4BC755C14B363E42B8C844FC1158",
+      "game": "F:\\xbox360\\584107D8\\000D0000\\49A43028F0D56A4BC755C14B363E42B8C844FC1158",
       "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Joust.config.toml",
+      "custom_emulator_executable": null
+    },
+    "last_played_disc": 1,
+    "last_played": null
+  },
+  {
+    "game_id": "58411489",
+    "alternative_id": [],
+    "media_id": "60786CAC",
+    "title": "JUJU",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/1148",
+      "rating": "Gameplay",
+      "mousehook": {
+        "rating": "Unknown",
+        "notes": ""
+      },
+      "netplay": {
+        "status": {
+          "working_public": null,
+          "tested_locally": null,
+          "only_local": null,
+          "systemlink": null
+        },
+        "comments": ""
+      }
+    },
+    "artwork": {
+      "background": "GameData\\JUJU\\Artwork\\Background.jpg",
+      "boxart": "GameData\\JUJU\\Artwork\\Boxart.png",
+      "icon": "GameData\\JUJU\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "D:\\roms\\xbox360\\JUJU (World) (XBLA)\\58411489\\000D0000\\83D056A4D7AC3E6A4391C42C742E1EAD103F8A9558",
+      "additional_discs": [],
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\JUJU.config.toml",
+      "custom_emulator_executable": null
+    },
+    "last_played_disc": 1,
+    "last_played": null
+  },
+  {
+    "game_id": "58411489",
+    "alternative_id": [],
+    "media_id": "60786CAC",
+    "title": "JUJU (1)",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/1148",
+      "rating": "Gameplay",
+      "mousehook": {
+        "rating": "Unknown",
+        "notes": ""
+      },
+      "netplay": {
+        "status": {
+          "working_public": null,
+          "tested_locally": null,
+          "only_local": null,
+          "systemlink": null
+        },
+        "comments": ""
+      }
+    },
+    "artwork": {
+      "background": "GameData\\JUJU (1)\\Artwork\\Background.jpg",
+      "boxart": "GameData\\JUJU (1)\\Artwork\\Boxart.png",
+      "icon": "GameData\\JUJU (1)\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "C:\\PycharmProjects\\xenia-game-manager\\src\\downloads\\XBLA\\JUJU (World) (XBLA)\\58411489\\000D0000\\83D056A4D7AC3E6A4391C42C742E1EAD103F8A9558",
+      "additional_discs": [],
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\JUJU (1).config.toml",
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
@@ -5092,49 +5524,10 @@
       "icon": "GameData\\Kings Quest The Complete Collection\\Artwork\\Icon.ico"
     },
     "file_locations": {
-      "game": "H:\\roms\\xbox360\\Kings Quest The Complete Collection\\Compatibility \u0026 TU7\\41560926\\00007000\\9E5ED855D30A8B2A08E88C9623FCDD5E41",
+      "game": "F:\\xbox360\\Kings Quest The Complete Collection\\Compatibility \u0026 TU7\\41560926\\00007000\\9E5ED855D30A8B2A08E88C9623FCDD5E41",
       "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Kings Quest The Complete Collection.config.toml",
-      "custom_emulator_executable": null
-    },
-    "last_played_disc": 1,
-    "last_played": null
-  },
-  {
-    "game_id": "454108D4",
-    "alternative_id": [],
-    "media_id": "0E79403B",
-    "title": "Left 4 Dead 2",
-    "playtime": 0,
-    "xenia_version": "Canary",
-    "compatibility": {
-      "url": "https://github.com/xenia-canary/game-compatibility/issues/179",
-      "rating": "Playable",
-      "mousehook": {
-        "rating": "Fair",
-        "notes": ""
-      },
-      "netplay": {
-        "status": {
-          "working_public": "ok",
-          "tested_locally": null,
-          "only_local": null,
-          "systemlink": "ok"
-        },
-        "comments": "Systemlink works without a server."
-      }
-    },
-    "artwork": {
-      "background": "GameData\\Left 4 Dead 2\\Artwork\\Background.jpg",
-      "boxart": "GameData\\Left 4 Dead 2\\Artwork\\Boxart.png",
-      "icon": "GameData\\Left 4 Dead 2\\Artwork\\Icon.ico"
-    },
-    "file_locations": {
-      "game": "Z:\\xbox360\\Left 4 Dead 2 (World) (En,Ja,Fr,De,Es,It,Pt,Zh,Ko,Pl,Ru).iso",
-      "additional_discs": [],
-      "patch": null,
-      "config": "Emulators\\Xenia Canary\\config\\Left 4 Dead 2.config.toml",
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
@@ -5391,6 +5784,84 @@
     },
     "last_played_disc": 1,
     "last_played": null
+  },
+  {
+    "game_id": "584109E3",
+    "alternative_id": [],
+    "media_id": "341E057A",
+    "title": "Lucidity",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown",
+      "mousehook": {
+        "rating": "Unknown",
+        "notes": ""
+      },
+      "netplay": {
+        "status": {
+          "working_public": null,
+          "tested_locally": null,
+          "only_local": null,
+          "systemlink": null
+        },
+        "comments": ""
+      }
+    },
+    "artwork": {
+      "background": "GameData\\Lucidity\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Lucidity\\Artwork\\Boxart.png",
+      "icon": "GameData\\Lucidity\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "C:\\PycharmProjects\\xenia-game-manager\\src\\downloads\\XBLA\\Lucidity (World) (XBLA)\\584109E3\\000D0000\\765F641FD694A7311782F96F6E18986B9066C9A058",
+      "additional_discs": [],
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Lucidity.config.toml",
+      "custom_emulator_executable": null
+    },
+    "last_played_disc": 1,
+    "last_played": null
+  },
+  {
+    "game_id": "584107F8",
+    "alternative_id": [],
+    "media_id": "00000000",
+    "title": "LUMINES LIVE Standard Edition",
+    "playtime": 0.7568698483333334,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "https://github.com/xenia-canary/game-compatibility/issues/218",
+      "rating": "Playable",
+      "mousehook": {
+        "rating": "Unknown",
+        "notes": ""
+      },
+      "netplay": {
+        "status": {
+          "working_public": "ok",
+          "tested_locally": null,
+          "only_local": null,
+          "systemlink": null
+        },
+        "comments": ""
+      }
+    },
+    "artwork": {
+      "background": "GameData\\LUMINES LIVE Standard Edition\\Artwork\\Background.jpg",
+      "boxart": "GameData\\LUMINES LIVE Standard Edition\\Artwork\\Boxart.png",
+      "icon": "GameData\\LUMINES LIVE Standard Edition\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "C:\\PycharmProjects\\xenia-game-manager\\src\\downloads\\XBLA\\Lumines Live! (World) (XBLA)\\584107F8\\000D0000\\77CFA93BC58C32D13BC4E4CC7DB4BE7D1B7F98D658",
+      "additional_discs": [],
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\LUMINES LIVE Standard Edition.config.toml",
+      "custom_emulator_executable": null
+    },
+    "last_played_disc": 1,
+    "last_played": "2026-08-02T05:28:53.7047771+01:00"
   },
   {
     "game_id": "545407E6",
@@ -6796,7 +7267,7 @@
     "alternative_id": [],
     "media_id": "57E2F642",
     "title": "R-Type Dimensions",
-    "playtime": 0,
+    "playtime": 5.226080146666667,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "",
@@ -6821,14 +7292,14 @@
       "icon": "GameData\\R-Type Dimensions\\Artwork\\Icon.ico"
     },
     "file_locations": {
-      "game": "H:\\roms\\xbox360\\584108AD\\000D0000\\79A4BF150EBD4C60FBEAC4C50C0D4DE217E723EF",
+      "game": "F:\\xbox360\\584108AD\\000D0000\\79A4BF150EBD4C60FBEAC4C50C0D4DE217E723EF",
       "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\R-Type Dimensions.config.toml",
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
-    "last_played": null
+    "last_played": "2026-08-02T05:20:45.0422788+01:00"
   },
   {
     "game_id": "425307EC",
@@ -6983,7 +7454,7 @@
       "icon": "GameData\\REAL STEEL\\Artwork\\Icon.ico"
     },
     "file_locations": {
-      "game": "H:\\roms\\xbox360\\584111E0\\000D0000\\62939F79719792E4C7A3023F3C63E17428928B4D58",
+      "game": "F:\\xbox360\\584111E0\\000D0000\\62939F79719792E4C7A3023F3C63E17428928B4D58",
       "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\REAL STEEL.config.toml",
@@ -8169,7 +8640,7 @@
     "alternative_id": [],
     "media_id": "210F5728",
     "title": "SEGA Rally Online Arcade",
-    "playtime": 0,
+    "playtime": 1.2571992283333333,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "https://github.com/xenia-canary/game-compatibility/issues/959",
@@ -8194,14 +8665,14 @@
       "icon": "GameData\\SEGA Rally Online Arcade\\Artwork\\Icon.ico"
     },
     "file_locations": {
-      "game": "H:\\roms\\xbox360\\58410AC2\\000D0000\\5FEAE487C70212733742EF3F0EBD39ECA9D4AE3858",
+      "game": "F:\\xbox360\\58410AC2\\000D0000\\5FEAE487C70212733742EF3F0EBD39ECA9D4AE3858",
       "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\SEGA Rally Online Arcade.config.toml",
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
-    "last_played": null
+    "last_played": "2026-07-30T04:24:36.9763518+01:00"
   },
   {
     "game_id": "45410934",
@@ -8525,7 +8996,7 @@
     "alternative_id": [],
     "media_id": "77A0CF1B",
     "title": "Sonic Unleashed",
-    "playtime": 236.4896080916667,
+    "playtime": 239.35352053000003,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "https://github.com/xenia-canary/game-compatibility/issues/130",
@@ -8557,7 +9028,7 @@
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
-    "last_played": null
+    "last_played": "2026-07-30T04:21:42.5410532+01:00"
   },
   {
     "game_id": "53450810",
@@ -9715,7 +10186,7 @@
     "alternative_id": [],
     "media_id": "071344FB",
     "title": "Warlords",
-    "playtime": 1.6374561983333333,
+    "playtime": 0,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "",
@@ -9740,14 +10211,14 @@
       "icon": "GameData\\Warlords\\Artwork\\Icon.ico"
     },
     "file_locations": {
-      "game": "H:\\roms\\xbox360\\58410B27\\000D0000\\19762F0B0AEA4816763C1096B435B4B2692B2EC958",
+      "game": "F:\\xbox360\\58410B27\\000D0000\\19762F0B0AEA4816763C1096B435B4B2692B2EC958",
       "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Warlords.config.toml",
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
-    "last_played": "2026-07-25T04:10:15.8272734+01:00"
+    "last_played": null
   },
   {
     "game_id": "584111DC",
@@ -9779,7 +10250,7 @@
       "icon": "GameData\\Warp\\Artwork\\Icon.ico"
     },
     "file_locations": {
-      "game": "H:\\roms\\xbox360\\584111DC\\000D0000\\6BAFFA3FA6EDD340C53FD7CB35281598B364358058",
+      "game": "F:\\xbox360\\584111DC\\000D0000\\6BAFFA3FA6EDD340C53FD7CB35281598B364358058",
       "additional_discs": [],
       "patch": null,
       "config": "Emulators\\Xenia Canary\\config\\Warp.config.toml",

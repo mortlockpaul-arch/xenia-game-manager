@@ -1,4 +1,5 @@
 # ui.py
+import errno
 import io
 import json
 import logging
@@ -22,7 +23,7 @@ import keyring
 import requests
 from PySide6.QtCore import QEasingCurve, QPropertyAnimation, QRect, QThread, Signal, QObject, Slot, QTimer, QSize, QUrl
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QGuiApplication, QIcon
+from PySide6.QtGui import QGuiApplication, QIcon, QFont
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import (
     QDialog,
@@ -426,7 +427,7 @@ class GameLauncher(QMainWindow):
         # self.xenia_title_updates_path = None
         self.use_xenia_manager_content_for_edge_btn = None
         self.import_edge_btn = None
-        self.console = None
+        # self.console = None
         self.refresh_btn = None
         self.worker = None
         self.btn_tu = None
@@ -745,7 +746,7 @@ class GameLauncher(QMainWindow):
 
         self.download_experimental_releases_btn = QPushButton("Download Experimental Releases")
         self.download_experimental_releases_btn.clicked.connect(self.download_experimental_releases)
-        self.use_xenia_manager_content_for_edge_btn = QPushButton("Link Xenia Edge Content Folder")
+        self.use_xenia_manager_content_for_edge_btn = QPushButton("Unify Xenia Content Folders")
         self.use_xenia_manager_content_for_edge_btn.clicked.connect(self.use_xenia_manager_content_for_edge)
 
         self.reset_btn = QPushButton("Reset Game List")
@@ -759,17 +760,12 @@ class GameLauncher(QMainWindow):
 
         layout.addWidget(tools_box)
 
-        self.console = QPlainTextEdit()
-
-        self.console.setReadOnly(True)
-
-        self.console.setMaximumHeight(100)
-
-        self.console.setPlaceholderText(
-            "Application log..."
-        )
-
-        layout.addWidget(self.console)
+        # self.console = QPlainTextEdit()
+        # self.console.setReadOnly(True)
+        # self.console.setMaximumHeight(100)
+        # self.console.setPlaceholderText("Application log...")
+        #
+        # layout.addWidget(self.console)
 
         layout.addStretch()
 
@@ -982,22 +978,26 @@ class GameLauncher(QMainWindow):
                     config[release["version_key"]] = version
                     save_config(config)
                 self.load_saved_config()
-            except requests.exceptions.HTTPError as e:
-                self.log(f"HTTP error: {e}")
-                self.log(traceback.format_exc())
-
             except requests.exceptions.RequestException as e:
                 self.log(f"Network error: {e}")
                 self.log(traceback.format_exc())
+            except OSError as e:
+                if e.errno == errno.ENOSPC:
+                    self.log("Download failed: the destination drive is out of disk space.")
+                else:
+                    self.log(f"Download failed: {e}")
+            except Exception as e:
+                self.log(f"Error downloading '{folder}': {e}")
 
     def use_xenia_manager_content_for_edge(self):
         try:
             use_xenia_manager_content_folder_for_edge(log_callback=self.log)
-            QMessageBox.information(
-                self,
-                "Success",
-                "Xenia Edge is now using the Xenia Manager content folder."
-            )
+            # self.log("Xenia Edge is now using the Xenia Manager content folder.")
+            # QMessageBox.information(
+            #     self,
+            #     "Success",
+            #     "Xenia Edge is now using the Xenia Manager content folder."
+            # )
         except RuntimeError as e:
             self.log(traceback.format_exc(), console_log=False)
         except Exception as e:
@@ -1062,6 +1062,8 @@ class GameLauncher(QMainWindow):
 
         path.setEnabled(checked if path_enabled is None else path_enabled)
         button.setEnabled(checked if button_enabled is None else button_enabled)
+        if name == "Xenia Edge": self.launch_edge.setEnabled(checked if button_enabled is None else button_enabled)
+        if name == "Xenia Manager": self.launch_manager.setEnabled(checked if button_enabled is None else button_enabled)
 
         if save:
             config[config_key_installed] = checked
@@ -1076,6 +1078,9 @@ class GameLauncher(QMainWindow):
             return
         try:
             manager_config, xenia_manager_path = load_xenia_manager_config()
+            if manager_config == {}:
+                self.log("Configure Xenia Manager No Configuration Exists")
+                return
         except Exception as e:
             self.log(f"Config Load Error: {e}")
             return
@@ -1456,6 +1461,14 @@ class GameLauncher(QMainWindow):
         self.table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.table.customContextMenuRequested.connect(self.show_table_menu)
 
+        self.log_window = QPlainTextEdit()
+        self.log_window.setReadOnly(True)
+        self.log_window.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
+        self.log_window.setFont(QFont("Consolas", 9))
+        self.log_window.setMaximumHeight(150)
+        self.log_window.setPlaceholderText("Application log...")
+        page_layout.addWidget(self.log_window)
+
         self.apply_style()
 
     def netplay_compatibility(self):
@@ -1589,6 +1602,11 @@ class GameLauncher(QMainWindow):
         config = load_config()
         config[f"{key}"] = folder
         save_config(config)
+        if button_name == "edge":
+            xenia_edge_installed = config["xenia_edge_installed"]
+            button_text = "Launch Xenia Edge" if xenia_edge_installed else "Install Xenia Edge"
+            self.launch_edge.setText(button_text)
+            self.launch_edge.clicked.connect(partial(self.launch_program, "edge"))
         if button_name == "manager":
             self.xenia_manager_installed.setChecked(True)
             self.checkbox_changed(Qt.CheckState.Checked, "manager")
@@ -1668,7 +1686,7 @@ class GameLauncher(QMainWindow):
 
             button_text = "Launch Xenia Manager" if xenia_manager_installed else "Install Xenia Manager"
             self.launch_manager.setText(button_text)
-            self.launch_edge.clicked.connect(partial(self.launch_program, "manager"))
+            self.launch_manager.clicked.connect(partial(self.launch_program, "manager"))
             self.launch_manager.repaint()
 
         if name == "edge":
@@ -1828,13 +1846,13 @@ class GameLauncher(QMainWindow):
 
     def log(self, message: str = "", console_log: bool=True, log_log:bool=True, clear_console:bool=False):
         if clear_console:
-            self.console.clear()
+            self.log_window.clear()
             return
         timestamp = datetime.now().strftime("%H:%M:%S")
 
         # UI console
         if console_log:
-            self.console.appendPlainText(
+            self.log_window.appendPlainText(
                 f"[{timestamp}] {message}"
             )
 
@@ -1878,6 +1896,7 @@ class GameLauncher(QMainWindow):
         # width = self.table.columnWidth(2)
         # print(width)
         self.model.load()
+        self.load_saved_config()
 
     # -------------------------
     # Favourite Click
