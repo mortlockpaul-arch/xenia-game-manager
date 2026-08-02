@@ -6,3 +6,5 @@
 /build_tools/build/exe.win-amd64-3.14/
 /build_tools/
 /src/References/
+/src/assets/tools/xnb_conversion/xnbcli-windows-x64/packed/
+/src/assets/tools/xnb_conversion/xnbcli-windows-x64/unpacked/
