@@ -137,8 +137,8 @@ def decompile_project(exe: Path, use_gui: bool = False) -> Path:
         output_dir = exe.parent.parent.parent / "decompiled"
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        ilspy_cmd = get_app_dir() / "assets" / "tools" / "ILSpy" / "ILSpyCmd.exe"
-        ilspy_gui = get_app_dir() / "assets" / "tools" / "ILSpy_Gui" / "ILSpy.exe"
+        ilspy_cmd = get_app_dir() / "assets" / "tools" / "decompiler" / "ILSpy" / "ILSpyCmd.exe"
+        ilspy_gui = get_app_dir() / "assets" / "tools" / "decompiler" / "ILSpy_Gui" / "ILSpy.exe"
 
         ilspy = ilspy_gui if use_gui else ilspy_cmd
 
