@@ -97,13 +97,8 @@ class DownloadArtifact:
                     if chunk:
                         f.write(chunk)
         except OSError as e:
-            # if e.errno == errno.ENOSPC:
-            #     self.log("Download failed: the destination drive is out of disk space.")
-            # else:
-            #     self.log(f"Download failed: {e}")
             raise
         except Exception as e:
-            # self.log(f"Error downloading '{path}': {e}")
             raise
 
         self.log(f"Downloaded: {path}")

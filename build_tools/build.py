@@ -164,6 +164,8 @@ create_defaults(version="1.0.4")
 # compress_tool("conversion")
 # compress_tool("decompiler")
 
+compress_tool("conversion")
+compress_tool("decompiler")
 with ToolManager("conversion"):
     print("Conversion is complete.")
 with ToolManager("decompiler"):

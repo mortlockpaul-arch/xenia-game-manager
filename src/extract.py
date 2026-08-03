@@ -5,27 +5,29 @@ from config import get_app_dir
 
 from PySide6.QtCore import QObject, Signal, Slot
 
+from pathlib import Path
 
 class ExtractWorker(QObject):
-    finished = Signal()
+    finished = Signal(int)
     log_window = Signal(str)
 
-    def __init__(self, folders):
+    def __init__(self, folders: list[Path]):
         super().__init__()
-        self.folders = folders
+        self.folders: list[Path] = folders
 
     @Slot()
     def run(self):
+        total = 0
+
         try:
             for folder in self.folders:
-                count = extract_archives(
+                total += extract_archives(
                     folder=folder,
                     log_callback=self.log_window.emit,
                     remove_archives=True,
                 )
-                self.finished.emit(count)
         finally:
-            self.finished.emit()
+            self.finished.emit(total)
 
 
 def extract_archives(folder, log_callback=None, subfolder=False, remove_archives=True):

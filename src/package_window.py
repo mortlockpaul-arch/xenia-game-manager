@@ -130,31 +130,47 @@ def open_solution(project_dir: Path):
 
 from pathlib import Path
 import subprocess
+DECOMPILER = get_app_dir() / "assets" / "tools" / "decompiler"
+
+ILSPY_GUI = DECOMPILER / "ILSpy" / "publish" / "ILSpy.exe"
+ILSPY_CMD = DECOMPILER / "ILSpyCmd" / "publish" / "ilspycmd.exe"
+from PySide6.QtCore import QProcess
+
+from PySide6.QtCore import QProcess
 
 
-def decompile_project(exe: Path, use_gui: bool = False) -> Path:
-    with ToolManager("decompiler"):
-        output_dir = exe.parent.parent.parent / "decompiled"
-        output_dir.mkdir(parents=True, exist_ok=True)
+def decompile_project(
+    exe: Path,
+    parent=None,
+) -> tuple[Path, ToolManager, QProcess]:
 
-        ilspy_cmd = get_app_dir() / "assets" / "tools" / "decompiler" / "ILSpy" / "ILSpyCmd.exe"
-        ilspy_gui = get_app_dir() / "assets" / "tools" / "decompiler" / "ILSpy_Gui" / "ILSpy.exe"
+    tools = ToolManager("decompiler")
+    tools.extract()
 
-        ilspy = ilspy_gui if use_gui else ilspy_cmd
+    output_dir = exe.parent.parent.parent / "decompiled"
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-        args = [
-            str(ilspy),
-            str(exe),
-            "-p",
-            "-o", str(output_dir),
-        ]
 
-        if not use_gui:
-            args.extend(["-lv", "latest"])   # use -lv, not -l
 
-        subprocess.run(args, check=True, cwd=get_app_dir())
+    if not exe.exists():
+        tools.cleanup()
+        raise FileNotFoundError(f"ILSpy executable not found: {ilspy}")
 
-    return output_dir
+    process = QProcess(parent)
+
+    arguments = [
+        str(exe),
+        "-p",
+        "-o",
+        str(output_dir),
+    ]
+
+    process.start(
+        str(exe),
+        arguments,
+    )
+
+    return output_dir, tools, process
 
 def cleanup_nested_categories(root):
     root = Path(root)
@@ -425,62 +441,8 @@ def compress_tools_folder(
 
     return archive
 
-def ensure_tools_extracted(
-        archive: Path,
-        destination: Path,
-) -> None:
-
-    if destination.exists():
-        return
-
-    destination.parent.mkdir(parents=True, exist_ok=True)
-
-    subprocess.run(
-        [
-            str(get_7zip()),
-            "x",
-            str(archive),
-            f"-o{destination.parent}",
-            "-y",
-        ],
-        check=True,
-    )
-
-from pathlib import Path
-import shutil
-import subprocess
-
-def compress_tool(name: str):
-    tools_root = get_app_dir() / "assets" / "tools"
-
-    folder = tools_root / name
-    archive = tools_root / f"{name}.7z"
-
-    subprocess.run(
-        [
-            str(get_7zip()),
-            "a",
-            "-t7z",
-            "-mx=9",
-            "-m0=lzma2",
-            "-mmt=on",
-            "-ms=on",
-            str(archive),
-            str(folder),
-        ],
-        check=True,
-    )
-
-
 def ensure_tool_extracted(name: str) -> Path:
-    """
-    Ensure a bundled tool archive has been extracted.
-
-    Returns the extracted folder.
-    """
-
     tools_root = get_app_dir() / "assets" / "tools"
-
     folder = tools_root / name
     archive = tools_root / f"{name}.7z"
 
@@ -498,7 +460,39 @@ def ensure_tool_extracted(name: str) -> Path:
         check=True,
     )
 
+    if not folder.exists():
+        raise RuntimeError(f"Failed to extract tool '{name}'")
+
     return folder
+
+from pathlib import Path
+import shutil
+import subprocess
+
+def compress_tool(name: str):
+    tools_root = get_app_dir() / "assets" / "tools"
+
+    folder = tools_root / name
+    archive = tools_root / f"{name}.7z"
+
+    if archive.exists():
+        archive.unlink()
+
+    subprocess.run(
+        [
+            str(get_7zip()),
+            "a",
+            "-t7z",
+            "-mx=9",
+            "-m0=lzma2",
+            "-mmt=on",
+            "-ms=on",
+            str(archive),
+            str(folder),
+        ],
+        check=True,
+    )
+
 
 def cleanup_tool(name: str):
     tools_root = get_app_dir() / "assets" / "tools"
@@ -509,19 +503,23 @@ def cleanup_tool(name: str):
 
 class ToolManager:
 
-    def __init__(self, *tools: str, cleanup: bool = True):
+    def __init__(self, *tools: str):
         self.tools = tools
-        self.cleanup = cleanup
 
-    def __enter__(self):
+    def extract(self):
         for tool in self.tools:
             ensure_tool_extracted(tool)
+
+    def cleanup(self):
+        for tool in self.tools:
+            cleanup_tool(tool)
+
+    def __enter__(self):
+        self.extract()
         return self
 
     def __exit__(self, exc_type, exc, tb):
-        if self.cleanup:
-            for tool in self.tools:
-                cleanup_tool(tool)
+        self.cleanup()
 
 class ConvertXnaProjects(QObject):
 
@@ -1340,26 +1338,44 @@ class XBLIG_Dialog(QDialog):
                 self.log_message_log(result.stderr)
 
     def decompile_selected(self, game: XBLIGGame, open_explorer: bool = True, use_gui=False):
-        # game = self.get_selected_game()
-        # if not game:
-        #     return
 
         exe = game.exe
+
         if not exe:
             QMessageBox.warning(self, "No Executable", "Extract the game first.")
             return
+
         self.log_message(f"Generating Visual Studio project for {exe.name}...")
 
         try:
-            project_dir = decompile_project(exe, use_gui=use_gui)
+            exe = ILSPY_GUI if use_gui else ILSPY_CMD
+            project_dir, tools, process = decompile_project(
+                exe,
+                parent=self,
+            )
+
+            self.ilspy_process = process
             game.decompiled = project_dir
+
+            if process is not None:
+                # Async GUI/QProcess mode
+                process.finished.connect(
+                    lambda *_: self.on_decompile_finished(project_dir, tools)
+                )
+            else:
+                # CLI mode already completed
+                self.on_decompile_finished(project_dir, tools)
+
         except subprocess.CalledProcessError as e:
             QMessageBox.critical(self, "ILSpy", str(e))
             return
 
-        self.log_message("Visual Studio project created.")
+        if open_explorer:
+            subprocess.Popen(["explorer", str(project_dir)])
 
-        if open_explorer: subprocess.Popen(["explorer", str(project_dir)])
+    def on_decompile_finished(self, project_dir, tools):
+        tools.cleanup()
+        print(f"Decompiled project: {project_dir}")
 
     from PySide6.QtCore import QObject, QThread, Signal
 
@@ -1516,9 +1532,10 @@ class XBLIG_Dialog(QDialog):
                     save_cache(self.games)
             else:
                 self.log_message(f"Skipping {game.title}")
+        self.rescan_games_responsive(force=True)
 
     def log_message(self, message):
-        self.log_window.append(message)
+        self.log_window.appendPlainText(message)
 
     def log_message_log(self, message):
         self.log_message(message)
@@ -1533,7 +1550,7 @@ class XBLIG_Dialog(QDialog):
         package = Path(package)
 
         if not package.exists():
-            print(f"Package missing: {package}")
+            self.log_message_log(f"Package missing: {package}")
             return None
 
         from stfs_extract import extract_live_pirs
@@ -1549,10 +1566,10 @@ class XBLIG_Dialog(QDialog):
             with redirect_stdout(QtLogger(self.log_message_log)):
                 extract_live_pirs(package, extracted_path)
 
-            print(f"Extracted to: {extracted_path}")
+            self.log_message_log(f"Extracted to: {extracted_path}")
 
         except Exception as e:
-            print(f"Extraction failed: {e}")
+            self.log_message_log(f"Extraction failed: {e}")
             return None
 
         return extracted_path

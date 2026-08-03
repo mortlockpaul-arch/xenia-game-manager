@@ -349,23 +349,32 @@ class GameLauncher(QMainWindow):
 
     def extract_downloaded_archives(self):
         base_dir = get_app_dir()
-        self.extract_thread = QThread()
-        self.extract_worker = ExtractWorker(
-            [
-                Path.home() / "Downloads",
-                base_dir / "downloads",
-            ]
-        )
         self.extract_downloaded_archives_btn.setEnabled(False)
-        self.extract_worker.log_window.connect(self.log)
+
+        self.extract_thread = QThread()
+        self.extract_worker = ExtractWorker([
+            Path.home() / "Downloads",
+            base_dir / "downloads",
+        ])
+
         self.extract_worker.moveToThread(self.extract_thread)
         self.extract_thread.started.connect(self.extract_worker.run)
-        self.extract_worker.finished.connect(self.extract_thread.quit)
+        self.extract_worker.log_window.connect(self.log)
+        self.extract_worker.finished.connect(self.extract_finished)
+        self.extract_worker.finished.connect(lambda count: self.extract_thread.quit())
         self.extract_worker.finished.connect(self.extract_worker.deleteLater)
-        self.extract_thread.finished.connect(
-            lambda: self.extract_downloaded_archives_btn.setEnabled(True)
-        )
+        self.extract_thread.finished.connect(self.extract_thread.deleteLater)
         self.extract_thread.start()
+
+    @Slot(int)
+    def extract_finished(self, count: int):
+        self.extract_downloaded_archives_btn.setEnabled(True)
+
+        if count:
+            noun = "archive" if count == 1 else "archives"
+            self.log(f"Extraction complete. {count} {noun} extracted.")
+        else:
+            self.log("Extraction complete. No archives were extracted.")
 
     def check_for_updates(self, name="Xenia Game Manager"):
 
