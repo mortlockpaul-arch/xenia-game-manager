@@ -9,7 +9,7 @@ from functools import partial
 from xml.etree import ElementTree as ET
 
 import time
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, field
 from typing import cast
 
 import sys
@@ -138,9 +138,10 @@ from PySide6.QtCore import QProcess
 
 from PySide6.QtCore import QProcess
 
-
 def decompile_project(
     exe: Path,
+    dll_files: list[Path],
+    ilspy_exe: Path,
     parent=None,
 ) -> tuple[Path, ToolManager, QProcess]:
 
@@ -150,11 +151,9 @@ def decompile_project(
     output_dir = exe.parent.parent.parent / "decompiled"
     output_dir.mkdir(parents=True, exist_ok=True)
 
-
-
-    if not exe.exists():
+    if not ilspy_exe.exists():
         tools.cleanup()
-        raise FileNotFoundError(f"ILSpy executable not found: {ilspy}")
+        raise FileNotFoundError(f"ILSpy executable not found: {ilspy_exe}")
 
     process = QProcess(parent)
 
@@ -165,10 +164,14 @@ def decompile_project(
         str(output_dir),
     ]
 
-    process.start(
-        str(exe),
-        arguments,
-    )
+    # Add DLL references
+    for dll in dll_files:
+        arguments.extend([
+            "-r",
+            str(dll)
+        ])
+
+    process.start(str(ilspy_exe), arguments)
 
     return output_dir, tools, process
 
@@ -331,6 +334,7 @@ class XBLIGGame:
     game_root: Path | None = None
 
     exe: Path | None = None
+    dll_files: list[Path] = field(default_factory=list)
     xml: Path | None = None
     decompiled: Path | None = None
 
@@ -358,10 +362,15 @@ class XBLIGGame:
             if isinstance(value, Path):
                 value = str(value)
 
+            elif isinstance(value, list):
+                value = [
+                    str(item) if isinstance(item, Path) else item
+                    for item in value
+                ]
+
             data[field.name] = value
 
         return data
-
 
     @classmethod
     def from_dict(cls, data):
@@ -382,16 +391,17 @@ class XBLIGGame:
             if field.name in path_fields and value:
                 value = Path(value)
 
+            elif field.name == "dll_files" and value:
+                value = [Path(x) for x in value]
+
             converted[field.name] = value
 
         return cls(**converted)
 
 
 def copy_content_folder(folder, dest):
-    source = folder
-    # destination = folder.parent / "content_backup"
-    # if destination.exists() and destination.is_dir():
-    #     shutil.rmtree(destination)
+    if dest.exists() and dest.is_dir():
+        shutil.rmtree(dest)
     shutil.copytree(folder, dest)
 
 def get_7zip() -> Path:
@@ -643,7 +653,8 @@ class ConvertXnaProjects(QObject):
                 if extracted.exists()
                 else None
             )
-
+            dll_files = list(extracted.rglob("*.dll")) if extracted.exists() else []
+            self.log_signal.emit(f"Processed {title}")
             games.append(
                 XBLIGGame(
                     title=title,
@@ -657,6 +668,7 @@ class ConvertXnaProjects(QObject):
                     extracted=extracted if extracted.exists() else None,
                     game_root=extracted if extracted.exists() else package.parent,
                     exe=exe_file,
+                    dll_files=dll_files,
                     xml=game_info if game_info.exists() else None,
                     decompiled=decompiled if decompiled.exists() else None,
                 )
@@ -665,7 +677,7 @@ class ConvertXnaProjects(QObject):
             #
             # Don't spam the log.
             #
-            if index % 25 == 0 or index == total_packages:
+            if index % 1 == 0 or index == total_packages:
                 self.log_signal.emit(
                     f"Processed {index}/{total_packages} package(s)..."
                 )
@@ -969,7 +981,7 @@ class ConvertXnaProjects(QObject):
             # backup project
             if (folder.parent.parent / "decompiled_backup").exists():
                 shutil.rmtree(folder.parent.parent / "decompiled_backup")
-            shutil.copytree(folder.parent, folder.parent.parent / "decompiled_backup")
+            # shutil.copytree(folder.parent, folder.parent.parent / "decompiled_backup")
             self.convert_xblig_to_fna(folder)
             self.add_xna_compat(folder.parent)
             self.remove_xna_usings(folder.parent)
@@ -1303,15 +1315,17 @@ class XBLIG_Dialog(QDialog):
         self.validate3_btn.setDisabled(True)
         game = self.get_selected_game()
         if game:
-            with ToolManager("conversion"):
-                converter = ConvertXnaProjects(get_app_dir(), self.games)
+            tools = ToolManager("conversion")
+            tools.extract()
 
-                converter.log_signal.connect(self.log_message_log)
-                converter.progress_signal.connect(self.progress_bar.setValue)
-                converter.finished_signal.connect(self.tool_finished)
+            converter = ConvertXnaProjects(get_app_dir(), self.games)
 
-                self.progress_bar.setRange(0, 0)  # Busy animation
-                self.run_in_background(converter.convert_xnb_folder_tools, game, tool_id)
+            converter.log_signal.connect(self.log_message_log)
+            converter.progress_signal.connect(self.progress_bar.setValue)
+            converter.finished_signal.connect(self.tool_finished)
+
+            self.progress_bar.setRange(0, 0)  # Busy animation
+            self.run_in_background(converter.convert_xnb_folder_tools, game, tool_id)
 
     def tool_finished(self, result: ConversionResult):
         self.progress_bar.setRange(0, 100)
@@ -1340,6 +1354,7 @@ class XBLIG_Dialog(QDialog):
     def decompile_selected(self, game: XBLIGGame, open_explorer: bool = True, use_gui=False):
 
         exe = game.exe
+        dll_files = game.dll_files
 
         if not exe:
             QMessageBox.warning(self, "No Executable", "Extract the game first.")
@@ -1348,34 +1363,52 @@ class XBLIG_Dialog(QDialog):
         self.log_message(f"Generating Visual Studio project for {exe.name}...")
 
         try:
-            exe = ILSPY_GUI if use_gui else ILSPY_CMD
+            ilspy_exe = ILSPY_GUI if use_gui else ILSPY_CMD
+
             project_dir, tools, process = decompile_project(
                 exe,
+                dll_files,
+                ilspy_exe=ilspy_exe,
                 parent=self,
             )
 
-            self.ilspy_process = process
             game.decompiled = project_dir
 
             if process is not None:
-                # Async GUI/QProcess mode
+
+                # Capture ILSpy CMD output
+                if not use_gui:
+                    process.readyReadStandardOutput.connect(
+                        lambda: self.log_message(
+                            bytes(process.readAllStandardOutput().data()).decode(
+                                "utf-8",
+                                errors="replace"
+                            )
+                        )
+                    )
+
+                    process.readyReadStandardError.connect(
+                        lambda: self.log_message(
+                            bytes(process.readAllStandardError().data()).decode(
+                                "utf-8",
+                                errors="replace"
+                            )
+                        )
+                    )
+
                 process.finished.connect(
-                    lambda *_: self.on_decompile_finished(project_dir, tools)
+                    lambda *_: self.on_decompile_finished(open_explorer,project_dir, tools)
                 )
-            else:
-                # CLI mode already completed
-                self.on_decompile_finished(project_dir, tools)
 
         except subprocess.CalledProcessError as e:
             QMessageBox.critical(self, "ILSpy", str(e))
             return
 
-        if open_explorer:
-            subprocess.Popen(["explorer", str(project_dir)])
-
-    def on_decompile_finished(self, project_dir, tools):
+    def on_decompile_finished(self, open_explorer, project_dir, tools):
         tools.cleanup()
         print(f"Decompiled project: {project_dir}")
+        if open_explorer:
+            subprocess.Popen(["explorer", str(project_dir)])
 
     from PySide6.QtCore import QObject, QThread, Signal
 
@@ -1518,21 +1551,30 @@ class XBLIG_Dialog(QDialog):
         if not self.drawer_open:
             self.show_settings_drawer()
 
-    def extract_missing(self):
-        self.log_message(f"\nFound {len(self.games)} Xbox Live Indie Games\n")
-        for i, game in enumerate(self.games, 1):
-
-            # Auto extract missing games
+    def extract_game(self):
+        game = self.get_selected_game()
+        if game is not None:
             if game.extracted is None and game.package:
-
                 extracted = self.extract_xblig_package(game)
                 if extracted:
                     game.extracted = extracted
                     self.log_message(f"Extracted {game.title} Successfully")
                     save_cache(self.games)
-            else:
-                self.log_message(f"Skipping {game.title}")
-        self.rescan_games_responsive(force=True)
+                    self.load_games(self.games)
+
+    def extract_missing(self):
+        self.log_message(f"\nFound {len(self.games)} Xbox Live Indie Games\n")
+        for i, game in enumerate(self.games, 1):
+            # Auto extract missing games
+            if game.extracted is None and game.package:
+                extracted = self.extract_xblig_package(game)
+                if extracted:
+                    game.extracted = extracted
+                    self.log_message(f"Extracted {game.title} Successfully")
+                    save_cache(self.games)
+                    self.load_games(self.games)
+            # else:
+            #     self.log_message(f"Skipping {game.title}")
 
     def log_message(self, message):
         self.log_window.appendPlainText(message)
@@ -1952,6 +1994,9 @@ class XBLIG_Dialog(QDialog):
         self.extract_btn = QPushButton("Extract Missing")
         self.extract_btn.clicked.connect(self.extract_missing)
 
+        self.extract_game_btn = QPushButton("Extract Game")
+        self.extract_game_btn.clicked.connect(self.extract_game)
+
         self.build_btn = QPushButton("Decompile Game")
         self.build_btn.clicked.connect(self.build_selected)
 
@@ -1981,6 +2026,7 @@ class XBLIG_Dialog(QDialog):
 
         toolbar.addWidget(self.scan_btn)
         toolbar.addWidget(self.extract_btn)
+        toolbar.addWidget(self.extract_game_btn)
         toolbar.addWidget(self.build_btn)
         toolbar.addWidget(self.convert_all_btn)
         toolbar.addWidget(self.launch_btn)
@@ -2075,8 +2121,8 @@ class XBLIG_Dialog(QDialog):
 
         # Table gets ~80%, log gets ~20%
         left_splitter.setStretchFactor(0, 5)
-        left_splitter.setStretchFactor(1, 1)
-
+        left_splitter.setStretchFactor(1, 2)
+        # left_splitter.setStretchFactor(2, 2)
         left_layout.addWidget(left_splitter)
 
         splitter.addWidget(left)

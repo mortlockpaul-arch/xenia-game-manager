@@ -1,5 +1,114 @@
 [
   {
+    "issue": 1184,
+    "id": "554F07D3",
+    "title": "Way of the Samurai 3",
+    "updated": "2026-08-05T00:35:35Z",
+    "state": "Gameplay",
+    "labels": {
+      "state": [
+        "state-gameplay"
+      ],
+      "others": []
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1184"
+  },
+  {
+    "issue": 1182,
+    "id": "58410B00",
+    "title": "Dead Rising 2 : Case West",
+    "updated": "2026-08-04T18:43:14Z",
+    "state": "Playable",
+    "labels": {
+      "state": [
+        "state-playable"
+      ],
+      "others": [
+        "apu-garbage"
+      ]
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1182"
+  },
+  {
+    "issue": 1181,
+    "id": "584108F6",
+    "title": "Shadow Complex",
+    "updated": "2026-08-03T20:08:36Z",
+    "state": "Playable",
+    "labels": {
+      "state": [
+        "state-playable"
+      ],
+      "others": [
+        "gpu-drawing-corrupt",
+        "tech-engine-unreal",
+        "gpu-readback"
+      ]
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1181"
+  },
+  {
+    "issue": 1180,
+    "id": "58410A8D",
+    "title": "Dead Rising 2: Case Zero",
+    "updated": "2026-08-03T20:09:04Z",
+    "state": "Playable",
+    "labels": {
+      "state": [
+        "state-playable"
+      ],
+      "others": [
+        "gpu-drawing-corrupt",
+        "apu-garbage"
+      ]
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1180"
+  },
+  {
+    "issue": 1179,
+    "id": "58410AF9",
+    "title": "Galaga Legions DX",
+    "updated": "2026-08-02T15:09:24Z",
+    "state": "Playable",
+    "labels": {
+      "state": [
+        "state-playable"
+      ],
+      "others": [
+        "vsync-off-speedup"
+      ]
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1179"
+  },
+  {
+    "issue": 1178,
+    "id": "58410A69",
+    "title": "Deadliest Warriors",
+    "updated": "2026-08-02T16:28:07Z",
+    "state": "Playable",
+    "labels": {
+      "state": [
+        "state-playable"
+      ],
+      "others": []
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1178"
+  },
+  {
+    "issue": 1177,
+    "id": "58410B5C",
+    "title": "Deadliest Warrior: Legends",
+    "updated": "2026-08-02T16:28:49Z",
+    "state": "Playable",
+    "labels": {
+      "state": [
+        "state-playable"
+      ],
+      "others": []
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1177"
+  },
+  {
     "issue": 1175,
     "id": "534507F5",
     "title": "SEGA Superstars Tennis",
@@ -479,7 +588,7 @@
     "issue": 1140,
     "id": "545408A7",
     "title": "Grand Theft Auto V",
-    "updated": "2026-07-27T21:14:22Z",
+    "updated": "2026-08-03T11:28:26Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -781,7 +890,7 @@
     "issue": 1119,
     "id": "4D530888",
     "title": "Lips",
-    "updated": "2026-07-10T10:30:59Z",
+    "updated": "2026-08-01T20:57:52Z",
     "state": "Loads",
     "labels": {
       "state": [
@@ -966,15 +1075,13 @@
     "issue": 1107,
     "id": "545108AF",
     "title": "Wheel of Fortune",
-    "updated": "2026-05-13T15:21:54Z",
+    "updated": "2026-08-02T16:29:50Z",
     "state": "Playable",
     "labels": {
       "state": [
         "state-playable"
       ],
-      "others": [
-        "gpu-shader-errors"
-      ]
+      "others": []
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/1107"
   },
@@ -1614,15 +1721,14 @@
     "issue": 1061,
     "id": "4B5607D4",
     "title": "Ninja Gaiden 3",
-    "updated": "2026-05-14T12:55:10Z",
+    "updated": "2026-08-03T00:20:11Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
-        "gpu-drawing-corrupt",
-        "crash-always"
+        "vsync-off-speedup"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/1061"
@@ -1691,14 +1797,15 @@
     "issue": 1054,
     "id": "45410961",
     "title": "Need For Speed Most Wanted (2012)",
-    "updated": "2026-08-01T09:56:51Z",
+    "updated": "2026-08-02T17:17:30Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
-        "gpu-readback"
+        "gpu-readback",
+        "crash-always"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/1054"
@@ -1871,15 +1978,15 @@
     "issue": 1040,
     "id": "57520817",
     "title": "LEGO Batman 2 DC Super Heroes",
-    "updated": "2026-07-09T01:05:32Z",
+    "updated": "2026-08-01T17:39:53Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
-        "gpu-drawing-corrupt",
         "apu-garbage",
+        "gpu-readback",
         "crash-always"
       ]
     },
@@ -2854,7 +2961,7 @@
     "issue": 965,
     "id": "555308AE",
     "title": "Assassin's Creed III",
-    "updated": "2026-07-28T06:52:07Z",
+    "updated": "2026-08-05T01:51:42Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -2905,7 +3012,7 @@
     "issue": 962,
     "id": "555307D4",
     "title": "Assassin's Creed",
-    "updated": "2026-06-17T17:23:10Z",
+    "updated": "2026-08-03T20:34:00Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -2987,7 +3094,7 @@
     "issue": 957,
     "id": "4B4E0820",
     "title": "Def Jam: Rapstar",
-    "updated": "2026-05-25T23:05:10Z",
+    "updated": "2026-08-05T00:14:33Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -2995,8 +3102,7 @@
       ],
       "others": [
         "gpu-drawing-missing",
-        "tech-microphone-required",
-        "gpu-drawing-black"
+        "tech-microphone-required"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/957"
@@ -3326,7 +3432,7 @@
     "issue": 936,
     "id": "584114C6",
     "title": "Minecraft Story Mode 2",
-    "updated": "2026-07-15T07:00:21Z",
+    "updated": "2026-08-01T17:43:39Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -3334,7 +3440,6 @@
       ],
       "others": [
         "gpu-drawing-corrupt",
-        "gpu-drawing-missing",
         "tech-engine-telltaletool",
         "backwards-compatibility-unsupported"
       ]
@@ -4395,7 +4500,7 @@
     "issue": 868,
     "id": "4B4D07D1",
     "title": "Sacred 2: Fallen Angel",
-    "updated": "2025-10-03T15:08:20Z",
+    "updated": "2026-08-02T19:10:14Z",
     "state": "Loads",
     "labels": {
       "state": [
@@ -4484,15 +4589,13 @@
     "issue": 861,
     "id": "464F07E8",
     "title": "Sniper Elite V2",
-    "updated": "2026-07-27T17:49:11Z",
+    "updated": "2026-08-01T17:45:18Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
-        "gpu-drawing-corrupt",
-        "gpu-drawing-missing",
         "tech-engine-asura",
         "requires_render_target_rov_fsi"
       ]
@@ -4669,7 +4772,7 @@
     "issue": 851,
     "id": "45410950",
     "title": "Battlefield 3",
-    "updated": "2026-08-01T10:09:38Z",
+    "updated": "2026-08-05T03:22:08Z",
     "state": "Loads",
     "labels": {
       "state": [
@@ -6074,7 +6177,7 @@
     "issue": 761,
     "id": "57520802",
     "title": "Batman: Arkham City",
-    "updated": "2026-07-31T18:01:06Z",
+    "updated": "2026-08-02T22:19:16Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -6848,7 +6951,7 @@
     "issue": 709,
     "id": "58410826",
     "title": "Hexic 2",
-    "updated": "2026-02-03T18:46:48Z",
+    "updated": "2026-08-04T20:14:38Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -7072,7 +7175,7 @@
     "issue": 693,
     "id": "534507D4",
     "title": "Chromehounds",
-    "updated": "2026-02-03T18:46:27Z",
+    "updated": "2026-08-05T01:43:28Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -7397,7 +7500,7 @@
     "issue": 671,
     "id": "584109B7",
     "title": "0 Day Attack on Earth",
-    "updated": "2025-07-08T05:46:53Z",
+    "updated": "2026-08-05T01:43:25Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -7757,7 +7860,7 @@
     "issue": 648,
     "id": "4B4E07D1",
     "title": "Rumble Roses XX",
-    "updated": "2026-05-07T23:17:37Z",
+    "updated": "2026-08-03T02:46:25Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -8560,7 +8663,7 @@
     "issue": 595,
     "id": "5841125E",
     "title": "Joy Ride Turbo",
-    "updated": "2026-05-28T07:58:48Z",
+    "updated": "2026-08-02T16:50:16Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -8568,7 +8671,7 @@
       ],
       "others": [
         "gpu-drawing-corrupt",
-        "gpu-shader-errors",
+        "vsync-off-speedup",
         "tech-avatar-required"
       ]
     },
@@ -8695,7 +8798,7 @@
     "issue": 583,
     "id": "545407D4",
     "title": "Amped 3",
-    "updated": "2026-07-02T19:25:35Z",
+    "updated": "2026-08-04T10:46:51Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -8940,16 +9043,16 @@
     "issue": 568,
     "id": "464507DD",
     "title": "Bound by Flame",
-    "updated": "2026-05-20T21:19:09Z",
+    "updated": "2026-08-02T17:16:10Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
-        "gpu-drawing-corrupt",
         "tech-engine-phyre",
-        "tech-physics-physx"
+        "tech-physics-physx",
+        "gpu-readback"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/568"
@@ -9119,7 +9222,7 @@
     "issue": 557,
     "id": "415608FA",
     "title": "Cabela's African Adventures",
-    "updated": "2026-07-30T05:08:53Z",
+    "updated": "2026-08-05T01:43:20Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -9256,7 +9359,7 @@
     "issue": 549,
     "id": "41560845",
     "title": "Blur",
-    "updated": "2026-06-20T09:49:21Z",
+    "updated": "2026-08-05T01:47:44Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -9359,7 +9462,7 @@
     "issue": 543,
     "id": "454107F8",
     "title": "Army of Two",
-    "updated": "2026-05-17T22:24:47Z",
+    "updated": "2026-08-05T01:43:16Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -9539,7 +9642,7 @@
     "issue": 532,
     "id": "545407E2",
     "title": "NBA 2K6",
-    "updated": "2026-05-17T22:31:58Z",
+    "updated": "2026-08-05T01:42:39Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -9555,7 +9658,7 @@
     "issue": 531,
     "id": "4B4E085C",
     "title": "Metal Gear Solid V: Ground Zeroes",
-    "updated": "2026-01-19T04:40:32Z",
+    "updated": "2026-08-05T02:10:53Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -9676,7 +9779,7 @@
     "issue": 524,
     "id": "5553087E",
     "title": "Driver: San Francisco",
-    "updated": "2025-06-11T18:36:38Z",
+    "updated": "2026-08-05T02:07:45Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -10081,7 +10184,7 @@
     "issue": 499,
     "id": "454108DF",
     "title": "Dead Space 2",
-    "updated": "2026-07-09T02:51:15Z",
+    "updated": "2026-08-05T01:34:42Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -10155,7 +10258,7 @@
     "issue": 495,
     "id": "5553084C",
     "title": "Child of Eden",
-    "updated": "2026-07-09T01:24:06Z",
+    "updated": "2026-08-05T01:42:36Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -10316,18 +10419,15 @@
     "issue": 484,
     "id": "464F0803",
     "title": "Sniper Elite 3: Ultimate Edition",
-    "updated": "2026-07-27T17:47:10Z",
+    "updated": "2026-08-01T17:53:36Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
-        "gpu-drawing-corrupt",
-        "cpu-timing",
         "tech-engine-asura",
         "backwards-compatibility-unsupported",
-        "crash-random",
         "requires_render_target_rov_fsi"
       ]
     },
@@ -10388,7 +10488,7 @@
     "issue": 478,
     "id": "454107F7",
     "title": "NBA Street Homecourt",
-    "updated": "2026-07-02T11:37:33Z",
+    "updated": "2026-08-05T01:42:31Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -10406,7 +10506,7 @@
     "issue": 477,
     "id": "5454086C",
     "title": "L.A. Noire",
-    "updated": "2026-07-08T16:35:55Z",
+    "updated": "2026-08-04T12:13:25Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -11037,7 +11137,7 @@
     "issue": 439,
     "id": "45410845",
     "title": "NASCAR 09",
-    "updated": "2025-01-21T03:44:15Z",
+    "updated": "2026-08-05T01:42:25Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -11103,7 +11203,7 @@
     "issue": 435,
     "id": "454109D4",
     "title": "2014 FIFA World Cup Brazil",
-    "updated": "2026-07-11T13:23:08Z",
+    "updated": "2026-08-04T17:03:42Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -11789,15 +11889,13 @@
     "issue": 395,
     "id": "58410B39",
     "title": "Backbreaker Vengeance",
-    "updated": "2026-07-12T19:37:20Z",
+    "updated": "2026-08-02T21:02:54Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
-        "gpu-drawing-corrupt",
-        "regression",
         "tech-physics-physx",
         "tech-middleware-euphoria",
         "gpu-readback",
@@ -12117,11 +12215,11 @@
     "issue": 376,
     "id": "434D07DB",
     "title": "DiRT",
-    "updated": "2026-07-27T18:10:40Z",
-    "state": "Gameplay",
+    "updated": "2026-08-04T11:00:39Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
       "others": [
         "tech-engine-ego",
@@ -12449,18 +12547,17 @@
     "issue": 356,
     "id": "58410B3A",
     "title": "I Am Alive",
-    "updated": "2026-07-10T11:09:45Z",
+    "updated": "2026-08-01T17:55:56Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
-        "gpu-drawing-corrupt",
-        "gpu-drawing-missing",
         "tech-engine-unreal",
         "tech-middleware-havok",
-        "tech-middleware-wwise"
+        "tech-middleware-wwise",
+        "gpu-readback"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/356"
@@ -13049,7 +13146,7 @@
     "issue": 321,
     "id": "4156091D",
     "title": "Call Of Duty: Black Ops III",
-    "updated": "2026-07-15T16:10:02Z",
+    "updated": "2026-08-05T01:42:21Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -13084,7 +13181,7 @@
     "issue": 319,
     "id": "45410813",
     "title": "Skate.",
-    "updated": "2026-05-21T02:22:25Z",
+    "updated": "2026-08-05T01:42:14Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -13098,14 +13195,13 @@
     "issue": 318,
     "id": "5841123E",
     "title": "Far Cry Classic",
-    "updated": "2026-03-17T00:13:26Z",
+    "updated": "2026-08-03T19:20:46Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
-        "gpu-drawing-corrupt",
         "tech-engine-cry"
       ]
     },
@@ -13999,7 +14095,7 @@
     "issue": 266,
     "id": "41560801",
     "title": "Hot Wheels: Beat That!",
-    "updated": "2024-11-06T12:58:18Z",
+    "updated": "2026-08-01T17:59:44Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -14007,7 +14103,8 @@
       ],
       "others": [
         "gpu-drawing-corrupt",
-        "marketplace-delisted"
+        "marketplace-delisted",
+        "gpu-readback"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/266"
@@ -14440,7 +14537,7 @@
     "issue": 242,
     "id": "545107FC",
     "title": "Saints Row 2",
-    "updated": "2026-06-02T19:56:55Z",
+    "updated": "2026-08-05T01:38:43Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -14458,7 +14555,7 @@
     "issue": 241,
     "id": "41560817",
     "title": "Call of Duty: Modern Warfare 2",
-    "updated": "2026-06-14T03:14:35Z",
+    "updated": "2026-08-05T01:47:17Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -14550,7 +14647,7 @@
     "issue": 233,
     "id": "415608EC",
     "title": "Deadpool",
-    "updated": "2026-06-01T12:37:09Z",
+    "updated": "2026-08-01T18:07:24Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -15137,20 +15234,19 @@
     "issue": 196,
     "id": "5553080B",
     "title": "Tom Clancy\u2019s Splinter Cell: Conviction",
-    "updated": "2026-06-28T00:56:00Z",
+    "updated": "2026-08-03T02:55:49Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
-        "gpu-drawing-missing",
         "tech-engine-unreal",
         "tech-middleware-havok",
         "gpu-readback",
         "tech-middleware-scaleform",
         "gpu-occlusion-query",
-        "gpu-drawing-black"
+        "requires_render_target_rov_fsi"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/196"
@@ -15177,7 +15273,7 @@
     "issue": 193,
     "id": "415608C3",
     "title": "Call of Duty: Black Ops II",
-    "updated": "2026-06-15T19:55:17Z",
+    "updated": "2026-08-05T02:06:33Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -15262,7 +15358,7 @@
     "issue": 188,
     "id": "454107F9",
     "title": "Battlefield: Bad Company",
-    "updated": "2026-07-27T18:34:39Z",
+    "updated": "2026-08-05T01:42:01Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -15302,7 +15398,7 @@
     "issue": 186,
     "id": "454108C5",
     "title": "Br\u00fctal Legend",
-    "updated": "2024-09-26T12:12:33Z",
+    "updated": "2026-08-02T12:08:33Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -15855,14 +15951,13 @@
     "issue": 148,
     "id": "454109F9",
     "title": "FIFA 19",
-    "updated": "2026-07-12T08:58:59Z",
+    "updated": "2026-08-01T18:05:55Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
-        "gpu-drawing-corrupt",
         "gpu-readback",
         "backwards-compatibility-unsupported"
       ]
@@ -15963,7 +16058,7 @@
     "issue": 141,
     "id": "45410912",
     "title": "Portal 2",
-    "updated": "2026-06-03T11:53:44Z",
+    "updated": "2026-08-05T01:41:48Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -16123,7 +16218,7 @@
     "issue": 129,
     "id": "5454082B",
     "title": "Red Dead Redemption",
-    "updated": "2026-06-01T13:39:45Z",
+    "updated": "2026-08-05T02:02:41Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -16249,7 +16344,7 @@
     "issue": 120,
     "id": "45410811",
     "title": "UEFA Champions League 2006\u20132007",
-    "updated": "2026-07-08T20:30:12Z",
+    "updated": "2026-08-02T08:22:57Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -16265,7 +16360,7 @@
     "issue": 119,
     "id": "454107ED",
     "title": "Superman Returns",
-    "updated": "2026-07-10T17:34:43Z",
+    "updated": "2026-08-02T21:42:26Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -16332,7 +16427,7 @@
     "issue": 112,
     "id": "4D5308D6",
     "title": "Fable III",
-    "updated": "2026-07-27T18:29:27Z",
+    "updated": "2026-08-02T11:57:12Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -16478,20 +16573,19 @@
     "issue": 103,
     "id": "555308B6",
     "title": "Tom Clancy's Splinter Cell: Blacklist",
-    "updated": "2026-07-24T00:10:54Z",
-    "state": "Gameplay",
+    "updated": "2026-08-05T01:39:44Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
       "others": [
-        "gpu-drawing-missing",
+        "gpu-drawing-corrupt",
         "tech-engine-unreal",
         "tech-kinect-optional",
         "tech-middleware-havok",
         "gpu-readback",
-        "gpu-occlusion-query",
-        "gpu-drawing-black"
+        "gpu-occlusion-query"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/103"
@@ -16683,7 +16777,7 @@
     "issue": 82,
     "id": "5345085D",
     "title": "Sonic & All-Stars Racing Transformed",
-    "updated": "2026-07-27T19:31:43Z",
+    "updated": "2026-08-05T01:41:34Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -17220,7 +17314,7 @@
     "issue": 42,
     "id": "5454086B",
     "title": "Max Payne 3",
-    "updated": "2026-07-14T14:58:26Z",
+    "updated": "2026-08-05T01:57:26Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -17362,7 +17456,7 @@
     "issue": 31,
     "id": "454107DC",
     "title": "Burnout Revenge",
-    "updated": "2026-05-29T21:59:19Z",
+    "updated": "2026-08-03T22:45:11Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -17381,7 +17475,7 @@
     "issue": 30,
     "id": "4D5309C9",
     "title": "Forza Horizon",
-    "updated": "2026-07-28T15:30:15Z",
+    "updated": "2026-08-03T22:12:58Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -17441,7 +17535,7 @@
     "issue": 27,
     "id": "415607E1",
     "title": "Call of Duty 3",
-    "updated": "2026-06-07T21:00:22Z",
+    "updated": "2026-08-05T01:40:42Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -17496,7 +17590,7 @@
     "issue": 20,
     "id": "545107D1",
     "title": "Saints Row",
-    "updated": "2026-06-04T20:43:15Z",
+    "updated": "2026-08-05T01:54:23Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -17588,7 +17682,7 @@
     "issue": 14,
     "id": "545407F2",
     "title": "Grand Theft Auto IV",
-    "updated": "2026-05-17T20:16:54Z",
+    "updated": "2026-08-05T02:17:03Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -17621,7 +17715,7 @@
     "issue": 9,
     "id": "454107DB",
     "title": "Battlefield 2: Modern Combat",
-    "updated": "2026-03-04T14:55:57Z",
+    "updated": "2026-08-01T18:08:58Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -17735,14 +17829,13 @@
     "issue": 2,
     "id": "555307E6",
     "title": "Enchanted Arms",
-    "updated": "2025-03-31T17:41:30Z",
+    "updated": "2026-08-02T18:27:22Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
-        "gpu-drawing-corrupt",
         "vsync-off-speedup"
       ]
     },
