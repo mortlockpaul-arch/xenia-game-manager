@@ -7,11 +7,8 @@
     <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.0.8 Xemu Support">
       <change afterPath="$PROJECT_DIR$/../XBLA-Extract/.idea/xbla-extract.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/xiso.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/xiso.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/game-manager-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/game-manager-config.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -275,14 +272,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00028" summary="1.0.1 XBLIG Extractor Worker">
-      <option name="closed" value="true" />
-      <created>1785112361463</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1785112361463</updated>
     </task>
     <task id="LOCAL-00029" summary="1.0.1 XBLIG Dataclass">
       <option name="closed" value="true" />
@@ -668,7 +657,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787157046760</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="1.0.8 Xemu Support">
+      <option name="closed" value="true" />
+      <created>1787160988882</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1787160988882</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

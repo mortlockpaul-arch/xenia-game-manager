@@ -14,3 +14,4 @@ __pycache__/
 *.py[cod]
 /src/cache/
 /src/db/
+/src/compatibility/
