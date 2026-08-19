@@ -270,30 +270,6 @@
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
     </task>
-    <task id="LOCAL-00016" summary="1.0.0">
-      <option name="closed" value="true" />
-      <created>1784844075642</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1784844075642</updated>
-    </task>
-    <task id="LOCAL-00017" summary="1.0.0">
-      <option name="closed" value="true" />
-      <created>1784848097276</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1784848097276</updated>
-    </task>
-    <task id="LOCAL-00018" summary="1.0.0">
-      <option name="closed" value="true" />
-      <created>1784862584771</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1784862584771</updated>
-    </task>
     <task id="LOCAL-00019" summary="1.0.1">
       <option name="closed" value="true" />
       <created>1785024769464</created>
@@ -662,7 +638,31 @@
       <option name="project" value="LOCAL" />
       <updated>1787153919645</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="1.0.8 Xemu Support">
+      <option name="closed" value="true" />
+      <created>1787154048344</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1787154048345</updated>
+    </task>
+    <task id="LOCAL-00066" summary="1.0.8 Xemu Support">
+      <option name="closed" value="true" />
+      <created>1787154098466</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1787154098466</updated>
+    </task>
+    <task id="LOCAL-00067" summary="1.0.8 Xemu Support">
+      <option name="closed" value="true" />
+      <created>1787154189955</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1787154189956</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
