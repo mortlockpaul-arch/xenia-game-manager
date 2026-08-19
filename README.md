@@ -1,0 +1,83 @@
+# Xenia Game Launcher
+
+PySide6 Xenia / Xemu Game Manager and Launcher for Xbox and Xbox 360 games. Indie game decompiler and Content Rebuilder.
+
+The Manager imports your Game List from Xenia Manager or Xenia Edge , stores game metadata in SQLite, provides title cleanup, archive tools, favourites, search, sorting, multi-disc support, play tracking and downloading title updates from xboxunity.net for games in the list.
+
+---
+
+# Features
+
+## Library Management
+
+- Import games from Xenia Manager or Xenia Edge Game List and Identify Multi Disc games
+- Import .xiso files and Launch Xemu
+- Indie Game Decompiler and Content Rebuilder ( With the XNB Extractor or Other Tools Included )
+- Add Favourites
+- Optimize Xenia and Edge Games 
+- Extract Downloaded Archives
+- Unify Content folders for Xenia Canary, Netplay and Mousehook.
+
+---
+# License
+Personal use project.
+## Third-Party Projects
+
+This software integrates with:
+
+- Xenia Manager / Netplay / Mousehook and Canary
+- Xenia Edge
+
+All trademarks, copyrights, and intellectual property remain the property of their respective owners.
+
+This project is an independent companion utility and is not affiliated with or endorsed by the Xenia or Xenia Manager development teams.
+
+# Credits
+
+## Xenia
+
+This launcher is designed to work with the Xenia Canary Xbox 360 emulator.
+
+Xenia is an open-source Xbox 360 emulator developed by the Xenia project contributors.
+
+Project:
+https://github.com/xenia-project/xenia
+
+## Xenia Manager
+
+This launcher imports and updates the Xenia Manager game library database (`games.json`).
+
+Special thanks to the Xenia Manager project for providing a user-friendly frontend and game management system for Xenia.
+
+Project:
+https://github.com/xenia-manager/xenia-manager
+
+This application is intended as a companion utility and is not affiliated with, endorsed by, or maintained by the Xenia Manager developers.
+
+
+## X360 TU Manager
+
+X360 TU Manager is a Python GUI tool for managing and downloading Title Updates (TUs) for Xbox 360 games from XboxUnity, using each game's MediaID and TitleID.
+
+Project:
+https://github.com/Wamphyre/X360-TU-Manager
+
+## Microsoft
+
+Xbox 360, Xbox, and related trademarks are property of Microsoft Corporation.
+
+## This Project
+
+Xenia SQLite Launcher
+
+Created by Paul Mortlock
+
+Provides:
+
+- SQLite-backed game library
+- Advanced title cleanup
+- Favourites
+- Search and sorting
+- Play tracking
+- Multi-disc metadata support
+- Integration with Xenia Manager libraries

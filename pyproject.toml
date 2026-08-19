@@ -1,0 +1,25 @@
+[project]
+name = "xenia-game-manager"
+description = "Xenia Game Manager"
+version = "0.7.3"
+requires-python = ">=3.10.10"
+authors = [
+    { name = "Paul Mortlock", email = "you@example.com" }
+]
+dependencies = [
+    "cx-freeze==8.6.4",
+    "packaging>=26.2",
+    "pyside6>=6.11.1",
+    "requests>=2.34.2",
+    "pywin32>=311",
+    "browser-cookie3>=0.20.1",
+    "tomli-w>=1.2.0",
+    "tomlkit>=0.15.0",
+    "keyring>=25.7.0",
+    "pip>=26.1.2",
+    "beautifulsoup4>=4.15.0",
+    "psutil>=7.2.2",
+    "pyqt6-sip>=13.11.1",
+    "dnfile>=0.18.0",
+    "line-profiler-pycharm>=1.2.0",
+]

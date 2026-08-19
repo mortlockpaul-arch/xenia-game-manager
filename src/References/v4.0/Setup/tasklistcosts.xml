@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<TaskCostFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TaskCostLists>
+    <TaskCostList Id="Install">
+      <TaskCosts>
+        <TaskCost Cost="20" Id="CopyRedistFiles" />
+        <TaskCost Cost="50" Id="InstallPanoramaRedist" />
+        <TaskCost Cost="35" Id="InstallXNARedist" />
+        <TaskCost Cost="10" Id="InstallXnaLiveProxy" />
+        <TaskCost Cost="30" Id="InstallPlatformTools" />
+        <TaskCost Cost="30" Id="InstallSharedFiles" />
+        <TaskCost Cost="30" Id="InstallDocs" />
+        <TaskCost Cost="30" Id="InstallVS" />
+        <TaskCost Cost="30" Id="InstallARP" />
+      </TaskCosts>
+    </TaskCostList>
+    <TaskCostList Id="Reinstall">
+      <TaskCosts>
+        <TaskCost Cost="10" Id="CopyRedistFiles" />
+        <TaskCost Cost="50" Id="InstallPanoramaRedist" />
+        <TaskCost Cost="35" Id="InstallXNARedist" />
+        <TaskCost Cost="10" Id="RepairXnaLiveProxy" />
+        <TaskCost Cost="30" Id="RepairPlatformTools" />
+        <TaskCost Cost="30" Id="RepairSharedFiles" />
+        <TaskCost Cost="30" Id="RepairDocs" />
+        <TaskCost Cost="30" Id="RepairVS" />
+      </TaskCosts>
+    </TaskCostList>
+    <TaskCostList Id="Uninstall">
+      <TaskCosts>
+        <TaskCost Cost="30" Id="RemoveSharedFiles" />
+        <TaskCost Cost="10" Id="RemoveXnaLiveProxy" />
+        <TaskCost Cost="30" Id="RemoveDocs" />
+        <TaskCost Cost="30" Id="RemoveVS" />
+        <TaskCost Cost="10" Id="RemoveRedistFiles" />
+        <TaskCost Cost="10" Id="RemoveARP" />
+      </TaskCosts>
+    </TaskCostList>
+  </TaskCostLists>
+</TaskCostFile>

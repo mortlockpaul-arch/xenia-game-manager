@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<TaskCostFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TaskCostLists>
+    <TaskCostList Id="Install">
+      <TaskCosts>
+        <TaskCost Cost="30" Id="CopyRedistFiles" />
+        <TaskCost Cost="60" Id="InstallOrRepairPanoramaRedist" />
+        <TaskCost Cost="15" Id="RunDXRedistSetup" />
+        <TaskCost Cost="20" Id="InstallOrRepairXNARedist" />
+        <TaskCost Cost="10" Id="InstallXnaLiveProxy" />
+        <TaskCost Cost="50" Id="InstallSharedFiles" />
+        <TaskCost Cost="90" Id="InstallSpacewars" />
+        <TaskCost Cost="100" Id="InstallDocs" />
+        <TaskCost Cost="75" Id="InstallExpress" />
+        <TaskCost Cost="90" Id="InstallUplevel" />
+        <TaskCost Cost="30" Id="InstallARP" />
+      </TaskCosts>
+    </TaskCostList>
+    <TaskCostList Id="Reinstall">
+      <TaskCosts>
+        <TaskCost Cost="10" Id="CopyRedistFiles" />
+        <TaskCost Cost="60" Id="RepairPanoramaRedist" />
+        <TaskCost Cost="15" Id="RunDXRedistSetup" />
+        <TaskCost Cost="20" Id="RepairXNARedist" />
+        <TaskCost Cost="10" Id="RepairXnaLiveProxy" />
+        <TaskCost Cost="20" Id="RepairSharedFiles" />
+        <TaskCost Cost="20" Id="RepairSpacewars" />
+        <TaskCost Cost="100" Id="RepairDocs" />
+        <TaskCost Cost="75" Id="RepairExpress" />
+        <TaskCost Cost="90" Id="RepairUplevel" />
+      </TaskCosts>
+    </TaskCostList>
+    <TaskCostList Id="Uninstall">
+      <TaskCosts>
+        <TaskCost Cost="20" Id="RemoveSharedFiles" />
+        <TaskCost Cost="10" Id="RemoveXnaLiveProxy" />
+        <TaskCost Cost="10" Id="RemoveSpacewars" />
+        <TaskCost Cost="90" Id="RemoveDocs" />
+        <TaskCost Cost="50" Id="RemoveUplevel" />
+        <TaskCost Cost="50" Id="RemoveExpress" />
+        <TaskCost Cost="15" Id="RemoveXNARedist" />
+        <TaskCost Cost="10" Id="RemoveRedistFiles" />
+        <TaskCost Cost="10" Id="RemoveARP" />
+      </TaskCosts>
+    </TaskCostList>
+  </TaskCostLists>
+</TaskCostFile>

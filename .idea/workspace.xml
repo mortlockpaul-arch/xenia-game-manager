@@ -1,0 +1,878 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.0.8 Xemu Support">
+      <change beforePath="$PROJECT_DIR$/src/cache/xblig_games.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/cache/xblig_games.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/emulators/Xenia Edge/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/emulators/Xenia Edge/portable.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/emulators/Xenia Edge/xenia_edge.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="12017" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;mortlockpaul-arch&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/mortlockpaul-arch/xenia-game-manager.git&quot;,
+    &quot;accountId&quot;: &quot;c7f8cb65-6ed1-41b0-ab7d-3e7002c42176&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/.venv/Lib/site-packages/pip/_internal/utils/logging.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/AppData/Local/Python/pythoncore-3.14-64/Lib/pathlib/__init__.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/AppData/Local/Python/pythoncore-3.14-64/Lib/subprocess.py" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="2.545082423928519E-4" />
+      <entry key="MS500" value="0.1910470686151028" />
+      <entry key="S2" value="0.6688295757080659" />
+      <entry key="S5" value="0.9902252031496084" />
+      <entry key="S10" value="1.2997688225813877" />
+      <entry key="S30" value="1.8061969645490201" />
+      <entry key="S60" value="2.1845835124869484" />
+      <entry key="M2" value="2.708947495480408" />
+      <entry key="M5" value="3.8175752879947695" />
+      <entry key="M10" value="4.690365670973564" />
+      <entry key="M15" value="5.316503004928081" />
+      <entry key="M30" value="8.918881675448207" />
+      <entry key="H1" value="19.74624694723028" />
+      <entry key="H2" value="38.41769825813019" />
+      <entry key="H4" value="62.79428683883734" />
+      <entry key="D1" value="192.09273113071959" />
+      <entry key="W1" value="1037.7538920646373" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0000011467640388" />
+      <entry key="S2" value="1.032724224559176" />
+      <entry key="S5" value="1.2559799495421637" />
+      <entry key="S10" value="1.5427479214884183" />
+      <entry key="S30" value="2.2474046410718826" />
+      <entry key="S60" value="2.830451145854642" />
+      <entry key="M2" value="3.5740092188114603" />
+      <entry key="M5" value="5.260065449964984" />
+      <entry key="M10" value="6.642226118912886" />
+      <entry key="M15" value="7.295736021947933" />
+      <entry key="M30" value="8.139650238821794" />
+      <entry key="H1" value="8.912114382989756" />
+      <entry key="H2" value="10.988033132470711" />
+      <entry key="H4" value="16.058993466569774" />
+      <entry key="D1" value="51.42616480448512" />
+      <entry key="W1" value="208.60456243143702" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="3.982245945515219E-4" />
+      <entry key="MS500" value="0.334093226730073" />
+      <entry key="S2" value="1.2989101338242435" />
+      <entry key="S5" value="2.010061002251591" />
+      <entry key="S10" value="2.676222894811793" />
+      <entry key="S30" value="3.946497611591291" />
+      <entry key="S60" value="4.9378955142958745" />
+      <entry key="M2" value="6.227055347302223" />
+      <entry key="M5" value="9.036483174250941" />
+      <entry key="M10" value="11.303814532809833" />
+      <entry key="M15" value="12.59038566879276" />
+      <entry key="M30" value="17.045537288531264" />
+      <entry key="H1" value="28.650312391104762" />
+      <entry key="H2" value="49.39982046185614" />
+      <entry key="H4" value="78.84836135080941" />
+      <entry key="D1" value="243.5148930327303" />
+      <entry key="W1" value="1246.3555317454432" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3GkcIWITZBGZkmaGYITAo1og5K7" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Batch.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;Batch.cleanup_repo.executor&quot;: &quot;Run&quot;,
+    &quot;Batch.start.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;PowerShell.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;PowerShell.cleanup_repo.ps1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.a.executor&quot;: &quot;Run&quot;,
+    &quot;Python.build.executor&quot;: &quot;Run&quot;,
+    &quot;Python.convert_xna_projects.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.main-updater.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main_updater.executor&quot;: &quot;Run&quot;,
+    &quot;Python.netplay.executor&quot;: &quot;Run&quot;,
+    &quot;Python.package window.executor&quot;: &quot;Run&quot;,
+    &quot;Python.package.executor&quot;: &quot;Run&quot;,
+    &quot;Python.package_window.executor&quot;: &quot;Run&quot;,
+    &quot;Python.setup.executor&quot;: &quot;Run&quot;,
+    &quot;Python.stfs_extract_gui.executor&quot;: &quot;Run&quot;,
+    &quot;Python.tools.executor&quot;: &quot;Run&quot;,
+    &quot;Python.utils.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.xiso.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/PycharmProjects/xenia-game-manager/src&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;ml.llm.LLMThirdPartyAiProvidersConfigurable&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\PycharmProjects\xenia-game-manager\src" />
+      <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\tools\decompiler\ILSpy" />
+      <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\tools\decompiler\ILSpyCmd" />
+      <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\tools" />
+      <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\tools - Copy" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\PycharmProjects\xenia-game-manager\src\models" />
+      <recent name="C:\PycharmProjects\xenia-game-manager\src\config" />
+      <recent name="C:\PycharmProjects\xenia-game-manager\src" />
+      <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\tools\decompiler" />
+      <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\XNACompat" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.main">
+    <configuration name="Unnamed" type="BatchConfigurationType" factoryName="Batch" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="./build_tools/build/exe.win-amd64-3.14/Xenia Game Manager Updater.exe" />
+      <option name="PARAMETERS" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unnamed" type="PowerShellRunType" factoryName="PowerShell" nameIsGenerated="true" scriptUrl="C:\PycharmProjects\xenia-game-manager\src\downloads\xblig\Manic Miner 360 (World) (XBLIG)\584E07D2\00000002\C0FC5430D7DA3E67452F6A32CB00F2F58780E70B58_extracted\584E07D1\Manic Miner 360.exe" executablePath="$PROJECT_DIR$/../../WINDOWS/System32/WindowsPowerShell/v1.0/powershell.exe">
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="main-updater" type="PythonConfigurationType" factoryName="Python">
+      <module name="xenia-game-manager" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="uv (xenia-game-manager) (2)" />
+      <option name="WORKING_DIRECTORY" value="C:\PycharmProjects\xenia-game-manager\src" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/main_updater.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="package window" type="PythonConfigurationType" factoryName="Python" editBeforeRun="true" activateToolWindowBeforeRun="false" focusToolWindowBeforeRun="true">
+      <module name="xenia-game-manager" />
+      <selectedOptions>
+        <option name="environmentVariables" visible="false" />
+        <option name="envPaths" visible="false" />
+      </selectedOptions>
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="uv (xenia-game-manager) (2)" />
+      <option name="WORKING_DIRECTORY" value="C:\PycharmProjects\xenia-game-manager\src" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="false" />
+      <option name="ADD_SOURCE_ROOTS" value="false" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="false" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/package_window.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Batch.Unnamed" />
+      <item itemvalue="PowerShell.Unnamed" />
+      <item itemvalue="Python.main-updater" />
+      <item itemvalue="Python.build" />
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python.package window" />
+    </list>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-821f704e66d9-5bd6d13a2a75-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-262.9437.214" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="" />
+      <created>1784518928319</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1784518928319</updated>
+    </task>
+    <task id="LOCAL-00014" summary="1.0.0">
+      <option name="closed" value="true" />
+      <created>1784702608862</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1784702608863</updated>
+    </task>
+    <task id="LOCAL-00015" summary="1.0.0">
+      <option name="closed" value="true" />
+      <created>1784746984003</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1784746984004</updated>
+    </task>
+    <task id="LOCAL-00016" summary="1.0.0">
+      <option name="closed" value="true" />
+      <created>1784844075642</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1784844075642</updated>
+    </task>
+    <task id="LOCAL-00017" summary="1.0.0">
+      <option name="closed" value="true" />
+      <created>1784848097276</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1784848097276</updated>
+    </task>
+    <task id="LOCAL-00018" summary="1.0.0">
+      <option name="closed" value="true" />
+      <created>1784862584771</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1784862584771</updated>
+    </task>
+    <task id="LOCAL-00019" summary="1.0.1">
+      <option name="closed" value="true" />
+      <created>1785024769464</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1785024769465</updated>
+    </task>
+    <task id="LOCAL-00020" summary="1.0.1">
+      <option name="closed" value="true" />
+      <created>1785024962967</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1785024962967</updated>
+    </task>
+    <task id="LOCAL-00021" summary="1.0.1">
+      <option name="closed" value="true" />
+      <created>1785039671589</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1785039671589</updated>
+    </task>
+    <task id="LOCAL-00022" summary="1.0.1 XBLIG Emulator">
+      <option name="closed" value="true" />
+      <created>1785044809922</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1785044809922</updated>
+    </task>
+    <task id="LOCAL-00023" summary="1.0.1 XBLIG Emulator">
+      <option name="closed" value="true" />
+      <created>1785045327074</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1785045327074</updated>
+    </task>
+    <task id="LOCAL-00024" summary="1.0.1 XBLIG Package Window">
+      <option name="closed" value="true" />
+      <created>1785090895379</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1785090895379</updated>
+    </task>
+    <task id="LOCAL-00025" summary="1.0.1 XBLIG Package Window">
+      <option name="closed" value="true" />
+      <created>1785098712912</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1785098712912</updated>
+    </task>
+    <task id="LOCAL-00026" summary="1.0.1 XBLIG Responsive Scanner">
+      <option name="closed" value="true" />
+      <created>1785102591585</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1785102591586</updated>
+    </task>
+    <task id="LOCAL-00027" summary="1.0.1 Build Fix">
+      <option name="closed" value="true" />
+      <created>1785106150338</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1785106150339</updated>
+    </task>
+    <task id="LOCAL-00028" summary="1.0.1 XBLIG Extractor Worker">
+      <option name="closed" value="true" />
+      <created>1785112361463</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1785112361463</updated>
+    </task>
+    <task id="LOCAL-00029" summary="1.0.1 XBLIG Dataclass">
+      <option name="closed" value="true" />
+      <created>1785190845869</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1785190845869</updated>
+    </task>
+    <task id="LOCAL-00030" summary="1.0.1 XBLIG Dataclass">
+      <option name="closed" value="true" />
+      <created>1785191112709</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1785191112709</updated>
+    </task>
+    <task id="LOCAL-00031" summary="1.0.1 XBLIG Dataclass">
+      <option name="closed" value="true" />
+      <created>1785191299926</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1785191299927</updated>
+    </task>
+    <task id="LOCAL-00032" summary="1.0.1 XBLIG Dataclass">
+      <option name="closed" value="true" />
+      <created>1785191392839</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1785191392839</updated>
+    </task>
+    <task id="LOCAL-00033" summary="1.0.1 XBLIG Dataclass">
+      <option name="closed" value="true" />
+      <created>1785191631577</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1785191631577</updated>
+    </task>
+    <task id="LOCAL-00034" summary="1.0.1 XBLIG Dataclass">
+      <option name="closed" value="true" />
+      <created>1785191834418</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1785191834418</updated>
+    </task>
+    <task id="LOCAL-00035" summary="1.0.1 XBLIG Dataclass">
+      <option name="closed" value="true" />
+      <created>1785192185870</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1785192185871</updated>
+    </task>
+    <task id="LOCAL-00036" summary="1.0.1 XBLIG Dataclass">
+      <option name="closed" value="true" />
+      <created>1785193919998</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1785193919998</updated>
+    </task>
+    <task id="LOCAL-00037" summary="1.0.1 XBLIG Dataclass">
+      <option name="closed" value="true" />
+      <created>1785193979798</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1785193979798</updated>
+    </task>
+    <task id="LOCAL-00038" summary="1.0.1 XBLIG Dataclass">
+      <option name="closed" value="true" />
+      <created>1785194292797</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1785194292797</updated>
+    </task>
+    <task id="LOCAL-00039" summary="1.0.1 References for recompiler. Need to remove some files oopsies.">
+      <option name="closed" value="true" />
+      <created>1785319578618</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1785319578621</updated>
+    </task>
+    <task id="LOCAL-00040" summary="1.0.1 References for recompiler. Need to remove some files oopsies.">
+      <option name="closed" value="true" />
+      <created>1785447054784</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1785447054785</updated>
+    </task>
+    <task id="LOCAL-00041" summary="1.0.1 ILSpy">
+      <option name="closed" value="true" />
+      <created>1785547167428</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1785547167429</updated>
+    </task>
+    <task id="LOCAL-00042" summary="1.0.1 xnbcli.exe">
+      <option name="closed" value="true" />
+      <created>1785633883528</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1785633883528</updated>
+    </task>
+    <task id="LOCAL-00043" summary="1.0.1 XNA Reference DLLs">
+      <option name="closed" value="true" />
+      <created>1785635673970</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1785635673971</updated>
+    </task>
+    <task id="LOCAL-00044" summary="1.0.1 XNA Reference DLLs">
+      <option name="closed" value="true" />
+      <created>1785638808408</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1785638808409</updated>
+    </task>
+    <task id="LOCAL-00045" summary="1.0.1 XNA Reference DLLs">
+      <option name="closed" value="true" />
+      <created>1785639315524</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1785639315526</updated>
+    </task>
+    <task id="LOCAL-00046" summary="1.0.5 Unify Content and Download Experimental improvements. Tools compress/decompress.">
+      <option name="closed" value="true" />
+      <created>1785708090119</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1785708090120</updated>
+    </task>
+    <task id="LOCAL-00047" summary="1.0.5 Unify Content and Download Experimental improvements. Tools compress/decompress.">
+      <option name="closed" value="true" />
+      <created>1785708137656</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1785708137656</updated>
+    </task>
+    <task id="LOCAL-00048" summary="1.0.5 Unify Content and Download Experimental improvements. Tools compress/decompress.">
+      <option name="closed" value="true" />
+      <created>1785730949827</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1785730949828</updated>
+    </task>
+    <task id="LOCAL-00049" summary="1.0.6 Fix argument parsing and scan for game dll files and decompile those too.">
+      <option name="closed" value="true" />
+      <created>1785987860107</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1785987860108</updated>
+    </task>
+    <task id="LOCAL-00050" summary="1.0.6 Fix argument parsing and scan for game dll files and decompile those too.">
+      <option name="closed" value="true" />
+      <created>1785987893372</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1785987893378</updated>
+    </task>
+    <task id="LOCAL-00051" summary="1.0.6 Tools">
+      <option name="closed" value="true" />
+      <created>1786311177133</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1786311177134</updated>
+    </task>
+    <task id="LOCAL-00052" summary="1.0.6 Tools">
+      <option name="closed" value="true" />
+      <created>1786311218245</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1786311218245</updated>
+    </task>
+    <task id="LOCAL-00053" summary="1.0.7 Tools">
+      <option name="closed" value="true" />
+      <created>1786578156168</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1786578156170</updated>
+    </task>
+    <task id="LOCAL-00054" summary="1.0.8 Xemu Support">
+      <option name="closed" value="true" />
+      <created>1787098849627</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1787098849630</updated>
+    </task>
+    <task id="LOCAL-00055" summary="1.0.8 Xemu Support">
+      <option name="closed" value="true" />
+      <created>1787099134095</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1787099134096</updated>
+    </task>
+    <task id="LOCAL-00056" summary="1.0.8 Xemu Support">
+      <option name="closed" value="true" />
+      <created>1787099158156</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1787099158157</updated>
+    </task>
+    <task id="LOCAL-00057" summary="1.0.8 Xemu Support">
+      <option name="closed" value="true" />
+      <created>1787099284495</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1787099284495</updated>
+    </task>
+    <task id="LOCAL-00058" summary="1.0.8 Xemu Support">
+      <option name="closed" value="true" />
+      <created>1787099665032</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1787099665032</updated>
+    </task>
+    <task id="LOCAL-00059" summary="1.0.8 Xemu Support">
+      <option name="closed" value="true" />
+      <created>1787099739968</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1787099739969</updated>
+    </task>
+    <task id="LOCAL-00060" summary="1.0.8 Xemu Support">
+      <option name="closed" value="true" />
+      <created>1787111396523</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1787111396525</updated>
+    </task>
+    <task id="LOCAL-00061" summary="1.0.8 Xemu Support">
+      <option name="closed" value="true" />
+      <created>1787114820901</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1787114820901</updated>
+    </task>
+    <task id="LOCAL-00062" summary="1.0.8 Xemu Support">
+      <option name="closed" value="true" />
+      <created>1787115242745</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1787115242746</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="keyring windows backend dependency" />
+    <MESSAGE value="add netplay browser annd initial compatibility file builder." />
+    <MESSAGE value="Updater logging use Signals for better feedback to UI" />
+    <MESSAGE value="1.0.0" />
+    <MESSAGE value="1.0.1" />
+    <MESSAGE value="1.0.1 XBLIG Emulator" />
+    <MESSAGE value="1.0.1 XBLIG Package Window" />
+    <MESSAGE value="1.0.1 XBLIG Responsive Scanner" />
+    <MESSAGE value="1.0.1 Build Fix" />
+    <MESSAGE value="1.0.1 XBLIG Extractor Worker" />
+    <MESSAGE value="1.0.1 XBLIG Dataclass" />
+    <MESSAGE value="1.0.1 References for recompiler. Need to remove some files oopsies." />
+    <MESSAGE value="1.0.1 ILSpy" />
+    <MESSAGE value="1.0.1 xnbcli.exe" />
+    <MESSAGE value="1.0.1 XNA Reference DLLs" />
+    <MESSAGE value="1.0.5 Unify Content and Download Experimental improvements. Tools compress/decompress." />
+    <MESSAGE value="1.0.6 Fix argument parsing and scan for game dll files and decompile those too." />
+    <MESSAGE value="1.0.6 Tools" />
+    <MESSAGE value="1.0.7 Tools" />
+    <MESSAGE value="1.0.8 Xemu Support" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.0.8 Xemu Support" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/netplay.py</url>
+          <line>105</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/updater.py</url>
+          <line>366</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/updater.py</url>
+          <line>275</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/ui.py</url>
+          <line>1518</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/updater.py</url>
+          <line>310</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/main_updater.py</url>
+          <line>78</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/build_tools/build.py</url>
+          <line>84</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/build_tools/build.py</url>
+          <line>43</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/build_tools/build.py</url>
+          <line>13</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/ui.py</url>
+          <line>1677</line>
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>1079</line>
+          <option name="timeStamp" value="69" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/ui.py</url>
+          <line>1692</line>
+          <option name="timeStamp" value="78" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/extract.py</url>
+          <line>56</line>
+          <option name="timeStamp" value="84" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/ui.py</url>
+          <line>937</line>
+          <option name="timeStamp" value="85" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/ui.py</url>
+          <line>1006</line>
+          <option name="timeStamp" value="86" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/ui.py</url>
+          <line>353</line>
+          <option name="timeStamp" value="87" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/ui.py</url>
+          <line>352</line>
+          <option name="timeStamp" value="88" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/ui.py</url>
+          <line>371</line>
+          <option name="timeStamp" value="89" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>2007</line>
+          <option name="timeStamp" value="96" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>1476</line>
+          <option name="timeStamp" value="101" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>391</line>
+          <option name="timeStamp" value="111" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>1066</line>
+          <option name="timeStamp" value="113" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>1388</line>
+          <option name="timeStamp" value="114" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>582</line>
+          <option name="timeStamp" value="115" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>1574</line>
+          <option name="timeStamp" value="116" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>2003</line>
+          <option name="timeStamp" value="117" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/xiso.py</url>
+          <line>352</line>
+          <option name="timeStamp" value="133" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/db.py</url>
+          <line>1003</line>
+          <option name="timeStamp" value="137" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/xiso.py</url>
+          <line>381</line>
+          <option name="timeStamp" value="138" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/db.py</url>
+          <line>1099</line>
+          <option name="timeStamp" value="154" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/ui.py</url>
+          <line>2075</line>
+          <option name="timeStamp" value="157" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/models/model_xbox360.py</url>
+          <line>248</line>
+          <option name="timeStamp" value="160" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>1446</line>
+          <option name="timeStamp" value="161" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

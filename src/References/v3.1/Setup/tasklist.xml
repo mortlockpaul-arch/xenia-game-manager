@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<TME xmlns="http://tempuri.org/TME.xsd">
+  <TaskProcessors>
+    <TaskProcessor Id="EXE" />
+    <TaskProcessor Id="MSI" ProgressDevianceThreshold="100" />
+    <TaskProcessor Id="NET" />
+  </TaskProcessors>
+  <TaskLists>
+    <TaskList Id="Install" DisplayName="Install">
+      <Tasks>
+        <Task Id="CopyRedistFiles" Type="MSI" Data="MsiPath=redists.msi;MsiOperation=Install;ContinueOnFailure=False" DisplayName="Copying prerequisite files" />
+        <Task Id="InstallPanoramaRedist" Type="MSI" Data="MsiPath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Setup\XLiveRedist.msi;MsiOperation=Install;CheckOnInstall={05B49229-22A2-4F88-842A-BBC2EBE1CCF6};ContinueOnFailure=False" DisplayName="Installing Microsoft Games for Windows - LIVE Redistributable" />
+        <Task Id="InstallOrRepairXNARedist30" Type="MSI" Data="MsiPath={3898934B-05AE-41CD-96BE-70DA9BFBCE1F};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Redist\XNA FX Redist\xnafx30_redist.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus;ContinueOnFailure=False" DisplayName="Installing XNA Framework Redistributable 3.0" />
+        <Task Id="InstallOrRepairXNARedist31" Type="MSI" Data="MsiPath={19BFDA5D-1FE2-4F25-97F9-1A79DD04EE20};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Redist\XNA FX Redist\xnafx31_redist.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus;ContinueOnFailure=False" DisplayName="Installing XNA Framework Redistributable 3.1" />
+        <Task Id="InstallXnaLiveProxy" Type="MSI" Data="MsiPath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Setup\xnaliveproxy.msi;MsiOperation=Install;ContinueOnFailure=False" DisplayName="Copying XNA Game Studio files" />
+        <Task Id="InstallPlatformTools" Type="MSI" Data="MsiPath={BED4CEEC-863F-4AB3-BA23-541764E2D2CE};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Setup\xnags_platform_tools.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus;ContinueOnFailure=False" DisplayName="Installing XNA Game Studio Platform Tools" />
+        <Task Id="InstallSharedFiles" Type="MSI" Data="MsiPath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Setup\xnags_shared.msi;MsiOperation=Install;ContinueOnFailure=False" DisplayName="Copying XNA Game Studio files" />
+        <Task Id="InstallPlatformer" Type="MSI" Data="MsiPath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Setup\platformer.msi;MsiOperation=Install;ContinueOnFailure=False" DisplayName="Copying XNA Game Studio starter kits" />
+        <Task Id="InstallDocs" Type="MSI" Data="MsiPath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Setup\xnags_documentation.msi;MsiOperation=Install;ContinueOnFailure=False" DisplayName="Merging help documentation" />
+        <Task Id="InstallExpress" Type="MSI" Data="MsiPath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Setup\xnags_vcsexpress.msi;MsiOperation=Install;ContinueOnFailure=True" DisplayName="Installing files for C# 2008 Express" />
+        <Task Id="InstallUplevel" Type="MSI" Data="MsiPath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Setup\xnags_devenv.msi;MsiOperation=Install;ContinueOnFailure=True" DisplayName="Installing files for Visual Studio 2008" />
+        <Task Id="InstallARP" Type="MSI" Data="MsiPath=arpentry.msi;MsiOperation=Install;ContinueOnFailure=False" DisplayName="Caching installer files" />
+      </Tasks>
+    </TaskList>
+    <TaskList Id="Reinstall" DisplayName="Reinstall">
+      <Tasks>
+        <Task Id="CopyRedistFiles" Type="MSI" Data="MsiPath={0DC16794-7E69-4534-82FA-9DD0500FF338};MsiAlternatePath=redists.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus" DisplayName="Copying prerequisite files" />
+        <Task Id="InstallPanoramaRedist" Type="MSI" Data="MsiPath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Setup\XLiveRedist.msi;MsiOperation=Install;CheckOnInstall={05B49229-22A2-4F88-842A-BBC2EBE1CCF6};ContinueOnFailure=False" DisplayName="Installing Microsoft Games for Windows - LIVE Redistributable" />
+        <Task Id="RepairXNARedist30" Type="MSI" Data="MsiPath={3898934B-05AE-41CD-96BE-70DA9BFBCE1F};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Redist\XNA FX Redist\xnafx30_redist.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus" DisplayName="Installing XNA Framework Redistributable 3.0" />
+        <Task Id="RepairXNARedist31" Type="MSI" Data="MsiPath={19BFDA5D-1FE2-4F25-97F9-1A79DD04EE20};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Redist\XNA FX Redist\xnafx31_redist.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus" DisplayName="Installing XNA Framework Redistributable 3.1" />
+        <Task Id="RepairXnaLiveProxy" Type="MSI" Data="MsiPath={DFB81F19-ED3A-4DA5-AFE4-1B999E2A8DC5};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Setup\xnaliveproxy.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus" DisplayName="Copying XNA Game Studio files" />
+        <Task Id="RepairPlatformTools" Type="MSI" Data="MsiPath={BED4CEEC-863F-4AB3-BA23-541764E2D2CE};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Setup\xnags_platform_tools.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus" DisplayName="Installing XNA Game Studio Platform Tools" />
+        <Task Id="RepairSharedFiles" Type="MSI" Data="MsiPath={AF9BDE67-11A5-449A-B9F0-BE572A093DDB};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Setup\xnags_shared.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus" DisplayName="Copying XNA Game Studio files" />
+        <Task Id="RepairPlatformer" Type="MSI" Data="MsiPath={007BECB0-17DD-4230-9D2F-185287262B14};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Setup\platformer.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus" DisplayName="Copying XNA Game Studio starter kits" />
+        <Task Id="RepairDocs" Type="MSI" Data="MsiPath={7FD30AE7-281D-455F-AF9F-0C6C5E334EAD};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Setup\xnags_documentation.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus" DisplayName="Merging help documentation" />
+        <Task Id="RepairExpress" Type="MSI" Data="MsiPath={3BA37E38-B53D-4520-B8DA-1DD62AD3A74E};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Setup\xnags_vcsexpress.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus" DisplayName="Installing files for C# 2008 Express" />
+        <Task Id="RepairUplevel" Type="MSI" Data="MsiPath={2E402AA9-5C0E-45E7-8E70-C23FA0F265D5};MsiAlternatePath=%ProgramFiles%\Microsoft XNA\XNA Game Studio\v3.1\Setup\xnags_devenv.msi;MsiOperation=Repair;REINSTALL=ALL;REINSTALLMODE=omus" DisplayName="Installing files for Visual Studio 2008" />
+      </Tasks>
+    </TaskList>
+    <TaskList Id="Uninstall" DisplayName="Uninstall">
+      <Tasks>
+        <Task Id="RemoveSharedFiles" Type="MSI" Data="MsiPath={AF9BDE67-11A5-449A-B9F0-BE572A093DDB};MsiOperation=Uninstall" DisplayName="Removing XNA Game Studio files" />
+        <Task Id="RemoveXnaLiveProxy" Type="MSI" Data="MsiPath={DFB81F19-ED3A-4DA5-AFE4-1B999E2A8DC5};MsiOperation=Uninstall" DisplayName="Removing XNA Game Studio files" />
+        <Task Id="RemovePlatformer" Type="MSI" Data="MsiPath={007BECB0-17DD-4230-9D2F-185287262B14};MsiOperation=Uninstall" DisplayName="Removing XNA Game Studio starter kits" />
+        <Task Id="RemoveDocs" Type="MSI" Data="MsiPath={7FD30AE7-281D-455F-AF9F-0C6C5E334EAD};MsiOperation=Uninstall" DisplayName="Removing help documentation" />
+        <Task Id="RemoveUplevel" Type="MSI" Data="MsiPath={2E402AA9-5C0E-45E7-8E70-C23FA0F265D5};MsiOperation=Uninstall" DisplayName="Removing files for Visual Studio 2008" />
+        <Task Id="RemoveExpress" Type="MSI" Data="MsiPath={3BA37E38-B53D-4520-B8DA-1DD62AD3A74E};MsiOperation=Uninstall" DisplayName="Removing files for C# 2008 Express" />
+        <Task Id="RemoveRedistFiles" Type="MSI" Data="MsiPath={0DC16794-7E69-4534-82FA-9DD0500FF338};MsiOperation=Uninstall" DisplayName="Removing prerequisite files" />
+        <Task Id="RemoveARP" Type="MSI" Data="MsiPath={E1D78366-91DA-4AD0-B417-28155743CC22};MsiOperation=Uninstall" DisplayName="Removing installer files" />
+      </Tasks>
+    </TaskList>
+  </TaskLists>
+</TME>

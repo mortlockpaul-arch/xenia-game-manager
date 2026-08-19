@@ -1,0 +1,29 @@
+2026-07-24 03:08:59,594 - INFO - Creating default game manager database and configuration files...
+2026-07-24 03:08:59,597 - INFO -   Removing old backup: games.db
+2026-07-24 03:08:59,597 - INFO -   Backing up games.db -> C:\PycharmProjects\xenia-game-manager\src\backup\games.db
+2026-07-24 03:08:59,602 - INFO -   Installing default database: C:\PycharmProjects\xenia-game-manager\src\db\games.db
+2026-07-24 03:08:59,612 - INFO -   Removing old backup: game-manager-config.json
+2026-07-24 03:08:59,613 - INFO -   Backing up game-manager-config.json -> C:\PycharmProjects\xenia-game-manager\src\backup\game-manager-config.json
+2026-07-24 03:08:59,615 - INFO -   Installing default configuration: C:\PycharmProjects\xenia-game-manager\src\config\game-manager-config.json
+2026-07-24 03:08:59,617 - INFO - Done.
+2026-07-24 03:08:59,623 - INFO - All optimized settings are already up to date.
+2026-07-24 03:38:54,551 - INFO - Creating default game manager database and configuration files...
+2026-07-24 03:38:54,558 - INFO -   Removing old backup: games.db
+2026-07-24 03:38:54,560 - INFO -   Backing up games.db -> C:\PycharmProjects\xenia-game-manager\src\backup\games.db
+2026-07-24 03:38:54,563 - INFO -   Installing default database: C:\PycharmProjects\xenia-game-manager\src\db\games.db
+2026-07-24 03:38:54,573 - INFO -   Removing old backup: game-manager-config.json
+2026-07-24 03:38:54,575 - INFO -   Backing up game-manager-config.json -> C:\PycharmProjects\xenia-game-manager\src\backup\game-manager-config.json
+2026-07-24 03:38:54,577 - INFO -   Installing default configuration: C:\PycharmProjects\xenia-game-manager\src\config\game-manager-config.json
+2026-07-24 03:38:54,579 - INFO - Done.
+2026-07-24 03:38:54,580 - INFO - All optimized settings are already up to date.
+2026-07-24 03:43:46,428 - INFO - Creating default game manager database and configuration files...
+2026-07-24 03:43:46,433 - INFO -   Removing old backup: games.db
+2026-07-24 03:43:46,434 - INFO -   Backing up games.db -> C:\PycharmProjects\xenia-game-manager\src\backup\games.db
+2026-07-24 03:43:46,437 - INFO -   Installing default database: C:\PycharmProjects\xenia-game-manager\src\db\games.db
+2026-07-24 03:43:46,455 - INFO -   Removing old backup: game-manager-config.json
+2026-07-24 03:43:46,456 - INFO -   Backing up game-manager-config.json -> C:\PycharmProjects\xenia-game-manager\src\backup\game-manager-config.json
+2026-07-24 03:43:46,458 - INFO -   Installing default configuration: C:\PycharmProjects\xenia-game-manager\src\config\game-manager-config.json
+2026-07-24 03:43:46,459 - INFO - Done.
+2026-07-24 03:43:46,465 - INFO - All optimized settings are already up to date.
+2026-07-24 03:44:18,483 - INFO - Deleting existing folder: C:\PycharmProjects\xenia-game-manager\dist\xenia-game-manager-portable.zip
+2026-07-24 03:44:18,488 - INFO - portable zip created: C:\PycharmProjects\xenia-game-manager\dist\xenia-game-manager-portable.zip
