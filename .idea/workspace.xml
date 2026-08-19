@@ -6,113 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.0.8 Xemu Support">
       <change afterPath="$PROJECT_DIR$/../XBLA-Extract/.idea/xbla-extract.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build_tools/build.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build_tools/setup.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build_tools/tools.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/7-zip.chm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/7-zip.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/7-zip32.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/7z.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/7z.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/7z.sfx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/7zCon.sfx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/7zFM.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/7zG.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/af.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/an.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ar.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ast.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/az.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ba.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/be.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/bg.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/bn.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/br.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ca.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/co.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/cs.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/cy.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/da.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/de.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/el.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/en.ttt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/eo.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/es.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/et.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/eu.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ext.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/fa.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/fi.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/fr.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/fur.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/fy.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ga.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/gl.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/gu.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/he.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/hi.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/hr.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/hu.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/hy.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/id.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/io.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/is.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/it.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ja.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ka.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/kaa.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/kab.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/kk.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ko.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ku-ckb.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ku.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ky.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/lij.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/lt.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/lv.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/mk.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/mn.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/mng.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/mng2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/mr.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ms.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/nb.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ne.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/nl.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/nn.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/pa-in.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/pl.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ps.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/pt-br.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/pt.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ro.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ru.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/sa.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/si.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/sk.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/sl.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/sq.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/sr-spc.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/sr-spl.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/sv.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/sw.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ta.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/tg.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/th.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/tk.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/tr.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/tt.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ug.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/uk.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/uz-cyrl.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/uz.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/va.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/vi.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/yo.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/zh-cn.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/zh-tw.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -375,14 +269,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00020" summary="1.0.1">
-      <option name="closed" value="true" />
-      <created>1785024962967</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1785024962967</updated>
     </task>
     <task id="LOCAL-00021" summary="1.0.1">
       <option name="closed" value="true" />
@@ -768,7 +654,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787154374243</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="1.0.8 Xemu Support">
+      <option name="closed" value="true" />
+      <created>1787155382045</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1787155382046</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

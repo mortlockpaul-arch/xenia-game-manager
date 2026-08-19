@@ -12,3 +12,5 @@
 /src/logs/
 /src/__pycache__
 /logs/
+__pycache__/
+*.py[cod]
