@@ -6,7 +6,113 @@
   <component name="ChangeListManager">
     <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.0.8 Xemu Support">
       <change afterPath="$PROJECT_DIR$/../XBLA-Extract/.idea/xbla-extract.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build_tools/build.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build_tools/setup.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build_tools/tools.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/7-zip.chm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/7-zip.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/7-zip32.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/7z.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/7z.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/7z.sfx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/7zCon.sfx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/7zFM.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/7zG.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/af.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/an.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ar.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ast.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/az.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ba.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/be.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/bg.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/bn.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/br.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ca.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/co.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/cs.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/cy.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/da.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/de.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/el.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/en.ttt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/eo.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/es.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/et.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/eu.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ext.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/fa.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/fi.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/fr.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/fur.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/fy.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ga.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/gl.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/gu.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/he.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/hi.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/hr.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/hu.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/hy.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/id.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/io.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/is.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/it.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ja.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ka.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/kaa.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/kab.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/kk.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ko.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ku-ckb.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ku.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ky.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/lij.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/lt.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/lv.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/mk.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/mn.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/mng.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/mng2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/mr.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ms.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/nb.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ne.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/nl.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/nn.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/pa-in.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/pl.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ps.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/pt-br.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/pt.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ro.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ru.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/sa.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/si.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/sk.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/sl.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/sq.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/sr-spc.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/sr-spl.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/sv.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/sw.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ta.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/tg.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/th.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/tk.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/tr.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/tt.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/ug.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/uk.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/uz-cyrl.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/uz.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/va.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/vi.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/yo.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/zh-cn.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/zip/Lang/zh-tw.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,61 +156,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="2.545082423928519E-4" />
-      <entry key="MS500" value="0.1910470686151028" />
-      <entry key="S2" value="0.6688295757080659" />
-      <entry key="S5" value="0.9902252031496084" />
-      <entry key="S10" value="1.2997688225813877" />
-      <entry key="S30" value="1.8061969645490201" />
-      <entry key="S60" value="2.1845835124869484" />
-      <entry key="M2" value="2.708947495480408" />
-      <entry key="M5" value="3.8175752879947695" />
-      <entry key="M10" value="4.690365670973564" />
-      <entry key="M15" value="5.316503004928081" />
-      <entry key="M30" value="8.918881675448207" />
-      <entry key="H1" value="19.74624694723028" />
-      <entry key="H2" value="38.41769825813019" />
-      <entry key="H4" value="62.79428683883734" />
-      <entry key="D1" value="192.09273113071959" />
-      <entry key="W1" value="1037.7538920646373" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0000018416436096" />
+      <entry key="S5" value="1.0080447187730086" />
+      <entry key="S10" value="1.1451162865134332" />
+      <entry key="S30" value="2.1141480115320963" />
+      <entry key="S60" value="3.0052181086532896" />
+      <entry key="M2" value="3.9420488212086475" />
+      <entry key="M5" value="5.3903832399136435" />
+      <entry key="M10" value="6.431943161113802" />
+      <entry key="M15" value="7.123674365885242" />
+      <entry key="M30" value="10.766012018066384" />
+      <entry key="H1" value="21.58547077502404" />
+      <entry key="H2" value="40.26454657378562" />
+      <entry key="H4" value="64.67019396489052" />
+      <entry key="D1" value="194.03005734915448" />
+      <entry key="W1" value="1039.7057131706854" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0000011467640388" />
-      <entry key="S2" value="1.032724224559176" />
-      <entry key="S5" value="1.2559799495421637" />
-      <entry key="S10" value="1.5427479214884183" />
-      <entry key="S30" value="2.2474046410718826" />
-      <entry key="S60" value="2.830451145854642" />
-      <entry key="M2" value="3.5740092188114603" />
-      <entry key="M5" value="5.260065449964984" />
-      <entry key="M10" value="6.642226118912886" />
-      <entry key="M15" value="7.295736021947933" />
-      <entry key="M30" value="8.139650238821794" />
-      <entry key="H1" value="8.912114382989756" />
-      <entry key="H2" value="10.988033132470711" />
-      <entry key="H4" value="16.058993466569774" />
-      <entry key="D1" value="51.42616480448512" />
-      <entry key="W1" value="208.60456243143702" />
+      <entry key="MS100" value="1.4694004038623762E-122" />
+      <entry key="MS500" value="4.299604700555485E-25" />
+      <entry key="S2" value="8.362600924376672E-7" />
+      <entry key="S5" value="0.004595423168569491" />
+      <entry key="S10" value="0.09331820394396705" />
+      <entry key="S30" value="0.8822095211934334" />
+      <entry key="S60" value="1.7733762867657505" />
+      <entry key="M2" value="2.8289696300775717" />
+      <entry key="M5" value="4.790492832860689" />
+      <entry key="M10" value="6.338816495279006" />
+      <entry key="M15" value="7.071835132623215" />
+      <entry key="M30" value="8.013776968679187" />
+      <entry key="H1" value="8.842936486163108" />
+      <entry key="H2" value="10.945304223432062" />
+      <entry key="H4" value="16.02773893496975" />
+      <entry key="D1" value="51.409470050678266" />
+      <entry key="W1" value="208.59488673853988" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="3.982245945515219E-4" />
-      <entry key="MS500" value="0.334093226730073" />
-      <entry key="S2" value="1.2989101338242435" />
-      <entry key="S5" value="2.010061002251591" />
-      <entry key="S10" value="2.676222894811793" />
-      <entry key="S30" value="3.946497611591291" />
-      <entry key="S60" value="4.9378955142958745" />
-      <entry key="M2" value="6.227055347302223" />
-      <entry key="M5" value="9.036483174250941" />
-      <entry key="M10" value="11.303814532809833" />
-      <entry key="M15" value="12.59038566879276" />
-      <entry key="M30" value="17.045537288531264" />
-      <entry key="H1" value="28.650312391104762" />
-      <entry key="H2" value="49.39982046185614" />
-      <entry key="H4" value="78.84836135080941" />
-      <entry key="D1" value="243.5148930327303" />
-      <entry key="W1" value="1246.3555317454432" />
+      <entry key="MS100" value="2.6512370676411375E-102" />
+      <entry key="MS500" value="4.838839285107115E-21" />
+      <entry key="S2" value="1.0201690890007735E-5" />
+      <entry key="S5" value="0.020313016690196656" />
+      <entry key="S10" value="0.31880344064323535" />
+      <entry key="S30" value="2.4003036360944385" />
+      <entry key="S60" value="4.397481014046681" />
+      <entry key="M2" value="6.543411111310163" />
+      <entry key="M5" value="10.065512534819335" />
+      <entry key="M10" value="12.703558300554002" />
+      <entry key="M15" value="14.147653654760404" />
+      <entry key="M30" value="18.753567530305677" />
+      <entry key="H1" value="30.41368394842221" />
+      <entry key="H2" value="51.20058866851" />
+      <entry key="H4" value="80.69133498337615" />
+      <entry key="D1" value="245.43524417373195" />
+      <entry key="W1" value="1248.2976370573726" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -158,7 +264,7 @@
     "node.js.selected.package.jshint": "",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "ml.llm.LLMThirdPartyAiProvidersConfigurable",
+    "settings.editor.selected.configurable": "Errors",
     "to.speed.mode.migration.done": "true"
   }
 }]]></component>
@@ -269,14 +375,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00019" summary="1.0.1">
-      <option name="closed" value="true" />
-      <created>1785024769464</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1785024769465</updated>
     </task>
     <task id="LOCAL-00020" summary="1.0.1">
       <option name="closed" value="true" />
@@ -662,7 +760,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787154189956</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="1.0.8 Xemu Support">
+      <option name="closed" value="true" />
+      <created>1787154374243</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1787154374243</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
