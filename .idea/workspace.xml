@@ -6,8 +6,318 @@
   <component name="ChangeListManager">
     <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.0.8 Xemu Support">
       <change afterPath="$PROJECT_DIR$/../XBLA-Extract/.idea/xbla-extract.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cleanup_repo.ps1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dotnet-tools.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/1.0.0.0_6d5c3888ef60e27d/Microsoft.Xna.Framework.Game.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/1.0.0.0_6d5c3888ef60e27d/Microsoft.Xna.Framework.Game.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/1.0.0.0_6d5c3888ef60e27d/Microsoft.Xna.Framework.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/1.0.0.0_6d5c3888ef60e27d/Microsoft.Xna.Framework.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/3.0.0.0_6d5c3888ef60e27d/Microsoft.Xna.Framework.Game.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/3.0.0.0_6d5c3888ef60e27d/Microsoft.Xna.Framework.Game.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/3.0.0.0_6d5c3888ef60e27d/Microsoft.Xna.Framework.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/3.0.0.0_6d5c3888ef60e27d/Microsoft.Xna.Framework.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/3.1.0.0_6d5c3888ef60e27d/Microsoft.Xna.Framework.Game.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/3.1.0.0_6d5c3888ef60e27d/Microsoft.Xna.Framework.Game.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/3.1.0.0_6d5c3888ef60e27d/Microsoft.Xna.Framework.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/3.1.0.0_6d5c3888ef60e27d/Microsoft.Xna.Framework.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Bin/Microsoft.Xna.RemoteServices.tlb" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Bin/Microsoft.Xna.RemoteServices.tlb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Bin/ProjectAggregator2.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Bin/ProjectAggregator2.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Bin/XnaLiveProxy.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Bin/XnaLiveProxy.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Bin/XnaLiveProxy.exe.cat" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Bin/XnaLiveProxy.exe.cat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Bin/XnaLiveProxy.exe.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Bin/XnaLiveProxy.exe.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Bin/XnaTrans.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Bin/XnaTrans.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Bin/icordbg.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Bin/icordbg.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Documentation/1033/XNA.hxs" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Documentation/1033/XNA.hxs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Documentation/1033/XNACollection.HxC" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Documentation/1033/XNACollection.HxC" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Documentation/1033/XNACollection.HxT" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Documentation/1033/XNACollection.HxT" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Documentation/1033/XNACollectionAIndex.HxK" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Documentation/1033/XNACollectionAIndex.HxK" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Documentation/1033/XNACollectionFIndex.HxK" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Documentation/1033/XNACollectionFIndex.HxK" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Documentation/1033/XNACollectionKIndex.HxK" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Documentation/1033/XNACollectionKIndex.HxK" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/EULA.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/EULA.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Redist/DX Redist/APR2007_d3dx9_33_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Redist/DX Redist/APR2007_d3dx9_33_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Redist/DX Redist/APR2007_xinput_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Redist/DX Redist/APR2007_xinput_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Redist/DX Redist/DSETUP.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Redist/DX Redist/DSETUP.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Redist/DX Redist/DXSETUP.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Redist/DX Redist/DXSETUP.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Redist/DX Redist/OCT2006_d3dx9_31_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Redist/DX Redist/OCT2006_d3dx9_31_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Redist/DX Redist/aug2007_xact_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Redist/DX Redist/aug2007_xact_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Redist/DX Redist/dsetup32.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Redist/DX Redist/dsetup32.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Redist/DX Redist/dxupdate.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Redist/DX Redist/dxupdate.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Windows/x86/Microsoft.Xna.Framework.Game.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Windows/x86/Microsoft.Xna.Framework.Game.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Windows/x86/Microsoft.Xna.Framework.Game.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Windows/x86/Microsoft.Xna.Framework.Game.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Windows/x86/Microsoft.Xna.Framework.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Windows/x86/Microsoft.Xna.Framework.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Windows/x86/Microsoft.Xna.Framework.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Windows/x86/Microsoft.Xna.Framework.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Xbox360/Microsoft.Xna.Framework.Game.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Xbox360/Microsoft.Xna.Framework.Game.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Xbox360/Microsoft.Xna.Framework.Game.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Xbox360/Microsoft.Xna.Framework.Game.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Xbox360/Microsoft.Xna.Framework.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Xbox360/Microsoft.Xna.Framework.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Xbox360/Microsoft.Xna.Framework.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Xbox360/Microsoft.Xna.Framework.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Xbox360/mscorlib.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Xbox360/mscorlib.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Xbox360/mscorlib.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Xbox360/mscorlib.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Xbox360/system.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Xbox360/system.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Xbox360/system.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Xbox360/system.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Xbox360/system.xml.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Xbox360/system.xml.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/References/Xbox360/system.xml.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/References/Xbox360/system.xml.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Setup/ARPIcon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Setup/ARPIcon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Setup/Bootstrapper.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Setup/Bootstrapper.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Setup/SetupHelper.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Setup/SetupHelper.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Setup/TME.xsd" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Setup/TME.xsd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Setup/tasklist.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Setup/tasklist.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Setup/tasklistcosts.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Setup/tasklistcosts.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Tools/AudConsole.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Tools/AudConsole.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Tools/RemoteToolsFramework.LaunchDialog.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Tools/RemoteToolsFramework.LaunchDialog.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Tools/RemoteToolsFramework.XnaPackage.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Tools/RemoteToolsFramework.XnaPackage.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Tools/RemoteToolsFramework.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Tools/RemoteToolsFramework.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Tools/XNARPM.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Tools/XNARPM.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Tools/Xact.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Tools/Xact.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Tools/XactBld.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Tools/XactBld.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Tools/XactEngineA2_9.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Tools/XactEngineA2_9.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Tools/XactInterop.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Tools/XactInterop.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Tools/XnaDeviceCenter.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Tools/XnaDeviceCenter.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v2.0/Tools/XnaGseVars.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v2.0/Tools/XnaGseVars.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Bin/XnaAudioHelper.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Bin/XnaAudioHelper.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Bin/XnaLiveProxy.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Bin/XnaLiveProxy.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Bin/XnaLiveProxy.exe.cat" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Bin/XnaLiveProxy.exe.cat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Bin/XnaLiveProxy.exe.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Bin/XnaLiveProxy.exe.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Redist/DX Redist/APR2007_d3dx9_33_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Redist/DX Redist/APR2007_d3dx9_33_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Redist/DX Redist/APR2007_xinput_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Redist/DX Redist/APR2007_xinput_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Redist/DX Redist/DSETUP.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Redist/DX Redist/DSETUP.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Redist/DX Redist/DXSETUP.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Redist/DX Redist/DXSETUP.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Redist/DX Redist/Jun2008_X3DAudio_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Redist/DX Redist/Jun2008_X3DAudio_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Redist/DX Redist/Jun2008_XAudio_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Redist/DX Redist/Jun2008_XAudio_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Redist/DX Redist/OCT2006_d3dx9_31_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Redist/DX Redist/OCT2006_d3dx9_31_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Redist/DX Redist/aug2007_xact_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Redist/DX Redist/aug2007_xact_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Redist/DX Redist/dsetup32.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Redist/DX Redist/dsetup32.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Redist/DX Redist/dxupdate.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Redist/DX Redist/dxupdate.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Windows/x86/Microsoft.Xna.Framework.Game.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Windows/x86/Microsoft.Xna.Framework.Game.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Windows/x86/Microsoft.Xna.Framework.Game.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Windows/x86/Microsoft.Xna.Framework.Game.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Windows/x86/Microsoft.Xna.Framework.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Windows/x86/Microsoft.Xna.Framework.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Windows/x86/Microsoft.Xna.Framework.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Windows/x86/Microsoft.Xna.Framework.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Xbox360/Microsoft.Xna.Framework.Game.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Xbox360/Microsoft.Xna.Framework.Game.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Xbox360/Microsoft.Xna.Framework.Game.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Xbox360/Microsoft.Xna.Framework.Game.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Xbox360/Microsoft.Xna.Framework.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Xbox360/Microsoft.Xna.Framework.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Xbox360/Microsoft.Xna.Framework.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Xbox360/Microsoft.Xna.Framework.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Xbox360/System.Core.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Xbox360/System.Core.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Xbox360/System.Core.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Xbox360/System.Core.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Xbox360/System.Xml.Linq.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Xbox360/System.Xml.Linq.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Xbox360/System.Xml.Linq.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Xbox360/System.Xml.Linq.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Xbox360/System.Xml.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Xbox360/System.Xml.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Xbox360/System.Xml.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Xbox360/System.Xml.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Xbox360/System.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Xbox360/System.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Xbox360/System.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Xbox360/System.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Xbox360/mscorlib.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Xbox360/mscorlib.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Xbox360/mscorlib.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Xbox360/mscorlib.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Zune/Microsoft.Xna.Framework.Game.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Zune/Microsoft.Xna.Framework.Game.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Zune/Microsoft.Xna.Framework.Game.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Zune/Microsoft.Xna.Framework.Game.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Zune/Microsoft.Xna.Framework.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Zune/Microsoft.Xna.Framework.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Zune/Microsoft.Xna.Framework.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Zune/Microsoft.Xna.Framework.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Zune/System.Core.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Zune/System.Core.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Zune/System.Core.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Zune/System.Core.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Zune/System.Xml.Linq.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Zune/System.Xml.Linq.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Zune/System.Xml.Linq.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Zune/System.Xml.Linq.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Zune/System.Xml.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Zune/System.Xml.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Zune/System.Xml.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Zune/System.Xml.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Zune/System.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Zune/System.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Zune/System.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Zune/System.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Zune/mscorlib.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Zune/mscorlib.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/References/Zune/mscorlib.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/References/Zune/mscorlib.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Tools/AudConsole.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Tools/AudConsole.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Tools/Xact.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Tools/Xact.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Tools/XactBld.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Tools/XactBld.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Tools/XactEngineA2_9.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Tools/XactEngineA2_9.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.0/Tools/XactInterop.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.0/Tools/XactInterop.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Bin/ProjectAggregator2.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Bin/ProjectAggregator2.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Bin/XnaLiveProxy.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Bin/XnaLiveProxy.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Bin/XnaLiveProxy.exe.cat" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Bin/XnaLiveProxy.exe.cat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Bin/XnaLiveProxy.exe.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Bin/XnaLiveProxy.exe.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Bin/XnaMediaHelper_1.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Bin/XnaMediaHelper_1.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Bin/icordbg.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Bin/icordbg.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Documentation/1033/XNA.hxs" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Documentation/1033/XNA.hxs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Documentation/1033/XNACollection.HxC" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Documentation/1033/XNACollection.HxC" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Documentation/1033/XNACollection.HxT" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Documentation/1033/XNACollection.HxT" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Documentation/1033/XNACollectionAIndex.HxK" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Documentation/1033/XNACollectionAIndex.HxK" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Documentation/1033/XNACollectionFIndex.HxK" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Documentation/1033/XNACollectionFIndex.HxK" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Documentation/1033/XNACollectionKIndex.HxK" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Documentation/1033/XNACollectionKIndex.HxK" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/EULA.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/EULA.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Redist/DX Redist/APR2007_d3dx9_33_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Redist/DX Redist/APR2007_d3dx9_33_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Redist/DX Redist/APR2007_xinput_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Redist/DX Redist/APR2007_xinput_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Redist/DX Redist/DSETUP.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Redist/DX Redist/DSETUP.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Redist/DX Redist/DXSETUP.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Redist/DX Redist/DXSETUP.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Redist/DX Redist/Mar2009_X3DAudio_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Redist/DX Redist/Mar2009_X3DAudio_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Redist/DX Redist/Mar2009_XAudio_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Redist/DX Redist/Mar2009_XAudio_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Redist/DX Redist/Mar2009_xact_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Redist/DX Redist/Mar2009_xact_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Redist/DX Redist/OCT2006_d3dx9_31_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Redist/DX Redist/OCT2006_d3dx9_31_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Redist/DX Redist/dsetup32.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Redist/DX Redist/dsetup32.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Redist/DX Redist/dxupdate.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Redist/DX Redist/dxupdate.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.VideoImporters.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.VideoImporters.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Game.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Game.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Game.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Windows/x86/Microsoft.Xna.Framework.Game.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Windows/x86/Microsoft.Xna.Framework.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Windows/x86/Microsoft.Xna.Framework.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Windows/x86/Microsoft.Xna.Framework.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Windows/x86/Microsoft.Xna.Framework.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Xbox360/Microsoft.Xna.Framework.Game.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Xbox360/Microsoft.Xna.Framework.Game.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Xbox360/Microsoft.Xna.Framework.Game.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Xbox360/Microsoft.Xna.Framework.Game.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Xbox360/Microsoft.Xna.Framework.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Xbox360/Microsoft.Xna.Framework.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Xbox360/Microsoft.Xna.Framework.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Xbox360/Microsoft.Xna.Framework.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Xbox360/System.Core.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Xbox360/System.Core.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Xbox360/System.Core.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Xbox360/System.Core.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Xbox360/System.Xml.Linq.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Xbox360/System.Xml.Linq.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Xbox360/System.Xml.Linq.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Xbox360/System.Xml.Linq.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Xbox360/System.Xml.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Xbox360/System.Xml.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Xbox360/System.Xml.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Xbox360/System.Xml.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Xbox360/System.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Xbox360/System.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Xbox360/System.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Xbox360/System.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Xbox360/mscorlib.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Xbox360/mscorlib.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Xbox360/mscorlib.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Xbox360/mscorlib.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Zune/Microsoft.Xna.Framework.Game.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Zune/Microsoft.Xna.Framework.Game.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Zune/Microsoft.Xna.Framework.Game.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Zune/Microsoft.Xna.Framework.Game.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Zune/Microsoft.Xna.Framework.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Zune/Microsoft.Xna.Framework.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Zune/Microsoft.Xna.Framework.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Zune/Microsoft.Xna.Framework.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Zune/System.Core.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Zune/System.Core.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Zune/System.Core.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Zune/System.Core.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Zune/System.Xml.Linq.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Zune/System.Xml.Linq.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Zune/System.Xml.Linq.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Zune/System.Xml.Linq.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Zune/System.Xml.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Zune/System.Xml.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Zune/System.Xml.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Zune/System.Xml.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Zune/System.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Zune/System.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Zune/System.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Zune/System.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Zune/mscorlib.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Zune/mscorlib.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/References/Zune/mscorlib.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/References/Zune/mscorlib.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Setup/ARPIcon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Setup/ARPIcon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Setup/Bootstrapper.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Setup/Bootstrapper.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Setup/TME.xsd" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Setup/TME.xsd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Setup/tasklist.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Setup/tasklist.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Setup/tasklistcosts.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Setup/tasklistcosts.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Tools/AudConsole3.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Tools/AudConsole3.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Tools/RemoteToolsFramework.LaunchDialog.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Tools/RemoteToolsFramework.LaunchDialog.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Tools/RemoteToolsFramework.XnaPackage.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Tools/RemoteToolsFramework.XnaPackage.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Tools/RemoteToolsFramework.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Tools/RemoteToolsFramework.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Tools/XNARPM.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Tools/XNARPM.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Tools/Xact3.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Tools/Xact3.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Tools/XactBld3.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Tools/XactBld3.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Tools/XactEngineA3_4.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Tools/XactEngineA3_4.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Tools/XactInterop3.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Tools/XactInterop3.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/Tools/XnaGseVars.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/Tools/XnaGseVars.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v3.1/redist.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v3.1/redist.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Bin/XnaLiveProxy.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Bin/XnaLiveProxy.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Bin/XnaLiveProxy.exe.cat" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Bin/XnaLiveProxy.exe.cat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Bin/XnaLiveProxy.exe.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Bin/XnaLiveProxy.exe.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Bin/XnaMediaHelper_1.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Bin/XnaMediaHelper_1.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Bin/icordbg.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Bin/icordbg.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Config/Windows/_xnadefault.config" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Config/Windows/_xnadefault.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Config/Xbox 360/_xnadefault.config" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Config/Xbox 360/_xnadefault.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Documentation/1033/XNA.chm" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Documentation/1033/XNA.chm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/EULA.en-US.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/EULA.en-US.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Redist/DX Redist/APR2007_d3dx9_33_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Redist/DX Redist/APR2007_d3dx9_33_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Redist/DX Redist/APR2007_xinput_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Redist/DX Redist/APR2007_xinput_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Redist/DX Redist/DSETUP.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Redist/DX Redist/DSETUP.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Redist/DX Redist/DXSETUP.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Redist/DX Redist/DXSETUP.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Redist/DX Redist/Feb2010_X3DAudio_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Redist/DX Redist/Feb2010_X3DAudio_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Redist/DX Redist/Feb2010_XAudio_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Redist/DX Redist/Feb2010_XAudio_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Redist/DX Redist/Feb2010_xact_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Redist/DX Redist/Feb2010_xact_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Redist/DX Redist/Mar2009_d3dx9_41_x86.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Redist/DX Redist/Mar2009_d3dx9_41_x86.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Redist/DX Redist/dsetup32.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Redist/DX Redist/dsetup32.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Redist/DX Redist/dxupdate.cab" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Redist/DX Redist/dxupdate.cab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Avatar.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Avatar.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Avatar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Avatar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.VideoImporters.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.VideoImporters.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Content.Pipeline.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Game.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Game.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Game.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Game.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.GamerServices.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.GamerServices.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.GamerServices.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.GamerServices.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Graphics.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Graphics.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Graphics.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Graphics.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Input.Touch.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Input.Touch.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Input.Touch.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Input.Touch.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Net.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Net.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Net.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Net.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Storage.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Storage.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Storage.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Storage.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Video.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Video.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Video.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Video.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Xact.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Xact.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Xact.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.Xact.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Windows/x86/Microsoft.Xna.Framework.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Windows/x86/Microsoft.Xna.Framework.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.Avatar.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.Avatar.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.Avatar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.Avatar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.Game.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.Game.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.Game.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.Game.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.GamerServices.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.GamerServices.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.GamerServices.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.GamerServices.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.Graphics.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.Graphics.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.Graphics.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.Graphics.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.Input.Touch.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.Input.Touch.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.Input.Touch.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.Input.Touch.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.Net.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.Net.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.Net.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.Net.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.Storage.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.Storage.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.Storage.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.Storage.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.Video.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.Video.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.Video.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.Video.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.Xact.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.Xact.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.Xact.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.Xact.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/Microsoft.Xna.Framework.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/Microsoft.Xna.Framework.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/System.Core.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/System.Core.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/System.Core.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/System.Core.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/System.Net.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/System.Net.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/System.Net.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/System.Net.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/System.Xml.Linq.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/System.Xml.Linq.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/System.Xml.Linq.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/System.Xml.Linq.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/System.Xml.Serialization.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/System.Xml.Serialization.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/System.Xml.Serialization.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/System.Xml.Serialization.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/System.Xml.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/System.Xml.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/System.Xml.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/System.Xml.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/System.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/System.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/System.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/System.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/mscorlib.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/mscorlib.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/References/Xbox360/mscorlib.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/References/Xbox360/mscorlib.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Setup/ARPIcon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Setup/ARPIcon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Setup/Bootstrapper.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Setup/Bootstrapper.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Setup/TME.xsd" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Setup/TME.xsd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Setup/tasklist.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Setup/tasklist.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Setup/tasklistcosts.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Setup/tasklistcosts.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Tools/AudConsole3.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Tools/AudConsole3.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Tools/RemoteToolsFramework.LaunchDialog.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Tools/RemoteToolsFramework.LaunchDialog.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Tools/RemoteToolsFramework.XnaPackage.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Tools/RemoteToolsFramework.XnaPackage.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Tools/RemoteToolsFramework.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Tools/RemoteToolsFramework.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Tools/XNARPM.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Tools/XNARPM.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Tools/Xact3.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Tools/Xact3.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Tools/XactBld3.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Tools/XactBld3.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Tools/XactEngineA3_6.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Tools/XactEngineA3_6.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Tools/XactInterop3.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Tools/XactInterop3.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/Tools/XnaGseVars.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/Tools/XnaGseVars.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0/redist.en-US.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0/redist.en-US.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.Avatar.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.Avatar.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.Game.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.Game.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.GamerServices.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.GamerServices.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.Graphics.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.Graphics.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.Input.Touch.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.Input.Touch.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.Net.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.Net.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.Storage.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.Storage.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.Video.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.Video.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.Xact.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.Xact.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/References/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.dll" beforeDir="false" afterPath="$PROJECT_DIR$/src/xna-references/v4.0_4.0.0.0_842cf8be1de50553/Microsoft.Xna.Framework.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/convert_xna_projects.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/convert_xna_projects.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,60 +362,60 @@
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
       <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0000018416436096" />
-      <entry key="S5" value="1.0080447187730086" />
-      <entry key="S10" value="1.1451162865134332" />
-      <entry key="S30" value="2.1141480115320963" />
-      <entry key="S60" value="3.0052181086532896" />
-      <entry key="M2" value="3.9420488212086475" />
-      <entry key="M5" value="5.3903832399136435" />
-      <entry key="M10" value="6.431943161113802" />
-      <entry key="M15" value="7.123674365885242" />
-      <entry key="M30" value="10.766012018066384" />
-      <entry key="H1" value="21.58547077502404" />
-      <entry key="H2" value="40.26454657378562" />
-      <entry key="H4" value="64.67019396489052" />
-      <entry key="D1" value="194.03005734915448" />
-      <entry key="W1" value="1039.7057131706854" />
+      <entry key="MS500" value="1.0000589560747635" />
+      <entry key="S2" value="1.0876258291038365" />
+      <entry key="S5" value="1.3776181463907065" />
+      <entry key="S10" value="1.6145064250198744" />
+      <entry key="S30" value="1.8501759382150296" />
+      <entry key="S60" value="1.9220498567132225" />
+      <entry key="M2" value="1.960246094007207" />
+      <entry key="M5" value="2.0171972466866652" />
+      <entry key="M10" value="2.497436513676557" />
+      <entry key="M15" value="3.3016809024877447" />
+      <entry key="M30" value="6.608916883378023" />
+      <entry key="H1" value="16.12600068869847" />
+      <entry key="H2" value="34.57342497072827" />
+      <entry key="H4" value="60.16697147901314" />
+      <entry key="D1" value="192.63297223540107" />
+      <entry key="W1" value="1039.085564590914" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="1.4694004038623762E-122" />
-      <entry key="MS500" value="4.299604700555485E-25" />
-      <entry key="S2" value="8.362600924376672E-7" />
-      <entry key="S5" value="0.004595423168569491" />
-      <entry key="S10" value="0.09331820394396705" />
-      <entry key="S30" value="0.8822095211934334" />
-      <entry key="S60" value="1.7733762867657505" />
-      <entry key="M2" value="2.8289696300775717" />
-      <entry key="M5" value="4.790492832860689" />
-      <entry key="M10" value="6.338816495279006" />
-      <entry key="M15" value="7.071835132623215" />
-      <entry key="M30" value="8.013776968679187" />
-      <entry key="H1" value="8.842936486163108" />
-      <entry key="H2" value="10.945304223432062" />
-      <entry key="H4" value="16.02773893496975" />
-      <entry key="D1" value="51.409470050678266" />
-      <entry key="W1" value="208.59488673853988" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="1.2876194218500651E-135" />
+      <entry key="S10" value="4.939663628050129E-68" />
+      <entry key="S30" value="7.136447503877737E-23" />
+      <entry key="S60" value="1.5949830212411334E-11" />
+      <entry key="M2" value="8.484101760341143E-6" />
+      <entry key="M5" value="0.029591789449088985" />
+      <entry key="M10" value="0.4981999689666651" />
+      <entry key="M15" value="1.2975650476122806" />
+      <entry key="M30" value="3.432699264769918" />
+      <entry key="H1" value="5.787563359792812" />
+      <entry key="H2" value="8.854773642005851" />
+      <entry key="H4" value="14.416076328332865" />
+      <entry key="D1" value="50.509406160932194" />
+      <entry key="W1" value="208.06921114603134" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="2.6512370676411375E-102" />
-      <entry key="MS500" value="4.838839285107115E-21" />
-      <entry key="S2" value="1.0201690890007735E-5" />
-      <entry key="S5" value="0.020313016690196656" />
-      <entry key="S10" value="0.31880344064323535" />
-      <entry key="S30" value="2.4003036360944385" />
-      <entry key="S60" value="4.397481014046681" />
-      <entry key="M2" value="6.543411111310163" />
-      <entry key="M5" value="10.065512534819335" />
-      <entry key="M10" value="12.703558300554002" />
-      <entry key="M15" value="14.147653654760404" />
-      <entry key="M30" value="18.753567530305677" />
-      <entry key="H1" value="30.41368394842221" />
-      <entry key="H2" value="51.20058866851" />
-      <entry key="H4" value="80.69133498337615" />
-      <entry key="D1" value="245.43524417373195" />
-      <entry key="W1" value="1248.2976370573726" />
+      <entry key="MS100" value="0.9526379980439373" />
+      <entry key="MS500" value="0.990400614709314" />
+      <entry key="S2" value="1.0847484044113547" />
+      <entry key="S5" value="1.3758637920284986" />
+      <entry key="S10" value="1.613382756623091" />
+      <entry key="S30" value="1.8497196194767165" />
+      <entry key="S60" value="1.9218092276027177" />
+      <entry key="M2" value="1.9601302683890947" />
+      <entry key="M5" value="2.0460261414398495" />
+      <entry key="M10" value="2.9903295096513722" />
+      <entry key="M15" value="4.590448311305796" />
+      <entry key="M30" value="10.030375737978565" />
+      <entry key="H1" value="21.90392363901304" />
+      <entry key="H2" value="43.42070341457614" />
+      <entry key="H4" value="74.57711228287285" />
+      <entry key="D1" value="243.13816998337361" />
+      <entry key="W1" value="1247.1518203264995" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -119,6 +429,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "Batch.Unnamed.executor": "Run",
     "Batch.cleanup_repo.executor": "Run",
     "Batch.start.executor": "Run",
@@ -172,11 +483,11 @@
       <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\tools - Copy" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\PycharmProjects\xenia-game-manager\build_tools" />
       <recent name="C:\PycharmProjects\xenia-game-manager\src\models" />
       <recent name="C:\PycharmProjects\xenia-game-manager\src\config" />
       <recent name="C:\PycharmProjects\xenia-game-manager\src" />
       <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\tools\decompiler" />
-      <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\XNACompat" />
     </key>
   </component>
   <component name="RunManager">
@@ -270,14 +581,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00022" summary="1.0.1 XBLIG Emulator">
-      <option name="closed" value="true" />
-      <created>1785044809922</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1785044809922</updated>
     </task>
     <task id="LOCAL-00023" summary="1.0.1 XBLIG Emulator">
       <option name="closed" value="true" />
@@ -663,7 +966,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787155856024</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="1.0.8 Xemu Support">
+      <option name="closed" value="true" />
+      <created>1787156148061</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1787156148062</updated>
+    </task>
+    <option name="localTasksCounter" value="72" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

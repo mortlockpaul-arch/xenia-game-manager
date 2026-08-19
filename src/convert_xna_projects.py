@@ -5,7 +5,7 @@ FNA_VERSION = "25.0.0"
 from pathlib import Path
 import shutil
 
-DEST = Path("References")
+DEST = Path("xna-references")
 
 GAC_FOLDERS = [
     Path(r"C:\Windows\assembly"),
@@ -100,7 +100,7 @@ def copy_xna_assemblies():
     print(f"\nDone. Assemblies copied to {DEST.resolve()}")
 
 def copy_check_xna_assemblies():
-    assembly_folder = root / "References"
+    assembly_folder = root / "xna-references"
     if not assembly_folder.exists():
         copy_xna_assemblies()
 
