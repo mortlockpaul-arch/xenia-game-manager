@@ -5,6 +5,8 @@ from pathlib import Path
 
 from PySide6.QtCore import QCoreApplication, QThread, Signal
 
+from config import get_app_dir
+
 ROM_FOLDER_NAMES = {"rom", "roms"}
 XBOX_FOLDER_NAMES = {"xbox", "xbox roms", "xbox games", "original xbox", "original xbox games"}
 SKIP_FOLDER_NAMES = {"$recycle.bin", "system volume information", "windows", "program files", "program files (x86)", "programdata", "appdata"}
@@ -197,7 +199,7 @@ class XemuCompatibility:
     )
 
 
-def load_xemu_compatibility(output_dir="config",) -> XemuCompatibility:
+def load_xemu_compatibility(output_dir= get_app_dir() / "compatibility/xemu_compatibility",) -> XemuCompatibility:
     output = Path(output_dir)
     json_file = output / "xemu_compatibility.json"
 
@@ -234,11 +236,11 @@ def load_xemu_compatibility(output_dir="config",) -> XemuCompatibility:
         games=games,
     )
 
-def update_xemu_compatibility(output_dir="xemu_compatibility"):
+def update_xemu_compatibility(output_dir="compatibility/xemu_compatibility"):
     output = Path(output_dir)
     xdb = output / "xdb"
     images = output / "images"
-    json_file = output / "xenia_compatibility.json"
+    json_file = output / "xemu_compatibility.json"
 
     output.mkdir(parents=True, exist_ok=True)
 

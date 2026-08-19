@@ -2,7 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../XBLA-Extract" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/src/xemu_compatibility/xdb" vcs="Git" />
   </component>
 </project>

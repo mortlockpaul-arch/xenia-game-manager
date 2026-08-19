@@ -735,6 +735,10 @@ class GameLauncher(QMainWindow):
         self.import_btn.clicked.connect(partial(self.import_games, "xenia_manager"))
         self.import_xbox_btn = QPushButton("Import Xemu Game List")
         self.import_xbox_btn.clicked.connect(partial(self.import_games, "xemu"))
+
+        self.import_xbox_comp_btn = QPushButton("Update Xemu Game Compatibility")
+        self.import_xbox_comp_btn.clicked.connect(partial(xiso.update_xemu_compatibility))
+
         self.import_edge_btn = QPushButton("Import Xenia Edge Game List")
         self.import_edge_btn.clicked.connect(partial(self.import_games, "xenia_edge"))
 
@@ -791,6 +795,7 @@ class GameLauncher(QMainWindow):
             self.import_btn,
             self.import_edge_btn,
             self.import_xbox_btn,
+            self.import_xbox_comp_btn,
             self.export_btn,
             self.xenia_edge_optimise_btn,
             self.use_xenia_manager_content_for_edge_btn,

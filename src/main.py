@@ -1,11 +1,15 @@
 import faulthandler
 from pathlib import Path
 
-fault_log = Path(__file__).resolve().parent / "logs" / "faulthandler.log"
+def enable_fault_handler():
+    fault_log = Path(__file__).resolve().parent / "logs" / "faulthandler.log"
 
-fault_file = fault_log.open("w", encoding="utf-8")
+    fault_file = fault_log.open("w", encoding="utf-8")
 
-faulthandler.enable(fault_file)
+    faulthandler.enable(fault_file)
+
+
+
 import os
 
 import sys
@@ -37,6 +41,9 @@ def disc_count():
 
 @profile
 def main():
+
+    if False: enable_fault_handler()
+
     app = QApplication(sys.argv)
 
     print("1 - QApplication created")
