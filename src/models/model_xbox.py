@@ -95,7 +95,8 @@ class BaseGameTableModel(QAbstractTableModel):
     def get_config_path(self, row_index: int) -> Path | None:
         return self.get_game(row_index).config_path
 
-
+    def get_emulator_version(self, row_index: int):
+        return self.get_game(row_index).emulator_version
 
 class XboxGameTableModel(BaseGameTableModel):
 

@@ -2,7 +2,7 @@
     "username": "",
     "password": "",
     "api_key": "",
-    "xemu_path": "D:/RetroBat/emulators/xemu/xemu.exe",
+    "xemu_path": "D:/RetroBat/emulators/xemu",
     "xenia_manager_path": "D:/RetroBat/emulators/xenia-manager",
     "xenia_canary_path": "D:\\RetroBat\\emulators\\xenia-manager\\Emulators\\Xenia Canary",
     "xenia_manager_installed": true,
@@ -18,5 +18,7 @@
     "xenia_game_manager_portable_path": "C:/xenia-game-manager-portable/",
     "xenia_edge_url": "https://api.github.com/repos/has207/xenia-edge/releases/latest",
     "xenia_game_compatibility_url": "https://api.github.com/repos/xenia-canary/game-compatibility/releases/latest",
-    "xenia_game_manager_url": "https://api.github.com/repos/mortlockpaul-arch/xenia-game-manager/releases/latest"
+    "xenia_game_manager_url": "https://api.github.com/repos/mortlockpaul-arch/xenia-game-manager/releases/latest",
+    "xenia_Xemu_path": "D:/RetroBat/emulators/xemu",
+    "xemu_installed": true
 }

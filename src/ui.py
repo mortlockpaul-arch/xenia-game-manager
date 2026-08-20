@@ -81,16 +81,6 @@ class ClickOverlay(QWidget):
         self.launcher.close_drawer()
 
 
-@dataclass
-class WidgetInfo:
-    checkbox: QCheckBox
-    path: QLineEdit
-    button: QPushButton
-    name: str
-    config_key_installed: str
-    config_key_path: str
-
-
 class DownloadWorker(QThread):
     log = Signal(str)
     overall_progress = Signal(object)
@@ -420,27 +410,36 @@ class GameLauncher(QMainWindow):
 
         self.platform = None
         self.scanner = None
-        self.xenia_mousehook_installed = None
-        self.browse_btn_netplay = None
-        self.xenia_netplay_path = None
-        self.xenia_mousehook_path = None
-        self.browse_btn_mousehook = None
-        self.browse_btn_edge = None
-        self.xenia_edge_path = None
-        self.browse_btn_canary = None
-        self.xenia_canary_path = None
+        self.xbox_unity_api = None
+
         self.model:XboxGameTableModel | Xbox360GameTableModel
         self.xbox_game_list: list[xiso.XboxRom] = []
         self.launch_edge = None
         self.extract_worker = None
         self.archive_xblig_button = None
-        self.browse_btn_xenia = None
-        self.xenia_manager_path = None
-        self.xbox_unity_api = None
+
+        self.xenia_manager_path: QLineEdit = QLineEdit()
+        self.xenia_netplay_path: QLineEdit = QLineEdit()
+        self.xenia_mousehook_path: QLineEdit = QLineEdit()
+        self.xenia_edge_path: QLineEdit = QLineEdit()
+
+        self.browse_btn_xemu: QPushButton = QPushButton()
+        self.xemu_path: QLineEdit = QLineEdit()
+        self.xemu_installed: QCheckBox = QCheckBox()
+
+        self.browse_btn_netplay: QPushButton = QPushButton()
+        self.browse_btn_mousehook: QPushButton = QPushButton()
+        self.browse_btn_edge: QPushButton = QPushButton()
+        self.browse_btn_canary: QPushButton = QPushButton()
+        self.browse_btn_xenia_manager: QPushButton = QPushButton()
+
+        self.xenia_canary_path: QLineEdit = QLineEdit()
         self.xenia_edge_installed: QCheckBox = QCheckBox()
         self.xenia_manager_installed: QCheckBox = QCheckBox()
         self.xenia_canary_installed: QCheckBox = QCheckBox()
         self.xenia_netplay_installed: QCheckBox = QCheckBox()
+        self.xenia_mousehook_installed: QCheckBox = QCheckBox()
+
         self.extract_downloaded_archives_btn = None
         self.config = load_config()
         self.archive_button = None
@@ -487,56 +486,69 @@ class GameLauncher(QMainWindow):
 
         self.setFixedSize(1640, 950)
 
+        @dataclass
+        class WidgetInfo:
+            name: str
+            config_key_installed: str
+            config_key_path: str
+            config_key_version: str
+
+            checkbox: QCheckBox | None = None
+            path: QLineEdit | None = None
+            button: QPushButton | None = None
+            version: QLineEdit | None = None
+
+        self.widgets = {
+            "manager": WidgetInfo(
+                "Xenia Manager",
+                "xenia_manager_installed",
+                "xenia_manager_path",
+                "xenia_manager_version",
+            ),
+
+            "canary": WidgetInfo(
+                "Xenia Canary",
+                "xenia_canary_installed",
+                "xenia_canary_path",
+                "xenia_canary_version",
+            ),
+
+            "netplay": WidgetInfo(
+                "Xenia Netplay",
+                "xenia_netplay_installed",
+                "xenia_netplay_path",
+                "xenia_netplay_version",
+            ),
+
+            "mousehook": WidgetInfo(
+                "Xenia Mousehook",
+                "xenia_mousehook_installed",
+                "xenia_mousehook_path",
+                "xenia_mousehook_version",
+            ),
+
+            "edge": WidgetInfo(
+                "Xenia Edge",
+                "xenia_edge_installed",
+                "xenia_edge_path",
+                "xenia_edge_version",
+            ),
+
+            "xemu": WidgetInfo(
+                "Xemu Xbox Emulator",
+                "xemu_installed",
+                "xemu_path",
+                "xemu_version",
+            ),
+        }
+
         self.build_ui()
+        self.load_saved_config()
 
         self.compatibility = Compatibility(self.db, self.log)
 
         setup_logger()
-
-        self.widgets = {
-            "manager": WidgetInfo(
-                self.xenia_manager_installed,
-                self.xenia_manager_path,
-                self.browse_btn_xenia,
-                "Xenia Manager",
-                "xenia_manager_installed",
-                "xenia_manager_path",
-            ),
-            "canary": WidgetInfo(
-                self.xenia_canary_installed,
-                self.xenia_canary_path,
-                self.browse_btn_canary,
-                "Xenia Canary",
-                "xenia_canary_installed",
-                "xenia_canary_path",
-            ),
-            "edge": WidgetInfo(
-                self.xenia_edge_installed,
-                self.xenia_edge_path,
-                self.browse_btn_edge,
-                "Xenia Edge",
-                "xenia_edge_installed",
-                "xenia_edge_path",
-            ),
-            "netplay": WidgetInfo(
-                self.xenia_netplay_installed,
-                self.xenia_netplay_path,
-                self.browse_btn_netplay,
-                "Xenia Netplay",
-                "xenia_netplay_installed",
-                "xenia_netplay_path",
-            ),
-            "mousehook": WidgetInfo(
-                self.xenia_mousehook_installed,
-                self.xenia_mousehook_path,
-                self.browse_btn_mousehook,
-                "Xenia Mousehook",
-                "xenia_mousehook_installed",
-                "xenia_mousehook_path",
-            ),
-        }
         QTimer.singleShot(5000, self.scan_for_xisos)
-        QTimer.singleShot(5000, self.load_saved_config)
 
     def scan_for_xisos(self):
         self.scanner = xiso.XboxScanner()
@@ -568,56 +580,67 @@ class GameLauncher(QMainWindow):
 
         # ---------------- XENIA MANAGER PATH ----------------
         layout = QVBoxLayout(self.settings_drawer)
-        layout.addWidget(QLabel("Xenia Manager Folder"))
+        # layout.addWidget(QLabel("Xenia Manager Folder"))
+        #
+        # xenia_row = QHBoxLayout()
+        # self.xenia_manager_path = QLineEdit()
+        # self.xenia_manager_path.setPlaceholderText("Xenia Manager location...")
+        # self.xenia_manager_installed = QCheckBox()
+        # self.xenia_manager_installed.stateChanged.connect(partial(self.checkbox_changed, checkbox_name="manager"))
+        # self.browse_btn_xenia = QPushButton("Browse")
+        # self.browse_btn_xenia.clicked.connect(partial(self.pick_emulator_path, button_name="manager"))
+        # xenia_row.addWidget(self.xenia_manager_installed)
+        # xenia_row.addWidget(self.xenia_manager_path)
+        # xenia_row.addWidget(self.browse_btn_xenia)
+        #
+        # layout.addLayout(xenia_row)
 
-        xenia_row = QHBoxLayout()
-        self.xenia_manager_path = QLineEdit()
-        self.xenia_manager_path.setPlaceholderText("Xenia Manager location...")
-        self.xenia_manager_installed = QCheckBox()
-        self.xenia_manager_installed.stateChanged.connect(partial(self.checkbox_changed, checkbox_name="manager"))
-        self.browse_btn_xenia = QPushButton("Browse")
-        self.browse_btn_xenia.clicked.connect(partial(self.pick_xenia_path, button_name="manager"))
-        xenia_row.addWidget(self.xenia_manager_installed)
-        xenia_row.addWidget(self.xenia_manager_path)
-        xenia_row.addWidget(self.browse_btn_xenia)
 
-        layout.addLayout(xenia_row)
-
-        for name in ("canary", "netplay", "mousehook", "edge"):
-            display = f"Xenia {name.capitalize()}"
-
+        # for name in ("Xenia Canary", "Xenia Netplay", "Xenia Mousehook", "Xenia Edge", "Xemu"):
+        for key, widget in self.widgets.items():
+            display = widget.name
             layout.addWidget(QLabel(f"{display} Folder"))
 
             row = QHBoxLayout()
 
-            # Path
             path = QLineEdit()
             path.setPlaceholderText(f"{display} location...")
             path.setFixedWidth(430)
             path.setReadOnly(True)
-            setattr(self, f"xenia_{name}_path", path)
 
-            # Version
+            widget.path = path
+
             version = QLineEdit()
             version.setPlaceholderText("Version...")
             version.setFixedWidth(100)
             version.setReadOnly(True)
-            setattr(self, f"xenia_{name}_version", version)
 
-            # Installed checkbox
+            widget.version = version
+
             installed = QCheckBox()
             installed.stateChanged.connect(
-                partial(self.checkbox_changed, checkbox_name=name)
+                partial(
+                    self.checkbox_changed,
+                    checkbox_name=widget.config_key_installed,
+                )
             )
-            setattr(self, f"xenia_{name}_installed", installed)
 
-            installed.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-            # Browse button
+            widget.checkbox = installed
+
+            installed.setSizePolicy(
+                QSizePolicy.Policy.Fixed,
+                QSizePolicy.Policy.Fixed,
+            )
+
             browse = QPushButton("Browse")
             browse.clicked.connect(
-                partial(self.pick_xenia_path, button_name=name)
+                partial(
+                    self.pick_emulator_path,
+                    button_name=widget.config_key_path,
+                )
             )
-            setattr(self, f"browse_btn_{name}", browse)
+
+            widget.button = browse
 
             row.addWidget(installed)
             row.addWidget(path)
@@ -1057,35 +1080,46 @@ class GameLauncher(QMainWindow):
             button_enabled=None,
     ):
         config = load_config()
-        widget = self.widgets[checkbox_name]
 
-        checkbox = widget.checkbox
-        path = widget.path
-        button = widget.button
-        name = widget.name
-        config_key_installed = widget.config_key_installed
-        config_key_path = widget.config_key_path
+        widget_info = next(
+            (
+                widget
+                for widget in self.widgets.values()
+                if widget.config_key_installed == checkbox_name
+            ),
+            None,
+        )
 
-        checkbox.blockSignals(True)
-        checkbox.setChecked(checked)
-        checkbox.blockSignals(False)
+        if widget_info is None:
+            raise KeyError(
+                f"No widget found for config key {checkbox_name!r}"
+            )
 
-        if placeholder is None:
-            placeholder = f"{name} location..." if checked else f"{name} Not Installed"
+        assert widget_info.version is not None
+        assert widget_info.path is not None
+        assert widget_info.checkbox is not None
 
-        path.setPlaceholderText(placeholder)
+        widget_info.checkbox.setChecked(checked)
+
+        if placeholder is not None:
+            widget_info.path.setPlaceholderText(placeholder)
 
         if text is not None:
-            path.setText(text)
+            widget_info.path.setText(text)
 
-        path.setEnabled(checked if path_enabled is None else path_enabled)
-        button.setEnabled(checked if button_enabled is None else button_enabled)
-        if name == "Xenia Edge": self.launch_edge.setEnabled(checked if button_enabled is None else button_enabled)
-        if name == "Xenia Manager": self.launch_manager.setEnabled(checked if button_enabled is None else button_enabled)
+        if path_enabled is not None:
+            widget_info.path.setEnabled(path_enabled)
+
+        if button_enabled is not None:
+            widget_info.button.setEnabled(button_enabled)
 
         if save:
-            config[config_key_installed] = checked
+            config[widget_info.config_key_installed] = checked
             save_config(config)
+
+        if widget_info.name == "Xenia Edge": self.launch_edge.setEnabled(checked if button_enabled is None else button_enabled)
+        if widget_info.name == "Xenia Manager": self.launch_manager.setEnabled(checked if button_enabled is None else button_enabled)
+
 
     def checkbox_changed(self, state, checkbox_name):
         checked = bool(state)
@@ -1610,7 +1644,7 @@ class GameLauncher(QMainWindow):
 
         self.log("Done: TU download completed")
 
-    def pick_xenia_path(self, button_name):
+    def pick_emulator_path(self, button_name):
         folder = QFileDialog.getExistingDirectory(
             self,
             f"Select Xenia {button_name.title()} Folder"
@@ -1618,7 +1652,7 @@ class GameLauncher(QMainWindow):
         if not folder:
             return
 
-        key = f"xenia_{button_name}_path"
+        key = button_name
 
         getattr(self, key).setText(folder)
 
@@ -1656,24 +1690,24 @@ class GameLauncher(QMainWindow):
 
     def load_saved_config(self):
         self.config = load_config()
-        self.set_checkbox("manager", self.config.get("xenia_manager_installed", False), save=False)
-        self.set_checkbox("canary", self.config.get("xenia_canary_installed", False), save=False)
-        self.set_checkbox("netplay", self.config.get("xenia_netplay_installed", False), save=False)
-        self.set_checkbox("mousehook", self.config.get("xenia_mousehook_installed", False), save=False)
-        self.set_checkbox("edge", self.config.get("xenia_edge_installed", False), save=False)
-        # self.entry_user.setText(self.config.get("username", ""))
-        # self.entry_pass.setText(self.config.get("password", ""))
-        # self.entry_apikey.setText(self.config.get("api_key", ""))
-        self.xenia_manager_path.setText(self.config.get("xenia_manager_path", ""))
-        self.xenia_canary_path.setText(self.config.get("xenia_canary_path", ""))
-        self.xenia_netplay_path.setText(self.config.get("xenia_netplay_path", ""))
-        self.xenia_mousehook_path.setText(self.config.get("xenia_mousehook_path", ""))
-        self.xenia_edge_path.setText(self.config.get("xenia_edge_path", ""))
 
-        self.xenia_canary_version.setText(self.config.get("xenia_canary_version", ""))
-        self.xenia_netplay_version.setText(self.config.get("xenia_netplay_version", ""))
-        self.xenia_mousehook_version.setText(self.config.get("xenia_mousehook_version", ""))
-        self.xenia_edge_version.setText(self.config.get("xenia_edge_version", ""))
+        for widget in self.widgets.values():
+            checked = self.config.get(
+                widget.config_key_installed,
+                False,
+            )
+            assert widget.version is not None
+            assert widget.path is not None
+            assert widget.checkbox is not None
+            widget.checkbox.setChecked(checked)
+
+            widget.path.setText(
+                self.config.get(widget.config_key_path, "")
+            )
+
+            widget.version.setText(
+                self.config.get(widget.config_key_version, "")
+            )
         #
         # self.xenia_title_updates_path.setText(self.config.get("xenia_title_updates_path", ""))
         if self.config.get("api_key"):
@@ -2083,7 +2117,11 @@ class GameLauncher(QMainWindow):
         if self.platform == Platform.XBOX360:
 
             db_game_config_source = self.model.get_config_path(row)
-            xenia_version = self.model.get_xenia_version(row)
+            xenia_version = self.model.get_emulator_version(row)
+
+            game = self.model.get_game_title(row)
+            game_path = self.model.get_game_path(row)
+            game_id = self.model.get_game_id(row)
 
             xenia_exe_location = config["xenia_canary_path"]
             xenia_canary_installed = config["xenia_canary_installed"]

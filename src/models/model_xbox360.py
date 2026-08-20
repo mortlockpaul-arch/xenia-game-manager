@@ -336,3 +336,4 @@ class Xbox360GameTableModel(BaseGameTableModel):
                 [dict(row) for row in con.execute(query, params)]
             )
         self.layoutChanged.emit()
+
