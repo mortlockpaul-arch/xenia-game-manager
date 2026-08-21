@@ -523,7 +523,8 @@ def compress_tool(name: str):
             "-m0=lzma2",
             "-mmt=on",
             "-ms=on",
-            str(archive)
+            str(archive),
+            str(folder)
         ],
         cwd=folder,
         check=True,
