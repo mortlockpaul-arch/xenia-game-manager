@@ -41,7 +41,6 @@ def create_defaults(version):
     logging.info("Creating default game manager database and configuration files...")
 
     base_path = root
-    default_path = base_path / "assets" / "default"
 
     db_dir = base_path / "db"
     config_dir = base_path / "config"
@@ -64,38 +63,12 @@ def create_defaults(version):
             backup.unlink()
 
         logging.info(f"  Backing up {path.name} -> {backup}")
-        shutil.move(path, backup)
+        shutil.copy2(path, backup)
 
-    # Database
-    default_db = default_path / "games.db"
-    db_target = db_dir / "games.db"
-
-    backup_existing(db_target)
-
-    if default_db.exists():
-        logging.info(f"  Installing default database: {db_target}")
-        shutil.copy2(default_db, db_target)
-    else:
-        logging.info(f"  Default database not found: {default_db}")
-
-    # Configuration
-    default_config = default_path / "game-manager-config.json"
-    config_target = config_dir / "game-manager-config.json"
-
-    config = load_config(default_path)
+    config = load_config()
     config["game_manager_version"] = version
-    save_config(config, default_path)
-
-    backup_existing(config_target)
-
-    if default_config.exists():
-        logging.info(f"  Installing default configuration: {config_target}")
-        shutil.copy2(default_config, config_target)
-    else:
-        logging.info(f"  Default configuration not found: {default_config}")
-
+    save_config(config)
     logging.info("Done.")
-
 
 def copy_optimized_settings():
     settings_dest = root / "assets" / "settings"
@@ -151,7 +124,7 @@ def copy_updater():
 
 logger = setup_logger()
 
-create_defaults(version="1.0.8")
+create_defaults(version="1.1.0")
 
 tools_setup()
 

@@ -13,12 +13,15 @@
     "xenia_netplay_installed": true,
     "xenia_mousehook_path": "D:\\RetroBat\\emulators\\xenia-manager\\Emulators\\Xenia Mousehook",
     "xenia_mousehook_installed": true,
-    "xenia_edge_version": "",
-    "game_manager_version": "1.0.8",
+    "xenia_edge_version": "build-1091",
+    "game_manager_version": "1.1.0",
     "xenia_game_manager_portable_path": "C:/xenia-game-manager-portable/",
     "xenia_edge_url": "https://api.github.com/repos/has207/xenia-edge/releases/latest",
     "xenia_game_compatibility_url": "https://api.github.com/repos/xenia-canary/game-compatibility/releases/latest",
     "xenia_game_manager_url": "https://api.github.com/repos/mortlockpaul-arch/xenia-game-manager/releases/latest",
     "xenia_Xemu_path": "D:/RetroBat/emulators/xemu",
-    "xemu_installed": true
+    "xemu_installed": true,
+    "xenia_canary_version": "build-898",
+    "xenia_netplay_version": "build-481",
+    "xenia_mousehook_version": "build-30"
 }

@@ -89,7 +89,7 @@ bdist_msi_options = {
 
 setup(
     name="Xenia Game Manager",
-    version="0.9.5",
+    version="1.1.0",
     description="Xenia Game Manager",
     author="Xenia Game Manager",
     options={

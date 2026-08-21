@@ -111,9 +111,9 @@ class XboxGameTableModel(BaseGameTableModel):
         ("play_count", "Plays"),
         ("play_time", "Play Time"),
         ("disc_number", "Disc"),
-        ("xemu_version", "Xemu Version"),
+        ("emulator_version", "Xemu Version"),
         ("compatibility_rating", "Compatibility"),
-        ("Platform", "Platform")
+        ("platform", "Platform")
     ]
 
     def __init__(self):
@@ -316,6 +316,11 @@ class XboxGameTableModel(BaseGameTableModel):
 
         if role == Qt.ItemDataRole.DisplayRole:
             value = self.get_value(row, key)
+
+            if key == "platform":
+                if isinstance(value, Platform):
+                    return value.name
+                return str(value)
 
             if key == "artwork_path":
                 return ""

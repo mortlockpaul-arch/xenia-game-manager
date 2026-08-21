@@ -1,0 +1,6 @@
+# Title Name: Naruto - The Broken Bond
+# Title ID: 55530825
+
+[GPU]
+clear_memory_page_state = true # Fixes warped graphics in game
+gpu_allow_invalid_upload_range = true # Fixes warped graphics in game

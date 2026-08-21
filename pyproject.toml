@@ -22,4 +22,7 @@ dependencies = [
     "pyqt6-sip>=13.11.1",
     "dnfile>=0.18.0",
     "line-profiler-pycharm>=1.2.0",
+    "git-filter-repo==2.47.0",
+    "jaraco-text==4.3.0",
+    "pyqt6==6.11.0",
 ]

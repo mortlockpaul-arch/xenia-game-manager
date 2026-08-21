@@ -343,10 +343,14 @@ class GameLauncher(QMainWindow):
         base_dir = get_app_dir()
         self.extract_downloaded_archives_btn.setEnabled(False)
 
+        download_folder_list = [
+            Path("D:/Downloads"),
+            get_app_dir() / "downloads"
+        ]
         self.extract_thread = QThread()
-        self.extract_worker = ExtractWorker([
-            base_dir / "downloads",
-        ])
+        self.extract_worker = ExtractWorker(
+            download_folder_list
+        )
 
         self.extract_worker.moveToThread(self.extract_thread)
         self.extract_thread.started.connect(self.extract_worker.run)
@@ -852,9 +856,12 @@ class GameLauncher(QMainWindow):
 
     def re_org_downloads(self):
         self.reorg_thread = QThread()
-        self.reorg_worker = self.ReOrgWorker(
+
+        download_folder_list = [
+            Path("D:/Downloads"),
             get_app_dir() / "downloads"
-        )
+        ]
+        self.reorg_worker = self.ReOrgWorker(download_folder_list)
 
         self.reorg_worker.moveToThread(self.reorg_thread)
 
@@ -896,15 +903,16 @@ class GameLauncher(QMainWindow):
         finished = Signal()
         error = Signal(str)
 
-        def __init__(self, path):
+        def __init__(self, paths:list[Path]):
             super().__init__()
-            self.path = path
+            self.paths = paths
 
         @Slot()
         def run(self):
             try:
                 with redirect_stdout(SignalLogger(self.log)):
-                    move_folders_to_type(self.path)
+                    for path in self.paths:
+                        move_folders_to_type(path)
 
             except Exception as e:
                 self.error.emit(str(e))
@@ -987,13 +995,20 @@ class GameLauncher(QMainWindow):
             config[release["installed_key"]] = True
             save_config(config)
 
-            log(f"Downloading {release['name']}...")
-
-            downloader = DownloadArtifact(github_environment_variable, log_callback=log)
-            downloader.OWNER = release["owner"]
-            downloader.REPO = release["repo"]
-
             try:
+                downloader = DownloadArtifact(github_environment_variable, log_callback=log)
+                downloader.OWNER = release["owner"]
+                downloader.REPO = release["repo"]
+
+                valid, message = downloader.check_token()
+
+                if valid:
+                    self.log(message)
+                else:
+                    self.log(message)
+                    break
+
+                log(f"Downloading {release['name']}...")
                 result = downloader.download(output_dir=folder)
                 zip_file = result["path"]
                 version = result["version"]
@@ -1461,8 +1476,6 @@ class GameLauncher(QMainWindow):
 
         self.table = QTableView()
 
-        # self.table.setModel(self.model)
-
         self.table.setSortingEnabled(True)
         self.table.setAlternatingRowColors(True)
 
@@ -1484,6 +1497,7 @@ class GameLauncher(QMainWindow):
         )
 
         header.setStretchLastSection(False)
+        self.refresh()
 
         # Fixed columns
         for column in [
@@ -1497,7 +1511,7 @@ class GameLauncher(QMainWindow):
         # Widths
         self.table.setColumnWidth(0, 32)  # Favourite
         self.table.setColumnWidth(1, 32)  # Icon
-        self.table.setColumnWidth(2, 600)  # Title
+        self.table.setColumnWidth(2, 460)  # Title
         self.table.setColumnWidth(3, 85)  # Title ID
         self.table.setColumnWidth(4, 85)  # Media ID
         self.table.setColumnWidth(5, 60)  # Discs
@@ -1505,8 +1519,8 @@ class GameLauncher(QMainWindow):
         self.table.setColumnWidth(7, 130)  # Last Played
         self.table.setColumnWidth(8, 60)  # Plays
         self.table.setColumnWidth(9, 85)  # Play Time
-        self.table.setColumnWidth(10, 60)  # Disc
-        self.table.setColumnWidth(11, 120)  # Xenia Version
+        self.table.setColumnWidth(10, 120)  # Disc
+        self.table.setColumnWidth(11, 160)  # Xenia Version
         self.table.setColumnWidth(12, 120)  # Compatibility
 
         self.search.setClearButtonEnabled(True)
@@ -1517,6 +1531,7 @@ class GameLauncher(QMainWindow):
 
         self.table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.table.customContextMenuRequested.connect(self.show_table_menu)
+
 
         self.log_window = QPlainTextEdit()
         self.log_window.setReadOnly(True)
@@ -1549,10 +1564,10 @@ class GameLauncher(QMainWindow):
         filtered_games = []
 
         for game in self.model.games:
-            title_id = game.get("game_id", "").upper()
+            title_id = game.game_id.upper()
 
             if title_id in netplay_lookup:
-                game["xenia_version"] = "Netplay"
+                game.emulator_version = "Netplay"
                 filtered_games.append(game)
 
         self.model.games = filtered_games

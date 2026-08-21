@@ -1,0 +1,6 @@
+# Title Name: Sonic Unleashed
+# Title ID: 53450812
+
+[GPU]
+clear_memory_page_state = true # Fixes the warped graphics in game
+gpu = "vulkan" # Stops the crashing

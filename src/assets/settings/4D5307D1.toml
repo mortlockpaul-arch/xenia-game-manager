@@ -1,0 +1,5 @@
+# Title Name: Project Gotham Racing 3
+# Title ID: 4D5307D1
+
+[GPU]
+vsync = false # Unlocks framerate (Combined with framerate limit set to 0)

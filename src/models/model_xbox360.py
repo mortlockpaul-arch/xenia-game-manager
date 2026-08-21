@@ -31,9 +31,9 @@ class Xbox360GameTableModel(BaseGameTableModel):
         ("play_count", "Plays"),
         ("play_time", "Play Time"),
         ("disc_number", "Disc"),
-        ("xenia_version", "Xenia Version"),
+        ("emulator_version", "Xenia Version"),
         ("compatibility_rating", "Compatibility"),
-        ("Platform", "Platform")
+        ("platform", "Platform")
     ]
 
     def __init__(self):
@@ -192,6 +192,8 @@ class Xbox360GameTableModel(BaseGameTableModel):
         row = self.games[index.row()]
         key = self.COLUMNS[index.column()][0]
 
+
+
         # Compatibility column special roles
         if key == "compatibility_rating":
             rating = self.get_value(row, key=key)
@@ -220,6 +222,14 @@ class Xbox360GameTableModel(BaseGameTableModel):
 
         if role == Qt.ItemDataRole.DisplayRole:
             value = self.get_value(row, key=key)
+
+            if value is None:
+                return ""
+
+            if key == "platform":
+                if isinstance(value, Platform):
+                    return value.name
+                return str(value)
 
             if key == "artwork_path":
                 return ""

@@ -1,0 +1,8 @@
+# Title Name: Crackdown
+# Title ID: 4D5307DC
+
+[GPU]
+readback_resolve = "full" # Fixes the bright bloom at the cost of performance
+
+[General]
+controller_hotkeys = true # Turn off Readback_Resolve with A + Guide Button after a few seconds

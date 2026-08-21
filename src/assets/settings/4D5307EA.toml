@@ -1,0 +1,5 @@
+# Title Name: Forza Motorsport 2
+# Title ID: 4D5307EA
+
+[GPU]
+vsync = false # Unlocks framerate (Combined with framerate limit set to 0)

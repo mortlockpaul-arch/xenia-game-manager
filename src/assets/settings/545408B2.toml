@@ -1,0 +1,9 @@
+# Title Name: WWE 2K14
+# Title ID: 545408B2
+
+[GPU]
+gpu = "vulkan" # Prevents crashing
+readback_resolve = "fast" # Fixes the wrestlers/managers outfits
+
+[Memory]
+ignore_offset_for_ranged_allocations = true # Prevents crashing

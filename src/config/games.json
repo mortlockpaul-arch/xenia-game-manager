@@ -916,7 +916,7 @@
     "game_id": "5841084E",
     "alternative_id": [],
     "media_id": "0C7DEB7B",
-    "title": "Asteroids \u0026 Asteroids Deluxe",
+    "title": "Asteroids \u0026 Asteroids Deluxe (1)",
     "playtime": 0,
     "xenia_version": "Canary",
     "compatibility": {
@@ -1158,7 +1158,7 @@
     "game_id": "4D5307DF",
     "alternative_id": [],
     "media_id": "2C1379F7",
-    "title": "Blue Dragon (Disc 1)",
+    "title": "Blue Dragon",
     "playtime": 94.60313032833334,
     "xenia_version": "Canary",
     "compatibility": {
@@ -1197,7 +1197,7 @@
     "game_id": "4D5307DF",
     "alternative_id": [],
     "media_id": "40ED67A4",
-    "title": "Blue Dragon (Disc 2)",
+    "title": "Blue Dragon",
     "playtime": 0,
     "xenia_version": "Canary",
     "compatibility": {
@@ -1236,7 +1236,7 @@
     "game_id": "4D5307DF",
     "alternative_id": [],
     "media_id": "15FBA864",
-    "title": "Blue Dragon (Disc 3)",
+    "title": "Blue Dragon",
     "playtime": 0,
     "xenia_version": "Canary",
     "compatibility": {
@@ -2431,7 +2431,7 @@
     "game_id": "535107FA",
     "alternative_id": [],
     "media_id": "7BBEB936",
-    "title": "Deus Ex - Human Revolution - Director\u0027s Cut (Disc 1)",
+    "title": "Deus Ex - Human Revolution - Director\u0027s Cut",
     "playtime": 119.30706275,
     "xenia_version": "Canary",
     "compatibility": {
@@ -2470,7 +2470,7 @@
     "game_id": "535107FA",
     "alternative_id": [],
     "media_id": "7C4137BE",
-    "title": "Deus Ex - Human Revolution - Director\u0027s Cut (Disc 2)",
+    "title": "Deus Ex - Human Revolution - Director\u0027s Cut",
     "playtime": 0,
     "xenia_version": "Canary",
     "compatibility": {
@@ -2997,45 +2997,6 @@
     "last_played": null
   },
   {
-    "game_id": "FFED2000",
-    "alternative_id": [],
-    "media_id": "30672AE2",
-    "title": "Fallout - New Vegas - Ultimate Edition (USA) (Disc 2)",
-    "playtime": 0.635569945,
-    "xenia_version": "Canary",
-    "compatibility": {
-      "url": "",
-      "rating": "Unknown",
-      "mousehook": {
-        "rating": "Unknown",
-        "notes": ""
-      },
-      "netplay": {
-        "status": {
-          "working_public": null,
-          "tested_locally": null,
-          "only_local": null,
-          "systemlink": null
-        },
-        "comments": ""
-      }
-    },
-    "artwork": {
-      "background": "GameData\\Fallout - New Vegas - Ultimate Edition (USA) (Disc 2)\\Artwork\\Background.jpg",
-      "boxart": "GameData\\Fallout - New Vegas - Ultimate Edition (USA) (Disc 2)\\Artwork\\Boxart.png",
-      "icon": "GameData\\Fallout - New Vegas - Ultimate Edition (USA) (Disc 2)\\Artwork\\Icon.ico"
-    },
-    "file_locations": {
-      "game": "H:\\roms\\xbox360\\Fallout - New Vegas - Ultimate Edition (USA) (Disc 2).iso",
-      "additional_discs": [],
-      "patch": null,
-      "config": "Emulators\\Xenia Canary\\config\\Fallout - New Vegas - Ultimate Edition (USA) (Disc 2).config.toml",
-      "custom_emulator_executable": null
-    },
-    "last_played_disc": 1,
-    "last_played": "2026-07-26T07:04:58.7300893+01:00"
-  },
-  {
     "game_id": "425307D5",
     "alternative_id": [],
     "media_id": "66420EB4",
@@ -3077,8 +3038,47 @@
   {
     "game_id": "FFED2000",
     "alternative_id": [],
+    "media_id": "30672AE2",
+    "title": "Fallout 3 - Game of the Year Edition (USA, Europe)",
+    "playtime": 0.635569945,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown",
+      "mousehook": {
+        "rating": "Unknown",
+        "notes": ""
+      },
+      "netplay": {
+        "status": {
+          "working_public": null,
+          "tested_locally": null,
+          "only_local": null,
+          "systemlink": null
+        },
+        "comments": ""
+      }
+    },
+    "artwork": {
+      "background": "GameData\\Fallout - New Vegas - Ultimate Edition (USA) (Disc 2)\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Fallout - New Vegas - Ultimate Edition (USA) (Disc 2)\\Artwork\\Boxart.png",
+      "icon": "GameData\\Fallout - New Vegas - Ultimate Edition (USA) (Disc 2)\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "H:\\roms\\xbox360\\Fallout - New Vegas - Ultimate Edition (USA) (Disc 2).iso",
+      "additional_discs": [],
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Fallout - New Vegas - Ultimate Edition (USA) (Disc 2).config.toml",
+      "custom_emulator_executable": null
+    },
+    "last_played_disc": 1,
+    "last_played": "2026-07-26T07:04:58.7300893+01:00"
+  },
+  {
+    "game_id": "FFED2000",
+    "alternative_id": [],
     "media_id": "5749C425",
-    "title": "Fallout 3 - Game of the Year Edition (USA, Europe) (Disc 2)",
+    "title": "Fallout 3 - Game of the Year Edition (USA, Europe)",
     "playtime": 0.8630007066666666,
     "xenia_version": "Canary",
     "compatibility": {
@@ -3400,7 +3400,7 @@
     ],
     "media_id": "1D5F3880",
     "title": "Full Auto",
-    "playtime": 0,
+    "playtime": 7.890160465,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "https://github.com/xenia-canary/game-compatibility/issues/176",
@@ -3432,7 +3432,7 @@
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
-    "last_played": null
+    "last_played": "2026-08-20T21:45:32.9457076+01:00"
   },
   {
     "game_id": "584108BB",
@@ -3993,7 +3993,7 @@
     "game_id": "5841096A",
     "alternative_id": [],
     "media_id": "1F4C5091",
-    "title": "Hydro Thunder Hurricane",
+    "title": "Hydro Thunder Hurricane (1)",
     "playtime": 3.7183772166666667,
     "xenia_version": "Netplay",
     "compatibility": {
@@ -4707,7 +4707,7 @@
     "game_id": "4D5307FA",
     "alternative_id": [],
     "media_id": "368DE6DD",
-    "title": "Lost Odyssey (Disc 1)",
+    "title": "Lost Odyssey",
     "playtime": 0,
     "xenia_version": "Canary",
     "compatibility": {
@@ -4805,7 +4805,7 @@
     "game_id": "4B4E085E",
     "alternative_id": [],
     "media_id": "1FF1D358",
-    "title": "Metal Gear Solid V - The Phantom Pain (Disc 1)",
+    "title": "Metal Gear Solid V - The Phantom Pain",
     "playtime": 0,
     "xenia_version": "Canary",
     "compatibility": {
@@ -5527,7 +5527,7 @@
     ],
     "media_id": "70A2E689",
     "title": "Omerta - City of Gangsters",
-    "playtime": 3.1159068983333333,
+    "playtime": 8.077461886666667,
     "xenia_version": "Canary",
     "compatibility": {
       "url": "",
@@ -5559,7 +5559,7 @@
       "custom_emulator_executable": null
     },
     "last_played_disc": 1,
-    "last_played": "2026-07-26T07:06:24.6080905+01:00"
+    "last_played": "2026-08-20T21:39:55.0823838+01:00"
   },
   {
     "game_id": "445007EA",
@@ -6163,7 +6163,7 @@
       "425387EF"
     ],
     "media_id": "0A5883E2",
-    "title": "Rage (Disc 1)",
+    "title": "Rage",
     "playtime": 0,
     "xenia_version": "Canary",
     "compatibility": {
@@ -6204,7 +6204,7 @@
       "425387EF"
     ],
     "media_id": "3277646A",
-    "title": "Rage (Disc 2)",
+    "title": "Rage",
     "playtime": 0,
     "xenia_version": "Canary",
     "compatibility": {
@@ -6245,7 +6245,7 @@
       "425387EF"
     ],
     "media_id": "4D174B43",
-    "title": "Rage (Disc 3)",
+    "title": "Rage",
     "playtime": 0,
     "xenia_version": "Canary",
     "compatibility": {
@@ -7336,7 +7336,7 @@
       "4D538AB7"
     ],
     "media_id": "343186B2",
-    "title": "ScreamRide",
+    "title": "ScreamRide (1)",
     "playtime": 0,
     "xenia_version": "Canary",
     "compatibility": {
@@ -8006,8 +8006,47 @@
   {
     "game_id": "535107DD",
     "alternative_id": [],
+    "media_id": "13BB8E0E",
+    "title": "Star Ocean - The Last Hope",
+    "playtime": 0,
+    "xenia_version": "Canary",
+    "compatibility": {
+      "url": "",
+      "rating": "Unknown",
+      "mousehook": {
+        "rating": "Unknown",
+        "notes": ""
+      },
+      "netplay": {
+        "status": {
+          "working_public": null,
+          "tested_locally": null,
+          "only_local": null,
+          "systemlink": null
+        },
+        "comments": ""
+      }
+    },
+    "artwork": {
+      "background": "GameData\\Star Ocean - The Last Hope (Disc 3)\\Artwork\\Background.jpg",
+      "boxart": "GameData\\Star Ocean - The Last Hope (Disc 3)\\Artwork\\Boxart.png",
+      "icon": "GameData\\Star Ocean - The Last Hope (Disc 3)\\Artwork\\Icon.ico"
+    },
+    "file_locations": {
+      "game": "D:\\roms\\xbox360\\Star Ocean - The Last Hope (USA) (Disc 3).iso",
+      "additional_discs": [],
+      "patch": null,
+      "config": "Emulators\\Xenia Canary\\config\\Star Ocean - The Last Hope (Disc 3).config.toml",
+      "custom_emulator_executable": null
+    },
+    "last_played_disc": 1,
+    "last_played": null
+  },
+  {
+    "game_id": "535107DD",
+    "alternative_id": [],
     "media_id": "6E6174B0",
-    "title": "Star Ocean - The Last Hope (Disc 1)",
+    "title": "Star Ocean - The Last Hope",
     "playtime": 0,
     "xenia_version": "Canary",
     "compatibility": {
@@ -8046,7 +8085,7 @@
     "game_id": "535107DD",
     "alternative_id": [],
     "media_id": "7569E6AB",
-    "title": "Star Ocean - The Last Hope (Disc 2)",
+    "title": "Star Ocean - The Last Hope",
     "playtime": 0,
     "xenia_version": "Canary",
     "compatibility": {
@@ -8082,49 +8121,10 @@
     "last_played": null
   },
   {
-    "game_id": "535107DD",
-    "alternative_id": [],
-    "media_id": "13BB8E0E",
-    "title": "Star Ocean - The Last Hope (Disc 3)",
-    "playtime": 0,
-    "xenia_version": "Canary",
-    "compatibility": {
-      "url": "",
-      "rating": "Unknown",
-      "mousehook": {
-        "rating": "Unknown",
-        "notes": ""
-      },
-      "netplay": {
-        "status": {
-          "working_public": null,
-          "tested_locally": null,
-          "only_local": null,
-          "systemlink": null
-        },
-        "comments": ""
-      }
-    },
-    "artwork": {
-      "background": "GameData\\Star Ocean - The Last Hope (Disc 3)\\Artwork\\Background.jpg",
-      "boxart": "GameData\\Star Ocean - The Last Hope (Disc 3)\\Artwork\\Boxart.png",
-      "icon": "GameData\\Star Ocean - The Last Hope (Disc 3)\\Artwork\\Icon.ico"
-    },
-    "file_locations": {
-      "game": "D:\\roms\\xbox360\\Star Ocean - The Last Hope (USA) (Disc 3).iso",
-      "additional_discs": [],
-      "patch": null,
-      "config": "Emulators\\Xenia Canary\\config\\Star Ocean - The Last Hope (Disc 3).config.toml",
-      "custom_emulator_executable": null
-    },
-    "last_played_disc": 1,
-    "last_played": null
-  },
-  {
     "game_id": "4C4107D2",
     "alternative_id": [],
     "media_id": "6CD9E482",
-    "title": "Star Wars - The Force Unleashed",
+    "title": "Star Wars - The Force Unleashed - Ultimate Sith Edition",
     "playtime": 0,
     "xenia_version": "Canary",
     "compatibility": {
@@ -8163,7 +8163,7 @@
     "game_id": "4C4107D2",
     "alternative_id": [],
     "media_id": "158BC286",
-    "title": "Star Wars - The Force Unleashed - Ultimate Sith Edition (Disc 1)",
+    "title": "Star Wars - The Force Unleashed - Ultimate Sith Edition",
     "playtime": 0,
     "xenia_version": "Canary",
     "compatibility": {
@@ -8202,7 +8202,7 @@
     "game_id": "4C4107D2",
     "alternative_id": [],
     "media_id": "36A31639",
-    "title": "Star Wars - The Force Unleashed - Ultimate Sith Edition (Disc 2)",
+    "title": "Star Wars - The Force Unleashed - Ultimate Sith Edition",
     "playtime": 0,
     "xenia_version": "Canary",
     "compatibility": {

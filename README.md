@@ -1,8 +1,8 @@
-# Xenia Game Launcher
+# Xenia Game Manager Launcher Rebuilder
 
 PySide6 Xenia / Xemu Game Manager and Launcher for Xbox and Xbox 360 games. Indie game decompiler and Content Rebuilder.
 
-The Manager imports your Game List from Xenia Manager or Xenia Edge , stores game metadata in SQLite, provides title cleanup, archive tools, favourites, search, sorting, multi-disc support, play tracking and downloading title updates from xboxunity.net for games in the list.
+The Manager imports your Game List from Xenia Manager or Xenia Edge , stores game metadata in SQLite, provides title cleanup, archive tools, favourites, search, sorting, multi-disc support, play tracking.
 
 ---
 

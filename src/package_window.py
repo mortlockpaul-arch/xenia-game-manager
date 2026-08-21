@@ -523,8 +523,7 @@ def compress_tool(name: str):
             "-m0=lzma2",
             "-mmt=on",
             "-ms=on",
-            str(archive),
-            ".",
+            str(archive)
         ],
         cwd=folder,
         check=True,
@@ -609,15 +608,17 @@ def add_xna_compat(project_folder):
         "Added XNA compatibility layer"
     )
 
-
 class ConvertXnaProjects(QObject):
+
     log_signal = Signal(str)
     progress_signal = Signal(int)
-    finished_signal = Signal(object)
+    total_files_signal = Signal(int)
+    finished_signal = Signal(ConversionResult)
 
-    def __init__(self, project_path, games, options: dict[str, QCheckBox], /):
+    def __init__(self, project_path, games, options, /):
         super().__init__()
-        self.options = options
+
+        self.options: dict[str, QCheckBox] = options
         self.project_path = Path(project_path)
         self.games = games
 
@@ -678,15 +679,19 @@ class ConvertXnaProjects(QObject):
         packages = []
         files_scanned = 0
         last_progress = -1
+        files = list(scan_files(root))
+        total_files = len(files)
 
-        for path in scan_files(root):
+        self.total_files_signal.emit(total_files)
+
+        files_scanned = 0
+
+        for path in files:
             files_scanned += 1
 
             # Progress during the initial scan is only approximate.
-            if files_scanned % 1000 == 0:
-                self.log_signal.emit(
-                    f"Scanned {files_scanned:,} files..."
-                )
+            if files_scanned % 5 == 0:
+                self.progress_signal.emit(files_scanned)
 
             if is_stfs(path):
                 packages.append(path)
@@ -698,7 +703,7 @@ class ConvertXnaProjects(QObject):
         total_packages = len(packages)
 
         for index, package in enumerate(packages, start=1):
-            progress = 40 + int(index * 60 / max(total_packages, 1))
+            progress = int(index * 5 / max(total_packages, 1))
 
             if progress != last_progress:
                 self.progress_signal.emit(progress)
@@ -790,7 +795,7 @@ class ConvertXnaProjects(QObject):
 
         alba = (get_app_dir() / "assets/tools/conversion/Alba.XnaConvert.0.1.2/Alba.XnaConvert.exe")
         xnb_cli = (get_app_dir() / "assets/tools/conversion/xnbcli-windows-x64/xnbcli.exe")
-        xnb_extractor = Path("C:/xnb-extractor/bin/x86/Debug/net481/XnbExtractor.exe")
+        xnb_extractor = (get_app_dir() / "assets/tools/conversion/xnb-extractor/x64/Release/net481/XnbExtractor.exe")
 
         failed_folders = []
 
@@ -1069,9 +1074,7 @@ class ConvertXnaProjects(QObject):
             self.remove_xna_usings(folder.parent)
 
         except Exception as e:
-            print(
-                f"FAILED {folder}: {e}"
-            )
+            self.log_signal.emit(f"FAILED {folder}: {e}")
 
     # def method_name(self, game:XBLIGGame):
     #     if game.extracted is not None:
@@ -1124,8 +1127,6 @@ class ConvertXnaProjects(QObject):
                     text,
                     encoding="utf-8"
                 )
-def log_message_log(message):
-    logging.info(f"{message}")
 
 def run_in_background(func, *args):
     threading.Thread(
@@ -1295,6 +1296,7 @@ class XBLIGDialog(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.worker = None
         self.compress_thread = None
         self.decompress_btn = None
         self.all_checkbox = None
@@ -1367,7 +1369,7 @@ class XBLIGDialog(QDialog):
     def method_name(self) -> ConvertXnaProjects:
         converter = ConvertXnaProjects(get_app_dir(), self.games, self.options)
 
-        converter.log_signal.connect(log_message_log)
+        converter.log_signal.connect(self.log_message_log)
         converter.progress_signal.connect(self.progress_bar.setValue)
         converter.finished_signal.connect(self.tool_finished)
         return converter
@@ -1404,17 +1406,14 @@ class XBLIGDialog(QDialog):
             return
         game, indexes = result
         if game:
-            tools = ToolManager("conversion")
-            tools.extract()
+            with ToolManager("conversion"):
+                converter = ConvertXnaProjects(get_app_dir(), self.games, self.options)
+                converter.log_signal.connect(self.log_message_log)
+                converter.progress_signal.connect(self.progress_bar.setValue)
+                converter.finished_signal.connect(self.tool_finished)
 
-            converter = ConvertXnaProjects(get_app_dir(), self.games, self.options)
-
-            converter.log_signal.connect(log_message_log)
-            converter.progress_signal.connect(self.progress_bar.setValue)
-            converter.finished_signal.connect(self.tool_finished)
-
-            self.progress_bar.setRange(0, 0)  # Busy animation
-            run_in_background(converter.convert_xnb_folder_tools, game, tool_id)
+                self.progress_bar.setRange(0, 0)  # Busy animation
+                run_in_background(converter.convert_xnb_folder_tools, game, tool_id)
 
     def tool_finished(self, result: ConversionResult):
         self.progress_bar.setRange(0, 100)
@@ -1425,20 +1424,20 @@ class XBLIGDialog(QDialog):
         self.validate3_btn.setDisabled(False)
 
         if result.success:
-            log_message_log(
+            self.log_message_log(
                 f"{result.tool}: SUCCESS - "
                 f"{len(result.output_files)} files created."
             )
         else:
-            log_message_log(
+            self.log_message_log(
                 f"{result.tool}: FAILED"
             )
 
             if result.error:
-                log_message_log(result.error)
+                self.log_message_log(result.error)
 
             if result.stderr:
-                log_message_log(result.stderr)
+                self.log_message_log(result.stderr)
 
     def decompile_project(self, exe: Path, dll_files: list[Path], ilspy_exe: Path, parent=None, extracted=None,
                           use_gui=False) -> tuple[Path, QProcess]:
@@ -1588,9 +1587,15 @@ class XBLIGDialog(QDialog):
         finished_signal = Signal(list)
         log_signal = Signal(str)
         progress_signal = Signal(int)
+        total_files_signal = Signal(int)
 
-        def __init__(self, root: Path, converter: ConvertXnaProjects, force=False):
+        def __init__(self, root: Path, force=False):
             super().__init__()
+
+            converter = ConvertXnaProjects(get_app_dir(), None, None)
+            converter.log_signal.connect(self.log_signal)
+            converter.progress_signal.connect(self.progress_signal)
+            converter.total_files_signal.connect(self.total_files_signal)
 
             self.root = root
             self.converter = converter
@@ -1600,6 +1605,7 @@ class XBLIGDialog(QDialog):
             # self.converter.log_signal.connect(self.log_signal)
             # self.converter.progress_signal.connect(self.progress_signal)
 
+        @Slot()
         def run(self):
 
             try:
@@ -1629,41 +1635,43 @@ class XBLIGDialog(QDialog):
                 self.finished_signal.emit([])
 
     def rescan_games_responsive(self, force=False):
-        root = Path("D:/") / "downloads" / "XBLIG"
-
-        converter = ConvertXnaProjects(get_app_dir(), self.games, self.options)
+        root = Path("D:/downloads/XBLIG")
 
         self.progress_bar.setRange(0, 100)
         self.progress_bar.setValue(0)
-
         self.scan_btn.setEnabled(False)
 
-        self.thread = QThread(self)
+        self.scan_thread = QThread(self)
+        self.scan_worker = self.ScanWorker(root, force)
+        self.scan_worker.total_files_signal.connect(
+            lambda total: (
+                self.progress_bar.setRange(0, total),
+                self.progress_bar.setFormat("Scanned %v files...")
+            )
+        )
+        self.scan_worker.moveToThread(self.scan_thread)
 
-        self.worker = self.ScanWorker(root, converter, force)
+        self.scan_thread.started.connect(self.scan_worker.run)
 
-        converter.log_signal.connect(self.worker.log_signal)
-        converter.progress_signal.connect(self.worker.progress_signal)
+        self.scan_worker.log_signal.connect(self.log_message_log)
+        self.scan_worker.progress_signal.connect(self.progress_bar.setValue)
+        self.scan_worker.finished_signal.connect(self.scan_finished)
 
-        self.worker.moveToThread(self.thread)
+        # Shut the worker/thread down when scanning finishes
+        self.scan_worker.finished_signal.connect(self.scan_thread.quit)
+        self.scan_worker.finished_signal.connect(self.scan_worker.deleteLater)
+        self.scan_thread.finished.connect(self.scan_thread.deleteLater)
 
-        self.thread.started.connect(self.worker.run)
-
-        self.worker.log_signal.connect(log_message_log)
-        self.worker.progress_signal.connect(self.progress_bar.setValue)
-        self.worker.finished_signal.connect(self.scan_finished)
-
-        self.worker.finished_signal.connect(self.thread.quit)
-        self.worker.finished_signal.connect(self.worker.deleteLater)
-        self.thread.finished.connect(self.thread.deleteLater)
-
-        self.thread.start()
-
+        self.scan_thread.start()
+        
     def scan_finished(self, games):
         self.games = games
         self.load_games(self.games)
-        self.log_message(f"Loaded {len(self.games)} games.")
         self.scan_btn.setEnabled(True)
+
+    def log_message_log(self, message):
+        logging.info(f"{message}")
+        self.log_message(message)
 
     # def rescan_games(self, force=False):
     #     self.log_message("Checking game cache...")
@@ -1832,7 +1840,7 @@ class XBLIGDialog(QDialog):
         package = Path(package)
 
         if not package.exists():
-            log_message_log(f"Package missing: {package}")
+            self.log_message_log(f"Package missing: {package}")
             return None
 
         from stfs_extract import extract_live_pirs
@@ -1845,10 +1853,10 @@ class XBLIGDialog(QDialog):
         try:
             from contextlib import redirect_stdout
 
-            with redirect_stdout(QtLogger(log_message_log)):
+            with redirect_stdout(QtLogger(self.log_message_log)):
                 extract_live_pirs(package, extracted_path)
 
-            log_message_log(f"Extracted to: {extracted_path}")
+            self.log_message_log(f"Extracted to: {extracted_path}")
 
         except Exception as e:
             self.log_message(f"Extraction failed for {game.title}: {type(e).__name__}: {e}")

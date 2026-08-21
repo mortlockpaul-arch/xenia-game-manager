@@ -10,6 +10,31 @@ class DownloadArtifact:
     OWNER = "AdrianCassar"
     REPO = "xenia-canary"
 
+    def check_token(self):
+        if not self.token:
+            return False, "No GitHub token configured"
+
+        try:
+            response = self.session.get(
+                "https://api.github.com/user",
+                timeout=10,
+            )
+
+            if response.status_code == 200:
+                user = response.json()
+                return True, f"Authenticated as {user.get('login', 'unknown')}"
+
+            if response.status_code == 401:
+                return False, "GitHub token is invalid or expired"
+
+            return False, (
+                f"GitHub authentication check failed: "
+                f"HTTP {response.status_code}"
+            )
+
+        except requests.RequestException as e:
+            return False, f"Unable to contact GitHub: {e}"
+
     def __init__(self, token=None, log_callback=None):
         self.token = token
         self.session = requests.Session()
@@ -22,6 +47,7 @@ class DownloadArtifact:
 
         if token:
             self.session.headers["Authorization"] = f"Bearer {token}"
+
 
     def latest_artifact(self, name_contains="windows"):
         url = f"https://api.github.com/repos/{self.OWNER}/{self.REPO}/actions/runs"

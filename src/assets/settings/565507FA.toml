@@ -1,0 +1,6 @@
+# Title Name: Crash - Mind over Mutant
+# Title ID: 565507FA
+
+[GPU]
+clear_memory_page_state = true # Fixes the warped graphics in game
+vsync = false # Unlocks framerate (Combined with framerate limit set to 0)

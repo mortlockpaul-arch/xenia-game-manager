@@ -69,10 +69,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build_tools/build/exe.win-amd64-3.14/lib/zipfile" />
       <excludeFolder url="file://$MODULE_DIR$/build_tools/dist" />
       <excludeFolder url="file://$MODULE_DIR$/src/downloads" />
-      <excludeFolder url="file://$MODULE_DIR$/build_tools/Xenia_Game_Manager.egg-info" />
       <excludeFolder url="file://$MODULE_DIR$/build_tools/build" />
-      <excludeFolder url="file://$MODULE_DIR$/build_tools" />
-      <excludeFolder url="file://$MODULE_DIR$/src/assets/zip" />
       <excludeFolder url="file://$MODULE_DIR$/src/backup" />
       <excludeFolder url="file://$MODULE_DIR$/src/src" />
     </content>

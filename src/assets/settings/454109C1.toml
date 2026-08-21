@@ -1,0 +1,5 @@
+# Title Name: Madden NFL 25
+# Title ID: 454109C1
+
+[GPU]
+readback_resolve = "full" # Fixes the textures at the cost of performance

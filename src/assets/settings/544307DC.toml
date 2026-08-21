@@ -1,0 +1,5 @@
+# Title Name: Quantum Theory
+# Title ID: 544307DC
+
+[GPU]
+use_fuzzy_alpha_epsilon = true # Fixes the noise in game

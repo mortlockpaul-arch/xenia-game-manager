@@ -25,6 +25,13 @@ class Platform(Enum):
     XBOX = "Xbox"
     XBOX360 = "Xbox360"
 
+    @property
+    def display_name(self):
+        return {
+            Platform.XBOX: "Xbox",
+            Platform.XBOX360: "Xbox 360",
+        }[self]
+
 @dataclass
 class GameDisc:
     media_id: str | None = None

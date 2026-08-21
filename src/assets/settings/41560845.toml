@@ -1,0 +1,6 @@
+# Title Name: Blur
+# Title ID: 41560845
+
+[GPU]
+framerate_limit = 120 # Caps the framerate to 60
+readback_resolve = "fast" # Fixes the bright bloom
