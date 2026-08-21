@@ -524,7 +524,7 @@ def compress_tool(name: str):
             "-mmt=on",
             "-ms=on",
             str(archive),
-            str(folder)
+            "."
         ],
         cwd=folder,
         check=True,
@@ -1414,7 +1414,7 @@ class XBLIGDialog(QDialog):
                 converter.finished_signal.connect(self.tool_finished)
 
                 self.progress_bar.setRange(0, 0)  # Busy animation
-                run_in_background(converter.convert_xnb_folder_tools, game, tool_id)
+                converter.convert_xnb_folder_tools(game, tool_id)
 
     def tool_finished(self, result: ConversionResult):
         self.progress_bar.setRange(0, 100)

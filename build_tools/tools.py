@@ -7,17 +7,17 @@ def tools_setup():
     compress_tool("ilspy")
     compress_tool("vgmstream")
 
-    with ToolManager("conversion"):
-        print("Conversion is complete.")
-
-    with ToolManager("ilspycmd"):
-        print("ILSpy command line is complete.")
-
-    with ToolManager("ilspy"):
-        print("ILSpy GUI is complete.")
-
-    with ToolManager("vgmstream"):
-        print("Vgmstream is complete.")
+    # with ToolManager("conversion"):
+    #     print("Conversion is complete.")
+    #
+    # with ToolManager("ilspycmd"):
+    #     print("ILSpy command line is complete.")
+    #
+    # with ToolManager("ilspy"):
+    #     print("ILSpy GUI is complete.")
+    #
+    # with ToolManager("vgmstream"):
+    #     print("Vgmstream is complete.")
 
 if __name__ == "__main__":
     tools_setup()
@@ -25,4 +25,6 @@ if __name__ == "__main__":
     # ensure_tool_extracted("ilspy")
     # ensure_tool_extracted("ilspycmd")
     # ensure_tool_extracted("vgmstream")
+    # ensure_tool_extracted("conversion")
+
 
