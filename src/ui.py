@@ -58,7 +58,7 @@ from package_window import XBLIGDialog, move_folders_to_type
 from remove_empty_folders import remove_empty_folders
 from updater import UpdateWorker, UpdateManager
 from utils import smart_title_case, xenia_edge_optimise_settings, show_differences, merge_toml
-from xboxunity_download import TitleUpdateWorker
+from xbox_unity_window import TitleUpdateWorker
 from xenix_manager_edge_install_defaults import XeniaManagerInstaller
 import xiso
 

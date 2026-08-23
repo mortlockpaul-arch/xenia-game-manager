@@ -15,7 +15,7 @@ def setup_logger() -> logging.Logger:
     log_dir = get_app_dir() / "logs"
     log_dir.mkdir(parents=True, exist_ok=True)
 
-    log_file = log_dir / "xenia_manager.log"
+    log_file = log_dir / "xbox_game__manager.log"
 
     handler = RotatingFileHandler(
         log_file,

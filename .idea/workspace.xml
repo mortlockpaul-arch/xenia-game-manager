@@ -4,12 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.1.0 Decompiler and Extractor Tools">
+    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.1.1 Logging Initialisation">
       <change afterPath="$PROJECT_DIR$/../XBLA-Extract/.idea/xbla-extract.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build_tools/tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/tools.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build_tools/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/game-manager-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/game-manager-config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/logging_setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/logging_setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xboxunity_download.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/xbox_unity_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/uv.lock" beforeDir="false" afterPath="$PROJECT_DIR$/uv.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,61 +57,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.3044997468718745E-7" />
-      <entry key="MS500" value="0.04198448205379052" />
-      <entry key="S2" value="0.45266008428994403" />
-      <entry key="S5" value="0.7282976019816271" />
-      <entry key="S10" value="0.8534035399422254" />
-      <entry key="S30" value="0.9486723523417604" />
-      <entry key="S60" value="0.9930032763807614" />
-      <entry key="M2" value="1.4182733480425922" />
-      <entry key="M5" value="4.880679790403257" />
-      <entry key="M10" value="9.641179717475891" />
-      <entry key="M15" value="12.84163167770396" />
-      <entry key="M30" value="19.697125460575784" />
-      <entry key="H1" value="27.756015064623675" />
-      <entry key="H2" value="34.9413326236977" />
-      <entry key="H4" value="43.33239412134794" />
-      <entry key="D1" value="189.39844018838284" />
-      <entry key="W1" value="1102.403270285865" />
-    </decayedCancelled>
-    <decayedSelected>
       <entry key="MS100" value="1.0" />
       <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0" />
-      <entry key="S5" value="1.0" />
-      <entry key="S10" value="1.0" />
-      <entry key="S30" value="1.0000008466112156" />
-      <entry key="S60" value="1.00150313998717" />
-      <entry key="M2" value="1.0748697380023247" />
-      <entry key="M5" value="1.8906455230337418" />
-      <entry key="M10" value="3.1633617512967813" />
-      <entry key="M15" value="4.1349207818375735" />
-      <entry key="M30" value="6.509209330599914" />
-      <entry key="H1" value="9.489801853768515" />
-      <entry key="H2" value="12.15670992818966" />
-      <entry key="H4" value="14.842442035472148" />
-      <entry key="D1" value="55.32741783687884" />
-      <entry key="W1" value="245.89506247627068" />
+      <entry key="S2" value="1.0000008101686222" />
+      <entry key="S5" value="1.0050176965837039" />
+      <entry key="S10" value="1.1125264356750424" />
+      <entry key="S30" value="2.2292297235457528" />
+      <entry key="S60" value="3.6967995785047454" />
+      <entry key="M2" value="5.782467352700029" />
+      <entry key="M5" value="9.885752858864214" />
+      <entry key="M10" value="15.01257300303646" />
+      <entry key="M15" value="19.394336700085386" />
+      <entry key="M30" value="29.59114935645926" />
+      <entry key="H1" value="42.0617566064978" />
+      <entry key="H2" value="53.700563971214926" />
+      <entry key="H4" value="65.20873417354203" />
+      <entry key="D1" value="213.04869540274353" />
+      <entry key="W1" value="1126.706790152804" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="1.16436E-319" />
+      <entry key="S5" value="2.6695492136055486E-128" />
+      <entry key="S10" value="1.633875519617558E-64" />
+      <entry key="S30" value="5.466886065687802E-22" />
+      <entry key="S60" value="2.3416508632985506E-11" />
+      <entry key="M2" value="5.19745514166992E-6" />
+      <entry key="M5" value="0.014137873002511426" />
+      <entry key="M10" value="0.27354944750559723" />
+      <entry key="M15" value="0.8085840720869164" />
+      <entry key="M30" value="2.878440340534606" />
+      <entry key="H1" value="6.3106143637113385" />
+      <entry key="H2" value="9.913415353063282" />
+      <entry key="H4" value="13.40321505217286" />
+      <entry key="D1" value="54.3948361155989" />
+      <entry key="W1" value="245.29863564915985" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.5299630090261618E-7" />
-      <entry key="MS500" value="0.044973489355326406" />
-      <entry key="S2" value="0.6571758556442863" />
-      <entry key="S5" value="1.2568660877521383" />
-      <entry key="S10" value="1.580190973302868" />
-      <entry key="S30" value="1.847698411336008" />
-      <entry key="S60" value="1.9423213060652535" />
-      <entry key="M2" value="2.463000294485627" />
-      <entry key="M5" value="6.7457952070295315" />
-      <entry key="M10" value="12.781787436984025" />
-      <entry key="M15" value="16.95636922421373" />
-      <entry key="M30" value="26.190167097185007" />
-      <entry key="H1" value="37.23395061263562" />
-      <entry key="H2" value="47.09039655859767" />
-      <entry key="H4" value="58.170002899087514" />
-      <entry key="D1" value="244.722077615153" />
-      <entry key="W1" value="1348.2951979453935" />
+      <entry key="MS100" value="0.9330329915368074" />
+      <entry key="MS500" value="0.9862327044933592" />
+      <entry key="S2" value="0.9965410678220181" />
+      <entry key="S5" value="1.0036080892773829" />
+      <entry key="S10" value="1.1114074238080616" />
+      <entry key="S30" value="2.2263726082062276" />
+      <entry key="S60" value="3.6934926688778726" />
+      <entry key="M2" value="5.779700603107296" />
+      <entry key="M5" value="9.897763081672139" />
+      <entry key="M10" value="15.28262149091648" />
+      <entry key="M15" value="20.197687274562277" />
+      <entry key="M30" value="32.46159016109385" />
+      <entry key="H1" value="48.363982105328304" />
+      <entry key="H2" value="63.60747351743172" />
+      <entry key="H4" value="78.6074432990099" />
+      <entry key="D1" value="267.4397903972634" />
+      <entry key="W1" value="1372.0022950763685" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -266,14 +270,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00039" summary="1.0.1 References for recompiler. Need to remove some files oopsies.">
-      <option name="closed" value="true" />
-      <created>1785319578618</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1785319578621</updated>
     </task>
     <task id="LOCAL-00040" summary="1.0.1 References for recompiler. Need to remove some files oopsies.">
       <option name="closed" value="true" />
@@ -659,7 +655,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787351246036</updated>
     </task>
-    <option name="localTasksCounter" value="88" />
+    <task id="LOCAL-00088" summary="1.1.1 Logging Initialisation">
+      <option name="closed" value="true" />
+      <created>1787490178084</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1787490178086</updated>
+    </task>
+    <option name="localTasksCounter" value="89" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -704,7 +708,8 @@
     <MESSAGE value="1.0.8 Checkbox Widget Refactor" />
     <MESSAGE value="1.0.9 Platform Refactor" />
     <MESSAGE value="1.1.0 Decompiler and Extractor Tools" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.1.0 Decompiler and Extractor Tools" />
+    <MESSAGE value="1.1.1 Logging Initialisation" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.1.1 Logging Initialisation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

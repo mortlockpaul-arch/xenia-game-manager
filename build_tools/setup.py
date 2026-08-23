@@ -10,19 +10,31 @@ executables = [
         script=str(root / "main.py"),
         base="gui",
         icon=str(root  / "assets" / "icons" / "app.ico"),
-        target_name="xenia-game-manager"
+        target_name="xbox-game-manager"
     ),
     Executable(
         script=str(root  / "main_updater.py"),
         base="console",
         icon=str(root  / "assets" / "icons" / "app.ico"),
-        target_name="xenia-game-manager-updater"
+        target_name="xbox-game-manager-updater"
+    ),
+    Executable(
+        script=str(root / "archive_window.py"),
+        base="console",
+        icon=str(root / "assets" / "icons" / "app.ico"),
+        target_name="xbox-game-manager-archive-downloader"
+    ),
+    Executable(
+        script=str(root / "xbox_unity_window.py"),
+        base="console",
+        icon=str(root / "assets" / "icons" / "app.ico"),
+        target_name="xbox-game-manager-unity-downloader"
     ),
     Executable(
             script=str(root  / "package_window.py"),
             base="gui",
             icon=str(root  / "assets" / "icons" / "app.ico"),
-            target_name="xenia-xblig-emulator"
+            target_name="xbox-indie-rebuilder"
         )
 ]
 
