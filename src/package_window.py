@@ -123,12 +123,10 @@ def open_solution(project_dir: Path):
 
 DECOMPILER = get_app_dir() / "assets" / "tools"
 
-ILSPY_GUI = DECOMPILER / "ILSpy" / "Release" / "net10.0" / "ILSpy.exe"
+ILSPY_GUI = DECOMPILER / "ILSpy" / "publish" / "ILSpy.exe"
 ILSPY_CMD = DECOMPILER / "ILSpyCmd" / "Release" / "net10.0" / "ilspycmd.exe"
 
 from PySide6.QtCore import QProcess
-
-
 
 
 def cleanup_nested_categories(root):
@@ -267,15 +265,6 @@ def load_cache():
         return None
 
 
-class ClickOverlay(QWidget):
-    def __init__(self, launcher):
-        super().__init__(launcher)
-        self.launcher = launcher
-
-    def mousePressEvent(self, event):
-        self.launcher.hide_settings_drawer()
-
-
 from dataclasses import dataclass, fields
 from pathlib import Path
 
@@ -363,7 +352,8 @@ class XBLIGGame:
         return cls(**converted)
 
 
-def copy_extracted_folder_content_and_references(source_content_root_folder, dest_content_folder, dll_files, log_callback=None, ):
+def copy_extracted_folder_content_and_references(source_content_root_folder, dest_content_folder, dll_files,
+                                                 log_callback=None, ):
     source_content_root_folder = Path(source_content_root_folder)
     dest_content_folder = Path(dest_content_folder)
 
@@ -376,11 +366,7 @@ def copy_extracted_folder_content_and_references(source_content_root_folder, des
             log(f"Content folder missing, extracting {len(archives)} archive(s)...")
 
             for archive in archives:
-                decompress_content(
-                    archive,
-                    source_content_root_folder.parent,
-                    log_callback=log,
-                )
+                decompress_content(archive, source_content_root_folder.parent, log_callback=log)
         else:
             raise FileNotFoundError(
                 f"Content folder or archive not found: {source_content_root_folder}"
@@ -397,6 +383,7 @@ def copy_extracted_folder_content_and_references(source_content_root_folder, des
         except Exception as e:
             log(f"Failed to copy DLL {dll}: {type(e).__name__}: {e}")
 
+
 def get_7zip() -> Path:
     seven_zip = (
             get_app_dir()
@@ -410,7 +397,9 @@ def get_7zip() -> Path:
 
     return seven_zip
 
-def decompress_content(archive: Path, output_dir: Path | None = None, delete_archive: bool = False, log_callback=None,) -> Path:
+
+def decompress_content(archive: Path, output_dir: Path | None = None, delete_archive: bool = False, log_callback=None,
+                       show_command=False) -> Path:
     archive = Path(archive)
 
     if output_dir is None:
@@ -419,26 +408,14 @@ def decompress_content(archive: Path, output_dir: Path | None = None, delete_arc
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    if log_callback:
-        log_callback(f"Decompressing {archive}")
+    arguments = [get_7zip(), "x", str(archive), f"-o{output_dir}", "-y"]
 
-    arguments = [
-        get_7zip(),
-        "x",
-        str(archive),
-        f"-o{output_dir}",
-        "-y"
-    ]
-
-    print("7-ZIP COMMAND:")
-    print(arguments)
-
+    if show_command: log_callback(f"7-zip command: {arguments}")
     subprocess.run(arguments, check=True)
-
-    if delete_archive:
-        archive.unlink()
-
+    log_callback(f"Decompression Completed")
+    if delete_archive: archive.unlink()
     return output_dir
+
 
 def compress_folders(root: Path, source_dirs, archive: Path, delete_original: bool = False, log_callback=None) -> Path:
     source_dirs = [source_dirs] if isinstance(source_dirs, Path) else [Path(p) for p in source_dirs]
@@ -468,6 +445,7 @@ def compress_folders(root: Path, source_dirs, archive: Path, delete_original: bo
 
     return archive
 
+
 def ensure_tool_extracted(name: str):
     tools_root = get_app_dir() / "assets" / "tools"
 
@@ -496,9 +474,11 @@ def ensure_tool_extracted(name: str):
         check=True,
     )
 
+
 from pathlib import Path
 import shutil
 import subprocess
+
 
 def compress_tool(name: str):
     tools_root = get_app_dir() / "assets" / "tools"
@@ -530,6 +510,7 @@ def compress_tool(name: str):
         check=True,
     )
 
+
 TOOL_PATHS = {
     "ilspycmd": Path("ilspycmd"),
     "ilspy": Path("ilspy"),
@@ -537,11 +518,13 @@ TOOL_PATHS = {
     "vgmstream": Path("vgmstream"),
 }
 
+
 def get_tool_path(name: str) -> Path:
     try:
         return TOOL_PATHS[name]
     except KeyError:
         raise ValueError(f"Unknown tool: {name}")
+
 
 def cleanup_tool(name: str):
     tools_root = get_app_dir() / "assets" / "tools"
@@ -579,6 +562,7 @@ class ToolManager:
     def __exit__(self, exc_type, exc, tb):
         self.cleanup()
 
+
 def get_cs_project_folders(games: list[XBLIGGame]) -> list[Path]:
     projects = []
     for game in games:
@@ -609,12 +593,17 @@ def add_xna_compat(project_folder):
         "Added XNA compatibility layer"
     )
 
-class ConvertXnaProjects(QObject):
 
+alba = (get_app_dir() / "assets/tools/conversion/Alba.XnaConvert.0.1.2/Alba.XnaConvert.exe")
+xnb_cli = (get_app_dir() / "assets/tools/conversion/xnbcli-windows-x64/xnbcli.exe")
+xnb_extractor = (get_app_dir() / "assets/tools/conversion/xnb-extractor/Release/net481/XnbExtractor.exe")
+
+class ConvertXnaProjects(QObject):
     log_signal = Signal(str)
     progress_signal = Signal(int)
     total_files_signal = Signal(int)
     finished_signal = Signal(ConversionResult)
+
 
     def __init__(self, project_path, games, options, /):
         super().__init__()
@@ -716,10 +705,25 @@ class ConvertXnaProjects(QObject):
                 else package.parent.name
             )
 
-            title_id = package.parent.parent.name
-            extracted = package.parent / "extracted"
+            attrs = {
+                "decompiled": (
+                    "decompiled",
+                    Path("D:/downloads") / "decompiled" / folder_title
+                ),
+                "extracted": (
+                    "extracted",
+                    Path("D:/downloads") / "extracted" / folder_title
+                ),
+            }
+
+            attr_name, decompiled = attrs["decompiled"]
+            attr_name, extracted = attrs["extracted"]
             game_info = extracted / "GameInfo.xml"
-            decompiled = package.parent / "decompiled"
+            title_id = package.parent.parent.name
+            xml_data = parse_xml(game_info)
+            title = xml_data.get("title") or folder_title or package.stem
+            decompiled_path_value = package.parent.parent / "decompiled"
+            extracted_path_value = package.parent.parent / "extracted"
 
             profile_string = decompiled / "Microsoft.Xna.Framework.RuntimeProfile"
 
@@ -728,9 +732,6 @@ class ConvertXnaProjects(QObject):
                 if profile_string.exists()
                 else ""
             )
-
-            xml_data = parse_xml(game_info)
-            title = xml_data.get("title") or folder_title or package.stem
 
             exe_file = None
             dll_files = []
@@ -758,12 +759,12 @@ class ConvertXnaProjects(QObject):
                     content_name="Xbox Live Indie Game",
                     content_format=content_format,
                     package=package,
-                    extracted=extracted if extracted.exists() else None,
+                    extracted=extracted if extracted.exists() else extracted_path_value if extracted_path_value.exists() else None,
                     game_root=extracted if extracted.exists() else package.parent,
                     exe=exe_file,
                     dll_files=dll_files,
                     xml=game_info if game_info.exists() else None,
-                    decompiled=decompiled if decompiled.exists() else None,
+                    decompiled=decompiled if decompiled.exists() else decompiled_path_value if decompiled_path_value.exists() else None,
                 )
             )
 
@@ -794,9 +795,9 @@ class ConvertXnaProjects(QObject):
             self.log_signal.emit(f"Content folder not found: {content_dir}")
             return None
 
-        alba = (get_app_dir() / "assets/tools/conversion/Alba.XnaConvert.0.1.2/Alba.XnaConvert.exe")
-        xnb_cli = (get_app_dir() / "assets/tools/conversion/xnbcli-windows-x64/xnbcli.exe")
-        xnb_extractor = (get_app_dir() / "assets/tools/conversion/xnb-extractor/x64/Release/net481/XnbExtractor.exe")
+        # alba = (get_app_dir() / "assets/tools/conversion/Alba.XnaConvert.0.1.2/Alba.XnaConvert.exe")
+        # xnb_cli = (get_app_dir() / "assets/tools/conversion/xnbcli-windows-x64/xnbcli.exe")
+        # xnb_extractor = (get_app_dir() / "assets/tools/conversion/xnb-extractor/Release/net481/XnbExtractor.exe")
 
         failed_folders = []
 
@@ -1129,12 +1130,14 @@ class ConvertXnaProjects(QObject):
                     encoding="utf-8"
                 )
 
+
 def run_in_background(func, *args):
     threading.Thread(
         target=func,
         args=args,
         daemon=True,
     ).start()
+
 
 def _decompress_games(games: list[XBLIGGame], log):
     for i, game in enumerate(games, 1):
@@ -1145,10 +1148,11 @@ def _decompress_games(games: list[XBLIGGame], log):
 
         try:
             log(f"[{i}/{len(games)}] Decompressing {game.title}: {archive} folder(s)")
-            decompress_content(archive, root, log_callback=log)
+            decompress_content(archive, root, log_callback=log, delete_archive=True)
 
         except Exception as e:
             log(f"Failed to decompress {game.title}: {type(e).__name__}: {e}")
+
 
 def _compress_games(games: list[XBLIGGame], log):
     for i, game in enumerate(games, 1):
@@ -1316,7 +1320,6 @@ class XBLIGDialog(QDialog):
 
         import logging
 
-
     def print_games(self):
         for i, game in enumerate(self.games, 1):
             print("=" * 80)
@@ -1407,19 +1410,25 @@ class XBLIGDialog(QDialog):
             return
         game, indexes = result
         if game:
-            with ToolManager("conversion"):
-                converter = ConvertXnaProjects(get_app_dir(), self.games, self.options)
-                converter.log_signal.connect(self.log_message_log)
-                converter.progress_signal.connect(self.progress_bar.setValue)
-                converter.finished_signal.connect(self.tool_finished)
+            ensure_tool_extracted("conversion")
+            converter = ConvertXnaProjects(get_app_dir(), self.games, self.options)
+            converter.log_signal.connect(self.log_message_log)
+            converter.progress_signal.connect(self.progress_bar.setValue)
+            converter.finished_signal.connect(self.tool_finished)
 
-                self.progress_bar.setRange(0, 0)  # Busy animation
-                converter.convert_xnb_folder_tools(game, tool_id)
+            self.progress_bar.setRange(0, 0)  # Busy animation
+            run_in_background(converter.convert_xnb_folder_tools, game, tool_id)
 
     def tool_finished(self, result: ConversionResult):
         self.progress_bar.setRange(0, 100)
         self.progress_bar.setValue(100)
-
+        # todo: copy log files when xnb-extractor has run
+        if result.tool == "xnb_extractor":
+            source = xnb_extractor.parent / "logs"
+            destination = get_app_dir() / "logs"
+            if source.exists():
+                shutil.copytree(source, destination, dirs_exist_ok=True)
+        cleanup_tool("conversion")
         self.validate1_btn.setDisabled(False)
         self.validate2_btn.setDisabled(False)
         self.validate3_btn.setDisabled(False)
@@ -1476,7 +1485,7 @@ class XBLIGDialog(QDialog):
         )
         return output_dir, process
 
-    def decompile_selected(self, game: XBLIGGame, open_explorer: bool = True, use_gui=False,):
+    def decompile_selected(self, game: XBLIGGame, open_explorer: bool = True, use_gui=False, ):
         exe = game.exe
         dlls = game.dll_files
         extracted = game.extracted
@@ -1496,7 +1505,8 @@ class XBLIGDialog(QDialog):
         try:
             ilspy_exe = ILSPY_GUI if use_gui else ILSPY_CMD
 
-            project_dir, process = self.decompile_project(exe, dlls, ilspy_exe=ilspy_exe, parent=self, extracted=extracted, use_gui=use_gui)
+            project_dir, process = self.decompile_project(exe, dlls, ilspy_exe=ilspy_exe, parent=self,
+                                                          extracted=extracted, use_gui=use_gui)
 
             if not use_gui:
                 process.readyReadStandardOutput.connect(
@@ -1554,7 +1564,7 @@ class XBLIGDialog(QDialog):
             )
             self.log_message(traceback.format_exc())
 
-    def on_decompile_finished(self, open_explorer, project_dir, game, exit_code, exit_status,):
+    def on_decompile_finished(self, open_explorer, project_dir, game, exit_code, exit_status, ):
         self.log_message(f"ILSpy finished: exit code={exit_code}, status={exit_status}")
 
         if exit_code != 0:
@@ -1664,7 +1674,7 @@ class XBLIGDialog(QDialog):
         self.scan_thread.finished.connect(self.scan_thread.deleteLater)
 
         self.scan_thread.start()
-        
+
     def scan_finished(self, games):
         self.games = games
         self.load_games(self.games)
@@ -1732,9 +1742,8 @@ class XBLIGDialog(QDialog):
             self.input_folder.setText(str(content_dir.relative_to(root.parent)))
             self.output_folder.setText(str(output_dir.relative_to(root.parent)))
 
-        if not self.drawer_open:
-            self.show_settings_drawer()
-
+        # if not self.drawer_open:
+        self.show_settings_drawer()
 
     class CompressWorker(QObject):
         log = Signal(str)
@@ -2099,26 +2108,32 @@ class XBLIGDialog(QDialog):
         if (result := self.get_selected_game()) is None:
             return
         game, indexes = result
-        if game is None:
+        if game is None or game.title_id is None:
             return
 
         attrs = {
-            "decompiled": "decompiled",
-            "extracted": "extracted",
+            "decompiled": (
+                "decompiled",
+                Path("d/downloads") / "decompiled" / game.title,
+                game.decompiled,
+            ),
+            "extracted": (
+                "extracted",
+                Path("d/downloads") / "extracted" / game.title,
+                game.extracted,
+            ),
         }
 
-        attr = attrs.get(files)
-        if attr is None:
-            return
-
-        path = getattr(game, attr)
+        attr_name, path, attr_path_value = attrs[files]
 
         try:
             if path and path.exists():
                 shutil.rmtree(path)
                 self.log_message(f"Deleted: {path}")
-
-            setattr(game, attr, None)
+            if attr_path_value and attr_path_value.exists():
+                shutil.rmtree(attr_path_value)
+                self.log_message(f"Deleted: {attr_path_value}")
+            setattr(game, attr_name, None)
 
         except PermissionError as e:
             self.log_message(f"Unable to delete '{path}': {e}")
@@ -2126,9 +2141,17 @@ class XBLIGDialog(QDialog):
 
         self.load_games(self.games)
 
+    class ClickOverlay(QWidget):
+        def __init__(self, launcher):
+            super().__init__(launcher)
+            self.launcher = launcher
+
+        def mousePressEvent(self, event):
+            self.launcher.hide_settings_drawer()
+
     def create_settings_drawer(self):
 
-        self.overlay = ClickOverlay(self)
+        self.overlay = self.ClickOverlay(self)
         self.overlay.setStyleSheet("background-color: rgba(0,0,0,120);")
         self.overlay.hide()
 
@@ -2286,15 +2309,15 @@ class XBLIGDialog(QDialog):
         # self.refresh_btn = QPushButton("Refresh")
         # self.refresh_btn.clicked.connect(self.refresh_games)
         # #
-        # self.open_folder_btn = QPushButton("Open Folder")
-        # self.open_folder_btn.clicked.connect(self.open_selected_folder)
+        self.open_folder_btn = QPushButton("Open Folder")
+        self.open_folder_btn.clicked.connect(self.open_selected_folder)
 
         self.compress_btn = QPushButton("Compress Selected Extracted Content")
-        self.compress_btn.clicked.connect(partial(   self.compress_decompress_extracted_content, True))
+        self.compress_btn.clicked.connect(partial(self.compress_decompress_extracted_content, True))
         # self.compress_btn.setFixedWidth(320)
 
         self.decompress_btn = QPushButton("Decompress Selected Extracted Content")
-        self.decompress_btn.clicked.connect(partial(   self.compress_decompress_extracted_content, False))
+        self.decompress_btn.clicked.connect(partial(self.compress_decompress_extracted_content, False))
         # self.decompress_btn.setFixedWidth(320)
 
         self.all_checkbox = QCheckBox("All or One")
@@ -2306,7 +2329,7 @@ class XBLIGDialog(QDialog):
 
         toolbar.addWidget(self.convert_project_btn)
         # toolbar.addWidget(self.launch_btn)
-        # toolbar.addWidget(self.open_folder_btn)
+        toolbar.addWidget(self.open_folder_btn)
         # toolbar.addWidget(self.refresh_btn)
         toolbar.addWidget(self.compress_btn)
         toolbar.addWidget(self.decompress_btn)
@@ -2374,9 +2397,9 @@ class XBLIGDialog(QDialog):
         header.setSectionResizeMode(5, QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(6, QHeaderView.ResizeMode.ResizeToContents)
 
-        self.game_table.setSelectionBehavior(QTableWidget.SelectRows)
-        self.game_table.setSelectionMode(QTableWidget.SingleSelection)
-        self.game_table.setEditTriggers(QTableWidget.NoEditTriggers)
+        self.game_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
+        self.game_table.setSelectionMode(QTableWidget.SelectionMode.SingleSelection)
+        self.game_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
 
         self.game_table.itemSelectionChanged.connect(self.game_selected)
 
@@ -2444,6 +2467,7 @@ class XBLIGDialog(QDialog):
             if checked
             else "Decompress Selected Extracted Content"
         )
+
 
 if __name__ == "__main__":
     setup_logger()
