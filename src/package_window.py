@@ -722,8 +722,8 @@ class ConvertXnaProjects(QObject):
             title_id = package.parent.parent.name
             xml_data = parse_xml(game_info)
             title = xml_data.get("title") or folder_title or package.stem
-            decompiled_path_value = package.parent.parent / "decompiled"
-            extracted_path_value = package.parent.parent / "extracted"
+            decompiled_path_value = package.parent / "decompiled"
+            extracted_path_value = package.parent / "extracted"
 
             profile_string = decompiled / "Microsoft.Xna.Framework.RuntimeProfile"
 
@@ -1449,7 +1449,7 @@ class XBLIGDialog(QDialog):
             if result.stderr:
                 self.log_message_log(result.stderr)
 
-    def decompile_project(self, exe: Path, dll_files: list[Path], ilspy_exe: Path, parent=None, extracted=None,
+    def decompile_project(self, game: XBLIGGame, dll_files: list[Path], ilspy_exe: Path, parent=None, extracted=None,
                           use_gui=False) -> tuple[Path, QProcess]:
 
         if use_gui:
@@ -1457,14 +1457,28 @@ class XBLIGDialog(QDialog):
         else:
             ensure_tool_extracted("ilspycmd")
 
-        output_dir = exe.parent.parent.parent / "decompiled"
+        attrs = {
+            "decompiled": (
+                "decompiled",
+                Path("D:/downloads") / "decompiled" / game.title
+            ),
+            "extracted": (
+                "extracted",
+                Path("D:/downloads") / "extracted" / game.title
+            ),
+        }
+
+        attr_name, decompiled = attrs["decompiled"]
+        attr_name, extracted = attrs["extracted"]
+
+        output_dir = decompiled
         output_dir.mkdir(parents=True, exist_ok=True)
 
         self.log_message(f"Output Folder: {output_dir}")
         self.log_message(f"ILSpy: {ilspy_exe}")
-
+        assert game.exe is not None
         arguments = [
-            str(exe),
+            str(game.exe),
             "-p",
             "-o",
             str(output_dir),
@@ -1505,7 +1519,7 @@ class XBLIGDialog(QDialog):
         try:
             ilspy_exe = ILSPY_GUI if use_gui else ILSPY_CMD
 
-            project_dir, process = self.decompile_project(exe, dlls, ilspy_exe=ilspy_exe, parent=self,
+            project_dir, process = self.decompile_project(game, dlls, ilspy_exe=ilspy_exe, parent=self,
                                                           extracted=extracted, use_gui=use_gui)
 
             if not use_gui:
@@ -1855,8 +1869,21 @@ class XBLIGDialog(QDialog):
 
         from stfs_extract import extract_live_pirs
 
-        # Create extracted folder beside package
-        extracted_path = package.parent / "extracted"
+        attrs = {
+            "decompiled": (
+                "decompiled",
+                Path("D:/downloads") / "decompiled" / game.title
+            ),
+            "extracted": (
+                "extracted",
+                Path("D:/downloads") / "extracted" / game.title
+            ),
+        }
+
+        attr_name, decompiled = attrs["decompiled"]
+        attr_name, extracted_path = attrs["extracted"]
+
+        # extracted_path = package.parent / "extracted"
 
         extracted_path.mkdir(parents=True, exist_ok=True)
 
@@ -1864,7 +1891,8 @@ class XBLIGDialog(QDialog):
             from contextlib import redirect_stdout
 
             with redirect_stdout(QtLogger(self.log_message_log)):
-                extract_live_pirs(package, extracted_path)
+                run_in_background(extract_live_pirs(package, extracted_path))
+
 
             self.log_message_log(f"Extracted to: {extracted_path}")
 
@@ -2133,7 +2161,7 @@ class XBLIGDialog(QDialog):
             if attr_path_value and attr_path_value.exists():
                 shutil.rmtree(attr_path_value)
                 self.log_message(f"Deleted: {attr_path_value}")
-            setattr(game, attr_name, None)
+            setattr(game, str(path), None)
 
         except PermissionError as e:
             self.log_message(f"Unable to delete '{path}': {e}")
