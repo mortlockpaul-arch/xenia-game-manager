@@ -354,9 +354,7 @@ class XBLIGGame:
 
         return cls(**converted)
 
-
-def copy_extracted_folder_content_and_references(source_content_root_folder, dest_content_folder, dll_files,
-                                                 log_callback=None, ):
+def copy_extracted_folder_content_and_references(source_content_root_folder, dest_content_folder, dll_files, log_callback=None, ):
     source_content_root_folder = Path(source_content_root_folder)
     dest_content_folder = Path(dest_content_folder)
 
@@ -367,7 +365,6 @@ def copy_extracted_folder_content_and_references(source_content_root_folder, des
 
         if archives:
             log(f"Content folder missing, extracting {len(archives)} archive(s)...")
-
             for archive in archives:
                 decompress_content(archive, source_content_root_folder.parent, log_callback=log)
         else:
@@ -575,20 +572,30 @@ def get_cs_project_folders(
         if game.decompiled is None:
             continue
 
-        new_name = f"{game.title}.csproj"
+        assert game.folder_title is not None
+        new_path = game.decompiled / f"{game.folder_title}.csproj"
 
         for project in game.decompiled.rglob("*.csproj"):
-            new_path = project.with_name(new_name)
+            if project == new_path:
+                projects.append(project)
+                continue
 
-            if project != new_path:
-                project.rename(new_path)
-
+            if new_path.exists():
                 if log_callback:
                     log_callback(
-                        f"Renamed project: {project.name} -> {new_path.name}"
+                        f"  Project already exists: {new_path.name}; "
+                        f"removing duplicate {project.name}"
+                    )
+                project.unlink()
+            else:
+                project.rename(new_path)
+                if log_callback:
+                    log_callback(
+                        f"  Renamed {project.name} -> {new_path.name}"
                     )
 
-            projects.append(new_path)
+            if new_path not in projects:
+                projects.append(new_path)
 
     return projects
 
@@ -961,8 +968,7 @@ class ConvertXnaProjects(QObject):
 
     from pathlib import Path
     import xml.etree.ElementTree as ET
-
-    def clean_csproj(self, project_path: Path) -> None:
+    def clean_csproj(self, project_path: Path, game_dll_files=None) -> None:
         project_path = Path(project_path)
 
         self.log_message(f"Updating project: {project_path.name}")
@@ -972,85 +978,62 @@ class ConvertXnaProjects(QObject):
         root = tree.getroot()
 
         # ---------------------------------------------------------
-        # MSBuild namespace handling
+        # MSBuild namespace
         # ---------------------------------------------------------
 
-        ns = ""
-
-        if root.tag.startswith("{"):
-            ns = root.tag.split("}")[0] + "}"
+        ns = root.tag.split("}")[0] + "}" if root.tag.startswith("{") else ""
 
         def tag(name: str) -> str:
             return f"{ns}{name}"
-
-        self.log_message("  Reading existing project properties...")
 
         # ---------------------------------------------------------
         # Preserve AssemblyName
         # ---------------------------------------------------------
 
-        assembly_name = None
-
-        for propgroup in root.findall(tag("PropertyGroup")):
-            assembly = propgroup.find(tag("AssemblyName"))
-
-            if assembly is not None and assembly.text:
-                assembly_name = assembly.text.strip()
-                break
+        assembly_name = next(
+            (
+                assembly.text.strip()
+                for group in root.findall(tag("PropertyGroup"))
+                for assembly in [group.find(tag("AssemblyName"))]
+                if assembly is not None and assembly.text
+            ),
+            None,
+        )
 
         if assembly_name:
-            self.log_message(
-                f"  Preserving AssemblyName: {assembly_name}"
-            )
+            self.log_message(f"  Preserving AssemblyName: {assembly_name}")
         else:
-            self.log_message(
-                "  No AssemblyName found; project will use the default."
-            )
+            self.log_message("  No AssemblyName found; using project default.")
 
         # ---------------------------------------------------------
         # Remove existing PropertyGroups / ItemGroups
         # ---------------------------------------------------------
 
-        removed_property_groups = 0
-        removed_item_groups = 0
+        removed_properties = removed_items = 0
 
         for element in list(root):
-            local_name = element.tag.split("}")[-1]
+            name = element.tag.split("}")[-1]
 
-            if local_name == "PropertyGroup":
+            if name == "PropertyGroup":
                 root.remove(element)
-                removed_property_groups += 1
-
-            elif local_name == "ItemGroup":
+                removed_properties += 1
+            elif name == "ItemGroup":
                 root.remove(element)
-                removed_item_groups += 1
+                removed_items += 1
 
         self.log_message(
-            f"  Removed {removed_property_groups} existing "
-            f"PropertyGroup(s)."
-        )
-
-        self.log_message(
-            f"  Removed {removed_item_groups} existing "
-            f"ItemGroup(s), including old XNA references."
+            f"  Removed {removed_properties} PropertyGroup(s) "
+            f"and {removed_items} ItemGroup(s)."
         )
 
         # ---------------------------------------------------------
-        # Create clean PropertyGroup
+        # Properties
         # ---------------------------------------------------------
 
-        self.log_message("  Creating clean project properties...")
-
-        propgroup = ET.SubElement(
-            root,
-            tag("PropertyGroup")
-        )
+        propgroup = ET.SubElement(root, tag("PropertyGroup"))
 
         if assembly_name:
-            ET.SubElement(
-                propgroup,
-                tag("AssemblyName")
-            ).text = assembly_name
+            ET.SubElement(propgroup, tag("AssemblyName")).text = assembly_name
 
         properties = {
             "GenerateAssemblyInfo": "false",
@@ -1065,57 +1048,55 @@ class ConvertXnaProjects(QObject):
         }
 
         for name, value in properties.items():
-            ET.SubElement(
-                propgroup,
-                tag(name)
-            ).text = value
-
-            self.log_message(
-                f"    {name} = {value}"
-            )
+            ET.SubElement(propgroup, tag(name)).text = value
+            self.log_message(f"    {name} = {value}")
 
         # ---------------------------------------------------------
-        # Contents.csproj ProjectReference
+        # Contents.csproj
         # ---------------------------------------------------------
 
-        content_project = Path(
-            r"C:\source\Content-References\Contents.csproj"
-        )
+        content_project = Path(r"C:\source\Content-References\Contents.csproj")
 
         self.log_message(
             f"  Adding project reference: {content_project}"
         )
 
-        itemgroup = ET.SubElement(
-            root,
-            tag("ItemGroup")
-        )
+        itemgroup = ET.SubElement(root, tag("ItemGroup"))
 
-        project_reference = ET.SubElement(
+        reference = ET.SubElement(
             itemgroup,
             tag("ProjectReference"),
-            {
-                "Include": str(content_project)
-            }
+            {"Include": str(content_project)},
         )
 
+        ET.SubElement(reference, tag("Private")).text = "True"
         ET.SubElement(
-            project_reference,
-            tag("Private")
+            reference,
+            tag("CopyLocalSatelliteAssemblies"),
         ).text = "True"
 
-        ET.SubElement(
-            project_reference,
-            tag("CopyLocalSatelliteAssemblies")
-        ).text = "True"
+        # ---------------------------------------------------------
+        # Game DLL references
+        # ---------------------------------------------------------
 
-        self.log_message(
-            "    Private = True"
-        )
+        if game_dll_files:
+            self.log_message(f"  Adding {len(game_dll_files)} game DLL reference(s)...")
 
-        self.log_message(
-            "    CopyLocalSatelliteAssemblies = True"
-        )
+            dll_group = ET.SubElement(root, tag("ItemGroup"))
+
+            for dll in map(Path, game_dll_files):
+                reference = ET.SubElement(
+                    dll_group,
+                    tag("Reference"),
+                    {"Include": dll.stem},
+                )
+
+                ET.SubElement(reference, tag("HintPath")).text = dll.name
+                ET.SubElement(reference, tag("Private")).text = "True"
+
+                self.log_message(f"    Added DLL: {dll.name}")
+        else:
+            self.log_message("  No game DLL references supplied.")
 
         # ---------------------------------------------------------
         # Content files
@@ -1125,22 +1106,17 @@ class ConvertXnaProjects(QObject):
             r"  Configuring Content\**\* to always copy to output..."
         )
 
-        itemgroup = ET.SubElement(
-            root,
-            tag("ItemGroup")
-        )
+        content_group = ET.SubElement(root, tag("ItemGroup"))
 
         none = ET.SubElement(
-            itemgroup,
+            content_group,
             tag("None"),
-            {
-                "Update": r"Content\**\*"
-            }
+            {"Update": r"Content\**\*"},
         )
 
         ET.SubElement(
             none,
-            tag("CopyToOutputDirectory")
+            tag("CopyToOutputDirectory"),
         ).text = "Always"
 
         # ---------------------------------------------------------
@@ -1148,20 +1124,38 @@ class ConvertXnaProjects(QObject):
         # ---------------------------------------------------------
 
         ET.indent(tree, space="\t")
-
-        tree.write(
-            project_path,
-            encoding="utf-8",
-            xml_declaration=True
-        )
+        tree.write(project_path, encoding="utf-8", xml_declaration=True)
 
         self.log_message(
             f"  Project updated successfully: {project_path.name}"
         )
 
     import os
+    import shutil
     from pathlib import Path
     import xml.etree.ElementTree as ET
+    def copy_project_files(
+            self,
+            source_dir: Path,
+            destination_dir: Path,
+    ) -> bool:
+        self.log_message(f"  Copying project files to: {destination_dir}")
+
+        try:
+            destination_dir.mkdir(parents=True, exist_ok=True)
+
+            for source in source_dir.iterdir():
+                if source.is_file():
+                    shutil.copy2(source, destination_dir / source.name)
+                    self.log_message(f"    Copied: {source.name}")
+
+        except OSError as exc:
+            self.log_message(f"  ERROR copying project files: {exc}")
+            return False
+
+        self.log_message("  Project files copied successfully.")
+        return True
+
     def add_project_to_solution(
             self,
             solution_path: Path,
@@ -1180,10 +1174,8 @@ class ConvertXnaProjects(QObject):
             self.log_message(f"  Project not found: {project_path}")
             return False
 
-        project_name = project_path.stem
-
         # ---------------------------------------------------------
-        # Determine destination
+        # Destination
         # ---------------------------------------------------------
 
         archive_dir = solution_path.parent / "indie-game-archive"
@@ -1193,25 +1185,53 @@ class ConvertXnaProjects(QObject):
         destination_dir = archive_dir / project_dir.name
         destination_project = destination_dir / project_path.name
 
-        self.log_message(f"  Project directory: {project_dir}")
-        self.log_message(f"  Destination directory: {destination_dir}")
+        self.log_message(f"  Source:      {project_dir}")
+        self.log_message(f"  Destination: {destination_dir}")
 
         # ---------------------------------------------------------
-        # Move project
+        # Move / synchronise project
         # ---------------------------------------------------------
 
         if project_dir.resolve() != destination_dir.resolve():
-            if destination_dir.exists():
-                self.log_message(f"  Destination already exists: {destination_dir}")
 
-                if not destination_project.exists():
+            if destination_dir.exists():
+                self.log_message("  Destination already exists.")
+
+                projects = list(destination_dir.rglob("*.csproj"))
+
+                if destination_project.exists():
+                    if not self.copy_project_files(project_dir, destination_dir):
+                        return False
+
+                    project_path = destination_project
                     self.log_message(
-                        "  ERROR: Destination exists but project was not found."
+                        f"  Updated existing project: {project_path.name}"
                     )
+
+                elif len(projects) == 1:
+                    try:
+                        projects[0].rename(destination_project)
+                        if not self.copy_project_files(project_dir, destination_dir):
+                            return False
+                        project_path = destination_project
+                        self.log_message(
+                            f"  Renamed {projects[0].name} -> "
+                            f"{destination_project.name}"
+                        )
+                    except OSError as exc:
+                        self.log_message(f"  ERROR renaming project: {exc}")
+                        return False
+
+                elif not projects:
+                    self.log_message("  ERROR: No .csproj found in destination.")
                     return False
 
-                project_path = destination_project
-                self.log_message("  Using existing destination project.")
+                else:
+                    self.log_message(
+                        f"  ERROR: Found {len(projects)} .csproj files "
+                        "in destination."
+                    )
+                    return False
 
             else:
                 self.log_message(f"  Moving project to: {destination_dir}")
@@ -1224,11 +1244,12 @@ class ConvertXnaProjects(QObject):
 
                 project_path = destination_project
                 self.log_message("  Project moved successfully.")
+
         else:
-            self.log_message("  Project is already in the solution directory.")
+            self.log_message("  Project is already in the destination.")
 
         # ---------------------------------------------------------
-        # Determine project path
+        # Solution project path
         # ---------------------------------------------------------
 
         try:
@@ -1240,7 +1261,7 @@ class ConvertXnaProjects(QObject):
             project_path_value = project_path.as_posix()
             self.log_message("  Project is on a different drive.")
 
-        self.log_message(f"  Solution project path: {project_path_value}")
+        self.log_message(f"  Solution path: {project_path_value}")
 
         # ---------------------------------------------------------
         # Parse solution
@@ -1248,16 +1269,19 @@ class ConvertXnaProjects(QObject):
 
         try:
             tree = ET.parse(solution_path)
-            root = tree.getroot()
         except ET.ParseError as exc:
             self.log_message(f"  ERROR reading solution: {exc}")
             return False
 
+        root = tree.getroot()
+        project_name = project_path.stem
+        destination_dir = destination_dir.resolve()
+
         # ---------------------------------------------------------
-        # Remove existing project entries
+        # Remove existing entries
         # ---------------------------------------------------------
 
-        removed_projects = 0
+        removed = 0
 
         for parent in root.iter():
             for project in list(parent):
@@ -1268,27 +1292,39 @@ class ConvertXnaProjects(QObject):
                 if not existing_path:
                     continue
 
-                if Path(existing_path).stem.lower() == project_name.lower():
+                existing = Path(existing_path)
+
+                if not existing.is_absolute():
+                    existing = solution_path.parent / existing
+
+                try:
+                    existing = existing.resolve()
+                except OSError:
+                    continue
+
+                same_name = existing.stem.lower() == project_name.lower()
+                same_location = (
+                        existing == project_path
+                        or destination_dir in existing.parents
+                )
+
+                if same_name or same_location:
                     self.log_message(
-                        f"  Removing existing solution entry: {existing_path}"
+                        f"  Removing duplicate solution entry: {existing_path}"
                     )
                     parent.remove(project)
-                    removed_projects += 1
+                    removed += 1
 
-        if removed_projects:
-            self.log_message(f"  Removed {removed_projects} existing solution "
-                             f"entry{'s' if removed_projects != 1 else ''}.")
-        else:
-            self.log_message(f"  No existing solution entry found for {project_name}.")
+        if removed:
+            self.log_message(f"  Removed {removed} duplicate solution entry(s).")
 
         # ---------------------------------------------------------
-        # Find / create solution folder
+        # Find / create archive folder
         # ---------------------------------------------------------
 
         folder = next(
             (
-                element
-                for element in root.findall("Folder")
+                element for element in root.findall("Folder")
                 if element.get("Name") == "/indie-game-archive/"
             ),
             None,
@@ -1296,15 +1332,25 @@ class ConvertXnaProjects(QObject):
 
         if folder is None:
             self.log_message("  Creating /indie-game-archive/ solution folder.")
-            folder = ET.SubElement(root, "Folder", {"Name": "/indie-game-archive/"})
+            folder = ET.SubElement(
+                root,
+                "Folder",
+                {"Name": "/indie-game-archive/"},
+            )
 
         # ---------------------------------------------------------
         # Add project
         # ---------------------------------------------------------
 
-        ET.SubElement(folder, "Project", {"Path": project_path_value})
+        ET.SubElement(
+            folder,
+            "Project",
+            {"Path": project_path_value},
+        )
 
-        self.log_message(f"  Added {project_name} to /indie-game-archive/")
+        self.log_message(
+            f"  Added {project_path.name} to /indie-game-archive/"
+        )
 
         # ---------------------------------------------------------
         # Save
@@ -1313,7 +1359,11 @@ class ConvertXnaProjects(QObject):
         ET.indent(tree, space="  ")
 
         try:
-            tree.write(solution_path, encoding="utf-8", xml_declaration=False)
+            tree.write(
+                solution_path,
+                encoding="utf-8",
+                xml_declaration=False,
+            )
         except OSError as exc:
             self.log_message(f"  ERROR saving solution: {exc}")
             return False
@@ -1321,13 +1371,13 @@ class ConvertXnaProjects(QObject):
         self.log_message("  Solution updated successfully.")
         return True
 
-    def convert_project_folder(self, path_to_csproj_file: Path, add_to_solution=True):
+    def convert_project_folder(self, path_to_csproj_file: Path, add_to_solution=True, game_dll_files=None):
         try:
             # backup project
             # if (folder.parent.parent / "decompiled_backup").exists():
             #     shutil.rmtree(folder.parent.parent / "decompiled_backup")
             # shutil.copytree(folder.parent, folder.parent.parent / "decompiled_backup")
-            self.clean_csproj(path_to_csproj_file)
+            self.clean_csproj(path_to_csproj_file, game_dll_files)
 
             if add_to_solution:
                 solution_path = Path(r"C:\source\Indie-Games\Indie-Games.slnx")
@@ -2360,10 +2410,9 @@ class XBLIGDialog(QDialog):
             if game.decompiled is None:
                 game.decompiled = project_dir
             content_root_dir = game.extracted / "584E07D1"
-            game_dll_files = game.dll_files
             copy_extracted_folder_content_and_references(source_content_root_folder=content_root_dir,
                                                          dest_content_folder=game.decompiled,
-                                                         dll_files=game_dll_files,
+                                                         dll_files=game.dll_files,
                                                          log_callback=self.log_message)
 
         # if options["convert_content"]:
@@ -2374,7 +2423,7 @@ class XBLIGDialog(QDialog):
                 path_to_csproj_file = get_cs_project_folders([game], self.log_message)
                 for project in path_to_csproj_file:
                     try:
-                        converter.convert_project_folder(project, options["add_to_solution"])
+                        converter.convert_project_folder(project, options["add_to_solution"], game.dll_files)
                     except Exception as e:
                         self.log_message(f"FAILED {project}: {e}")
         if options["open_visual_studio"]:
