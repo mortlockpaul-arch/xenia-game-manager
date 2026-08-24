@@ -26,7 +26,7 @@ from PySide6.QtWidgets import (
     QFormLayout,
     QGroupBox,
     QHeaderView, QApplication, QMessageBox, QSizePolicy, QFrame, QGraphicsDropShadowEffect, QCheckBox, QButtonGroup,
-    QRadioButton, QProgressBar, QPlainTextEdit,
+    QRadioButton, QProgressBar, QPlainTextEdit, QLineEdit,
 )
 
 from config import get_app_dir
@@ -938,119 +938,195 @@ class ConvertXnaProjects(QObject):
 
         return result
 
-    def convert_project_to_fna(self, project_path: Path):
-        """
-        Convert an ILSpy decompiled XBLIG XNA project to an FNA project.
+    from pathlib import Path
+    import xml.etree.ElementTree as ET
 
-        - Changes target framework
-        - Removes XNA references
-        - Adds FNA NuGet package
-        - Keeps local DLL references
-        - Backs up original csproj
-        # """
-        # project_base = get_app_dir() / "downloads"
-        # self.log_message(f"Converting base {project_base} XBLIG to FNA")
-        # project_path = Path(project_path)
-        self.log_message(f"Converting project {project_path} XBLIG to FNA")
-        if not project_path.exists():
-            raise FileNotFoundError(project_path)
+    def clean_csproj(self, project_path: Path) -> None:
+        project_path = Path(project_path)
 
-        if project_path.suffix.lower() != ".csproj":
-            raise ValueError("Expected .csproj file")
-
-        print(f"Converting: {project_path.name}")
-
-        backup = project_path.with_suffix(".backup.csproj")
-
-        if not backup.exists():
-            shutil.copy(project_path, backup)
-            print(f"Backup created: {backup.name}")
+        self.log_message(f"Updating project: {project_path.name}")
+        self.log_message(f"  Project path: {project_path}")
 
         tree = ET.parse(project_path)
         root = tree.getroot()
 
+        # ---------------------------------------------------------
         # MSBuild namespace handling
+        # ---------------------------------------------------------
+
         ns = ""
 
         if root.tag.startswith("{"):
             ns = root.tag.split("}")[0] + "}"
 
-        def tag(name):
+        def tag(name: str) -> str:
             return f"{ns}{name}"
 
-        # -------------------------------------------------
-        # Fix Target Framework
-        # -------------------------------------------------
+        self.log_message("  Reading existing project properties...")
+
+        # ---------------------------------------------------------
+        # Preserve AssemblyName
+        # ---------------------------------------------------------
+
+        assembly_name = None
 
         for propgroup in root.findall(tag("PropertyGroup")):
+            assembly = propgroup.find(tag("AssemblyName"))
 
-            target = propgroup.find(tag("TargetFramework"))
+            if assembly is not None and assembly.text:
+                assembly_name = assembly.text.strip()
+                break
 
-            if target is not None:
-                print("  Updating framework")
-                target.text = "net10.0"
-
-            lang = propgroup.find(tag("LangVersion"))
-
-            if lang is not None:
-                lang.text = "latest"
-
-        # -------------------------------------------------
-        # Remove XNA Referencesx
-        # -------------------------------------------------
-
-        xna_names = [
-            "Microsoft.Xna.Framework",
-            "Microsoft.Xna.Framework.Game",
-            "Microsoft.Xna.Framework.Graphics",
-            "Microsoft.Xna.Framework.Audio",
-            "Microsoft.Xna.Framework.Net",
-            "Microsoft.Xna.Framework.Storage",
-            "Microsoft.Xna.Framework.Xact",
-            "Microsoft.Xna.Framework.GamerServices",
-        ]
-
-        for itemgroup in root.findall(tag("ItemGroup")):
-
-            for reference in list(itemgroup.findall(tag("Reference"))):
-
-                name = reference.attrib.get("Include", "")
-
-                if any(x in name for x in xna_names):
-                    print(f"  Removing {name}")
-                    itemgroup.remove(reference)
-
-        # -------------------------------------------------
-        # Add FNA PackageReference
-        # -------------------------------------------------
-
-        has_fna = False
-
-        for package in root.findall(f".//{tag('PackageReference')}"):
-
-            if package.attrib.get("Include") == "FNA":
-                has_fna = True
-
-        if not has_fna:
-            print("  Adding FNA package")
-
-            package_group = ET.Element(tag("ItemGroup"))
-
-            package = ET.SubElement(
-                package_group,
-                tag("PackageReference")
+        if assembly_name:
+            self.log_message(
+                f"  Preserving AssemblyName: {assembly_name}"
+            )
+        else:
+            self.log_message(
+                "  No AssemblyName found; project will use the default."
             )
 
-            package.attrib["Include"] = "FNA"
-            package.attrib["Version"] = FNA_VERSION
+        # ---------------------------------------------------------
+        # Remove existing PropertyGroups / ItemGroups
+        # ---------------------------------------------------------
 
-            root.append(package_group)
+        removed_property_groups = 0
+        removed_item_groups = 0
 
-        # -------------------------------------------------
-        # Write file
-        # -------------------------------------------------
+        for element in list(root):
+            local_name = element.tag.split("}")[-1]
 
-        ET.indent(tree, space="  ")
+            if local_name == "PropertyGroup":
+                root.remove(element)
+                removed_property_groups += 1
+
+            elif local_name == "ItemGroup":
+                root.remove(element)
+                removed_item_groups += 1
+
+        self.log_message(
+            f"  Removed {removed_property_groups} existing "
+            f"PropertyGroup(s)."
+        )
+
+        self.log_message(
+            f"  Removed {removed_item_groups} existing "
+            f"ItemGroup(s), including old XNA references."
+        )
+
+        # ---------------------------------------------------------
+        # Create clean PropertyGroup
+        # ---------------------------------------------------------
+
+        self.log_message("  Creating clean project properties...")
+
+        propgroup = ET.SubElement(
+            root,
+            tag("PropertyGroup")
+        )
+
+        if assembly_name:
+            ET.SubElement(
+                propgroup,
+                tag("AssemblyName")
+            ).text = assembly_name
+
+        properties = {
+            "GenerateAssemblyInfo": "false",
+            "TargetFramework": "net10.0",
+            "ImplicitUsings": "enable",
+            "Nullable": "enable",
+            "Platforms": "AnyCPU",
+            "OutputType": "WinExe",
+            "LangVersion": "14.0",
+            "AllowUnsafeBlocks": "True",
+            "CheckForOverflowUnderflow": "False",
+        }
+
+        for name, value in properties.items():
+            ET.SubElement(
+                propgroup,
+                tag(name)
+            ).text = value
+
+            self.log_message(
+                f"    {name} = {value}"
+            )
+
+        # ---------------------------------------------------------
+        # Contents.csproj ProjectReference
+        # ---------------------------------------------------------
+
+        content_project = Path(
+            r"C:\source\Content-References\Contents.csproj"
+        )
+
+        self.log_message(
+            f"  Adding project reference: {content_project}"
+        )
+
+        itemgroup = ET.SubElement(
+            root,
+            tag("ItemGroup")
+        )
+
+        project_reference = ET.SubElement(
+            itemgroup,
+            tag("ProjectReference"),
+            {
+                "Include": str(content_project)
+            }
+        )
+
+        ET.SubElement(
+            project_reference,
+            tag("Private")
+        ).text = "True"
+
+        ET.SubElement(
+            project_reference,
+            tag("CopyLocalSatelliteAssemblies")
+        ).text = "True"
+
+        self.log_message(
+            "    Private = True"
+        )
+
+        self.log_message(
+            "    CopyLocalSatelliteAssemblies = True"
+        )
+
+        # ---------------------------------------------------------
+        # Content files
+        # ---------------------------------------------------------
+
+        self.log_message(
+            r"  Configuring Content\**\* to always copy to output..."
+        )
+
+        itemgroup = ET.SubElement(
+            root,
+            tag("ItemGroup")
+        )
+
+        none = ET.SubElement(
+            itemgroup,
+            tag("None"),
+            {
+                "Update": r"Content\**\*"
+            }
+        )
+
+        ET.SubElement(
+            none,
+            tag("CopyToOutputDirectory")
+        ).text = "Always"
+
+        # ---------------------------------------------------------
+        # Save
+        # ---------------------------------------------------------
+
+        ET.indent(tree, space="\t")
 
         tree.write(
             project_path,
@@ -1058,25 +1134,167 @@ class ConvertXnaProjects(QObject):
             xml_declaration=True
         )
 
-        print("Done\n")
+        self.log_message(
+            f"  Project updated successfully: {project_path.name}"
+        )
 
-    # def convert_content(self, game:XBLIGGame):
-    #     if game.decompiled is not None:
-    #         folder = game.decompiled
-    #         self.method_name(game)
+    import os
+    from pathlib import Path
+    import xml.etree.ElementTree as ET
 
-    def convert_project_folder(self, folder: Path):
+    def add_project_to_solution(
+            self,
+            solution_path: Path,
+            project_path: Path,
+    ) -> bool:
+        solution_path = Path(solution_path).resolve()
+        project_path = Path(project_path).resolve()
+
+        self.log_message(
+            f"Adding project to solution: {project_path.name}"
+        )
+
+        if not solution_path.exists():
+            self.log_message(
+                f"  Solution not found: {solution_path}"
+            )
+            return False
+
+        if not project_path.exists():
+            self.log_message(
+                f"  Project not found: {project_path}"
+            )
+            return False
+
+        tree = ET.parse(solution_path)
+        root = tree.getroot()
+
+        # ---------------------------------------------------------
+        # Determine project path
+        # ---------------------------------------------------------
+
+        if solution_path.drive.lower() == project_path.drive.lower():
+            relative_path = os.path.relpath(
+                project_path,
+                solution_path.parent,
+            ).replace("\\", "/")
+
+            project_path_value = relative_path
+
+            self.log_message(
+                f"  Using relative project path: {project_path_value}"
+            )
+
+        else:
+            # Different drives cannot have a relative Windows path.
+            project_path_value = project_path.as_posix()
+
+            self.log_message(
+                "  Project is on a different drive from the solution."
+            )
+
+            self.log_message(
+                f"  Using absolute project path: {project_path_value}"
+            )
+
+        # ---------------------------------------------------------
+        # Check for existing project
+        # ---------------------------------------------------------
+
+        for project in root.iter("Project"):
+            existing_path = project.get("Path")
+
+            if not existing_path:
+                continue
+
+            existing_path_obj = Path(existing_path)
+
+            if not existing_path_obj.is_absolute():
+                existing_path_obj = (
+                        solution_path.parent / existing_path_obj
+                )
+
+            try:
+                existing_path_obj = existing_path_obj.resolve()
+            except OSError:
+                continue
+
+            if existing_path_obj == project_path:
+                self.log_message(
+                    "  Project is already in the solution."
+                )
+                return False
+
+        # ---------------------------------------------------------
+        # Find indie-game-archive folder
+        # ---------------------------------------------------------
+
+        folder = None
+
+        for element in root.findall("Folder"):
+            if element.get("Name") == "/indie-game-archive/":
+                folder = element
+                break
+
+        if folder is None:
+            self.log_message(
+                "  Creating /indie-game-archive/ solution folder."
+            )
+
+            folder = ET.SubElement(
+                root,
+                "Folder",
+                {"Name": "/indie-game-archive/"},
+            )
+
+        # ---------------------------------------------------------
+        # Add project
+        # ---------------------------------------------------------
+
+        ET.SubElement(
+            folder,
+            "Project",
+            {"Path": project_path_value},
+        )
+
+        # ---------------------------------------------------------
+        # Save
+        # ---------------------------------------------------------
+
+        ET.indent(tree, space="  ")
+
+        tree.write(
+            solution_path,
+            encoding="utf-8",
+            xml_declaration=False,
+        )
+
+        self.log_message(
+            f"  Added project to solution: {project_path.name}"
+        )
+
+        return True
+
+    def convert_project_folder(self, path_to_csproj_file: Path, add_to_solution = True):
         try:
             # backup project
             # if (folder.parent.parent / "decompiled_backup").exists():
             #     shutil.rmtree(folder.parent.parent / "decompiled_backup")
             # shutil.copytree(folder.parent, folder.parent.parent / "decompiled_backup")
-            self.convert_project_to_fna(folder)
-            add_xna_compat(folder.parent)
-            self.remove_xna_usings(folder.parent)
+            self.clean_csproj(path_to_csproj_file)
+
+            if add_to_solution:
+                solution_path = Path(r"C:\source\Indie-Games\Indie-Games.slnx")
+                self.add_project_to_solution(
+                    solution_path,
+                    path_to_csproj_file,
+                )
+
+            # add_xna_compat(folder.parent)
+            # self.remove_xna_usings(folder.parent)
 
         except Exception as e:
-            self.log_signal.emit(f"FAILED {folder}: {e}")
+            self.log_signal.emit(f"FAILED {path_to_csproj_file}: {e}")
 
     # def method_name(self, game:XBLIGGame):
     #     if game.extracted is not None:
@@ -1396,7 +1614,7 @@ class XBLIGDialog(QDialog):
 
         for project in projects:
             try:
-                converter.convert_project_folder(project)
+                converter.convert_project_folder(project, True)
             except Exception as e:
                 print(
                     f"FAILED {project}: {e}"
@@ -1952,6 +2170,9 @@ class XBLIGDialog(QDialog):
             options_group = QGroupBox("Build Options")
             options_layout = QVBoxLayout(options_group)
 
+            self.solution_file = QLineEdit()
+            self.solution_file.setText(str(r"C:\source\Indie-Games\Indie-Games.slnx"))
+            self.solution_file.setMinimumHeight(28)
             # Decompile
             self.decompile_check = QCheckBox("Decompile executable")
             self.decompile_check.setChecked(True)
@@ -1976,9 +2197,9 @@ class XBLIGDialog(QDialog):
             options_layout.addLayout(decompile_layout)
 
             self.convert_csproj_check = QCheckBox("Convert project (.csproj)")
-            self.convert_content_check = QCheckBox("Convert XNA content")
-            self.open_vs_check = QCheckBox("Open project in Visual Studio")
-            self.open_explorer_check = QCheckBox("Open project folder in Explorer")
+            self.convert_content_check = QCheckBox("Add To Solution")
+            # self.open_vs_check = QCheckBox("Open project in Visual Studio")
+            # self.open_explorer_check = QCheckBox("Open project folder in Explorer")
 
             self.convert_csproj_check.setChecked(True)
             self.convert_content_check.setChecked(True)
@@ -1989,10 +2210,11 @@ class XBLIGDialog(QDialog):
             self.decompile_cli.setEnabled(True)
             self.decompile_gui.setEnabled(True)
 
+            options_layout.addWidget(self.solution_file)
             options_layout.addWidget(self.convert_csproj_check)
             options_layout.addWidget(self.convert_content_check)
-            options_layout.addWidget(self.open_vs_check)
-            options_layout.addWidget(self.open_explorer_check)
+            # options_layout.addWidget(self.open_vs_check)
+            # options_layout.addWidget(self.open_explorer_check)
 
             layout.addWidget(options_group)
 
@@ -2018,9 +2240,10 @@ class XBLIGDialog(QDialog):
                 "decompile": self.decompile_check.isChecked(),
                 "decompile_gui": self.decompile_gui.isChecked(),
                 "convert_csproj": self.convert_csproj_check.isChecked(),
-                "convert_content": self.convert_content_check.isChecked(),
-                "open_visual_studio": self.open_vs_check.isChecked(),
-                "open_explorer": self.open_explorer_check.isChecked(),
+                "add_to_solution": self.convert_content_check.isChecked(),
+                # "convert_content": self.convert_content_check.isChecked(),
+                # "open_visual_studio": self.open_vs_check.isChecked(),
+                # "open_explorer": self.open_explorer_check.isChecked(),
             }
 
     def build_selected(self):
@@ -2061,8 +2284,12 @@ class XBLIGDialog(QDialog):
         if options["convert_csproj"]:
             if game.decompiled is not None:
                 converter = self.method_name()
-                converter.convert_project_folder(game.decompiled)
-
+                path_to_csproj_file = get_cs_project_folders([game])
+                for project in path_to_csproj_file:
+                    try:
+                        converter.convert_project_folder(project, options["add_to_solution"])
+                    except Exception as e:
+                        self.log_message(f"FAILED {project}: {e}")
         if options["open_visual_studio"]:
             if game.exe is not None:
                 solution = str(str(f"{str(game.exe)}.sln"))
