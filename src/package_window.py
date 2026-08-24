@@ -3,6 +3,7 @@ import random
 import threading
 import traceback
 import xml.etree.ElementTree as ET  # noqa: N812
+from contextlib import redirect_stdout
 from dataclasses import dataclass
 from dataclasses import field
 from functools import partial
@@ -10,6 +11,8 @@ from pathlib import Path
 
 import sys
 import time
+from typing import Any, Callable
+
 from PySide6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QRect, QThread, Signal, QObject, QModelIndex, \
     Slot
 from PySide6.QtGui import QFont
@@ -598,12 +601,12 @@ alba = (get_app_dir() / "assets/tools/conversion/Alba.XnaConvert.0.1.2/Alba.XnaC
 xnb_cli = (get_app_dir() / "assets/tools/conversion/xnbcli-windows-x64/xnbcli.exe")
 xnb_extractor = (get_app_dir() / "assets/tools/conversion/xnb-extractor/Release/net481/XnbExtractor.exe")
 
+
 class ConvertXnaProjects(QObject):
     log_signal = Signal(str)
     progress_signal = Signal(int)
     total_files_signal = Signal(int)
     finished_signal = Signal(ConversionResult)
-
 
     def __init__(self, project_path, games, options, /):
         super().__init__()
@@ -1275,7 +1278,7 @@ class ConvertXnaProjects(QObject):
 
         return True
 
-    def convert_project_folder(self, path_to_csproj_file: Path, add_to_solution = True):
+    def convert_project_folder(self, path_to_csproj_file: Path, add_to_solution=True):
         try:
             # backup project
             # if (folder.parent.parent / "decompiled_backup").exists():
@@ -1406,6 +1409,20 @@ def _compress_games(games: list[XBLIGGame], log):
                 f"{type(e).__name__}: {e}"
             )
 
+class CompressWorker(QObject):
+    log = Signal(str)
+    finished = Signal()
+
+    def __init__(self, function: Callable[..., None], *args, **kwargs,):
+        super().__init__()
+        self.function = function
+        self.args = args
+        self.kwargs = kwargs
+    @Slot()
+    def run(self):
+        with redirect_stdout(QtLogger(self.log.emit)):
+            self.function(*self.args, **self.kwargs)
+            self.finished.emit()
 
 class XBLIGDialog(QDialog):
 
@@ -1519,6 +1536,7 @@ class XBLIGDialog(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.compress_worker: CompressWorker | None = None
         self.worker = None
         self.compress_thread = None
         self.decompress_btn = None
@@ -1944,6 +1962,13 @@ class XBLIGDialog(QDialog):
 
         game = self.games[row]
 
+        self.update_labels(game)
+        # if not self.drawer_open:
+        self.show_settings_drawer()
+
+    def update_labels(self, game: XBLIGGame):
+        relative_paths = False
+
         root = Path("D:/") / "downloads"
 
         self.title_lbl.setText(game.title)
@@ -1958,38 +1983,32 @@ class XBLIGDialog(QDialog):
 
         if game.exe:
             relative_path = game.exe.relative_to(root.parent)
-            self.exe_lbl.setText(str(relative_path))
+            if relative_paths: self.exe_lbl.setText(str(relative_path))
+            else: self.exe_lbl.setText(str(game.exe))
         else:
             self.exe_lbl.setText("-")
 
         if game.xml:
             relative_path = game.xml.relative_to(root.parent)
-            self.xml_lbl.setText(str(relative_path))
+            if relative_paths: self.xml_lbl.setText(str(relative_path))
+            else: self.xml_lbl.setText(str(game.xml))
         else:
             self.xml_lbl.setText("-")
 
         if game.extracted is not None:
             content_dir = game.extracted / "584E07D1" / "Content"
             output_dir = content_dir.parent / "Content_Output"
-            self.input_folder.setText(str(content_dir.relative_to(root.parent)))
-            self.output_folder.setText(str(output_dir.relative_to(root.parent)))
+            if relative_paths:
+                self.input_folder.setText(str(content_dir.relative_to(root.parent)))
+                self.output_folder.setText(str(output_dir.relative_to(root.parent)))
+            else:
+                self.input_folder.setText(str(content_dir))
+                self.output_folder.setText(str(output_dir))
+        else:
+            self.input_folder.setText(str("-"))
+            self.output_folder.setText(str("-"))
 
-        # if not self.drawer_open:
-        self.show_settings_drawer()
 
-    class CompressWorker(QObject):
-        log = Signal(str)
-        finished = Signal()
-
-        def __init__(self, function, games):
-            super().__init__()
-            self.function = function
-            self.games = games
-
-        @Slot()
-        def run(self):
-            self.function(self.games, self.log.emit)
-            self.finished.emit()
 
     def compress_decompress_extracted_content(self, mode: bool):
         selected = self.get_selected_game()
@@ -2001,20 +2020,29 @@ class XBLIGDialog(QDialog):
         if not games:
             return
 
-        func = _compress_games if mode else _decompress_games
+        if mode:
+            func = partial(_compress_games, games, self.log_message)
+        else:
+            func = partial(_decompress_games, games, self.log_message)
+        self.run_worker(func)
 
-        self.compress_thread = QThread(self)
-        self.compress_worker = self.CompressWorker(func, games)
+    def run_worker(self, func: Callable[..., None] | Callable[..., None]):
+        thread = QThread(self)
+        self.compress_thread = thread
+        worker = CompressWorker(func)
+        self.compress_worker = worker
 
-        self.compress_worker.log.connect(self.log_message)
-        self.compress_worker.finished.connect(self.compress_thread.quit)
-        self.compress_worker.finished.connect(self.compress_worker.deleteLater)
-        self.compress_thread.finished.connect(self.compress_thread.deleteLater)
-        self.compress_thread.finished.connect(lambda: self.load_games(self.games))
+        worker.log.connect(self.log_message)
+        worker.finished.connect(self.compress_thread.quit)
+        worker.finished.connect(worker.deleteLater)
+        thread.finished.connect(self._worker_finished)
 
-        self.compress_worker.moveToThread(self.compress_thread)
-        self.compress_thread.started.connect(self.compress_worker.run)
+        worker.moveToThread(self.compress_thread)
+        thread.started.connect(worker.run)
         self.compress_thread.start()
+
+    def _worker_finished(self) -> None:
+        self.load_games(self.games)
 
     def extract_game(self, game=None):
         if game is None:
@@ -2063,6 +2091,7 @@ class XBLIGDialog(QDialog):
 
         for i, game in enumerate(games, 1):
             if game.extracted is not None or not game.package:
+                self.log_message_log("Game Already Extracted")
                 continue
 
             self.log_message(f"[{i}/{total}] Extracting {game.title}...")
@@ -2107,11 +2136,9 @@ class XBLIGDialog(QDialog):
 
         try:
             from contextlib import redirect_stdout
-
-            with redirect_stdout(QtLogger(self.log_message_log)):
-                run_in_background(extract_live_pirs(package, extracted_path))
-
-
+            from functools import partial
+            func = partial(extract_live_pirs, package, extracted_path,None)
+            self.run_worker(func)
             self.log_message_log(f"Extracted to: {extracted_path}")
 
         except Exception as e:
@@ -2385,15 +2412,20 @@ class XBLIGDialog(QDialog):
             if path and path.exists():
                 shutil.rmtree(path)
                 self.log_message(f"Deleted: {path}")
-            if attr_path_value and attr_path_value.exists():
+                setattr(game, str(attr_name), None)
+            elif attr_path_value and attr_path_value.exists():
                 shutil.rmtree(attr_path_value)
                 self.log_message(f"Deleted: {attr_path_value}")
-            setattr(game, str(path), None)
+                setattr(game, str(attr_name), None)
+            elif path:
+                self.log_message(f"{path} does not exist")
+            elif attr_path_value:
+                self.log_message(f"{attr_path_value} does not exist")
 
         except PermissionError as e:
             self.log_message(f"Unable to delete '{path}': {e}")
             return
-
+        self.update_labels(game)
         self.load_games(self.games)
 
     class ClickOverlay(QWidget):
