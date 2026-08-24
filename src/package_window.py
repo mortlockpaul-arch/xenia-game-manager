@@ -375,10 +375,9 @@ def copy_extracted_folder_content_and_references(source_content_root_folder, des
                 f"Content folder or archive not found: {source_content_root_folder}"
             )
 
-    if dest_content_folder.exists() and dest_content_folder.is_dir():
-        shutil.rmtree(dest_content_folder)
-
-    shutil.copytree(source_content_root_folder, dest_content_folder)
+    # if dest_content_folder.exists() and dest_content_folder.is_dir():
+    #     shutil.rmtree(dest_content_folder, ignore_errors=True)
+    shutil.copytree(source_content_root_folder, dest_content_folder, dirs_exist_ok=True)
 
     for dll in dll_files:
         try:
@@ -566,12 +565,31 @@ class ToolManager:
         self.cleanup()
 
 
-def get_cs_project_folders(games: list[XBLIGGame]) -> list[Path]:
+def get_cs_project_folders(
+    games: list[XBLIGGame],
+    log_callback: Callable[[str], None] | None = None,
+) -> list[Path]:
     projects = []
+
     for game in games:
         if game.decompiled is None:
             continue
-        projects.extend(p for p in game.decompiled.rglob("*.csproj"))
+
+        new_name = f"{game.title}.csproj"
+
+        for project in game.decompiled.rglob("*.csproj"):
+            new_path = project.with_name(new_name)
+
+            if project != new_path:
+                project.rename(new_path)
+
+                if log_callback:
+                    log_callback(
+                        f"Renamed project: {project.name} -> {new_path.name}"
+                    )
+
+            projects.append(new_path)
+
     return projects
 
 
@@ -1144,7 +1162,6 @@ class ConvertXnaProjects(QObject):
     import os
     from pathlib import Path
     import xml.etree.ElementTree as ET
-
     def add_project_to_solution(
             self,
             solution_path: Path,
@@ -1153,112 +1170,141 @@ class ConvertXnaProjects(QObject):
         solution_path = Path(solution_path).resolve()
         project_path = Path(project_path).resolve()
 
-        self.log_message(
-            f"Adding project to solution: {project_path.name}"
-        )
+        self.log_message(f"Adding project to solution: {project_path.name}")
 
         if not solution_path.exists():
-            self.log_message(
-                f"  Solution not found: {solution_path}"
-            )
+            self.log_message(f"  Solution not found: {solution_path}")
             return False
 
         if not project_path.exists():
-            self.log_message(
-                f"  Project not found: {project_path}"
-            )
+            self.log_message(f"  Project not found: {project_path}")
             return False
 
-        tree = ET.parse(solution_path)
-        root = tree.getroot()
+        project_name = project_path.stem
+
+        # ---------------------------------------------------------
+        # Determine destination
+        # ---------------------------------------------------------
+
+        archive_dir = solution_path.parent / "indie-game-archive"
+        archive_dir.mkdir(parents=True, exist_ok=True)
+
+        project_dir = project_path.parent
+        destination_dir = archive_dir / project_dir.name
+        destination_project = destination_dir / project_path.name
+
+        self.log_message(f"  Project directory: {project_dir}")
+        self.log_message(f"  Destination directory: {destination_dir}")
+
+        # ---------------------------------------------------------
+        # Move project
+        # ---------------------------------------------------------
+
+        if project_dir.resolve() != destination_dir.resolve():
+            if destination_dir.exists():
+                self.log_message(f"  Destination already exists: {destination_dir}")
+
+                if not destination_project.exists():
+                    self.log_message(
+                        "  ERROR: Destination exists but project was not found."
+                    )
+                    return False
+
+                project_path = destination_project
+                self.log_message("  Using existing destination project.")
+
+            else:
+                self.log_message(f"  Moving project to: {destination_dir}")
+
+                try:
+                    shutil.move(str(project_dir), str(destination_dir))
+                except OSError as exc:
+                    self.log_message(f"  ERROR moving project: {exc}")
+                    return False
+
+                project_path = destination_project
+                self.log_message("  Project moved successfully.")
+        else:
+            self.log_message("  Project is already in the solution directory.")
 
         # ---------------------------------------------------------
         # Determine project path
         # ---------------------------------------------------------
 
-        if solution_path.drive.lower() == project_path.drive.lower():
-            relative_path = os.path.relpath(
+        try:
+            project_path_value = os.path.relpath(
                 project_path,
                 solution_path.parent,
             ).replace("\\", "/")
-
-            project_path_value = relative_path
-
-            self.log_message(
-                f"  Using relative project path: {project_path_value}"
-            )
-
-        else:
-            # Different drives cannot have a relative Windows path.
+        except ValueError:
             project_path_value = project_path.as_posix()
+            self.log_message("  Project is on a different drive.")
 
-            self.log_message(
-                "  Project is on a different drive from the solution."
-            )
-
-            self.log_message(
-                f"  Using absolute project path: {project_path_value}"
-            )
+        self.log_message(f"  Solution project path: {project_path_value}")
 
         # ---------------------------------------------------------
-        # Check for existing project
+        # Parse solution
         # ---------------------------------------------------------
 
-        for project in root.iter("Project"):
-            existing_path = project.get("Path")
-
-            if not existing_path:
-                continue
-
-            existing_path_obj = Path(existing_path)
-
-            if not existing_path_obj.is_absolute():
-                existing_path_obj = (
-                        solution_path.parent / existing_path_obj
-                )
-
-            try:
-                existing_path_obj = existing_path_obj.resolve()
-            except OSError:
-                continue
-
-            if existing_path_obj == project_path:
-                self.log_message(
-                    "  Project is already in the solution."
-                )
-                return False
+        try:
+            tree = ET.parse(solution_path)
+            root = tree.getroot()
+        except ET.ParseError as exc:
+            self.log_message(f"  ERROR reading solution: {exc}")
+            return False
 
         # ---------------------------------------------------------
-        # Find indie-game-archive folder
+        # Remove existing project entries
         # ---------------------------------------------------------
 
-        folder = None
+        removed_projects = 0
 
-        for element in root.findall("Folder"):
-            if element.get("Name") == "/indie-game-archive/":
-                folder = element
-                break
+        for parent in root.iter():
+            for project in list(parent):
+                if project.tag != "Project":
+                    continue
+
+                existing_path = project.get("Path")
+                if not existing_path:
+                    continue
+
+                if Path(existing_path).stem.lower() == project_name.lower():
+                    self.log_message(
+                        f"  Removing existing solution entry: {existing_path}"
+                    )
+                    parent.remove(project)
+                    removed_projects += 1
+
+        if removed_projects:
+            self.log_message(f"  Removed {removed_projects} existing solution "
+                             f"entry{'s' if removed_projects != 1 else ''}.")
+        else:
+            self.log_message(f"  No existing solution entry found for {project_name}.")
+
+        # ---------------------------------------------------------
+        # Find / create solution folder
+        # ---------------------------------------------------------
+
+        folder = next(
+            (
+                element
+                for element in root.findall("Folder")
+                if element.get("Name") == "/indie-game-archive/"
+            ),
+            None,
+        )
 
         if folder is None:
-            self.log_message(
-                "  Creating /indie-game-archive/ solution folder."
-            )
-
-            folder = ET.SubElement(
-                root,
-                "Folder",
-                {"Name": "/indie-game-archive/"},
-            )
+            self.log_message("  Creating /indie-game-archive/ solution folder.")
+            folder = ET.SubElement(root, "Folder", {"Name": "/indie-game-archive/"})
 
         # ---------------------------------------------------------
         # Add project
         # ---------------------------------------------------------
 
-        ET.SubElement(
-            folder,
-            "Project",
-            {"Path": project_path_value},
-        )
+        ET.SubElement(folder, "Project", {"Path": project_path_value})
+
+        self.log_message(f"  Added {project_name} to /indie-game-archive/")
 
         # ---------------------------------------------------------
         # Save
@@ -1266,16 +1312,13 @@ class ConvertXnaProjects(QObject):
 
         ET.indent(tree, space="  ")
 
-        tree.write(
-            solution_path,
-            encoding="utf-8",
-            xml_declaration=False,
-        )
+        try:
+            tree.write(solution_path, encoding="utf-8", xml_declaration=False)
+        except OSError as exc:
+            self.log_message(f"  ERROR saving solution: {exc}")
+            return False
 
-        self.log_message(
-            f"  Added project to solution: {project_path.name}"
-        )
-
+        self.log_message("  Solution updated successfully.")
         return True
 
     def convert_project_folder(self, path_to_csproj_file: Path, add_to_solution=True):
@@ -1536,6 +1579,9 @@ class XBLIGDialog(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.game = None
+        self.extracted = None
+        self.overwrite_check = None
         self.compress_worker: CompressWorker | None = None
         self.worker = None
         self.compress_thread = None
@@ -1626,7 +1672,7 @@ class XBLIGDialog(QDialog):
         self.log_message(f"\nChecking {len(games)} Xbox Live Indie Games\n")
         converter = self.method_name()
 
-        projects = get_cs_project_folders(games)
+        projects = get_cs_project_folders(games, self.log_message)
 
         print(f"Found {len(projects)} projects")
 
@@ -1693,14 +1739,20 @@ class XBLIGDialog(QDialog):
         else:
             ensure_tool_extracted("ilspycmd")
 
+        assert game.folder_title is not None
+        assert game.extracted is not None
+
+        game_root_name = Path(game.folder_title)
+        extracted_name = Path(game.extracted).name
+
         attrs = {
             "decompiled": (
                 "decompiled",
-                Path("D:/downloads") / "decompiled" / game.title
+                Path("D:/downloads") / "decompiled" / game_root_name
             ),
             "extracted": (
                 "extracted",
-                Path("D:/downloads") / "extracted" / game.title
+                Path("D:/downloads") / "extracted" / extracted_name
             ),
         }
 
@@ -1741,11 +1793,7 @@ class XBLIGDialog(QDialog):
         extracted = game.extracted
 
         if not exe:
-            QMessageBox.warning(
-                self,
-                "No Executable",
-                "Extract the game first.",
-            )
+            self.log_message("No Executable: Extract the game first.")
             return None
 
         self.log_message(
@@ -2042,6 +2090,12 @@ class XBLIGDialog(QDialog):
         self.compress_thread.start()
 
     def _worker_finished(self) -> None:
+
+        self.game.extracted = self.extracted
+        self.game.exe = next(self.extracted.rglob("*.exe"), None)
+
+        self.log_message(f"Extracted {self.game.title} successfully")
+        save_cache(self.games)
         self.load_games(self.games)
 
     def extract_game(self, game=None):
@@ -2050,9 +2104,9 @@ class XBLIGDialog(QDialog):
                 return
             game, _ = result
 
-        if game.extracted is not None:
-            self.log_message(f"{game.title} Already Extracted.")
-            return
+        # if game.extracted is not None:
+        #     self.log_message(f"{game.title} Already Extracted.")
+        #     return
 
         if not game.package:
             self.log_message(f"{game.title} has no package.")
@@ -2064,19 +2118,23 @@ class XBLIGDialog(QDialog):
             if extracted is None:
                 self.log_message(f"Failed to extract {game.title}")
                 return
-
-            game.extracted = extracted
-            game.exe = next(extracted.rglob("*.exe"), None)
-
-            self.log_message(f"Extracted {game.title} successfully")
-            save_cache(self.games)
-
+            #
+            # game.extracted = extracted
+            # game.exe = next(extracted.rglob("*.exe"), None)
+            #
+            # self.log_message(f"Extracted {game.title} successfully")
+            # save_cache(self.games)
+            # self.load_games(self.games)
         except Exception as e:
             self.log_message(
                 f"Error extracting {game.title}: {type(e).__name__}: {e}"
             )
 
-    def extract_missing(self):
+    def extract_game_or_games_package(self):
+        if self.overwrite_check.isChecked():
+            overwrite = True
+        else: overwrite = False
+
         if self.all_checkbox.isChecked():
             games = self.games
         else:
@@ -2091,8 +2149,8 @@ class XBLIGDialog(QDialog):
 
         for i, game in enumerate(games, 1):
             if game.extracted is not None or not game.package:
-                self.log_message_log("Game Already Extracted")
-                continue
+                self.log_message_log(f"{game.title} Already Extracted")
+                if not overwrite: continue
 
             self.log_message(f"[{i}/{total}] Extracting {game.title}...")
             self.extract_game(game)
@@ -2133,11 +2191,13 @@ class XBLIGDialog(QDialog):
         # extracted_path = package.parent / "extracted"
 
         extracted_path.mkdir(parents=True, exist_ok=True)
+        self.extracted = extracted_path
 
         try:
             from contextlib import redirect_stdout
             from functools import partial
             func = partial(extract_live_pirs, package, extracted_path,None)
+            self.game = game
             self.run_worker(func)
             self.log_message_log(f"Extracted to: {extracted_path}")
 
@@ -2225,8 +2285,8 @@ class XBLIGDialog(QDialog):
 
             self.convert_csproj_check = QCheckBox("Convert project (.csproj)")
             self.convert_content_check = QCheckBox("Add To Solution")
-            # self.open_vs_check = QCheckBox("Open project in Visual Studio")
-            # self.open_explorer_check = QCheckBox("Open project folder in Explorer")
+            self.open_vs_check = QCheckBox("Open project in Visual Studio")
+            self.open_explorer_check = QCheckBox("Open project folder in Explorer")
 
             self.convert_csproj_check.setChecked(True)
             self.convert_content_check.setChecked(True)
@@ -2240,8 +2300,8 @@ class XBLIGDialog(QDialog):
             options_layout.addWidget(self.solution_file)
             options_layout.addWidget(self.convert_csproj_check)
             options_layout.addWidget(self.convert_content_check)
-            # options_layout.addWidget(self.open_vs_check)
-            # options_layout.addWidget(self.open_explorer_check)
+            options_layout.addWidget(self.open_vs_check)
+            options_layout.addWidget(self.open_explorer_check)
 
             layout.addWidget(options_group)
 
@@ -2269,8 +2329,8 @@ class XBLIGDialog(QDialog):
                 "convert_csproj": self.convert_csproj_check.isChecked(),
                 "add_to_solution": self.convert_content_check.isChecked(),
                 # "convert_content": self.convert_content_check.isChecked(),
-                # "open_visual_studio": self.open_vs_check.isChecked(),
-                # "open_explorer": self.open_explorer_check.isChecked(),
+                "open_visual_studio": self.open_vs_check.isChecked(),
+                "open_explorer": self.open_explorer_check.isChecked(),
             }
 
     def build_selected(self):
@@ -2311,7 +2371,7 @@ class XBLIGDialog(QDialog):
         if options["convert_csproj"]:
             if game.decompiled is not None:
                 converter = self.method_name()
-                path_to_csproj_file = get_cs_project_folders([game])
+                path_to_csproj_file = get_cs_project_folders([game], self.log_message)
                 for project in path_to_csproj_file:
                     try:
                         converter.convert_project_folder(project, options["add_to_solution"])
@@ -2571,7 +2631,7 @@ class XBLIGDialog(QDialog):
         self.scan_btn.setFixedWidth(120)
 
         self.extract_btn = QPushButton("Extract Selected Game Package")
-        self.extract_btn.clicked.connect(self.extract_missing)
+        self.extract_btn.clicked.connect(self.extract_game_or_games_package)
         self.extract_btn.setFixedWidth(240)
 
         self.build_btn = QPushButton("Decompile Game")
@@ -2609,6 +2669,7 @@ class XBLIGDialog(QDialog):
 
         self.all_checkbox = QCheckBox("All or One")
         self.all_checkbox.toggled.connect(self.all_or_one)
+        self.overwrite_check = QCheckBox("Overwrite Extract")
 
         toolbar.addWidget(self.scan_btn)
         toolbar.addWidget(self.build_btn)
@@ -2621,6 +2682,7 @@ class XBLIGDialog(QDialog):
         toolbar.addWidget(self.compress_btn)
         toolbar.addWidget(self.decompress_btn)
         toolbar.addWidget(self.all_checkbox)
+        toolbar.addWidget(self.overwrite_check)
         toolbar.addStretch()
 
         # for button in (self.scan_btn, self.extract_btn, self.build_btn, self.convert_project_btn, self.compress_btn):
