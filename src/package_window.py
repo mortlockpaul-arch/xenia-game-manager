@@ -14,8 +14,8 @@ import time
 from typing import Any, Callable
 
 from PySide6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QRect, QThread, Signal, QObject, QModelIndex, \
-    Slot
-from PySide6.QtGui import QFont
+    Slot, QSize
+from PySide6.QtGui import QFont, QIcon
 from PySide6.QtWidgets import (
     QDialog,
     QVBoxLayout,
@@ -274,11 +274,16 @@ from pathlib import Path
 
 @dataclass
 class XBLIGGame:
+
     title: str
+    icon: Path | None = None
+
     folder_title: str | None = None
     title_id: str | None = None
     virtual_title_id: str | None = None
     xml_title_id: str | None = None
+    requested_by: str | None = None
+    publisher: str | None = None
 
     content_type: str | None = None
     content_name: str | None = None
@@ -1629,6 +1634,7 @@ class XBLIGDialog(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.columns = None
         self.game = None
         self.extracted = None
         self.overwrite_check = None
@@ -1647,6 +1653,9 @@ class XBLIGDialog(QDialog):
         self.resize(1100, 750)
 
         self.build_ui()
+        self.rescan_games_responsive()
+        self.load_games(self.games)
+
         self.create_settings_drawer()
         self.apply_style()
 
@@ -1968,13 +1977,11 @@ class XBLIGDialog(QDialog):
         def run(self):
 
             try:
-                self.log_signal.emit("Checking game cache...")
-
                 games: list[XBLIGGame] = []
                 current_mtime = get_folder_mtime(self.root)
                 cache = None if self.force else load_cache()
-
                 if cache and cache.get("mtime") == current_mtime:
+                    self.log_signal.emit("Checking game cache...")
                     games = cache["games"]
                     self.log_signal.emit(f"Loaded {len(games)} games from cache.")
                     self.progress_signal.emit(100)
@@ -2000,6 +2007,7 @@ class XBLIGDialog(QDialog):
         self.progress_bar.setValue(0)
         self.scan_btn.setEnabled(False)
 
+        if self.cache_check.isChecked(): force = True
         self.scan_thread = QThread(self)
         self.scan_worker = self.ScanWorker(root, force)
         self.scan_worker.total_files_signal.connect(
@@ -2259,37 +2267,100 @@ class XBLIGDialog(QDialog):
         return extracted_path
 
     def load_games(self, games: list[XBLIGGame]):
+        self.columns = {
+            "Icon": lambda g: (
+                QIcon(str(g.extracted / "DashboardIcon.png"))
+                if g.extracted and (g.extracted / "DashboardIcon.png").exists()
+                else QIcon()
+            ),
+            "Title": lambda g: g.title or "",
+            "Status": lambda g: (
+                "Ready"
+                if g.exe is not None and g.xml is not None
+                else "Needs Build"
+            ),
+            "Requested By": lambda g: g.requested_by or "",
+            "Publisher": lambda g: g.publisher or "",
+            "Extracted": lambda g: "Yes" if g.extracted else "No",
+            "Decompiled": lambda g: (
+                g.decompiled.name
+                if g.decompiled
+                else ""
+            ),
+            "Executable": lambda g: (
+                g.exe.name
+                if g.exe
+                else ""
+            ),
+            "DLL Files": lambda g: str(len(g.dll_files or [])),
+            "Content Converted": lambda g: (
+                    g.content_converted or ""
+            ),
+            "Content Format": lambda g: (
+                    g.content_format or ""
+            ),
+        }
+
+        self.game_table.setIconSize(QSize(32, 32))
+        self.game_table.verticalHeader().setVisible(False)
+        self.game_table.verticalHeader().setDefaultSectionSize(40)
+
+        columns = list(self.columns.items())
+
+        self.game_table.setColumnCount(len(columns))
+        self.game_table.setHorizontalHeaderLabels(
+            [name for name, _ in columns]
+        )
         self.game_table.setRowCount(0)
 
         for game in games:
             row = self.game_table.rowCount()
             self.game_table.insertRow(row)
 
-            ready = game.exe is not None and game.xml is not None
-            status = "Ready" if ready else "Needs Build"
+            for column, (name, getter) in enumerate(columns):
+                value = getter(game)
 
-            columns = [
-                "Title",
-                "Status",
-                "Extracted",
-                "Decompiled",
-                "Executable",
-                "DLL Files",
-                "Content Converted",
-                "Content Format"
-            ]
+                if name == "Icon":
+                    button = QPushButton()
 
-            d = game.decompiled.name if game.decompiled else ""
+                    button.setIcon(value)
+                    button.setIconSize(QSize(32, 32))
+                    button.setFixedSize(38, 38)
 
-            self.game_table.setItem(row, 0, QTableWidgetItem(game.title))
-            self.game_table.setItem(row, 1, QTableWidgetItem(status))
-            self.game_table.setItem(row, 2, QTableWidgetItem("Yes" if game.extracted else "No"))
-            self.game_table.setItem(row, 4, QTableWidgetItem(game.exe.name if game.exe else ""))
-            self.game_table.setItem(row, 5, QTableWidgetItem(str(len(game.dll_files)) if game.dll_files else ""))
-            self.game_table.setItem(row, 3, QTableWidgetItem(d))
-            self.game_table.setItem(row, 6, QTableWidgetItem(game.content_converted))
-            self.game_table.setItem(row, 7, QTableWidgetItem(game.content_format))
+                    button.setStyleSheet("""
+                        QPushButton {
+                            border: 1px solid #666;
+                            border-radius: 6px;
+                            background: transparent;
+                            padding: 2px;
+                        }
 
+                        QPushButton:hover {
+                            border: 1px solid #aaa;
+                            background: rgba(255, 255, 255, 20);
+                        }
+
+                        QPushButton:pressed {
+                            background: rgba(255, 255, 255, 40);
+                        }
+                    """)
+
+                    button.setToolTip(game.title or "Launch Game")
+
+                    # We'll connect this to the game action later
+                    # button.clicked.connect(
+                    #     lambda checked=False, g=game: self.launch_game(g)
+                    # )
+
+                    self.game_table.setCellWidget(
+                        row,
+                        column,
+                        button,
+                    )
+
+                else:
+                    item = QTableWidgetItem(str(value))
+                    self.game_table.setItem(row, column, item)
     from PySide6.QtWidgets import (
         QDialog,
     )
@@ -2719,7 +2790,7 @@ class XBLIGDialog(QDialog):
         self.all_checkbox = QCheckBox("All or One")
         self.all_checkbox.toggled.connect(self.all_or_one)
         self.overwrite_check = QCheckBox("Overwrite Extract")
-
+        self.cache_check = QCheckBox("Override Cache")
         toolbar.addWidget(self.scan_btn)
         toolbar.addWidget(self.build_btn)
         toolbar.addWidget(self.extract_btn)
@@ -2732,6 +2803,7 @@ class XBLIGDialog(QDialog):
         toolbar.addWidget(self.decompress_btn)
         toolbar.addWidget(self.all_checkbox)
         toolbar.addWidget(self.overwrite_check)
+        toolbar.addWidget(self.cache_check)
         toolbar.addStretch()
 
         # for button in (self.scan_btn, self.extract_btn, self.build_btn, self.convert_project_btn, self.compress_btn):
@@ -2772,19 +2844,23 @@ class XBLIGDialog(QDialog):
         # Game Table
         #
 
-        self.game_table = QTableWidget(0, 8)
+        self.game_table = QTableWidget(0, 11)
 
-        columns = [
-            "Title",
-            "Status",
-            "Extracted",
-            "Decompiled",
-            "Executable",
-            "DLL Files",
-            "Content Converted",
-            "Content Format"
-        ]
-        self.game_table.setHorizontalHeaderLabels(columns)
+
+        # self.columns = [
+        #     "Icon",
+        #     "Title",
+        #     "Status",
+        #     "Requested By",
+        #     "Publisher",
+        #     "Extracted",
+        #     "Decompiled",
+        #     "Executable",
+        #     "DLL Files",
+        #     "Content Converted",
+        #     "Content Format"
+        # ]
+        # self.game_table.setHorizontalHeaderLabels(self.columns)
 
         header = self.game_table.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
