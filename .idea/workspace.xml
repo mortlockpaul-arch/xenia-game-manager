@@ -4,29 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.1.3 Fix DLL references when moving decompiled project to source folder.">
+    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.1.5 Add distribution files.">
       <change afterPath="$PROJECT_DIR$/../XBLA-Extract/.idea/xbla-extract.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/meta_data_import/List of Xbox Live Indie Games.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/meta_data_import/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/meta_data_import/import_xblig_metadata.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/meta_data_import/xblig_metadata.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/moby_games.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build_tools/build.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/build.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspy.7z" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/tools/ilspy.7z" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/xenia_compatibility.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/xenia_compatibility.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/edge_import.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/edge_import.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main_updater.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main_updater.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/model_xbox.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/model_xbox.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/model_xbox360.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/model_xbox360.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/updater.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/updater.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uv.lock" beforeDir="false" afterPath="$PROJECT_DIR$/uv.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,61 +50,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0000000045483801" />
-      <entry key="S2" value="1.0082122883522477" />
-      <entry key="S5" value="1.1464824772684663" />
-      <entry key="S10" value="1.3827302931157477" />
-      <entry key="S30" value="1.7260462377716985" />
-      <entry key="S60" value="1.8520837578850506" />
-      <entry key="M2" value="1.9241580531717957" />
-      <entry key="M5" value="2.1176397625379204" />
-      <entry key="M10" value="2.762124436927402" />
-      <entry key="M15" value="3.3866552888547603" />
-      <entry key="M30" value="5.035299817398699" />
-      <entry key="H1" value="8.409631590542356" />
-      <entry key="H2" value="14.585901568952082" />
-      <entry key="H4" value="27.96493856102694" />
-      <entry key="D1" value="218.12289644131232" />
-      <entry key="W1" value="1192.3132396411172" />
+      <entry key="MS100" value="1.2811731646332405" />
+      <entry key="MS500" value="3.2977253006776133" />
+      <entry key="S2" value="5.72533834011993" />
+      <entry key="S5" value="7.6850376972729535" />
+      <entry key="S10" value="8.991000464870321" />
+      <entry key="S30" value="10.228148559519527" />
+      <entry key="S60" value="10.599766503674726" />
+      <entry key="M2" value="10.844304599095016" />
+      <entry key="M5" value="11.877453082810383" />
+      <entry key="M10" value="13.837955557844662" />
+      <entry key="M15" value="15.355312281132235" />
+      <entry key="M30" value="18.123697279568443" />
+      <entry key="H1" value="21.415248625264553" />
+      <entry key="H2" value="27.225742074034265" />
+      <entry key="H4" value="39.82484165642147" />
+      <entry key="D1" value="224.8802474330597" />
+      <entry key="W1" value="1202.3038238001354" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="1.4139890437452268E-31" />
-      <entry key="MS500" value="6.762218645474706E-7" />
-      <entry key="S2" value="0.028676246322230155" />
-      <entry key="S5" value="0.24155104511810915" />
-      <entry key="S10" value="0.49147842792752267" />
-      <entry key="S30" value="0.7891656136907584" />
-      <entry key="S60" value="0.8883499387576713" />
-      <entry key="M2" value="0.9425231767748061" />
-      <entry key="M5" value="0.976601503650769" />
-      <entry key="M10" value="0.989836581254028" />
-      <entry key="M15" value="1.009508620581556" />
-      <entry key="M30" value="1.2056434173376431" />
-      <entry key="H1" value="1.9828515155820887" />
-      <entry key="H2" value="3.6284352755948586" />
-      <entry key="H4" value="6.383508357830034" />
-      <entry key="D1" value="43.9578671294043" />
-      <entry key="W1" value="252.7244993769969" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="9.622551066937048E-289" />
+      <entry key="S30" value="9.87256666147773E-97" />
+      <entry key="S60" value="9.936079036258574E-49" />
+      <entry key="M2" value="9.967988280620408E-25" />
+      <entry key="M5" value="2.508670256686559E-10" />
+      <entry key="M10" value="1.5864507560459742E-5" />
+      <entry key="M15" value="6.417296357767309E-4" />
+      <entry key="M30" value="0.030397643078634632" />
+      <entry key="H1" value="0.31484783377465864" />
+      <entry key="H2" value="1.4458546581322311" />
+      <entry key="H4" value="4.029601136497104" />
+      <entry key="D1" value="40.71336981707765" />
+      <entry key="W1" value="249.9713666845167" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.1817465646650388" />
-      <entry key="MS500" value="0.7110387383128894" />
-      <entry key="S2" value="0.9386180124593048" />
-      <entry key="S5" value="1.2820824281893728" />
-      <entry key="S10" value="1.77608844060642" />
-      <entry key="S30" value="2.463012874762318" />
-      <entry key="S60" value="2.7109452728105037" />
-      <entry key="M2" value="2.8509781566940386" />
-      <entry key="M5" value="3.0865399393022663" />
-      <entry key="M10" value="3.74552860369104" />
-      <entry key="M15" value="4.390275838204985" />
-      <entry key="M30" value="6.236344067269512" />
-      <entry key="H1" value="10.3890057990319" />
-      <entry key="H2" value="18.21164421044471" />
-      <entry key="H4" value="34.34586060372788" />
-      <entry key="D1" value="262.0767001843523" />
-      <entry key="W1" value="1445.0344109889284" />
+      <entry key="MS100" value="1.2122738095613137" />
+      <entry key="MS500" value="3.2583905289935906" />
+      <entry key="S2" value="5.68793080901829" />
+      <entry key="S5" value="7.645137699835203" />
+      <entry key="S10" value="8.961216604181576" />
+      <entry key="S30" value="10.214969585086948" />
+      <entry key="S60" value="10.592680614456892" />
+      <entry key="M2" value="10.840621290931782" />
+      <entry key="M5" value="11.87586122143075" />
+      <entry key="M10" value="13.837071792714589" />
+      <entry key="M15" value="15.35530126776879" />
+      <entry key="M30" value="18.153615515012845" />
+      <entry key="H1" value="21.72934860253872" />
+      <entry key="H2" value="28.670421675592152" />
+      <entry key="H4" value="43.85275795458226" />
+      <entry key="D1" value="265.5898449021445" />
+      <entry key="W1" value="1452.2718974378297" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -285,38 +265,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00046" summary="1.0.5 Unify Content and Download Experimental improvements. Tools compress/decompress.">
-      <option name="closed" value="true" />
-      <created>1785708090119</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1785708090120</updated>
-    </task>
-    <task id="LOCAL-00047" summary="1.0.5 Unify Content and Download Experimental improvements. Tools compress/decompress.">
-      <option name="closed" value="true" />
-      <created>1785708137656</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1785708137656</updated>
-    </task>
-    <task id="LOCAL-00048" summary="1.0.5 Unify Content and Download Experimental improvements. Tools compress/decompress.">
-      <option name="closed" value="true" />
-      <created>1785730949827</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1785730949828</updated>
-    </task>
-    <task id="LOCAL-00049" summary="1.0.6 Fix argument parsing and scan for game dll files and decompile those too.">
-      <option name="closed" value="true" />
-      <created>1785987860107</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1785987860108</updated>
     </task>
     <task id="LOCAL-00050" summary="1.0.6 Fix argument parsing and scan for game dll files and decompile those too.">
       <option name="closed" value="true" />
@@ -678,7 +626,39 @@
       <option name="project" value="LOCAL" />
       <updated>1787614022352</updated>
     </task>
-    <option name="localTasksCounter" value="95" />
+    <task id="LOCAL-00095" summary="1.1.4 Decompile Optimise">
+      <option name="closed" value="true" />
+      <created>1787694170100</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1787694170102</updated>
+    </task>
+    <task id="LOCAL-00096" summary="1.1.5 Add distribution files.">
+      <option name="closed" value="true" />
+      <created>1787695684468</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1787695684469</updated>
+    </task>
+    <task id="LOCAL-00097" summary="1.1.5 Add distribution files.">
+      <option name="closed" value="true" />
+      <created>1787695847162</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1787695847163</updated>
+    </task>
+    <task id="LOCAL-00098" summary="1.1.5 Add distribution files.">
+      <option name="closed" value="true" />
+      <created>1787696029095</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1787696029097</updated>
+    </task>
+    <option name="localTasksCounter" value="99" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -700,8 +680,6 @@
       <path value="$PROJECT_DIR$/../XBLA-Extract" />
       <path value="$PROJECT_DIR$/src/compatibility/xemu_compatibility/xdb" />
     </ignored-roots>
-    <MESSAGE value="Updater logging use Signals for better feedback to UI" />
-    <MESSAGE value="1.0.0" />
     <MESSAGE value="1.0.1" />
     <MESSAGE value="1.0.1 XBLIG Emulator" />
     <MESSAGE value="1.0.1 XBLIG Package Window" />
@@ -725,7 +703,9 @@
     <MESSAGE value="1.1.2 Extraction Worker" />
     <MESSAGE value="1.1.2 Rename csproj to game title." />
     <MESSAGE value="1.1.3 Fix DLL references when moving decompiled project to source folder." />
-    <option name="LAST_COMMIT_MESSAGE" value="1.1.3 Fix DLL references when moving decompiled project to source folder." />
+    <MESSAGE value="1.1.4 Decompile Optimise" />
+    <MESSAGE value="1.1.5 Add distribution files." />
+    <option name="LAST_COMMIT_MESSAGE" value="1.1.5 Add distribution files." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
