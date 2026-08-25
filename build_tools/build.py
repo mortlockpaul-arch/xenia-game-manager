@@ -121,7 +121,6 @@ def copy_updater():
     else:
         logging.info(f"Updated {copied} file(s).")
 
-
 logger = setup_logger()
 
 create_defaults(version="1.1.5")
