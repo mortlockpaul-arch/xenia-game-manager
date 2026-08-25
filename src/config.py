@@ -11,7 +11,7 @@ def get_app_dir() -> Path:
 
 
 def load_xenia_manager_config():
-    config = load_config()
+    config = load_config_file()
     xenia_manager_path = Path(config["xenia_manager_path"])
     xenia_manager_config_path = Path.joinpath(xenia_manager_path, "config")
     xenia_manager_config = Path.joinpath(xenia_manager_config_path, "config.json")
@@ -24,7 +24,7 @@ def load_xenia_manager_config():
         raise RuntimeError(f"Config Load Error: {e}") from e
     return config, xenia_manager_path
 
-def load_config(config_dir = Path(get_app_dir(),"config")):
+def load_config_file(config_dir = Path(get_app_dir(), "config")):
     config_file = os.path.join(config_dir, "game-manager-config.json")
     try:
         with open(config_file, "r", encoding="utf-8") as f:

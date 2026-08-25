@@ -1,11 +1,11 @@
 import shutil
 from dataclasses import dataclass
 
-from config import load_config, load_xenia_manager_config
+from config import load_config_file, load_xenia_manager_config
 
 
 def use_xenia_manager_content_folder_for_edge(log_callback=None):
-    config = load_config()
+    config = load_config_file()
     manager_config, xenia_manager_path = load_xenia_manager_config()
     if manager_config == {}:
         raise RuntimeError("Configure Xenia Manager No Configuration Exists")
@@ -92,7 +92,7 @@ class XeniaEdgeGame:
     default: bool = False
 
 def import_edge_games(log_callback=None) -> list[XeniaEdgeGame]:
-    config = load_config()
+    config = load_config_file()
     edge_path = Path(config["xenia_edge_path"])
     edge_library = Path.home() / "Documents" / "Xenia" / "library"
 

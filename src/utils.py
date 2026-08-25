@@ -1,6 +1,6 @@
 # utils.py
 
-from config import load_config, get_app_dir
+from config import load_config_file, get_app_dir
 
 KEEP_UPPER = {
     "DLC", "HD", "XBLA", "USA", "PAL",
@@ -419,7 +419,7 @@ def show_game_diff(file1, file2, log_call_back):
             log_call_back(f"* {after['title']}: {', '.join(changes)}")
 
 def show_differences(log_callback):
-    config = load_config()
+    config = load_config_file()
     xenia_manager_path = Path(config["xenia_manager_path"])
     xenia_manager_installed = config["xenia_manager_installed"]
     if not xenia_manager_installed:

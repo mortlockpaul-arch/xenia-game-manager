@@ -9,7 +9,7 @@ from PySide6.QtCore import (
 )
 from PySide6.QtGui import QBrush, QColor, QFont, QIcon
 
-from config import load_config
+from config import load_config_file
 from db import Database, Xbox360Game, Platform
 from models.model_xbox import BaseGameTableModel
 from utils import star, format_disc_type
@@ -41,12 +41,12 @@ class Xbox360GameTableModel(BaseGameTableModel):
 
         self.db = Database()
         self.games: list[Xbox360Game] = []
-        self.config = load_config()
+        self.config = load_config_file()
         self.xenia_manager_path = Path(self.config["xenia_manager_path"])
         self.load()
 
     def reload_config(self):
-        self.config = load_config()
+        self.config = load_config_file()
         self.xenia_manager_path = Path(self.config["xenia_manager_path"])
 
     @staticmethod

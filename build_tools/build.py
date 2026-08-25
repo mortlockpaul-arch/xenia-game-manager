@@ -8,7 +8,7 @@ import zipfile
 from pathlib import Path
 
 from build_tools.tools import tools_setup
-from config import load_config, save_config, get_app_dir
+from config import load_config_file, save_config, get_app_dir
 from logging_setup import setup_logger
 
 root = get_app_dir()
@@ -65,7 +65,7 @@ def create_defaults(version):
         logging.info(f"  Backing up {path.name} -> {backup}")
         shutil.copy2(path, backup)
 
-    config = load_config()
+    config = load_config_file()
     config["game_manager_version"] = version
     save_config(config)
     logging.info("Done.")

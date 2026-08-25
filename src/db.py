@@ -10,7 +10,7 @@ from typing import Any
 
 import requests
 
-from config import load_config, get_app_dir
+from config import load_config_file, get_app_dir
 from edge_import import import_edge_games, XeniaEdgeGame
 from logging_setup import logger
 from utils import detect_disc_number, strip_disc_suffix, smart_title_case
@@ -173,7 +173,7 @@ class Compatibility:
             "Accept": "application/vnd.github+json",
             "User-Agent": "XeniaGameManager"
         }
-        config = load_config()
+        config = load_config_file()
         api = config["xenia_game_compatibility_url"]
         release = requests.get(api, headers=headers, timeout=30)
         release.raise_for_status()
@@ -415,7 +415,7 @@ def xenia_edge_game_from_dict(data) -> Xbox360Game:
     )
 
     edge_path = Path(
-        load_config()["xenia_edge_path"]
+        load_config_file()["xenia_edge_path"]
     )
 
     edge_configs = (
@@ -675,6 +675,48 @@ class Database:
             con.execute("DELETE FROM sqlite_sequence WHERE name='games'")
             con.commit()
 
+    def get_xblig_metadata(self, title: str) -> dict | None:
+        """Return XBLIG catalogue metadata for a game title."""
+        normalized_title = " ".join(
+            title.casefold().strip().split()
+        )
+
+        cursor = self.conn.execute(
+            """
+            SELECT
+                id,
+                title,
+                developer,
+                developer_account,
+                genre,
+                release_date,
+                user_rating,
+                rating_count,
+                file_size,
+                available_on,
+                links,
+                notes,
+                updates,
+                category_scores,
+                timecode,
+                gamefaqs,
+                title_text_from_youtube
+            FROM xblig_metadata
+            WHERE normalized_title = ?
+            LIMIT 1
+            """,
+            (normalized_title,),
+        )
+
+        row = cursor.fetchone()
+
+        if row is None:
+            return None
+
+        columns = [column[0] for column in cursor.description]
+
+        return dict(zip(columns, row))
+
     def init_db(self):
         with self.conn as con:
             con.execute("""
@@ -848,7 +890,7 @@ class Database:
 
     def export_titles_to_xenia_manager_game_list(self):
         import json
-        config = load_config()
+        config = load_config_file()
         xenia_manager_installed = config["xenia_manager_installed"]
         if xenia_manager_installed:
             xenia_manager_path = config["xenia_manager_path"]
@@ -998,7 +1040,7 @@ class Database:
     ):
         if xbox_game_list is None:
             xbox_game_list = []
-        config = load_config()
+        config = load_config_file()
         multidisc_info = get_app_dir() / "config" / "disc-info.json"
         self.compatibility = load_xemu_compatibility()
 

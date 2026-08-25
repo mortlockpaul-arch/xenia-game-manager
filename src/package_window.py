@@ -3,6 +3,7 @@ import random
 import threading
 import traceback
 import xml.etree.ElementTree as ET  # noqa: N812
+from ast import Raise
 from contextlib import redirect_stdout
 from dataclasses import dataclass
 from dataclasses import field
@@ -31,9 +32,11 @@ from PySide6.QtWidgets import (
     QHeaderView, QApplication, QMessageBox, QSizePolicy, QFrame, QGraphicsDropShadowEffect, QCheckBox, QButtonGroup,
     QRadioButton, QProgressBar, QPlainTextEdit, QLineEdit,
 )
+from keyring.core import load_config
 
-from config import get_app_dir
+from config import get_app_dir, load_xenia_manager_config, load_config_file
 from convert_xna_projects import FNA_VERSION
+from db import Database
 from logging_setup import setup_logger
 
 
@@ -593,11 +596,13 @@ def get_cs_project_folders(
                     )
                 project.unlink()
             else:
-                project.rename(new_path)
-                if log_callback:
-                    log_callback(
-                        f"  Renamed {project.name} -> {new_path.name}"
-                    )
+                try:
+                    project.rename(new_path)
+                    if log_callback:
+                        log_callback(
+                            f"  Renamed {project.name} -> {new_path.name}"
+                        )
+                except PermissionError: log_callback(f"Could not Rename {project.name}. May be its open in Visual Studio.")
 
             if new_path not in projects:
                 projects.append(new_path)
@@ -1060,7 +1065,7 @@ class ConvertXnaProjects(QObject):
         # Contents.csproj
         # ---------------------------------------------------------
 
-        content_project = Path(r"C:\source\Content-References\Contents.csproj")
+        content_project = Path(r"..\..\Content-References\Contents.csproj")
 
         self.log_message(
             f"  Adding project reference: {content_project}"
@@ -1524,6 +1529,20 @@ class CompressWorker(QObject):
 
 class XBLIGDialog(QDialog):
 
+    def moby_games_lookup(self):
+        config = load_config_file()
+
+        mobygames = MobyGamesClient(
+            api_key=config.mobygames_api_key,
+            cache_file=Path("config/mobygames-cache.json"),
+        )
+
+        for game in self.games:
+            if not game.publisher:
+                game.publisher = mobygames.get_publisher(
+                    game.title
+                )
+
     def resizeEvent(self, event):
         super().resizeEvent(event)
 
@@ -1651,6 +1670,9 @@ class XBLIGDialog(QDialog):
         self.games: list[XBLIGGame] = []
         self.setWindowTitle("XBLIG Rebuilder")
         self.resize(1100, 750)
+
+        db = Database()
+        self.db = db
 
         self.build_ui()
         self.rescan_games_responsive()
@@ -1790,13 +1812,14 @@ class XBLIGDialog(QDialog):
             if result.stderr:
                 self.log_message_log(result.stderr)
 
-    def decompile_project(self, game: XBLIGGame, dll_files: list[Path], ilspy_exe: Path, parent=None, extracted=None,
-                          use_gui=False) -> tuple[Path, QProcess]:
+    def decompile_project(self, game: XBLIGGame, dll_files: list[Path], parent=None, extracted=None, use_gui=False) -> tuple[Path, QProcess]:
 
         if use_gui:
             ensure_tool_extracted("ilspy")
         else:
             ensure_tool_extracted("ilspycmd")
+
+        ilspy_exe = ILSPY_GUI if use_gui else ILSPY_CMD
 
         assert game.folder_title is not None
         assert game.extracted is not None
@@ -1824,26 +1847,27 @@ class XBLIGDialog(QDialog):
         self.log_message(f"Output Folder: {output_dir}")
         self.log_message(f"ILSpy: {ilspy_exe}")
         assert game.exe is not None
-        arguments = [
-            str(game.exe),
-            "-p",
-            "-o",
-            str(output_dir),
-            "--nested-directories",
-        ]
+
+        if not use_gui:
+            arguments = [
+                str(game.exe),
+                "-p",
+                "-o",
+                str(output_dir),
+                "--nested-directories",
+            ]
+        else:
+            arguments = [
+                str(game.exe),
+            ]
 
         process = QProcess(parent)
-
         process.setProgram(str(ilspy_exe))
         process.setArguments(arguments)
-
-        if extracted:
-            process.setWorkingDirectory(str(extracted))
+        if extracted: process.setWorkingDirectory(str(extracted))
 
         self.log_message(f"Command: {ilspy_exe} {' '.join(arguments)}")
-        self.log_message(
-            f"Working directory: {process.workingDirectory()}"
-        )
+        self.log_message(f"Working directory: {process.workingDirectory()}")
         return output_dir, process
 
     def decompile_selected(self, game: XBLIGGame, open_explorer: bool = True, use_gui=False, ):
@@ -1851,19 +1875,14 @@ class XBLIGDialog(QDialog):
         dlls = game.dll_files
         extracted = game.extracted
 
-        if not exe:
-            self.log_message("No Executable: Extract the game first.")
-            return None
+        if not exe: raise "No Executable: Extract the game first."
 
-        self.log_message(
-            f"Generating Visual Studio project for {exe.name}..."
-        )
+        self.log_message(f"Generating Visual Studio project for {exe.name}...")
 
         try:
-            ilspy_exe = ILSPY_GUI if use_gui else ILSPY_CMD
 
-            project_dir, process = self.decompile_project(game, dlls, ilspy_exe=ilspy_exe, parent=self,
-                                                          extracted=extracted, use_gui=use_gui)
+
+            project_dir, process = self.decompile_project(game, dlls, parent=self, extracted=extracted, use_gui=use_gui)
 
             if not use_gui:
                 process.readyReadStandardOutput.connect(
@@ -2114,6 +2133,12 @@ class XBLIGDialog(QDialog):
             self.input_folder.setText(str("-"))
             self.output_folder.setText(str("-"))
 
+        if game.decompiled:
+            relative_path = game.decompiled.relative_to(root.parent)
+            if relative_paths: self.decompiled_lbl.setText(str(relative_path))
+            else: self.decompiled_lbl.setText(str(game.decompiled))
+        else:
+            self.decompiled_lbl.setText("-")
 
 
     def compress_decompress_extracted_content(self, mode: bool):
@@ -2231,6 +2256,7 @@ class XBLIGDialog(QDialog):
             return None
 
         from stfs_extract import extract_live_pirs
+        assert game.folder_title is not None
 
         attrs = {
             "decompiled": (
@@ -2239,7 +2265,7 @@ class XBLIGDialog(QDialog):
             ),
             "extracted": (
                 "extracted",
-                Path("D:/downloads") / "extracted" / game.title
+                Path("D:/downloads") / "extracted" / game.folder_title
             ),
         }
 
@@ -2316,6 +2342,15 @@ class XBLIGDialog(QDialog):
         for game in games:
             row = self.game_table.rowCount()
             self.game_table.insertRow(row)
+
+
+            metadata = self.db.get_xblig_metadata(game.title)
+
+            if metadata:
+                game.publisher = (
+                        metadata["developer_account"]
+                        or metadata["developer"]
+                )
 
             for column, (name, getter) in enumerate(columns):
                 value = getter(game)
@@ -2660,19 +2695,7 @@ class XBLIGDialog(QDialog):
         form.setContentsMargins(8, 8, 8, 8)
         form.setVerticalSpacing(4)
 
-        self.title_lbl = QLabel("-")
-        self.titleid_lbl = QLabel("-")
-        self.dll_files_lbl = QLabel("-")
-        self.exe_lbl = QLabel("-")
-        self.xml_lbl = QLabel("-")
-        self.status_lbl = QLabel("-")
-
-        form.addRow("Title", self.title_lbl)
-        form.addRow("Title ID", self.titleid_lbl)
-        form.addRow("DLL Files", self.dll_files_lbl)
-        form.addRow("Executable", self.exe_lbl)
-        form.addRow("GameInfo.xml", self.xml_lbl)
-        form.addRow("Status", self.status_lbl)
+        self.create_labels_drawer(form)
 
         drawer_layout.addWidget(info_group)
 
@@ -2736,6 +2759,47 @@ class XBLIGDialog(QDialog):
         drawer_layout.addWidget(options_group)
         drawer_layout.addStretch()
         self.settings_drawer.hide()
+    #
+    # title: str
+    # icon: Path | None = None
+    #
+    # folder_title: str | None = None
+    # title_id: str | None = None
+    # virtual_title_id: str | None = None
+    # xml_title_id: str | None = None
+    # requested_by: str | None = None
+    # publisher: str | None = None
+    #
+    # content_type: str | None = None
+    # content_name: str | None = None
+    # content_converted: str = "No"
+    # content_format: str = "xnb content"
+    #
+    # package: Path | None = None
+    # extracted: Path | None = None
+    # game_root: Path | None = None
+    #
+    # exe: Path | None = None
+    # dll_files: list[Path] = field(default_factory=list)
+    # xml: Path | None = None
+    # decompiled: Path | None = None
+    #
+    def create_labels_drawer(self, form: QFormLayout):
+        self.title_lbl = QLabel("-")
+        self.titleid_lbl = QLabel("-")
+        self.dll_files_lbl = QLabel("-")
+        self.exe_lbl = QLabel("-")
+        self.xml_lbl = QLabel("-")
+        self.decompiled_lbl = QLabel("-")
+        self.status_lbl = QLabel("-")
+
+        form.addRow("Title", self.title_lbl)
+        form.addRow("Title ID", self.titleid_lbl)
+        form.addRow("DLL Files", self.dll_files_lbl)
+        form.addRow("Executable", self.exe_lbl)
+        form.addRow("GameInfo.xml", self.xml_lbl)
+        form.addRow("Decompiled", self.decompiled_lbl)
+        form.addRow("Status", self.status_lbl)
 
     def build_ui(self):
 

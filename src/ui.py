@@ -47,7 +47,7 @@ from keyring.backends.Windows import WinVaultKeyring
 import xboxunity_api
 from git_actions import DownloadArtifact
 from archive_window import ArchiveBrowser
-from config import save_config, load_config, load_xenia_manager_config, get_app_dir
+from config import save_config, load_config_file, load_xenia_manager_config, get_app_dir
 from db import Database, Compatibility, XboxGame, Xbox360Game, Platform
 from edge_import import use_xenia_manager_content_folder_for_edge
 from extract import extract_archives, ExtractWorker
@@ -445,7 +445,7 @@ class GameLauncher(QMainWindow):
         self.xenia_mousehook_installed: QCheckBox = QCheckBox()
 
         self.extract_downloaded_archives_btn = None
-        self.config = load_config()
+        self.config = load_config_file()
         self.archive_button = None
         # self.launch_edge = QPushButton()
         # self.launch_manager = QPushButton()
@@ -920,7 +920,7 @@ class GameLauncher(QMainWindow):
             finally:
                 self.finished.emit()
     def download_experimental_releases(self):
-        config = load_config()
+        config = load_config_file()
         self.log(clear_console=True)
         github_environment_variable = keyring.get_password("Xenia Game Manager", "github_token")
         if not github_environment_variable:
@@ -1094,7 +1094,7 @@ class GameLauncher(QMainWindow):
             path_enabled=None,
             button_enabled=None,
     ):
-        config = load_config()
+        config = load_config_file()
 
         widget_info = next(
             (
@@ -1138,7 +1138,7 @@ class GameLauncher(QMainWindow):
 
     def checkbox_changed(self, state, checkbox_name):
         checked = bool(state)
-        config = load_config()
+        config = load_config_file()
         self.set_checkbox(checkbox_name, checked)
 
         if checkbox_name != "manager":
@@ -1275,7 +1275,7 @@ class GameLauncher(QMainWindow):
             )
 
     def launch_program(self, program):
-        self.config = load_config()
+        self.config = load_config_file()
         programs = {
             "manager": Path(self.config["xenia_manager_path"]) / "XeniaManager.exe",
             "edge": Path(self.config["xenia_edge_path"]) / "xenia_edge.exe",
@@ -1364,7 +1364,7 @@ class GameLauncher(QMainWindow):
         refresh_btn = QPushButton("Load Xbox Games")
         refresh_btn.clicked.connect(partial(self.refresh, "xbox"))
 
-        self.config = load_config()
+        self.config = load_config_file()
         xenia_manager_installed = self.config["xenia_manager_installed"]
         button_text = "Launch Xenia Manager"
         self.launch_manager = QPushButton(button_text)
@@ -1671,7 +1671,7 @@ class GameLauncher(QMainWindow):
 
         getattr(self, key).setText(folder)
 
-        config = load_config()
+        config = load_config_file()
         config[f"{key}"] = folder
         save_config(config)
         if button_name == "edge":
@@ -1704,7 +1704,7 @@ class GameLauncher(QMainWindow):
             )
 
     def load_saved_config(self):
-        self.config = load_config()
+        self.config = load_config_file()
 
         for widget in self.widgets.values():
             checked = self.config.get(
@@ -1730,7 +1730,7 @@ class GameLauncher(QMainWindow):
 
     def install_xenia_manager_and_xenia_edge(self, name="manager"):
         if name == "manager":
-            self.config = load_config()
+            self.config = load_config_file()
             install_path:Path = Path(self.config.get( "xenia_manager_path", ""))
 
             xenia_manager_installed = self.config.get("xenia_manager_installed", False)
@@ -1753,7 +1753,7 @@ class GameLauncher(QMainWindow):
                 self.config["xenia_manager_path"] = str(install_path)
                 save_config(self.config)
 
-            self.config = load_config()
+            self.config = load_config_file()
             xenia_manager_installed = self.config.get("xenia_manager_installed", False)
 
             button_text = "Launch Xenia Manager" if xenia_manager_installed else "Install Xenia Manager"
@@ -1762,7 +1762,7 @@ class GameLauncher(QMainWindow):
             self.launch_manager.repaint()
 
         if name == "edge":
-            self.config = load_config()
+            self.config = load_config_file()
             install_path: Path = Path(self.config.get("xenia_edge_path", ""))
             xenia_edge_installed = self.config.get("xenia_edge_installed", False)
             if not xenia_edge_installed:
@@ -1794,7 +1794,7 @@ class GameLauncher(QMainWindow):
                 save_config(self.config)
 
             # Refresh config state
-            self.config = load_config()
+            self.config = load_config_file()
             xenia_edge_installed = self.config.get("xenia_edge_installed", False)
 
             button_text = "Launch Xenia Edge" if xenia_edge_installed else "Install Xenia Edge"
@@ -2077,7 +2077,7 @@ class GameLauncher(QMainWindow):
         if row is None:
             return
 
-        config = load_config()
+        config = load_config_file()
         if self.platform == Platform.XBOX:
             xemu_exe_location = Path(config["xemu_path"])
 

@@ -6,7 +6,7 @@ import sys
 import time
 from pathlib import Path
 
-from config import load_config, save_config
+from config import load_config_file, save_config
 from extract import extract_archives
 from logging_setup import setup_logging
 
@@ -71,7 +71,7 @@ def main():
     pid = args.pid
     version = args.version
 
-    config = load_config()
+    config = load_config_file()
     default_exe = Path(config["xenia_game_manager_portable_path"]) / "Xenia Game Manager.exe"
     if not exe.exists(): exe = default_exe
     if pid != 1: wait_for_process(pid)
