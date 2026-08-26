@@ -773,15 +773,15 @@ class ConvertXnaProjects(QObject):
                 else ""
             )
 
-            exe_file = None
+            exe_files = []
             dll_files = []
 
             if extracted.exists():
                 for path in scan_files(extracted):
                     suffix = path.suffix.lower()
 
-                    if suffix == ".exe" and exe_file is None:
-                        exe_file = path
+                    if suffix == ".exe":
+                        exe_files.append(path)
 
                     elif suffix == ".dll":
                         dll_files.append(path)
@@ -801,7 +801,7 @@ class ConvertXnaProjects(QObject):
                     package=package,
                     extracted=extracted if extracted.exists() else extracted_path_value if extracted_path_value.exists() else None,
                     game_root=extracted if extracted.exists() else package.parent,
-                    executables=exe_file,
+                    executables=exe_files,
                     dll_files=dll_files,
                     xml=game_info if game_info.exists() else None,
                     decompiled=decompiled if decompiled.exists() else decompiled_path_value if decompiled_path_value.exists() else None,
