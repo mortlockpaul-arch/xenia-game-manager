@@ -277,7 +277,6 @@ from pathlib import Path
 
 @dataclass
 class XBLIGGame:
-
     title: str
     icon: Path | None = None
 
@@ -297,7 +296,7 @@ class XBLIGGame:
     extracted: Path | None = None
     game_root: Path | None = None
 
-    exe: Path | None = None
+    executables: list[Path] = field(default_factory=list)
     dll_files: list[Path] = field(default_factory=list)
     xml: Path | None = None
     decompiled: Path | None = None
@@ -309,7 +308,7 @@ class XBLIGGame:
                 "package",
                 "extracted",
                 "game_root",
-                "exe",
+                "executables",
                 "xml",
                 "decompiled",
         ):
@@ -362,7 +361,9 @@ class XBLIGGame:
 
         return cls(**converted)
 
-def copy_extracted_folder_content_and_references(source_content_root_folder, dest_content_folder, dll_files, log_callback=None, ):
+
+def copy_extracted_folder_content_and_references(source_content_root_folder, dest_content_folder, dll_files,
+                                                 log_callback=None, ):
     source_content_root_folder = Path(source_content_root_folder)
     dest_content_folder = Path(dest_content_folder)
 
@@ -571,8 +572,8 @@ class ToolManager:
 
 
 def get_cs_project_folders(
-    games: list[XBLIGGame],
-    log_callback: Callable[[str], None] | None = None,
+        games: list[XBLIGGame],
+        log_callback: Callable[[str], None] | None = None,
 ) -> list[Path]:
     projects = []
 
@@ -602,7 +603,8 @@ def get_cs_project_folders(
                         log_callback(
                             f"  Renamed {project.name} -> {new_path.name}"
                         )
-                except PermissionError: log_callback(f"Could not Rename {project.name}. May be its open in Visual Studio.")
+                except PermissionError:
+                    log_callback(f"Could not Rename {project.name}. May be its open in Visual Studio.")
 
             if new_path not in projects:
                 projects.append(new_path)
@@ -799,7 +801,7 @@ class ConvertXnaProjects(QObject):
                     package=package,
                     extracted=extracted if extracted.exists() else extracted_path_value if extracted_path_value.exists() else None,
                     game_root=extracted if extracted.exists() else package.parent,
-                    exe=exe_file,
+                    executables=exe_file,
                     dll_files=dll_files,
                     xml=game_info if game_info.exists() else None,
                     decompiled=decompiled if decompiled.exists() else decompiled_path_value if decompiled_path_value.exists() else None,
@@ -1512,20 +1514,23 @@ def _compress_games(games: list[XBLIGGame], log):
                 f"{type(e).__name__}: {e}"
             )
 
+
 class CompressWorker(QObject):
     log = Signal(str)
     finished = Signal()
 
-    def __init__(self, function: Callable[..., None], *args, **kwargs,):
+    def __init__(self, function: Callable[..., None], *args, **kwargs, ):
         super().__init__()
         self.function = function
         self.args = args
         self.kwargs = kwargs
+
     @Slot()
     def run(self):
         with redirect_stdout(QtLogger(self.log.emit)):
             self.function(*self.args, **self.kwargs)
             self.finished.emit()
+
 
 class XBLIGDialog(QDialog):
 
@@ -1812,7 +1817,7 @@ class XBLIGDialog(QDialog):
             if result.stderr:
                 self.log_message_log(result.stderr)
 
-    def decompile_project(self, game: XBLIGGame, dll_files: list[Path], parent=None, extracted=None, use_gui=False) -> tuple[Path, QProcess]:
+    def decompile_project(self, game: XBLIGGame, dll_files: list[Path], parent=None, use_gui=False, open_explorer=None) -> Path:
 
         if use_gui:
             ensure_tool_extracted("ilspy")
@@ -1846,43 +1851,31 @@ class XBLIGDialog(QDialog):
 
         self.log_message(f"Output Folder: {output_dir}")
         self.log_message(f"ILSpy: {ilspy_exe}")
-        assert game.exe is not None
+        assert game.executables is not None
+        for executable in game.executables:
 
-        if not use_gui:
-            arguments = [
-                str(game.exe),
-                "-p",
-                "-o",
-                str(output_dir),
-                "--nested-directories",
-            ]
-        else:
-            arguments = [
-                str(game.exe),
-            ]
+            if not use_gui:
+                arguments = [
+                    "-p",
+                    "-o",
+                    str(output_dir),
+                    "-r",
+                    str(executable.parent),
+                    "--nested-directories",
+                    str(executable),
+                ]
+            else:
+                arguments = [
+                    str(executable),
+                ]
 
-        process = QProcess(parent)
-        process.setProgram(str(ilspy_exe))
-        process.setArguments(arguments)
-        if extracted: process.setWorkingDirectory(str(extracted))
+            process = QProcess(parent)
+            process.setProgram(str(ilspy_exe))
+            process.setArguments(arguments)
+            if extracted: process.setWorkingDirectory(str(extracted))
 
-        self.log_message(f"Command: {ilspy_exe} {' '.join(arguments)}")
-        self.log_message(f"Working directory: {process.workingDirectory()}")
-        return output_dir, process
-
-    def decompile_selected(self, game: XBLIGGame, open_explorer: bool = True, use_gui=False, ):
-        exe = game.exe
-        dlls = game.dll_files
-        extracted = game.extracted
-
-        if not exe: raise "No Executable: Extract the game first."
-
-        self.log_message(f"Generating Visual Studio project for {exe.name}...")
-
-        try:
-
-
-            project_dir, process = self.decompile_project(game, dlls, parent=self, extracted=extracted, use_gui=use_gui)
+            self.log_message(f"Command: {ilspy_exe} {' '.join(arguments)}")
+            self.log_message(f"Working directory: {process.workingDirectory()}")
 
             if not use_gui:
                 process.readyReadStandardOutput.connect(
@@ -1915,7 +1908,7 @@ class XBLIGDialog(QDialog):
 
             process.started.connect(
                 lambda: self.log_message(
-                    f"ILSpy started: {exe.name}"
+                    f"ILSpy started: {executable.name}"
                 )
             )
 
@@ -1923,7 +1916,7 @@ class XBLIGDialog(QDialog):
                 lambda exit_code, exit_status:
                 self.on_decompile_finished(
                     open_explorer,
-                    project_dir,
+                    output_dir,
                     game,
                     exit_code,
                     exit_status,
@@ -1932,7 +1925,89 @@ class XBLIGDialog(QDialog):
 
             self.log_message("Starting ILSpy...")
             process.start()
-            return project_dir
+
+        for dll in dll_files:
+            if not use_gui:
+                arguments = [
+                    "-p",
+                    "-o",
+                    str(output_dir),
+                    "--nested-directories",
+                    str(dll),
+                ]
+            else:
+                arguments = [
+                    str(dll),
+                ]
+
+            process = QProcess(parent)
+            process.setProgram(str(ilspy_exe))
+            process.setArguments(arguments)
+            if extracted: process.setWorkingDirectory(str(extracted))
+
+            self.log_message(f"Command: {ilspy_exe} {' '.join(arguments)}")
+            self.log_message(f"Working directory: {process.workingDirectory()}")
+
+            if not use_gui:
+                process.readyReadStandardOutput.connect(
+                    lambda: self.log_message(
+                        bytes(
+                            process.readAllStandardOutput().data()
+                        ).decode(
+                            "utf-8",
+                            errors="replace",
+                        )
+                    )
+                )
+
+                process.readyReadStandardError.connect(
+                    lambda: self.log_message(
+                        bytes(
+                            process.readAllStandardError().data()
+                        ).decode(
+                            "utf-8",
+                            errors="replace",
+                        )
+                    )
+                )
+
+            process.errorOccurred.connect(
+                lambda error: self.log_message(
+                    f"ILSpy process error: {error}"
+                )
+            )
+
+            process.started.connect(
+                lambda: self.log_message(
+                    f"ILSpy started: {executable.name}"
+                )
+            )
+
+            process.finished.connect(
+                lambda exit_code, exit_status:
+                self.on_decompile_finished(
+                    open_explorer,
+                    output_dir,
+                    game,
+                    exit_code,
+                    exit_status,
+                )
+            )
+
+            self.log_message("Starting ILSpy...")
+            process.start()
+
+        return output_dir
+
+    def decompile_selected(self, game: XBLIGGame, open_explorer: bool = True, use_gui=False, ):
+        executables = game.executables
+        dlls = game.dll_files
+        if not executables: raise "No Executables: Extract the game first."
+        for executable in executables:
+            self.log_message(f"Generating Visual Studio project for {executable.name}...")
+
+        try:
+            project_dir = self.decompile_project(game, dlls, parent=self, use_gui=use_gui, open_explorer=open_explorer)
         except Exception as e:
             self.log_message(
                 f"ERROR decompiling {exe.name}: "
@@ -2106,40 +2181,29 @@ class XBLIGDialog(QDialog):
             "\n".join(dll.name for dll in game.dll_files) if game.dll_files else "-"
         )
 
-        if game.exe:
-            relative_path = game.exe.relative_to(root.parent)
-            if relative_paths: self.exe_lbl.setText(str(relative_path))
-            else: self.exe_lbl.setText(str(game.exe))
+        if game.executables:
+            self.exe_lbl.setText("\n".join(executable.name for executable in game.executables) if game.executables else "-")
         else:
             self.exe_lbl.setText("-")
 
         if game.xml:
-            relative_path = game.xml.relative_to(root.parent)
-            if relative_paths: self.xml_lbl.setText(str(relative_path))
-            else: self.xml_lbl.setText(str(game.xml))
+            self.xml_lbl.setText(str(game.xml))
         else:
             self.xml_lbl.setText("-")
 
         if game.extracted is not None:
             content_dir = game.extracted / "584E07D1" / "Content"
             output_dir = content_dir.parent / "Content_Output"
-            if relative_paths:
-                self.input_folder.setText(str(content_dir.relative_to(root.parent)))
-                self.output_folder.setText(str(output_dir.relative_to(root.parent)))
-            else:
-                self.input_folder.setText(str(content_dir))
-                self.output_folder.setText(str(output_dir))
+            self.input_folder.setText(str(content_dir))
+            self.output_folder.setText(str(output_dir))
         else:
             self.input_folder.setText(str("-"))
             self.output_folder.setText(str("-"))
 
         if game.decompiled:
-            relative_path = game.decompiled.relative_to(root.parent)
-            if relative_paths: self.decompiled_lbl.setText(str(relative_path))
-            else: self.decompiled_lbl.setText(str(game.decompiled))
+            self.decompiled_lbl.setText(str(game.decompiled))
         else:
             self.decompiled_lbl.setText("-")
-
 
     def compress_decompress_extracted_content(self, mode: bool):
         selected = self.get_selected_game()
@@ -2216,7 +2280,8 @@ class XBLIGDialog(QDialog):
     def extract_game_or_games_package(self):
         if self.overwrite_check.isChecked():
             overwrite = True
-        else: overwrite = False
+        else:
+            overwrite = False
 
         if self.all_checkbox.isChecked():
             games = self.games
@@ -2280,7 +2345,7 @@ class XBLIGDialog(QDialog):
         try:
             from contextlib import redirect_stdout
             from functools import partial
-            func = partial(extract_live_pirs, package, extracted_path,None)
+            func = partial(extract_live_pirs, package, extracted_path, None)
             self.game = game
             self.run_worker(func)
             self.log_message_log(f"Extracted to: {extracted_path}")
@@ -2302,7 +2367,7 @@ class XBLIGDialog(QDialog):
             "Title": lambda g: g.title or "",
             "Status": lambda g: (
                 "Ready"
-                if g.exe is not None and g.xml is not None
+                if g.executables is not None and g.xml is not None
                 else "Needs Build"
             ),
             "Requested By": lambda g: g.requested_by or "",
@@ -2314,8 +2379,8 @@ class XBLIGDialog(QDialog):
                 else ""
             ),
             "Executable": lambda g: (
-                g.exe.name
-                if g.exe
+                g.executables.name
+                if g.executables
                 else ""
             ),
             "DLL Files": lambda g: str(len(g.dll_files or [])),
@@ -2342,7 +2407,6 @@ class XBLIGDialog(QDialog):
         for game in games:
             row = self.game_table.rowCount()
             self.game_table.insertRow(row)
-
 
             metadata = self.db.get_xblig_metadata(game.title)
 
@@ -2396,6 +2460,7 @@ class XBLIGDialog(QDialog):
                 else:
                     item = QTableWidgetItem(str(value))
                     self.game_table.setItem(row, column, item)
+
     from PySide6.QtWidgets import (
         QDialog,
     )
@@ -2533,8 +2598,8 @@ class XBLIGDialog(QDialog):
                     except Exception as e:
                         self.log_message(f"FAILED {project}: {e}")
         if options["open_visual_studio"]:
-            if game.exe is not None:
-                solution = str(str(f"{str(game.exe)}.sln"))
+            if game.executables is not None:
+                solution = str(str(f"{str(game.executables)}.sln"))
                 subprocess.Popen(["explorer", str(solution)])
         # folder = game.extracted
         # content_dir = folder / "584E07D1" / "Content"
@@ -2759,6 +2824,7 @@ class XBLIGDialog(QDialog):
         drawer_layout.addWidget(options_group)
         drawer_layout.addStretch()
         self.settings_drawer.hide()
+
     #
     # title: str
     # icon: Path | None = None
@@ -2818,7 +2884,7 @@ class XBLIGDialog(QDialog):
         self.extract_btn.clicked.connect(self.extract_game_or_games_package)
         self.extract_btn.setFixedWidth(240)
 
-        self.build_btn = QPushButton("Decompile Game")
+        self.build_btn = QPushButton("Decompile Game and Assemblies")
         self.build_btn.clicked.connect(self.build_selected)
         self.build_btn.setFixedWidth(240)
         # self.random_btn = QPushButton("Random Game")
@@ -2909,7 +2975,6 @@ class XBLIGDialog(QDialog):
         #
 
         self.game_table = QTableWidget(0, 11)
-
 
         # self.columns = [
         #     "Icon",
