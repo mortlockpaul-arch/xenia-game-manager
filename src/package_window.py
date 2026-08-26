@@ -2378,11 +2378,7 @@ class XBLIGDialog(QDialog):
                 if g.decompiled
                 else ""
             ),
-            "Executable": lambda g: (
-                g.executables.name
-                if g.executables
-                else ""
-            ),
+            "Executables": lambda g: str(len(g.executables or [])),
             "DLL Files": lambda g: str(len(g.dll_files or [])),
             "Content Converted": lambda g: (
                     g.content_converted or ""
