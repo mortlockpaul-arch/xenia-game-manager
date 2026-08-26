@@ -343,9 +343,7 @@ class XBLIGGame:
             "xml",
             "decompiled",
         }
-
         converted = {}
-
         for field in fields(cls):
             value = data.get(field.name)
 
