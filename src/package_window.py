@@ -308,7 +308,6 @@ class XBLIGGame:
                 "package",
                 "extracted",
                 "game_root",
-                "executables",
                 "xml",
                 "decompiled",
         ):
@@ -341,7 +340,6 @@ class XBLIGGame:
             "package",
             "extracted",
             "game_root",
-            "exe",
             "xml",
             "decompiled",
         }
@@ -2002,7 +2000,7 @@ class XBLIGDialog(QDialog):
     def decompile_selected(self, game: XBLIGGame, open_explorer: bool = True, use_gui=False, ):
         executables = game.executables
         dlls = game.dll_files
-        if not executables: raise "No Executables: Extract the game first."
+        if not executables: raise ValueError("No Executables: Extract the game first.")
         for executable in executables:
             self.log_message(f"Generating Visual Studio project for {executable.name}...")
 
