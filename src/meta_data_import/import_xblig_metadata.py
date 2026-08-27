@@ -314,7 +314,7 @@ def main():
 if __name__ == "__main__":
 
     inserted, updated = import_xblig_games(
-        Path(r"C:\PycharmProjects\xenia-game-manager\src\db\games.db"),
+        Path(r"/database\games.db"),
         Path(r"/meta_data_import/List of Xbox Live Indie Games.xlsx"),
     )
 

@@ -1,3 +1,4 @@
+from dataclasses import dataclass, field, fields
 from pathlib import Path
 from typing import Protocol
 
@@ -72,3 +73,4 @@ class XboxModel(BaseGameModel):
 
 class Xbox360Model(BaseGameModel):
     games: list[Xbox360Game]
+

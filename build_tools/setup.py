@@ -47,7 +47,7 @@ build_exe_options = {
     ],
     "excludes": ["tkinter", "unittest"],
     "include_files": [
-        (str(root / "db"), "db"),
+        (str(root / "database"), "database"),
         (str(root / "config"), "config"),
         (str(root / "assets"), "assets"),
     ],

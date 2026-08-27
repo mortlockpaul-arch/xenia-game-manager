@@ -1,22 +1,22 @@
+import io
 import logging
+import os
 import random
+import shutil
+import subprocess
+import sys
 import threading
+import time
 import traceback
 import xml.etree.ElementTree as ET  # noqa: N812
-from ast import Raise
 from contextlib import redirect_stdout
-from dataclasses import dataclass
-from dataclasses import field
 from functools import partial
 from pathlib import Path
-
-import sys
-import time
-from typing import Any, Callable
+from typing import Callable
 
 from PySide6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QRect, QThread, Signal, QObject, QModelIndex, \
-    Slot, QSize
-from PySide6.QtGui import QFont, QIcon
+    Slot, QSize, QProcess
+from PySide6.QtGui import QFont
 from PySide6.QtWidgets import (
     QDialog,
     QVBoxLayout,
@@ -25,31 +25,18 @@ from PySide6.QtWidgets import (
     QWidget,
     QPushButton,
     QLabel,
-    QTableWidget,
     QTableWidgetItem,
     QFormLayout,
     QGroupBox,
-    QHeaderView, QApplication, QMessageBox, QSizePolicy, QFrame, QGraphicsDropShadowEffect, QCheckBox, QButtonGroup,
-    QRadioButton, QProgressBar, QPlainTextEdit, QLineEdit,
+    QHeaderView, QApplication, QSizePolicy, QFrame, QGraphicsDropShadowEffect, QCheckBox, QButtonGroup,
+    QRadioButton, QProgressBar, QPlainTextEdit, QLineEdit, QAbstractItemView, QTableView,
 )
-from keyring.core import load_config
+from db import ConversionResult, Database, XBLIGGame
 
-from config import get_app_dir, load_xenia_manager_config, load_config_file
-from convert_xna_projects import FNA_VERSION
-from db import Database
+from config import get_app_dir, load_config_file
 from logging_setup import setup_logger
 from moby_games import MobyGamesClient
-
-
-@dataclass
-class ConversionResult:
-    tool: str
-    success: bool
-    input_file: Path
-    output_files: list[Path]
-    stdout: str
-    stderr: str
-    error: str | None = None
+from models.model_indie import IndieGameTableModel
 
 
 def read_bytes(file_path: Path):
@@ -116,25 +103,14 @@ def move_folders_to_type(root):
         print(f"Moving {folder} -> {dest}")
         shutil.move(str(folder), str(dest))
 
-
-from pathlib import Path
-
-import os
-
-
 def open_solution(project_dir: Path):
     for csproj in project_dir.glob("*.csproj"):
         os.startfile(csproj)
         return
 
-
 DECOMPILER = get_app_dir() / "assets" / "tools"
-
 ILSPY_GUI = DECOMPILER / "ILSpy" / "publish" / "ILSpy.exe"
 ILSPY_CMD = DECOMPILER / "ILSpyCmd" / "Release" / "net10.0" / "ilspycmd.exe"
-
-from PySide6.QtCore import QProcess
-
 
 def cleanup_nested_categories(root):
     root = Path(root)
@@ -185,10 +161,6 @@ def cleanup_nested_categories(root):
                 print(f"Removed empty folder: {nested}")
             except OSError:
                 pass
-
-
-import io
-
 
 class QtLogger(io.TextIOBase):
     def __init__(self, callback):
@@ -270,94 +242,6 @@ def load_cache():
     except Exception as e:
         print(f"Failed to load cache: {e}")
         return None
-
-
-from dataclasses import dataclass, fields
-from pathlib import Path
-
-
-@dataclass
-class XBLIGGame:
-    title: str
-    icon: Path | None = None
-
-    folder_title: str | None = None
-    title_id: str | None = None
-    virtual_title_id: str | None = None
-    xml_title_id: str | None = None
-    requested_by: str | None = None
-    publisher: str | None = None
-
-    content_type: str | None = None
-    content_name: str | None = None
-    content_converted: str = "No"
-    content_format: str = "xnb content"
-
-    package: Path | None = None
-    extracted: Path | None = None
-    game_root: Path | None = None
-
-    executables: list[Path] = field(default_factory=list)
-    dll_files: list[Path] = field(default_factory=list)
-    xml: Path | None = None
-    decompiled: Path | None = None
-
-    # def __init__(self):
-
-    def __post_init__(self):
-        for field in (
-                "package",
-                "extracted",
-                "game_root",
-                "xml",
-                "decompiled",
-        ):
-            value = getattr(self, field)
-            if isinstance(value, str):
-                setattr(self, field, Path(value))
-
-    def to_dict(self):
-        data = {}
-
-        for field in fields(self):
-            value = getattr(self, field.name)
-
-            if isinstance(value, Path):
-                value = str(value)
-
-            elif isinstance(value, list):
-                value = [
-                    str(item) if isinstance(item, Path) else item
-                    for item in value
-                ]
-
-            data[field.name] = value
-
-        return data
-
-    @classmethod
-    def from_dict(cls, data):
-        path_fields = {
-            "package",
-            "extracted",
-            "game_root",
-            "xml",
-            "decompiled",
-        }
-        converted = {}
-        for field in fields(cls):
-            value = data.get(field.name)
-
-            if field.name in path_fields and value:
-                value = Path(value)
-
-            elif field.name == "dll_files" and value:
-                value = [Path(x) for x in value]
-
-            converted[field.name] = value
-
-        return cls(**converted)
-
 
 def copy_extracted_folder_content_and_references(source_content_root_folder, dest_content_folder, dll_files,
                                                  log_callback=None, ):
@@ -480,9 +364,7 @@ def ensure_tool_extracted(name: str):
     )
 
 
-from pathlib import Path
-import shutil
-import subprocess
+
 
 
 def compress_tool(name: str):
@@ -634,6 +516,7 @@ def add_xna_compat(project_folder):
 alba = (get_app_dir() / "assets/tools/conversion/Alba.XnaConvert.0.1.2/Alba.XnaConvert.exe")
 xnb_cli = (get_app_dir() / "assets/tools/conversion/xnbcli-windows-x64/xnbcli.exe")
 xnb_extractor = (get_app_dir() / "assets/tools/conversion/xnb-extractor/Release/net481/XnbExtractor.exe")
+
 
 class ConvertXnaProjects(QObject):
     log_signal = Signal(str)
@@ -1470,10 +1353,7 @@ class ConvertXnaProjects(QObject):
             f"  Project updated successfully: {project_path.name}"
         )
 
-    import os
-    import shutil
     from pathlib import Path
-    import xml.etree.ElementTree as ET
     def copy_project_files(
             self,
             source_dir: Path,
@@ -1860,6 +1740,55 @@ class CompressWorker(QObject):
             self.finished.emit()
 
 
+class ScanWorker(QObject):
+    finished_signal = Signal(list)
+    log_signal = Signal(str)
+    progress_signal = Signal(int, int)
+    total_files_signal = Signal(int)
+
+    def __init__(self, root: Path, parent: XBLIGDialog, force: bool = False, ):
+        super().__init__()
+        converter = parent.method_name()
+        self.total_files = 0
+        self.root = root
+        self.converter = converter
+        self.force = force
+
+    def _set_total_files(self, total: int):
+        self.total_files = total
+        self.total_files_signal.emit(total)
+        # Forward converter signals
+        # self.converter.log_signal.connect(self.log_signal)
+        # self.converter.progress_signal.connect(self.progress_signal)
+
+    @Slot()
+    def run(self):
+
+        try:
+            games: list[XBLIGGame] = []
+            # current_mtime = get_folder_mtime(self.root)
+            cache = None if self.force else load_cache()
+            if cache:
+                self.log_signal.emit("Checking game cache...")
+                games = cache["games"]
+                self.log_signal.emit(f"Loaded {len(games)} games from cache.")
+                self.total_files_signal.emit(100)
+            else:
+                self.log_signal.emit("Scanning folders...")
+                if not self.root.exists():
+                    self.log_signal.emit(f"Folder {self.root} does not exist.")
+                    self.total_files_signal.emit(100)
+                else:
+                    games = self.converter.find_packages(self.root)
+                    save_cache(games)
+                    self.log_signal.emit("Cache updated.")
+            self.finished_signal.emit(games)
+
+        except Exception as e:
+            self.log_signal.emit(f"Scanner error: {e}")
+            self.finished_signal.emit([])
+
+
 class XBLIGDialog(QDialog):
 
     def moby_games_lookup(self):
@@ -1986,6 +1915,8 @@ class XBLIGDialog(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.scan_worker = None
+        self.scan_thread = None
         self.config = load_config_file()
         self.columns = None
         self.game = None
@@ -2009,13 +1940,11 @@ class XBLIGDialog(QDialog):
         self.db = db
 
         self.build_ui()
-        self.rescan_games_responsive()
+        # self.rescan_games_responsive()
         self.load_games(self.games)
 
         self.create_settings_drawer()
         self.apply_style()
-
-        import logging
 
     def print_games(self):
         for i, game in enumerate(self.games, 1):
@@ -2069,10 +1998,10 @@ class XBLIGDialog(QDialog):
 
     def method_name(self) -> ConvertXnaProjects:
         converter = ConvertXnaProjects(get_app_dir(), self.games, self.options)
-
         converter.log_signal.connect(self.log_message_log)
         converter.progress_signal.connect(self.update_progress)
         converter.finished_signal.connect(self.tool_finished)
+        converter.total_files_signal.connect(self.update_progress)
         return converter
 
     def update_progress(self, value: int):
@@ -2080,7 +2009,6 @@ class XBLIGDialog(QDialog):
         self.progress_bar.setFormat(
             f"Scanner {value}%"
         )
-
 
     def convert_game_project(self):
         if self.all_checkbox.isChecked():
@@ -2115,10 +2043,7 @@ class XBLIGDialog(QDialog):
         game, indexes = result
         if game:
             ensure_tool_extracted("conversion")
-            converter = ConvertXnaProjects(get_app_dir(), self.games, self.options)
-            converter.log_signal.connect(self.log_message_log)
-            converter.progress_signal.connect(self.progress_bar.setValue)
-            converter.finished_signal.connect(self.tool_finished)
+            converter = self.method_name()
 
             self.progress_bar.setRange(0, 0)  # Busy animation
             run_in_background(converter.convert_xnb_folder_tools, game, tool_id)
@@ -2153,7 +2078,8 @@ class XBLIGDialog(QDialog):
             if result.stderr:
                 self.log_message_log(result.stderr)
 
-    def decompile_project(self, game: XBLIGGame, dll_files: list[Path], parent=None, use_gui=False, open_explorer=None) -> Path:
+    def decompile_project(self, game: XBLIGGame, dll_files: list[Path], parent=None, use_gui=False,
+                          open_explorer=None) -> Path:
 
         if use_gui:
             ensure_tool_extracted("ilspy")
@@ -2189,6 +2115,7 @@ class XBLIGDialog(QDialog):
         self.log_message(f"ILSpy: {ilspy_exe}")
         assert game.executables is not None
         for executable in game.executables:
+            self.log_message(f"Generating Visual Studio project for {executable.name}...")
 
             if not use_gui:
                 arguments = [
@@ -2339,11 +2266,11 @@ class XBLIGDialog(QDialog):
         executables = game.executables
         dlls = game.dll_files
         if not executables: raise ValueError("No Executables: Extract the game first.")
-        for executable in executables:
-            self.log_message(f"Generating Visual Studio project for {executable.name}...")
 
         try:
             project_dir = self.decompile_project(game, dlls, parent=self, use_gui=use_gui, open_explorer=open_explorer)
+            if game.decompiled is None:
+                game.decompiled = project_dir
         except Exception as e:
             self.log_message(
                 f"ERROR decompiling {exe.name}: "
@@ -2378,63 +2305,10 @@ class XBLIGDialog(QDialog):
         if open_explorer:
             subprocess.Popen(["explorer", str(project_dir)])
 
-    from PySide6.QtCore import QObject
-
     def update_scan_progress(self, current: int, total: int):
         value = int(current * 100 / total) if total else 0
         self.progress_bar.setValue(value)
         self.progress_bar.setFormat(f"Scanner {current:,}")
-
-    class ScanWorker(QObject):
-        finished_signal = Signal(list)
-        log_signal = Signal(str)
-        progress_signal = Signal(int, int)
-        total_files_signal = Signal(int)
-
-        def __init__(self, root: Path, force=False):
-            super().__init__()
-            converter = ConvertXnaProjects(get_app_dir(), None, None)
-            converter.log_signal.connect(self.log_signal)
-            converter.progress_signal.connect(lambda value: self.progress_signal.emit(value, self.total_files))
-            converter.total_files_signal.connect(self._set_total_files)
-            self.total_files = 0
-            self.root = root
-            self.converter = converter
-            self.force = force
-
-        def _set_total_files(self, total: int):
-            self.total_files = total
-            self.total_files_signal.emit(total)
-            # Forward converter signals
-            # self.converter.log_signal.connect(self.log_signal)
-            # self.converter.progress_signal.connect(self.progress_signal)
-
-        @Slot()
-        def run(self):
-
-            try:
-                games: list[XBLIGGame] = []
-                current_mtime = get_folder_mtime(self.root)
-                cache = None if self.force else load_cache()
-                if cache and cache.get("mtime") == current_mtime:
-                    self.log_signal.emit("Checking game cache...")
-                    games = cache["games"]
-                    self.log_signal.emit(f"Loaded {len(games)} games from cache.")
-                    self.progress_signal.emit(100)
-                else:
-                    self.log_signal.emit("Scanning folders...")
-                    if not self.root.exists():
-                        self.log_signal.emit(f"Folder {self.root} does not exist.")
-                        self.progress_signal.emit(100)
-                    else:
-                        games = self.converter.find_packages(self.root)
-                        save_cache(games)
-                        self.log_signal.emit("Cache updated.")
-                self.finished_signal.emit(games)
-
-            except Exception as e:
-                self.log_signal.emit(f"Scanner error: {e}")
-                self.finished_signal.emit([])
 
     def rescan_games_responsive(self, force=False):
         root = Path(self.config["indie_games_path"])
@@ -2448,15 +2322,10 @@ class XBLIGDialog(QDialog):
             force = True
 
         self.scan_thread = QThread(self)
-        self.scan_worker = self.ScanWorker(root, force)
-
-        self.scan_worker.total_files_signal.connect(
-            lambda total: self.progress_bar.setRange(0, 100)
-        )
-
+        self.scan_worker = ScanWorker(root, self, force=force)
         self.scan_worker.moveToThread(self.scan_thread)
-        self.scan_thread.started.connect(self.scan_worker.run)
 
+        self.scan_thread.started.connect(self.scan_worker.run)
         self.scan_worker.log_signal.connect(self.log_message_log)
         self.scan_worker.progress_signal.connect(self.update_scan_progress)
         self.scan_worker.finished_signal.connect(self.scan_finished)
@@ -2496,16 +2365,15 @@ class XBLIGDialog(QDialog):
     #     self.log_message(f"Loaded {len(self.games)} games.")
 
     def game_selected(self):
-
-        row = self.game_table.currentRow()
-
-        if row < 0:
+        index = self.game_table.currentIndex()
+        if not index.isValid():
             return
 
-        game = self.games[row]
+        game = index.data(Qt.ItemDataRole.UserRole)
+        if game is None:
+            return
 
         self.update_labels(game)
-        # if not self.drawer_open:
         self.show_settings_drawer()
 
     def update_labels(self, game: XBLIGGame):
@@ -2524,7 +2392,8 @@ class XBLIGDialog(QDialog):
         )
 
         if game.executables:
-            self.exe_lbl.setText("\n".join(executable.name for executable in game.executables) if game.executables else "-")
+            self.exe_lbl.setText(
+                "\n".join(executable.name for executable in game.executables) if game.executables else "-")
         else:
             self.exe_lbl.setText("-")
 
@@ -2700,108 +2569,118 @@ class XBLIGDialog(QDialog):
         return extracted_path
 
     def load_games(self, games: list[XBLIGGame]):
-        self.columns = {
-            "Icon": lambda g: (
-                QIcon(str(g.extracted / "DashboardIcon.png"))
-                if g.extracted and (g.extracted / "DashboardIcon.png").exists()
-                else QIcon()
-            ),
-            "Title": lambda g: g.title or "",
-            "Status": lambda g: (
-                "Ready"
-                if g.executables is not None and g.xml is not None
-                else "Needs Build"
-            ),
-            "Requested By": lambda g: g.requested_by or "",
-            "Publisher": lambda g: g.publisher or "",
-            "Extracted": lambda g: "Yes" if g.extracted else "No",
-            "Decompiled": lambda g: (
-                g.decompiled.name
-                if g.decompiled
-                else ""
-            ),
-            "Executables": lambda g: str(len(g.executables or [])),
-            "DLL Files": lambda g: str(len(g.dll_files or [])),
-            "Content Converted": lambda g: (
-                    g.content_converted or ""
-            ),
-            "Content Format": lambda g: (
-                    g.content_format or ""
-            ),
-        }
+        for game in games:
+            metadata = self.db.get_xblig_metadata(game.title)
+            if metadata:
+                game.publisher = metadata["developer_account"] or metadata["developer"]
+
+        self.model.set_games(games)
 
         self.game_table.setIconSize(QSize(32, 32))
         self.game_table.verticalHeader().setVisible(False)
         self.game_table.verticalHeader().setDefaultSectionSize(40)
 
-        columns = list(self.columns.items())
+    #
+    # def load_games(self, games: list[XBLIGGame]):
+    #     self.columns = {
+    #         "Icon": lambda g: (
+    #             QIcon(str(g.extracted / "DashboardIcon.png"))
+    #             if g.extracted and (g.extracted / "DashboardIcon.png").exists()
+    #             else QIcon()
+    #         ),
+    #         "Title": lambda g: g.title or "",
+    #         "Status": lambda g: (
+    #             "Ready"
+    #             if g.executables is not None and g.xml is not None
+    #             else "Needs Build"
+    #         ),
+    #         "Publisher": lambda g: g.publisher or "",
+    #         "Extracted": lambda g: "Yes" if g.extracted else "No",
+    #         "Decompiled": lambda g: (
+    #             g.decompiled.name
+    #             if g.decompiled
+    #             else ""
+    #         ),
+    #         "Executables": lambda g: str(len(g.executables or [])),
+    #         "DLL Files": lambda g: str(len(g.dll_files or [])),
+    #         "Content Converted": lambda g: (
+    #                 g.content_converted or ""
+    #         ),
+    #         "Content Format": lambda g: (
+    #                 g.content_format or ""
+    #         ),
+    #     }
+    #
+    #     self.game_table.setIconSize(QSize(32, 32))
+    #     self.game_table.verticalHeader().setVisible(False)
+    #     self.game_table.verticalHeader().setDefaultSectionSize(40)
+    #
+    #     columns = list(self.columns.items())
+    #
+    #     self.game_table.setColumnCount(len(columns))
+    #     self.game_table.setHorizontalHeaderLabels(
+    #         [name for name, _ in columns]
+    #     )
+    #     self.game_table.setRowCount(0)
+    #
+    #     for game in games:
+    #         row = self.game_table.rowCount()
+    #         self.game_table.insertRow(row)
+    #
+    #         metadata = self.database.get_xblig_metadata(game.title)
+    #
+    #         if metadata:
+    #             game.publisher = (
+    #                     metadata["developer_account"]
+    #                     or metadata["developer"]
+    #             )
+    #
+    #         for column, (name, getter) in enumerate(columns):
+    #             value = getter(game)
+    #
+    #             if name == "Icon":
+    #                 button = QPushButton()
+    #
+    #                 button.setIcon(value)
+    #                 button.setIconSize(QSize(32, 32))
+    #                 button.setFixedSize(38, 38)
+    #
+    #                 button.setStyleSheet("""
+    #                     QPushButton {
+    #                         border: 1px solid #666;
+    #                         border-radius: 6px;
+    #                         background: transparent;
+    #                         padding: 2px;
+    #                     }
+    #
+    #                     QPushButton:hover {
+    #                         border: 1px solid #aaa;
+    #                         background: rgba(255, 255, 255, 20);
+    #                     }
+    #
+    #                     QPushButton:pressed {
+    #                         background: rgba(255, 255, 255, 40);
+    #                     }
+    #                 """)
+    #
+    #                 button.setToolTip(game.title or "Launch Game")
+    #
+    #                 # We'll connect this to the game action later
+    #                 # button.clicked.connect(
+    #                 #     lambda checked=False, g=game: self.launch_game(g)
+    #                 # )
+    #
+    #                 self.game_table.setCellWidget(
+    #                     row,
+    #                     column,
+    #                     button,
+    #                 )
+    #
+    #             else:
+    #                 item = QTableWidgetItem(str(value))
+    #                 self.game_table.setItem(row, column, item)
 
-        self.game_table.setColumnCount(len(columns))
-        self.game_table.setHorizontalHeaderLabels(
-            [name for name, _ in columns]
-        )
-        self.game_table.setRowCount(0)
-
-        for game in games:
-            row = self.game_table.rowCount()
-            self.game_table.insertRow(row)
-
-            metadata = self.db.get_xblig_metadata(game.title)
-
-            if metadata:
-                game.publisher = (
-                        metadata["developer_account"]
-                        or metadata["developer"]
-                )
-
-            for column, (name, getter) in enumerate(columns):
-                value = getter(game)
-
-                if name == "Icon":
-                    button = QPushButton()
-
-                    button.setIcon(value)
-                    button.setIconSize(QSize(32, 32))
-                    button.setFixedSize(38, 38)
-
-                    button.setStyleSheet("""
-                        QPushButton {
-                            border: 1px solid #666;
-                            border-radius: 6px;
-                            background: transparent;
-                            padding: 2px;
-                        }
-
-                        QPushButton:hover {
-                            border: 1px solid #aaa;
-                            background: rgba(255, 255, 255, 20);
-                        }
-
-                        QPushButton:pressed {
-                            background: rgba(255, 255, 255, 40);
-                        }
-                    """)
-
-                    button.setToolTip(game.title or "Launch Game")
-
-                    # We'll connect this to the game action later
-                    # button.clicked.connect(
-                    #     lambda checked=False, g=game: self.launch_game(g)
-                    # )
-
-                    self.game_table.setCellWidget(
-                        row,
-                        column,
-                        button,
-                    )
-
-                else:
-                    item = QTableWidgetItem(str(value))
-                    self.game_table.setItem(row, column, item)
-
-    from PySide6.QtWidgets import (
-        QDialog,
-    )
+    from PySide6.QtWidgets import (QDialog, )
 
     class BuildSelectedDialog(QDialog):
         def __init__(self, parent=None):
@@ -2915,9 +2794,8 @@ class XBLIGDialog(QDialog):
 
         if options["decompile"]:
             self.log_message("Decompiling selected game...")
-            project_dir = self.decompile_selected(game, open_explorer=True, use_gui=options["decompile_gui"])
-            if game.decompiled is None:
-                game.decompiled = project_dir
+            self.decompile_selected(game, open_explorer=True, use_gui=options["decompile_gui"])
+
             content_root_dir = game.extracted / "584E07D1"
             copy_extracted_folder_content_and_references(source_content_root_folder=content_root_dir,
                                                          dest_content_folder=game.decompiled,
@@ -3311,38 +3189,20 @@ class XBLIGDialog(QDialog):
         #
         # Game Table
         #
-
-        self.game_table = QTableWidget(0, 11)
+        self.game_table = QTableView()
+        self.model = IndieGameTableModel()
+        self.model.log.connect(self.log_message)
+        self.game_table.setModel(self.model)
         self.game_table.setSortingEnabled(True)
-        # self.columns = [
-        #     "Icon",
-        #     "Title",
-        #     "Status",
-        #     "Requested By",
-        #     "Publisher",
-        #     "Extracted",
-        #     "Decompiled",
-        #     "Executable",
-        #     "DLL Files",
-        #     "Content Converted",
-        #     "Content Format"
-        # ]
-        # self.game_table.setHorizontalHeaderLabels(self.columns)
 
         header = self.game_table.horizontalHeader()
-        header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
-        header.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
-        header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
-        header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
-        header.setSectionResizeMode(4, QHeaderView.ResizeMode.ResizeToContents)
-        header.setSectionResizeMode(5, QHeaderView.ResizeMode.ResizeToContents)
-        header.setSectionResizeMode(6, QHeaderView.ResizeMode.ResizeToContents)
+        for column in range(7):
+            header.setSectionResizeMode(column, QHeaderView.ResizeMode.ResizeToContents)
 
-        self.game_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
-        self.game_table.setSelectionMode(QTableWidget.SelectionMode.SingleSelection)
-        self.game_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-
-        self.game_table.itemSelectionChanged.connect(self.game_selected)
+        self.game_table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.game_table.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.game_table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.game_table.selectionModel().selectionChanged.connect(self.game_selected)
 
         left_splitter.addWidget(self.game_table)
 

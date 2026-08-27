@@ -74,7 +74,6 @@
       <excludeFolder url="file://$MODULE_DIR$/src/src" />
       <excludeFolder url="file://$MODULE_DIR$/src/cache" />
       <excludeFolder url="file://$MODULE_DIR$/src/compatibility" />
-      <excludeFolder url="file://$MODULE_DIR$/src/db" />
       <excludeFolder url="file://$MODULE_DIR$/build_tools/Xenia_Game_Manager.egg-info" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />

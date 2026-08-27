@@ -42,7 +42,7 @@ def create_defaults(version):
 
     base_path = root
 
-    db_dir = base_path / "db"
+    db_dir = base_path / "database"
     config_dir = base_path / "config"
 
     backup_dir = base_path / "backup"

@@ -1,4 +1,4 @@
-# db.py
+# database.py
 from __future__ import annotations
 
 import json
@@ -16,21 +16,116 @@ from logging_setup import logger
 from utils import detect_disc_number, strip_disc_suffix, smart_title_case
 from xiso import XboxRom, load_xemu_compatibility, XemuCompatibility, XemuCompatibilityGame
 
-DB_PATH = "db/games.db"
+DB_PATH = "database/games.db"
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, fields
 from pathlib import Path
 
 class Platform(Enum):
     XBOX = "Xbox"
     XBOX360 = "Xbox360"
+    INDIE = "Indie"
 
     @property
     def display_name(self):
         return {
             Platform.XBOX: "Xbox",
             Platform.XBOX360: "Xbox 360",
+            Platform.INDIE: "Indie"
         }[self]
+
+
+@dataclass
+class Game:
+    game_id: str
+    title: str
+    platform: Platform
+    config_path: Path | None = None
+    favourite: bool = False
+    last_played: str | None = None
+    play_count: int = 0
+    play_time: int = 0
+    emulator: str | None = None
+    emulator_version: str | None = None
+    discs: list[GameDisc] = field(default_factory=list)
+
+
+@dataclass
+class ConversionResult:
+    tool: str
+    success: bool
+    input_file: Path
+    output_files: list[Path]
+    stdout: str
+    stderr: str
+    error: str | None = None
+
+@dataclass
+class XBLIGGame(Game):
+    platform: Platform = field(
+        default=Platform.INDIE,
+        init=False,
+    )
+
+    emulator: str = field(
+        default="xblig",
+        init=False,
+    )
+
+    title: str = ""
+    icon: Path | None = None
+
+    folder_title: str | None = None
+    title_id: str | None = None
+    virtual_title_id: str | None = None
+    xml_title_id: str | None = None
+    publisher: str | None = None
+
+    content_type: str | None = None
+    content_name: str | None = None
+    content_converted: str = "No"
+    content_format: str = "xnb content"
+
+    package: Path | None = None
+    extracted: Path | None = None
+    game_root: Path | None = None
+
+    executables: list[Path] = field(default_factory=list)
+    dll_files: list[Path] = field(default_factory=list)
+    xml: Path | None = None
+    decompiled: Path | None = None
+
+    def __post_init__(self):
+        for name in (
+            "package",
+            "extracted",
+            "game_root",
+            "xml",
+            "decompiled",
+            "icon",
+        ):
+            value = getattr(self, name)
+            if isinstance(value, str):
+                setattr(self, name, Path(value))
+
+    def to_dict(self):
+        data = {}
+
+        for field_info in fields(self):
+            value = getattr(self, field_info.name)
+
+            if isinstance(value, Path):
+                value = str(value)
+
+            elif isinstance(value, list):
+                value = [
+                    str(item) if isinstance(item, Path) else item
+                    for item in value
+                ]
+
+            data[field_info.name] = value
+
+        return data
 
 @dataclass
 class GameDisc:
@@ -59,20 +154,6 @@ class GameDisc:
             disc_number=row["disc_number"] or 1,
             label=row["label"],
         )
-@dataclass
-class Game:
-    game_id: str
-    title: str
-    platform: Platform
-    config_path: Path | None = None
-    favourite: bool = False
-    last_played: str | None = None
-    play_count: int = 0
-    play_time: int = 0
-    emulator: str | None = None
-    emulator_version: str | None = None
-    discs: list[GameDisc] = field(default_factory=list)
-
 
 @dataclass
 class Xbox360Game(Game):
@@ -1305,8 +1386,8 @@ class Database:
 
 
 if __name__ == "__main__":
-    # db = Database()
-    # db.init_db()
+    # database = Database()
+    # database.init_db()
 
     # Example:
     #
