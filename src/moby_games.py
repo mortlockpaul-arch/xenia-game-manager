@@ -1,11 +1,8 @@
 from __future__ import annotations
-
 import json
 import time
 from pathlib import Path
-
 import requests
-
 
 class MobyGamesClient:
     BASE_URL = "https://api.mobygames.com/v1"
@@ -211,8 +208,3 @@ class MobyGamesClient:
                         )
 
         return None
-
-
-
-
-moby_games_lookup()

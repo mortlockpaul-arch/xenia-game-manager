@@ -639,10 +639,12 @@ class ConvertXnaProjects(QObject):
     log_signal = Signal(str)
     progress_signal = Signal(int, int)
     finished_signal = Signal(ConversionResult)
+    total_files_signal = Signal(int)
 
     def __init__(self, project_path, games, options, /):
         super().__init__()
 
+        self.
         self.config = load_config_file()
         self.options: dict[str, QCheckBox] = options
         self.project_path = Path(project_path)
@@ -2404,9 +2406,6 @@ class XBLIGDialog(QDialog):
         def _set_total_files(self, total: int):
             self.total_files = total
             self.total_files_signal.emit(total)
-
-
-
             # Forward converter signals
             # self.converter.log_signal.connect(self.log_signal)
             # self.converter.progress_signal.connect(self.progress_signal)
