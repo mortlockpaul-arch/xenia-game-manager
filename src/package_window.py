@@ -38,6 +38,7 @@ from config import get_app_dir, load_xenia_manager_config, load_config_file
 from convert_xna_projects import FNA_VERSION
 from db import Database
 from logging_setup import setup_logger
+from moby_games import MobyGamesClient
 
 
 @dataclass
@@ -634,16 +635,15 @@ alba = (get_app_dir() / "assets/tools/conversion/Alba.XnaConvert.0.1.2/Alba.XnaC
 xnb_cli = (get_app_dir() / "assets/tools/conversion/xnbcli-windows-x64/xnbcli.exe")
 xnb_extractor = (get_app_dir() / "assets/tools/conversion/xnb-extractor/Release/net481/XnbExtractor.exe")
 
-
 class ConvertXnaProjects(QObject):
     log_signal = Signal(str)
-    progress_signal = Signal(int)
-    total_files_signal = Signal(int)
+    progress_signal = Signal(int, int)
     finished_signal = Signal(ConversionResult)
 
     def __init__(self, project_path, games, options, /):
         super().__init__()
 
+        self.config = load_config_file()
         self.options: dict[str, QCheckBox] = options
         self.project_path = Path(project_path)
         self.games = games
@@ -655,8 +655,15 @@ class ConvertXnaProjects(QObject):
 
     def find_packages(self, root: str | Path):
         root = Path(root)
+
         games: list[XBLIGGame] = []
+        packages: list[Path] = []
+
         stfs_magic = {b"CON ", b"LIVE", b"PIRS"}
+
+        # ================================================================
+        # Helpers
+        # ================================================================
 
         def is_stfs(path: Path) -> bool:
             try:
@@ -666,16 +673,24 @@ class ConvertXnaProjects(QObject):
                 return False
 
         def scan_files(folder: Path):
+            """
+            Recursively yield files as Path objects.
+            """
             try:
                 with os.scandir(folder) as entries:
                     for entry in entries:
                         try:
+                            path = Path(entry.path)
+
                             if entry.is_file(follow_symlinks=False):
-                                yield Path(entry.path)
+                                yield path
+
                             elif entry.is_dir(follow_symlinks=False):
-                                yield from scan_files(Path(entry.path))
+                                yield from scan_files(path)
+
                         except OSError:
                             continue
+
             except OSError:
                 return
 
@@ -684,56 +699,267 @@ class ConvertXnaProjects(QObject):
                 return {}
 
             try:
-                title_info = ET.parse(xml_file).getroot().find(".//TitleInfo")
+                title_info = (
+                    ET.parse(xml_file)
+                    .getroot()
+                    .find(".//TitleInfo")
+                )
 
                 if title_info is None:
                     return {}
 
                 return {
                     "title": title_info.attrib.get("Name"),
-                    "virtual_title_id": title_info.attrib.get("VirtualTitleID"),
-                    "xml_title_id": title_info.attrib.get("TitleID"),
-                    "image_path": title_info.attrib.get("ImagePath"),
+                    "virtual_title_id": title_info.attrib.get(
+                        "VirtualTitleID"
+                    ),
+                    "xml_title_id": title_info.attrib.get(
+                        "TitleID"
+                    ),
+                    "image_path": title_info.attrib.get(
+                        "ImagePath"
+                    ),
                 }
 
             except Exception as e:
-                self.log_signal.emit(f"XML error: {xml_file} ({e})")
+                self.log_signal.emit(
+                    f"XML error: {xml_file} ({e})"
+                )
                 return {}
 
-        self.log_signal.emit("Scanning for STFS packages...")
+        # ================================================================
+        # PASS 1
+        #
+        # Traverse the ENTIRE supplied root.
+        #
+        # At the same time:
+        #   - count files
+        #   - count folders
+        #   - locate 584E07D2
+        #
+        # No files are opened during this pass.
+        # ================================================================
 
-        packages = []
-        files_scanned = 0
-        last_progress = -1
-        files = list(scan_files(root))
-        total_files = len(files)
+        self.log_signal.emit("")
+        self.log_signal.emit(
+            f"Scanning folders: {root}"
+        )
 
-        self.total_files_signal.emit(total_files)
+        total_files = 0
+        total_folders = 0
 
-        files_scanned = 0
+        indie_folders: list[Path] = []
 
-        for path in files:
-            files_scanned += 1
+        folders_to_scan = [root]
 
-            # Progress during the initial scan is only approximate.
-            if files_scanned % 5 == 0:
-                self.progress_signal.emit(files_scanned)
+        while folders_to_scan:
+            folder = folders_to_scan.pop()
 
-            if is_stfs(path):
-                packages.append(path)
+            try:
+                with os.scandir(folder) as entries:
+                    for entry in entries:
+                        try:
+                            if entry.is_file(
+                                    follow_symlinks=False
+                            ):
+                                total_files += 1
+
+                                # Log every 1,000 files.
+                                if total_files % 1000 == 0:
+                                    self.log_signal.emit(
+                                        f"Scanned "
+                                        f"{total_files:,} files "
+                                        f"across "
+                                        f"{total_folders:,} folders..."
+                                    )
+
+                                continue
+
+                            if not entry.is_dir(
+                                    follow_symlinks=False
+                            ):
+                                continue
+
+                            total_folders += 1
+
+                            path = Path(entry.path)
+
+                            # ------------------------------------------------
+                            # Found an XBLIG content folder
+                            # ------------------------------------------------
+
+                            if entry.name.upper() == "584E07D2":
+                                indie_folders.append(path)
+
+                                self.log_signal.emit(
+                                    f"Found 584E07D2: {path}"
+                                )
+
+                                # Don't search inside this folder for
+                                # another 584E07D2.
+                                continue
+
+                            folders_to_scan.append(path)
+
+                        except OSError:
+                            continue
+
+            except OSError:
+                continue
+
+        # ================================================================
+        # Scan summary
+        # ================================================================
+
+        self.log_signal.emit("")
+        self.log_signal.emit(
+            "Folder scan complete."
+        )
 
         self.log_signal.emit(
-            f"Found {len(packages)} STFS package(s)."
+            f"Folders scanned: {total_folders:,}"
         )
+
+        self.log_signal.emit(
+            f"Files found: {total_files:,}"
+        )
+
+        self.log_signal.emit(
+            f"584E07D2 folders found: "
+            f"{len(indie_folders):,}"
+        )
+
+        # Tell the progress bar the actual number of files.
+        self.total_files_signal.emit(total_files)
+
+        # ================================================================
+        # PASS 2
+        #
+        # Look only inside discovered 584E07D2 folders.
+        # ================================================================
+
+        self.log_signal.emit("")
+        self.log_signal.emit(
+            "Scanning XBLIG package folders..."
+        )
+
+        files_scanned = 0
+        last_progress = -1
+
+        for indie_index, indie_folder in enumerate(
+                indie_folders,
+                start=1,
+        ):
+            self.log_signal.emit("")
+            self.log_signal.emit(
+                f"[XBLIG folder "
+                f"{indie_index}/{len(indie_folders)}]"
+            )
+
+            self.log_signal.emit(
+                f"  {indie_folder}"
+            )
+
+            package_folder = indie_folder / "00000002"
+
+            if not package_folder.is_dir():
+                self.log_signal.emit(
+                    "  └─ 00000002 not found"
+                )
+                continue
+
+            self.log_signal.emit(
+                f"  └─ Scanning: {package_folder}"
+            )
+
+            for path in scan_files(package_folder):
+                files_scanned += 1
+
+                # First 25% of progress is the package scan.
+                progress = int(
+                    files_scanned * 25
+                    / max(total_files, 1)
+                )
+
+                if progress != last_progress:
+                    self.progress_signal.emit(total_files, total_files)
+                    last_progress = progress
+
+                if files_scanned % 1000 == 0:
+                    self.log_signal.emit(
+                        f"Scanned "
+                        f"{files_scanned:,} / "
+                        f"{total_files:,} files..."
+                    )
+
+                if is_stfs(path):
+                    packages.append(path)
+
+                    self.log_signal.emit(
+                        f"  STFS package found: "
+                        f"{path}"
+                    )
+
+        # ================================================================
+        # Package summary
+        # ================================================================
+
+        self.log_signal.emit("")
+        self.log_signal.emit(
+            f"Found {len(packages):,} STFS package(s)."
+        )
+
+        if not packages:
+            self.progress_signal.emit(total_files, total_files)
+
+            self.log_signal.emit("")
+            self.log_signal.emit(
+                "==================="
+            )
+            self.log_signal.emit(
+                "Scanner found 0 XBLIG game(s)."
+            )
+
+            return games
+
+        # ================================================================
+        # PASS 3
+        #
+        # Process the discovered packages.
+        # ================================================================
 
         total_packages = len(packages)
 
-        for index, package in enumerate(packages, start=1):
-            progress = int(index * 5 / max(total_packages, 1))
+        self.log_signal.emit("")
+        self.log_signal.emit(
+            f"Processing {total_packages:,} package(s)..."
+        )
 
-            if progress != last_progress:
-                self.progress_signal.emit(progress)
-                last_progress = progress
+        for index, package in enumerate(
+                packages,
+                start=1,
+        ):
+            # Package processing = remaining 75%.
+            progress = 25 + int(
+                index * 75
+                / max(total_packages, 1)
+            )
+
+            self.progress_signal.emit(total_files, total_files)
+
+            self.log_signal.emit("")
+            self.log_signal.emit(
+                f"[Package "
+                f"{index}/{total_packages}]"
+            )
+
+            self.log_signal.emit(
+                f"  {package}"
+            )
+
+            # ------------------------------------------------------------
+            # Game folder
+            # ------------------------------------------------------------
 
             folder_title = (
                 package.parents[2].name
@@ -741,39 +967,82 @@ class ConvertXnaProjects(QObject):
                 else package.parent.name
             )
 
-            attrs = {
-                "decompiled": (
-                    "decompiled",
-                    Path("D:/downloads") / "decompiled" / folder_title
-                ),
-                "extracted": (
-                    "extracted",
-                    Path("D:/downloads") / "extracted" / folder_title
-                ),
-            }
+            # ------------------------------------------------------------
+            # Paths
+            # ------------------------------------------------------------
 
-            attr_name, decompiled = attrs["decompiled"]
-            attr_name, extracted = attrs["extracted"]
-            game_info = extracted / "GameInfo.xml"
-            title_id = package.parent.parent.name
-            xml_data = parse_xml(game_info)
-            title = xml_data.get("title") or folder_title or package.stem
-            decompiled_path_value = package.parent / "decompiled"
-            extracted_path_value = package.parent / "extracted"
-
-            profile_string = decompiled / "Microsoft.Xna.Framework.RuntimeProfile"
-
-            content_format = (
-                profile_string.read_text().strip()
-                if profile_string.exists()
-                else ""
+            indie_games_path = Path(
+                self.config["indie_games_path"]
             )
 
-            exe_files = []
-            dll_files = []
+            decompiled = (
+                    indie_games_path
+                    / "decompiled"
+                    / folder_title
+            )
 
-            if extracted.exists():
+            extracted = (
+                    indie_games_path
+                    / "extracted"
+                    / folder_title
+            )
+
+            game_info = extracted / "GameInfo.xml"
+
+            title_id = package.parent.parent.name
+
+            xml_data = parse_xml(game_info)
+
+            title = (
+                    xml_data.get("title")
+                    or folder_title
+                    or package.stem
+            )
+
+            decompiled_path_value = (
+                    package.parent / "decompiled"
+            )
+
+            extracted_path_value = (
+                    package.parent / "extracted"
+            )
+
+            # ------------------------------------------------------------
+            # Runtime profile
+            # ------------------------------------------------------------
+
+            profile_string = (
+                    decompiled
+                    / "Microsoft.Xna.Framework.RuntimeProfile"
+            )
+
+            try:
+                content_format = (
+                    profile_string.read_text().strip()
+                    if profile_string.exists()
+                    else ""
+                )
+            except OSError:
+                content_format = ""
+
+            # ------------------------------------------------------------
+            # EXEs and DLLs
+            # ------------------------------------------------------------
+
+            exe_files: list[Path] = []
+            dll_files: list[Path] = []
+
+            if extracted.is_dir():
+                self.log_signal.emit(
+                    f"  Scanning extracted: "
+                    f"{extracted}"
+                )
+
+                extracted_files = 0
+
                 for path in scan_files(extracted):
+                    extracted_files += 1
+
                     suffix = path.suffix.lower()
 
                     if suffix == ".exe":
@@ -782,38 +1051,100 @@ class ConvertXnaProjects(QObject):
                     elif suffix == ".dll":
                         dll_files.append(path)
 
-            self.log_signal.emit(f"Processed {title}")
+                self.log_signal.emit(
+                    f"  Scanned "
+                    f"{extracted_files:,} extracted files"
+                )
+
+            self.log_signal.emit(
+                f"  Executables: "
+                f"{len(exe_files):,}"
+            )
+
+            self.log_signal.emit(
+                f"  DLLs: "
+                f"{len(dll_files):,}"
+            )
+
+            # ------------------------------------------------------------
+            # Create game
+            # ------------------------------------------------------------
 
             games.append(
                 XBLIGGame(
                     title=title,
                     folder_title=folder_title,
                     title_id=title_id,
-                    virtual_title_id=xml_data.get("virtual_title_id"),
-                    xml_title_id=xml_data.get("xml_title_id"),
+
+                    virtual_title_id=xml_data.get(
+                        "virtual_title_id"
+                    ),
+
+                    xml_title_id=xml_data.get(
+                        "xml_title_id"
+                    ),
+
                     content_type=content_format,
                     content_name="Xbox Live Indie Game",
                     content_format=content_format,
+
                     package=package,
-                    extracted=extracted if extracted.exists() else extracted_path_value if extracted_path_value.exists() else None,
-                    game_root=extracted if extracted.exists() else package.parent,
+
+                    extracted=(
+                        extracted
+                        if extracted.exists()
+                        else (
+                            extracted_path_value
+                            if extracted_path_value.exists()
+                            else None
+                        )
+                    ),
+
+                    game_root=(
+                        extracted
+                        if extracted.exists()
+                        else package.parent
+                    ),
+
                     executables=exe_files,
                     dll_files=dll_files,
-                    xml=game_info if game_info.exists() else None,
-                    decompiled=decompiled if decompiled.exists() else decompiled_path_value if decompiled_path_value.exists() else None,
+
+                    xml=(
+                        game_info
+                        if game_info.exists()
+                        else None
+                    ),
+
+                    decompiled=(
+                        decompiled
+                        if decompiled.exists()
+                        else (
+                            decompiled_path_value
+                            if decompiled_path_value.exists()
+                            else None
+                        )
+                    ),
                 )
             )
 
             self.log_signal.emit(
-                f"Processed {index}/{total_packages} package(s)..."
+                f"  Processed: {title}"
             )
 
-        self.progress_signal.emit(100)
+        # ================================================================
+        # Finished
+        # ================================================================
+
+        self.progress_signal.emit(files_scanned, total_files)
 
         self.log_signal.emit("")
-        self.log_signal.emit("===================")
         self.log_signal.emit(
-            f"Scanner found {len(games)} XBLIG game(s)."
+            "==================="
+        )
+
+        self.log_signal.emit(
+            f"Scanner found "
+            f"{len(games):,} XBLIG game(s)."
         )
 
         return games
@@ -975,7 +1306,7 @@ class ConvertXnaProjects(QObject):
         return result
 
     from pathlib import Path
-    import xml.etree.ElementTree as ET
+
     def clean_csproj(self, project_path: Path, game_dll_files=None) -> None:
         project_path = Path(project_path)
 
@@ -1654,6 +1985,7 @@ class XBLIGDialog(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.config = load_config_file()
         self.columns = None
         self.game = None
         self.extracted = None
@@ -1738,9 +2070,16 @@ class XBLIGDialog(QDialog):
         converter = ConvertXnaProjects(get_app_dir(), self.games, self.options)
 
         converter.log_signal.connect(self.log_message_log)
-        converter.progress_signal.connect(self.progress_bar.setValue)
+        converter.progress_signal.connect(self.update_progress)
         converter.finished_signal.connect(self.tool_finished)
         return converter
+
+    def update_progress(self, value: int):
+        self.progress_bar.setValue(value)
+        self.progress_bar.setFormat(
+            f"Scanner {value}%"
+        )
+
 
     def convert_game_project(self):
         if self.all_checkbox.isChecked():
@@ -1831,11 +2170,11 @@ class XBLIGDialog(QDialog):
         attrs = {
             "decompiled": (
                 "decompiled",
-                Path("D:/downloads") / "decompiled" / game_root_name
+                Path(self.config["indie_games_path"]) / "decompiled" / game_root_name
             ),
             "extracted": (
                 "extracted",
-                Path("D:/downloads") / "extracted" / extracted_name
+                Path(self.config["indie_games_path"]) / "extracted" / extracted_name
             ),
         }
 
@@ -2040,24 +2379,33 @@ class XBLIGDialog(QDialog):
 
     from PySide6.QtCore import QObject
 
-    class ScanWorker(QObject):
+    def update_scan_progress(self, current: int, total: int):
+        value = int(current * 100 / total) if total else 0
+        self.progress_bar.setValue(value)
+        self.progress_bar.setFormat(f"Scanner {current:,}")
 
+    class ScanWorker(QObject):
         finished_signal = Signal(list)
         log_signal = Signal(str)
-        progress_signal = Signal(int)
+        progress_signal = Signal(int, int)
         total_files_signal = Signal(int)
 
         def __init__(self, root: Path, force=False):
             super().__init__()
-
             converter = ConvertXnaProjects(get_app_dir(), None, None)
             converter.log_signal.connect(self.log_signal)
-            converter.progress_signal.connect(self.progress_signal)
-            converter.total_files_signal.connect(self.total_files_signal)
-
+            converter.progress_signal.connect(lambda value: self.progress_signal.emit(value, self.total_files))
+            converter.total_files_signal.connect(self._set_total_files)
+            self.total_files = 0
             self.root = root
             self.converter = converter
             self.force = force
+
+        def _set_total_files(self, total: int):
+            self.total_files = total
+            self.total_files_signal.emit(total)
+
+
 
             # Forward converter signals
             # self.converter.log_signal.connect(self.log_signal)
@@ -2091,30 +2439,30 @@ class XBLIGDialog(QDialog):
                 self.finished_signal.emit([])
 
     def rescan_games_responsive(self, force=False):
-        root = Path("D:/downloads/XBLIG")
+        root = Path(self.config["indie_games_path"])
 
         self.progress_bar.setRange(0, 100)
         self.progress_bar.setValue(0)
+        self.progress_bar.setFormat("Scanner 0")
         self.scan_btn.setEnabled(False)
 
-        if self.cache_check.isChecked(): force = True
+        if self.cache_check.isChecked():
+            force = True
+
         self.scan_thread = QThread(self)
         self.scan_worker = self.ScanWorker(root, force)
-        self.scan_worker.total_files_signal.connect(
-            lambda total: (
-                self.progress_bar.setRange(0, total),
-                self.progress_bar.setFormat("Scanned %v files...")
-            )
-        )
-        self.scan_worker.moveToThread(self.scan_thread)
 
+        self.scan_worker.total_files_signal.connect(
+            lambda total: self.progress_bar.setRange(0, 100)
+        )
+
+        self.scan_worker.moveToThread(self.scan_thread)
         self.scan_thread.started.connect(self.scan_worker.run)
 
         self.scan_worker.log_signal.connect(self.log_message_log)
-        self.scan_worker.progress_signal.connect(self.progress_bar.setValue)
+        self.scan_worker.progress_signal.connect(self.update_scan_progress)
         self.scan_worker.finished_signal.connect(self.scan_finished)
 
-        # Shut the worker/thread down when scanning finishes
         self.scan_worker.finished_signal.connect(self.scan_thread.quit)
         self.scan_worker.finished_signal.connect(self.scan_worker.deleteLater)
         self.scan_thread.finished.connect(self.scan_thread.deleteLater)
@@ -2322,11 +2670,11 @@ class XBLIGDialog(QDialog):
         attrs = {
             "decompiled": (
                 "decompiled",
-                Path("D:/downloads") / "decompiled" / game.title
+                Path(self.config["indie_games_path"]) / "decompiled" / game.title
             ),
             "extracted": (
                 "extracted",
-                Path("D:/downloads") / "extracted" / game.folder_title
+                Path(self.config["indie_games_path"]) / "extracted" / game.folder_title
             ),
         }
 

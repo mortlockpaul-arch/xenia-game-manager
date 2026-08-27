@@ -23,5 +23,9 @@
     "xemu_installed": true,
     "xenia_canary_version": "build-898",
     "xenia_netplay_version": "build-481",
-    "xenia_mousehook_version": "build-30"
+    "xenia_mousehook_version": "build-30",
+    "indie_games_path": "D:/downloads",
+    "xemu_games_path": "D:/roms/xbox",
+    "indie_installed": true,
+    "xemu_games_installed": true
 }

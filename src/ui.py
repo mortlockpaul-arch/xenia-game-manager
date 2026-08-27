@@ -426,6 +426,8 @@ class GameLauncher(QMainWindow):
         self.xenia_netplay_path: QLineEdit = QLineEdit()
         self.xenia_mousehook_path: QLineEdit = QLineEdit()
         self.xenia_edge_path: QLineEdit = QLineEdit()
+        self.indie_games_path: QLineEdit = QLineEdit()
+        self.xemu_games_path: QLineEdit = QLineEdit()
 
         self.browse_btn_xemu: QPushButton = QPushButton()
         self.xemu_path: QLineEdit = QLineEdit()
@@ -537,12 +539,23 @@ class GameLauncher(QMainWindow):
                 "xenia_edge_path",
                 "xenia_edge_version",
             ),
-
             "xemu": WidgetInfo(
                 "Xemu Xbox Emulator",
                 "xemu_installed",
                 "xemu_path",
                 "xemu_version",
+            ),
+            "xemu_games": WidgetInfo(
+                "Xemu Games Base Folder",
+                "xemu_games_installed",
+                "xemu_games_path",
+                "xemu_games_version",
+            ),
+            "indie": WidgetInfo(
+                "Indie Games Base Folder",
+                "indie_installed",
+                "indie_games_path",
+                "indie_version",
             ),
         }
 
@@ -1660,9 +1673,14 @@ class GameLauncher(QMainWindow):
         self.log("Done: TU download completed")
 
     def pick_emulator_path(self, button_name):
+
+        config = load_config_file()
+        config_folder = config[button_name]
+
         folder = QFileDialog.getExistingDirectory(
             self,
-            f"Select Xenia {button_name.title()} Folder"
+            f"Select Xenia {button_name.title()} Folder",
+            config_folder
         )
         if not folder:
             return
@@ -1671,9 +1689,11 @@ class GameLauncher(QMainWindow):
 
         getattr(self, key).setText(folder)
 
-        config = load_config_file()
+
         config[f"{key}"] = folder
         save_config(config)
+        if button_name == "indie":
+            print("indie")
         if button_name == "edge":
             xenia_edge_installed = config["xenia_edge_installed"]
             button_text = "Launch Xenia Edge" if xenia_edge_installed else "Install Xenia Edge"

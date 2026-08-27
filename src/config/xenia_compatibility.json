@@ -1,5 +1,19 @@
 [
   {
+    "issue": 1203,
+    "id": "465307D6",
+    "title": "Armored Core 4 (WW)",
+    "updated": "2026-08-26T12:52:41Z",
+    "state": "Gameplay",
+    "labels": {
+      "state": [
+        "state-gameplay"
+      ],
+      "others": []
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1203"
+  },
+  {
     "issue": 1202,
     "id": "513107D8",
     "title": "Ride",
@@ -846,7 +860,7 @@
     "issue": 1137,
     "id": "584111E8",
     "title": "State of Decay",
-    "updated": "2026-08-22T16:51:33Z",
+    "updated": "2026-08-25T16:32:23Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -855,7 +869,8 @@
       "others": [
         "tech-engine-cry",
         "gpu-readback",
-        "gpu-occlusion-query"
+        "gpu-occlusion-query",
+        "gpu-occlusion-querybatch"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/1137"
@@ -4665,7 +4680,7 @@
     "issue": 871,
     "id": "58410955",
     "title": "Banjo-Tooie",
-    "updated": "2025-10-03T15:09:48Z",
+    "updated": "2026-08-25T23:21:07Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -4971,7 +4986,7 @@
     "issue": 851,
     "id": "45410950",
     "title": "Battlefield 3",
-    "updated": "2026-08-05T03:22:08Z",
+    "updated": "2026-08-25T13:27:18Z",
     "state": "Loads",
     "labels": {
       "state": [
@@ -6438,7 +6453,7 @@
     "issue": 758,
     "id": "53510811",
     "title": "Sleeping Dogs",
-    "updated": "2026-07-08T16:34:37Z",
+    "updated": "2026-08-26T05:48:04Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -7782,7 +7797,7 @@
     "issue": 666,
     "id": "41560881",
     "title": "Spider-Man: Shattered Dimensions",
-    "updated": "2026-08-05T21:52:47Z",
+    "updated": "2026-08-25T16:33:43Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -7840,7 +7855,7 @@
     "issue": 662,
     "id": "415608B5",
     "title": "The Amazing Spider-Man",
-    "updated": "2026-08-24T02:37:51Z",
+    "updated": "2026-08-25T04:48:03Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -8231,7 +8246,7 @@
     "issue": 637,
     "id": "43430822",
     "title": "Resident Evil Code: Veronica X",
-    "updated": "2026-07-08T21:11:44Z",
+    "updated": "2026-08-25T05:47:31Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -10901,7 +10916,7 @@
     "issue": 464,
     "id": "555307D5",
     "title": "Tom Clancy's Ghost Recon: Advanced Warfighter",
-    "updated": "2026-08-09T10:15:44Z",
+    "updated": "2026-08-26T10:43:26Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -12619,7 +12634,7 @@
     "issue": 364,
     "id": "454109A9",
     "title": "Tiger Woods PGA Tour 14: Masters Historic Edition",
-    "updated": "2026-05-17T23:37:49Z",
+    "updated": "2026-08-25T04:06:49Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -15054,7 +15069,7 @@
     "issue": 220,
     "id": "4E4D0801",
     "title": "Inversion",
-    "updated": "2026-07-09T00:49:33Z",
+    "updated": "2026-08-25T23:25:32Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -15063,6 +15078,8 @@
       "others": [
         "tech-engine-saber3d",
         "gpu-readback",
+        "gpu-occlusion-query",
+        "gpu-viz-query",
         "crash-always",
         "gpu-occlusion-querybatch"
       ]
@@ -15995,7 +16012,7 @@
     "issue": 156,
     "id": "4E4D07D3",
     "title": "Ridge Racer 6",
-    "updated": "2026-08-24T14:07:10Z",
+    "updated": "2026-08-26T04:50:12Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -16671,7 +16688,7 @@
     "issue": 108,
     "id": "5841098D",
     "title": "Full House Poker",
-    "updated": "2024-09-27T05:50:23Z",
+    "updated": "2026-08-26T02:54:10Z",
     "state": "Loads",
     "labels": {
       "state": [
@@ -16873,7 +16890,7 @@
     "issue": 89,
     "id": "454108C0",
     "title": "Dragon Age: Origins",
-    "updated": "2026-02-05T03:05:33Z",
+    "updated": "2026-08-26T14:19:40Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -17504,7 +17521,7 @@
     "issue": 42,
     "id": "5454086B",
     "title": "Max Payne 3",
-    "updated": "2026-08-05T01:57:26Z",
+    "updated": "2026-08-25T02:14:13Z",
     "state": "Playable",
     "labels": {
       "state": [
