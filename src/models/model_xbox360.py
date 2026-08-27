@@ -3,22 +3,18 @@ from datetime import datetime
 from pathlib import Path
 from typing import cast, Any
 
-from PySide6.QtCore import (
-    Qt,
-    QModelIndex
-)
+from PySide6.QtCore import ( Qt, QModelIndex )
 from PySide6.QtGui import QBrush, QColor, QFont, QIcon
 
 from config import load_config_file
 from db import Database, Xbox360Game, Platform
-from models.model_xbox import BaseGameTableModel
+from models.model_bases import DiscGameTableModel
 from utils import star, format_disc_type
 
 DisplayRole = Qt.ItemDataRole.DisplayRole
 ToolTipRole = Qt.ItemDataRole.ToolTipRole
 
-
-class Xbox360GameTableModel(BaseGameTableModel):
+class Xbox360GameTableModel(DiscGameTableModel):
     COLUMNS = [
         ("favourite", "Fav"),
         ("artwork_path", ""),
@@ -346,4 +342,3 @@ class Xbox360GameTableModel(BaseGameTableModel):
                 [dict(row) for row in con.execute(query, params)]
             )
         self.layoutChanged.emit()
-

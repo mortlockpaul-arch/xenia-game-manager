@@ -1,25 +1,21 @@
-# database.py
 from __future__ import annotations
-
 import json
 import shutil
 import sqlite3
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any
-
+from pathlib import Path
 import requests
-
 from config import load_config_file, get_app_dir
 from edge_import import import_edge_games, XeniaEdgeGame
 from logging_setup import logger
 from utils import detect_disc_number, strip_disc_suffix, smart_title_case
 from xiso import XboxRom, load_xemu_compatibility, XemuCompatibility, XemuCompatibilityGame
 
-DB_PATH = "database/games.db"
+DB_PATH = Path(__file__).resolve().parent / "database" / "games.db"
 
 from dataclasses import dataclass, field, fields
-from pathlib import Path
 
 class Platform(Enum):
     XBOX = "Xbox"
@@ -34,22 +30,6 @@ class Platform(Enum):
             Platform.INDIE: "Indie"
         }[self]
 
-
-@dataclass
-class Game:
-    game_id: str
-    title: str
-    platform: Platform
-    config_path: Path | None = None
-    favourite: bool = False
-    last_played: str | None = None
-    play_count: int = 0
-    play_time: int = 0
-    emulator: str | None = None
-    emulator_version: str | None = None
-    discs: list[GameDisc] = field(default_factory=list)
-
-
 @dataclass
 class ConversionResult:
     tool: str
@@ -61,16 +41,18 @@ class ConversionResult:
     error: str | None = None
 
 @dataclass
-class XBLIGGame(Game):
-    platform: Platform = field(
-        default=Platform.INDIE,
-        init=False,
-    )
+class Game:
+    game_id: str
+    title: str
+    platform: Platform
+    favourite: bool = False
+    last_played: str | None = None
+    play_count: int = 0
+    play_time: int = 0
 
-    emulator: str = field(
-        default="xblig",
-        init=False,
-    )
+@dataclass
+class XBLIGGame(Game):
+    platform: Platform = field( default=Platform.INDIE, init=False, )
 
     title: str = ""
     icon: Path | None = None
@@ -107,6 +89,48 @@ class XBLIGGame(Game):
             value = getattr(self, name)
             if isinstance(value, str):
                 setattr(self, name, Path(value))
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "XBLIGGame":
+        path_fields = {
+            "package",
+            "extracted",
+            "game_root",
+            "xml",
+            "decompiled",
+            "icon",
+        }
+
+        list_path_fields = {
+            "executables",
+            "dll_files",
+        }
+
+        values = {}
+
+        valid_fields = {
+            field_info.name
+            for field_info in fields(cls)
+            if field_info.init
+        }
+
+        for key, value in data.items():
+            if key not in valid_fields:
+                continue
+
+            if key in path_fields:
+                if value:
+                    value = Path(value)
+
+            elif key in list_path_fields:
+                value = [
+                    Path(item) if item else item
+                    for item in (value or [])
+                ]
+
+            values[key] = value
+
+        return cls(**values)
 
     def to_dict(self):
         data = {}
@@ -159,6 +183,8 @@ class GameDisc:
 class Xbox360Game(Game):
     platform: Platform = field(default=Platform.XBOX360, init=False)
     emulator: str = field(default="xenia", init=False)
+    config_path: Path | None = None
+    discs: list[GameDisc] = field(default_factory=list)
 
     @classmethod
     def from_row(cls, row):
@@ -179,20 +205,14 @@ class Xbox360Game(Game):
             last_played=row["last_played"],
             play_count=row["play_count"] or 0,
             play_time=row["play_time"] or 0,
-            emulator_version=row["emulator_version"],
             discs=discs,
         )
 
 @dataclass
 class XboxGame(Game):
-    platform: Platform = field(
-        default=Platform.XBOX,
-        init=False,
-    )
-    emulator: str = field(
-        default="xemu",
-        init=False,
-    )
+    platform: Platform = field( default=Platform.XBOX, init=False, )
+    emulator: str = field( default="xemu", init=False, )
+    config_path: Path | None = None
 
     @classmethod
     def from_row(cls, row):
@@ -213,8 +233,6 @@ class XboxGame(Game):
             last_played=row["last_played"],
             play_count=row["play_count"] or 0,
             play_time=row["play_time"] or 0,
-            emulator_version=row["emulator_version"],
-            discs=discs,
         )
 
 class Compatibility:
@@ -412,8 +430,6 @@ def find_xemu_compatibility_by_name(
         None,
     )
 
-from pathlib import Path
-
 
 def clean_xbox_title(filename: str | Path, normalise_separators=False) -> str:
     title = Path(filename).name
@@ -473,7 +489,6 @@ def create_xbox_game(data: XboxRom, compatibility=None) -> XboxGame:
         discs=[disc],
     )
 
-
 def xenia_edge_game_from_dict(data) -> Xbox360Game:
 
     game_id = data.get("title_id")
@@ -519,7 +534,6 @@ def xenia_edge_game_from_dict(data) -> Xbox360Game:
         discs=[disc],
     )
 
-
 def xenia_manager_game_from_dict(data) -> Xbox360Game:
 
     game_id = data.get("game_id")
@@ -560,7 +574,6 @@ def xenia_manager_game_from_dict(data) -> Xbox360Game:
         discs=[disc],
     )
 
-
 def xemu_game_from_dict(data) -> XboxGame:
     game_id = data.get("game_id")
 
@@ -599,7 +612,6 @@ def xemu_game_from_dict(data) -> XboxGame:
         emulator_version=data.get("xemu_version"),
         discs=[disc],
     )
-
 
 class Database:
 
@@ -1383,20 +1395,3 @@ class Database:
             """, (
                 title_id,
             )).fetchall()
-
-
-if __name__ == "__main__":
-    # database = Database()
-    # database.init_db()
-
-    # Example:
-    #
-    # import_games_json(
-    #     r"D:\RetroBat\emulators\xenia-manager\Config\games.json"
-    # )
-    #
-    # import_multidisc_json(
-    #     r"disc-info.json"
-    # )
-
-    print("Database initialized")

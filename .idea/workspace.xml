@@ -4,22 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.1.8 Column Sorting Enabled.">
+    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.1.8 Massive Refactor">
       <change afterPath="$PROJECT_DIR$/../XBLA-Extract/.idea/xbla-extract.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/model_indie.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/xenia-game-manager.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/xenia-game-manager.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build_tools/build.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/build.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build_tools/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/archive_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/archive_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/db.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/meta_data_import/import_xblig_metadata.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/meta_data_import/import_xblig_metadata.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/model_bases.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/model_bases.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/model_indie.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/model_indie.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/model_xbox.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/model_xbox.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/model_xbox360.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/model_xbox360.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -278,14 +271,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00061" summary="1.0.8 Xemu Support">
-      <option name="closed" value="true" />
-      <created>1787114820901</created>
-      <option name="number" value="00061" />
-      <option name="presentableId" value="LOCAL-00061" />
-      <option name="project" value="LOCAL" />
-      <updated>1787114820901</updated>
     </task>
     <task id="LOCAL-00062" summary="1.0.8 Xemu Support">
       <option name="closed" value="true" />
@@ -671,7 +656,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787792034335</updated>
     </task>
-    <option name="localTasksCounter" value="110" />
+    <task id="LOCAL-00110" summary="1.1.8 Massive Refactor">
+      <option name="closed" value="true" />
+      <created>1787808856886</created>
+      <option name="number" value="00110" />
+      <option name="presentableId" value="LOCAL-00110" />
+      <option name="project" value="LOCAL" />
+      <updated>1787808856886</updated>
+    </task>
+    <option name="localTasksCounter" value="111" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -693,7 +686,6 @@
       <path value="$PROJECT_DIR$/../XBLA-Extract" />
       <path value="$PROJECT_DIR$/src/compatibility/xemu_compatibility/xdb" />
     </ignored-roots>
-    <MESSAGE value="1.0.1 XBLIG Extractor Worker" />
     <MESSAGE value="1.0.1 XBLIG Dataclass" />
     <MESSAGE value="1.0.1 References for recompiler. Need to remove some files oopsies." />
     <MESSAGE value="1.0.1 ILSpy" />
@@ -718,7 +710,8 @@
     <MESSAGE value="1.1.7 Executables List" />
     <MESSAGE value="1.1.8 Progress Update Refactor. Non Default Folders. Scanner optimization." />
     <MESSAGE value="1.1.8 Column Sorting Enabled." />
-    <option name="LAST_COMMIT_MESSAGE" value="1.1.8 Column Sorting Enabled." />
+    <MESSAGE value="1.1.8 Massive Refactor" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.1.8 Massive Refactor" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -805,7 +798,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2809</line>
+          <line>2811</line>
           <option name="timeStamp" value="96" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -815,17 +808,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2036</line>
+          <line>2038</line>
           <option name="timeStamp" value="114" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2307</line>
+          <line>2310</line>
           <option name="timeStamp" value="116" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2806</line>
+          <line>2808</line>
           <option name="timeStamp" value="117" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -835,7 +828,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/db.py</url>
-          <line>1122</line>
+          <line>1119</line>
           <option name="timeStamp" value="137" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -845,7 +838,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/db.py</url>
-          <line>1218</line>
+          <line>1215</line>
           <option name="timeStamp" value="154" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -855,7 +848,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2094</line>
+          <line>2096</line>
           <option name="timeStamp" value="161" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -900,7 +893,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2054</line>
+          <line>2056</line>
           <option name="timeStamp" value="193" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -930,93 +923,78 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2059</line>
+          <line>2061</line>
           <option name="timeStamp" value="199" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2816</line>
+          <line>2818</line>
           <option name="timeStamp" value="201" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2064</line>
+          <line>2066</line>
           <option name="timeStamp" value="203" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2561</line>
+          <line>2564</line>
           <option name="timeStamp" value="213" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2533</line>
+          <line>2536</line>
           <option name="timeStamp" value="214" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2468</line>
+          <line>2471</line>
           <option name="timeStamp" value="215" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2482</line>
+          <line>2485</line>
           <option name="timeStamp" value="219" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2567</line>
+          <line>2570</line>
           <option name="timeStamp" value="220" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2517</line>
+          <line>2520</line>
           <option name="timeStamp" value="223" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2433</line>
+          <line>2436</line>
           <option name="timeStamp" value="224" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2523</line>
+          <line>2526</line>
           <option name="timeStamp" value="225" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2491</line>
+          <line>2494</line>
           <option name="timeStamp" value="226" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2460</line>
+          <line>2463</line>
           <option name="timeStamp" value="227" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2281</line>
-          <option name="timeStamp" value="229" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2805</line>
+          <line>2807</line>
           <option name="timeStamp" value="231" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2916</line>
+          <line>2918</line>
           <option name="timeStamp" value="232" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2276</line>
-          <option name="timeStamp" value="233" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2274</line>
-          <option name="timeStamp" value="234" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
