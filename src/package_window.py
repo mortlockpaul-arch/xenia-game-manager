@@ -3315,7 +3315,7 @@ class XBLIGDialog(QDialog):
         #
 
         self.game_table = QTableWidget(0, 11)
-
+        self.game_table.setSortingEnabled(True)
         # self.columns = [
         #     "Icon",
         #     "Title",

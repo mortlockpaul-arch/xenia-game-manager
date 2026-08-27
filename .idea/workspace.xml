@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.1.7 Executables List">
+    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.1.8 Progress Update Refactor. Non Default Folders. Scanner optimization.">
       <change afterPath="$PROJECT_DIR$/../XBLA-Extract/.idea/xbla-extract.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/game-manager-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/game-manager-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/xenia_compatibility.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/xenia_compatibility.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,61 +49,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.000345349476955" />
-      <entry key="S2" value="1.1636316936771407" />
-      <entry key="S5" value="1.6876352283280354" />
-      <entry key="S10" value="2.1581405985386275" />
-      <entry key="S30" value="2.6622820554312714" />
-      <entry key="S60" value="2.8246347296743353" />
-      <entry key="M2" value="3.019282832155787" />
-      <entry key="M5" value="4.644092753407387" />
-      <entry key="M10" value="8.3407786523987" />
-      <entry key="M15" value="11.602842883345927" />
-      <entry key="M30" value="17.871017014279566" />
-      <entry key="H1" value="23.176916058558458" />
-      <entry key="H2" value="26.84166948508384" />
-      <entry key="H4" value="32.44146528392234" />
-      <entry key="D1" value="184.71614255926156" />
-      <entry key="W1" value="1185.793397058979" />
+      <entry key="MS100" value="1.0000000000029552" />
+      <entry key="MS500" value="1.0056845519256923" />
+      <entry key="S2" value="1.5863527698995723" />
+      <entry key="S5" value="3.231588206650824" />
+      <entry key="S10" value="5.543071428817717" />
+      <entry key="S30" value="11.081372627349394" />
+      <entry key="S60" value="14.236368694252274" />
+      <entry key="M2" value="16.366665519337445" />
+      <entry key="M5" value="17.878268878745082" />
+      <entry key="M10" value="18.432072084327928" />
+      <entry key="M15" value="18.69868299107131" />
+      <entry key="M30" value="20.321822250174396" />
+      <entry key="H1" value="25.652287750716578" />
+      <entry key="H2" value="33.43628866557499" />
+      <entry key="H4" value="42.80731728184159" />
+      <entry key="D1" value="194.45693070853906" />
+      <entry key="W1" value="1196.1170044920236" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="2.1331101832770768E-237" />
-      <entry key="S2" value="6.795999249689214E-60" />
-      <entry key="S5" value="2.1522926812755716E-24" />
-      <entry key="S10" value="1.467069634407867E-12" />
-      <entry key="S30" value="1.1422662694954173E-4" />
-      <entry key="S60" value="0.01143372056443705" />
-      <entry key="M2" value="0.13147144119024784" />
-      <entry key="M5" value="0.7115833367361674" />
-      <entry key="M10" value="1.5455267541532447" />
-      <entry key="M15" value="2.15108281641562" />
-      <entry key="M30" value="3.167346724325336" />
-      <entry key="H1" value="3.9421159065600935" />
-      <entry key="H2" value="4.43983237208013" />
-      <entry key="H4" value="5.012963261175687" />
-      <entry key="D1" value="28.49257525266952" />
-      <entry key="W1" value="236.3967080587472" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="1.926870564495998E-205" />
+      <entry key="S30" value="5.806324324233401E-69" />
+      <entry key="S60" value="8.151819279243356E-35" />
+      <entry key="M2" value="1.1101071713256771E-17" />
+      <entry key="M5" value="2.64751947474363E-7" />
+      <entry key="M10" value="9.427210929110082E-4" />
+      <entry key="M15" value="0.015471351824458527" />
+      <entry key="M30" value="0.26861556422890726" />
+      <entry key="H1" value="1.14801396781035" />
+      <entry key="H2" value="2.3959373891551756" />
+      <entry key="H4" value="3.6825526733676717" />
+      <entry key="D1" value="27.064963449713954" />
+      <entry key="W1" value="234.6671206601624" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9526379980439373" />
-      <entry key="MS500" value="0.9906805833221526" />
-      <entry key="S2" value="1.1594954526193997" />
-      <entry key="S5" value="1.6823059555999862" />
-      <entry key="S10" value="2.1534476887929186" />
-      <entry key="S30" value="2.6600325093535955" />
-      <entry key="S60" value="2.8342317638836585" />
-      <entry key="M2" value="3.1454486439481033" />
-      <entry key="M5" value="5.340382522241156" />
-      <entry key="M10" value="9.86748759657867" />
-      <entry key="M15" value="13.735970199683894" />
-      <entry key="M30" value="21.024972001040307" />
-      <entry key="H1" value="27.11070426001041" />
-      <entry key="H2" value="31.27681640628094" />
-      <entry key="H4" value="37.4517131634187" />
-      <entry key="D1" value="213.20592175461204" />
-      <entry key="W1" value="1422.1869531040472" />
+      <entry key="MS100" value="0.9659363289277001" />
+      <entry key="MS500" value="0.998737819837598" />
+      <entry key="S2" value="1.5834539333292492" />
+      <entry key="S5" value="3.2287094718494793" />
+      <entry key="S10" value="5.5403485636142245" />
+      <entry key="S30" value="11.079475959104835" />
+      <entry key="S60" value="14.235143659820663" />
+      <entry key="M2" value="16.365959994759763" />
+      <entry key="M5" value="17.877960580188347" />
+      <entry key="M10" value="18.432844270171255" />
+      <entry key="M15" value="18.71391807002198" />
+      <entry key="M30" value="20.58924797177827" />
+      <entry key="H1" value="26.797849343558948" />
+      <entry key="H2" value="35.82968393523903" />
+      <entry key="H4" value="46.48786839329047" />
+      <entry key="D1" value="221.51923705757957" />
+      <entry key="W1" value="1430.7809960373559" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -266,14 +261,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00057" summary="1.0.8 Xemu Support">
-      <option name="closed" value="true" />
-      <created>1787099284495</created>
-      <option name="number" value="00057" />
-      <option name="presentableId" value="LOCAL-00057" />
-      <option name="project" value="LOCAL" />
-      <updated>1787099284495</updated>
     </task>
     <task id="LOCAL-00058" summary="1.0.8 Xemu Support">
       <option name="closed" value="true" />
@@ -659,7 +646,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787722788776</updated>
     </task>
-    <option name="localTasksCounter" value="106" />
+    <task id="LOCAL-00106" summary="1.1.8 Progress Update Refactor. Non Default Folders. Scanner optimization.">
+      <option name="closed" value="true" />
+      <created>1787791516798</created>
+      <option name="number" value="00106" />
+      <option name="presentableId" value="LOCAL-00106" />
+      <option name="project" value="LOCAL" />
+      <updated>1787791516798</updated>
+    </task>
+    <option name="localTasksCounter" value="107" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -681,7 +676,6 @@
       <path value="$PROJECT_DIR$/../XBLA-Extract" />
       <path value="$PROJECT_DIR$/src/compatibility/xemu_compatibility/xdb" />
     </ignored-roots>
-    <MESSAGE value="1.0.1 XBLIG Responsive Scanner" />
     <MESSAGE value="1.0.1 Build Fix" />
     <MESSAGE value="1.0.1 XBLIG Extractor Worker" />
     <MESSAGE value="1.0.1 XBLIG Dataclass" />
@@ -706,7 +700,8 @@
     <MESSAGE value="1.1.5 Remove distribution files." />
     <MESSAGE value="1.1.6 Multiple Executables and Seperate Assembly Decompile. Add References properly." />
     <MESSAGE value="1.1.7 Executables List" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.1.7 Executables List" />
+    <MESSAGE value="1.1.8 Progress Update Refactor. Non Default Folders. Scanner optimization." />
+    <option name="LAST_COMMIT_MESSAGE" value="1.1.8 Progress Update Refactor. Non Default Folders. Scanner optimization." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
