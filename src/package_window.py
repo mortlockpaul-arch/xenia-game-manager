@@ -629,7 +629,6 @@ class ConvertXnaProjects(QObject):
         self.log_message(
             f"Scanning folders: {root}"
         )
-        self.log_message()
         total_files = 0
         total_folders = 0
 
@@ -1727,7 +1726,7 @@ class CompressWorker(QObject):
 
 class ScanWorker(QObject):
     finished_signal = Signal(list)
-    log_signal = Signal(str)
+    log_signal = Signal(str, str)
     progress_signal = Signal(int, int)
     total_files_signal = Signal(int)
 
@@ -2385,18 +2384,19 @@ class XBLIGDialog(QDialog):
         if self.cache_check.isChecked():
             force = True
 
-        self.scan_thread = QThread(self)
+        thread = QThread(self)
+        self.scan_thread = thread
         self.scan_worker = ScanWorker(root, self, force=force)
         self.scan_worker.moveToThread(self.scan_thread)
 
-        self.scan_thread.started.connect(self.scan_worker.run)
-        self.scan_worker.log_signal.connect(self.log_message_log)
+        thread.started.connect(self.scan_worker.run)
+        self.scan_worker.log_signal.connect(self.log_message)
         self.scan_worker.progress_signal.connect(self.update_scan_progress)
         self.scan_worker.finished_signal.connect(self.scan_finished)
 
         self.scan_worker.finished_signal.connect(self.scan_thread.quit)
         self.scan_worker.finished_signal.connect(self.scan_worker.deleteLater)
-        self.scan_thread.finished.connect(self.scan_thread.deleteLater)
+        thread.finished.connect(self.scan_thread.deleteLater)
 
         self.scan_thread.start()
 
