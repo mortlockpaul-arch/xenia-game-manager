@@ -123,7 +123,7 @@ def copy_updater():
 
 logger = setup_logger()
 
-create_defaults(version="1.1.5")
+create_defaults(version="1.1.9")
 
 tools_setup()
 
