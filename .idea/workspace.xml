@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.2 Decompile Optimize and Solution Configuration">
       <change afterPath="$PROJECT_DIR$/../XBLA-Extract/.idea/xbla-extract.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -261,14 +262,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00087" summary="1.1.0 Decompiler and Extractor Tools">
-      <option name="closed" value="true" />
-      <created>1787351246036</created>
-      <option name="number" value="00087" />
-      <option name="presentableId" value="LOCAL-00087" />
-      <option name="project" value="LOCAL" />
-      <updated>1787351246036</updated>
     </task>
     <task id="LOCAL-00088" summary="1.1.1 Logging Initialisation">
       <option name="closed" value="true" />
@@ -654,7 +647,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787954269957</updated>
     </task>
-    <option name="localTasksCounter" value="136" />
+    <task id="LOCAL-00136" summary="1.2.2 Decompile Optimize and Solution Configuration">
+      <option name="closed" value="true" />
+      <created>1787954464174</created>
+      <option name="number" value="00136" />
+      <option name="presentableId" value="LOCAL-00136" />
+      <option name="project" value="LOCAL" />
+      <updated>1787954464174</updated>
+    </task>
+    <option name="localTasksCounter" value="137" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -985,6 +986,11 @@
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
           <line>2937</line>
           <option name="timeStamp" value="256" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>1983</line>
+          <option name="timeStamp" value="257" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

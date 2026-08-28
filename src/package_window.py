@@ -2939,7 +2939,7 @@ class XBLIGDialog(QDialog):
             self.log_message("Opening Solution in Visual Studio. The Decompiled Projects Should Have Been Added.")
             if game.decompiled is not None:
                 solution = self.config["indie-game-solution-location"]
-                subprocess.Popen(str(solution))
+                os.startfile(solution)
             else:
                 self.log_message("Game has not been Decompiled.")
 
