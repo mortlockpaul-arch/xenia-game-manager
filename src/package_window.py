@@ -2814,8 +2814,12 @@ class XBLIGDialog(QDialog):
             options_group = QGroupBox("Build Options")
             options_layout = QVBoxLayout(options_group)
 
+            self.config = load_config_file()
+            self.config["indie-game-solution-location"] = str(r"C:\source\Indie-Games\Indie-Games.slnx")
+
+            solution_location = self.config["indie-game-solution_locations"]
             self.solution_file = QLineEdit()
-            self.solution_file.setText(str(r"C:\source\Indie-Games\Indie-Games.slnx"))
+            self.solution_file.setText(solution_location)
             self.solution_file.setMinimumHeight(28)
             # Decompile
             self.decompile_check = QCheckBox("Decompile executable")
@@ -3259,14 +3263,27 @@ class XBLIGDialog(QDialog):
         self.cache_check = QCheckBox("Override Cache")
 
         self.root_edit = QLineEdit()
-        self.root_edit.setPlaceholderText("Root folder...")
+        self.root_edit.setPlaceholderText("Indie Games Root folder...")
         self.root_edit.setMaximumWidth(500)
         root_folder = self.config["indie_games_path"]
         self.root_edit.setText(root_folder)
 
         self.root_browse_btn = QPushButton("...")
         self.root_browse_btn.setFixedWidth(32)
-        self.root_browse_btn.clicked.connect(self.browse_root_folder)
+        self.root_browse_btn.clicked.connect(partial(self.browse_root_folder, "indie_games_path"))
+
+        # self.config = load_config_file()
+        # self.config["indie-game-solution-location"] = str(r"C:\source\Indie-Games\Indie-Games.slnx")
+
+        self.root_solution_edit = QLineEdit()
+        self.root_solution_edit.setPlaceholderText("Indie Games Solution folder...")
+        self.root_solution_edit.setMaximumWidth(500)
+        root_folder = self.config["indie-game-solution-location"]
+        self.root_solution_edit.setText(root_folder)
+
+        self.root_solution_browse_btn = QPushButton("...")
+        self.root_solution_browse_btn.setFixedWidth(32)
+        self.root_solution_browse_btn.clicked.connect(partial(self.browse_root_folder, "indie-game-solution-location"))
 
         self.open_ilspy_btn = QPushButton("Open ILSpy")
         self.open_ilspy_btn.clicked.connect(self.open_ilspy)
@@ -3276,6 +3293,9 @@ class XBLIGDialog(QDialog):
         options_row.addWidget(self.cache_check)
         options_row.addWidget(self.root_edit, 1)
         options_row.addWidget(self.root_browse_btn)
+        options_row.addWidget(self.root_solution_edit, 1)
+        options_row.addWidget(self.root_solution_browse_btn)
+
         options_row.addWidget(self.open_ilspy_btn)
 
         options_row.addStretch()
@@ -3426,17 +3446,30 @@ class XBLIGDialog(QDialog):
             if line.strip():
                 self.log_message(line)
         
-    def browse_root_folder(self):
-        folder = QFileDialog.getExistingDirectory(
-            self,
-            "Select Root Folder",
-            self.root_edit.text(),
-        )
+    def browse_root_folder(self, type_of_folder=None):
+        if type_of_folder == "indie_games_path":
+            folder = QFileDialog.getExistingDirectory(
+                self,
+                "Select Indie Games Root Folder",
+                self.root_edit.text(),
+            )
 
-        if folder:
-            self.root_edit.setText(folder)
-            self.config["indie_games_path"] = folder
-            save_config(self.config)
+            if folder:
+                self.root_edit.setText(folder)
+                self.config["indie_games_path"] = folder
+                save_config(self.config)
+
+        if type_of_folder == "indie-game-solution-location":
+            folder = QFileDialog.getExistingDirectory(
+                self,
+                "Select Indie Games Solution Folder",
+                self.root_edit.text(),
+            )
+
+            if folder:
+                self.root_edit.setText(folder)
+                self.config["indie-game-solution-location"] = folder
+                save_config(self.config)
 
     # def add_demo_game(self, title, status, extracted, exe):
     #
