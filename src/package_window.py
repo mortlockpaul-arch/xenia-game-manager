@@ -529,7 +529,7 @@ class ConvertXnaProjects(QObject):
     def __init__(self, project_path, games, options, /):
         super().__init__()
 
-        self._rainbow_index = None
+        self._rainbow_index = 1
         self.config = load_config_file()
         self.options: dict[str, QCheckBox] = options
         self.project_path = Path(project_path)
