@@ -2815,14 +2815,6 @@ class XBLIGDialog(QDialog):
             options_layout = QVBoxLayout(options_group)
 
             self.config = load_config_file()
-
-            print("CONFIG KEYS:")
-            for key in self.config:
-                print(repr(key))
-
-            print("LOOKUP:", repr("indie-game-solution-location"))
-            print("EXISTS:", "indie-game-solution-location" in self.config)
-
             solution_location = self.config["indie-game-solution-location"]
 
             self.solution_file = QLineEdit()
