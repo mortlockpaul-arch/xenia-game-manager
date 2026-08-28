@@ -361,6 +361,9 @@ def ensure_tool_extracted(name: str, log=None):
         ],
         cwd=folder,
         check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
     )
     if log:
         for line in result.stdout.splitlines():
