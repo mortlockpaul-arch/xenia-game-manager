@@ -2923,7 +2923,7 @@ class XBLIGDialog(QDialog):
 
         # if options["convert_content"]:
         #
-        if options["convert_csproj"]:
+        if options["convert_csproj"] or options["add_to_solution"]:
             if game.decompiled is not None:
                 converter = self.method_name()
                 path_to_csproj_file = get_cs_project_folders([game], self.log_message)
