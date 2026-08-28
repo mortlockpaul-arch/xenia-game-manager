@@ -1371,11 +1371,7 @@ class ConvertXnaProjects(QObject):
         self.log_message("  Project files copied successfully.")
         return True
 
-    def add_project_to_solution(
-            self,
-            solution_path: Path,
-            project_path: Path,
-    ) -> bool:
+    def add_project_to_solution(self, solution_path: Path, project_path: Path,) -> bool:
         solution_path = Path(solution_path).resolve()
         project_path = Path(project_path).resolve()
 
@@ -1588,10 +1584,6 @@ class ConvertXnaProjects(QObject):
 
     def convert_project_folder(self, path_to_csproj_file: Path, add_to_solution=True, game_dll_files=None):
         try:
-            # backup project
-            # if (folder.parent.parent / "decompiled_backup").exists():
-            #     shutil.rmtree(folder.parent.parent / "decompiled_backup")
-            # shutil.copytree(folder.parent, folder.parent.parent / "decompiled_backup")
             self.clean_csproj(path_to_csproj_file, game_dll_files)
 
             if add_to_solution:
@@ -2344,7 +2336,7 @@ class XBLIGDialog(QDialog):
                 game.decompiled = project_dir
         except Exception as e:
             self.log_message(
-                f"ERROR decompiling {exe.name}: "
+                f"ERROR decompiling {game.title}: "
                 f"{type(e).__name__}: {e}"
             )
             self.log_message(traceback.format_exc())
