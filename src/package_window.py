@@ -2938,7 +2938,7 @@ class XBLIGDialog(QDialog):
                         self.log_message(f"FAILED {project}: {e}")
         if options["open_visual_studio"]:
             if game.executables is not None:
-                solution = str(str(f"{str(game.executables)}.sln"))
+                solution = self.config["indie-game-solution-location"]
                 subprocess.Popen(["explorer", str(solution)])
         # folder = game.extracted
         # content_dir = folder / "584E07D1" / "Content"
