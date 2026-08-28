@@ -485,7 +485,7 @@ def get_cs_project_folders(
                             f"  Renamed {project.name} -> {new_path.name}"
                         )
                 except PermissionError:
-                    log_callback(f"Could not Rename {project.name}. May be its open in Visual Studio.")
+                    log_callback(f"Could not Rename {project.name}. Maybe its open in Visual Studio.")
 
             if new_path not in projects:
                 projects.append(new_path)
@@ -2101,6 +2101,7 @@ class XBLIGDialog(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self._rainbow_index = 1
         self.conn = None
         self.scan_worker = None
         self.scan_thread = None
@@ -3442,14 +3443,138 @@ class XBLIGDialog(QDialog):
 
     from html import escape
 
+    # def log_message(self, message, color=None):
+    #     message = escape(str(message))
+    #
+    #     if color:
+    #         message = f'<span style="color: {color};">{message}</span>'
+    #
+    #     self.log_window.appendHtml(message)
+
     def log_message(self, message, color=None):
         message = escape(str(message))
 
-        if color:
-            message = f'<span style="color: {color};">{message}</span>'
+        if color is None:
+            color = RAINBOW_COLORS[self._rainbow_index]
+            self._rainbow_index = (
+                                          self._rainbow_index + 1
+                                  ) % len(RAINBOW_COLORS)
 
-        self.log_window.appendHtml(message)
+        self.log_window.appendHtml(
+            f'<span style="color: {color};">{message}</span>'
+        )
 
+RAINBOW_COLORS = [
+    "#FF4D4D",
+    "#FF5252",
+    "#FF5C5C",
+    "#FF6666",
+    "#FF7070",
+    "#FF7A7A",
+    "#FF4757",
+    "#FF3F4F",
+    "#FF3850",
+    "#FF3048",
+
+    "#FF493D",
+    "#FF5138",
+    "#FF5933",
+    "#FF6130",
+    "#FF692B",
+    "#FF7025",
+    "#FF7820",
+    "#FF801B",
+    "#FF8816",
+    "#FF9011",
+
+    "#FF9810",
+    "#FFA00F",
+    "#FFA80E",
+    "#FFB00D",
+    "#FFB80C",
+    "#FFC00B",
+    "#FFC70A",
+    "#FFCE0A",
+    "#FFD50A",
+    "#FFDC0A",
+
+    "#FFE20A",
+    "#FFE80A",
+    "#FFEE0A",
+    "#FFF30A",
+    "#FFF80A",
+    "#FFFC12",
+    "#F8FF18",
+    "#EEFF20",
+    "#E4FF27",
+    "#DAFF2E",
+
+    "#D0FF35",
+    "#C4FF3C",
+    "#B8FF43",
+    "#ACFF4A",
+    "#A0FF51",
+    "#94FF58",
+    "#88FF5F",
+    "#7CFF66",
+    "#70FF6D",
+    "#64FF74",
+
+    "#58FF7B",
+    "#4CFF82",
+    "#40FF89",
+    "#34FF90",
+    "#28FF97",
+    "#20FF9E",
+    "#18FFA5",
+    "#10FFAC",
+    "#08FFB3",
+    "#00FFBA",
+
+    "#00F8C4",
+    "#00F0CE",
+    "#00E8D8",
+    "#00E0E2",
+    "#00D8EC",
+    "#00D0F6",
+    "#00C8FF",
+    "#00BFFF",
+    "#18B7FF",
+    "#30AFFF",
+
+    "#48A7FF",
+    "#60A0FF",
+    "#7898FF",
+    "#9090FF",
+    "#8888FF",
+    "#8080FF",
+    "#7878FF",
+    "#7070FF",
+    "#6868FF",
+    "#6060FF",
+
+    "#6858FF",
+    "#7050FF",
+    "#7848FF",
+    "#8040FF",
+    "#8838FF",
+    "#9030FF",
+    "#9828FF",
+    "#A020FF",
+    "#A818FF",
+    "#B010FF",
+
+    "#B818FF",
+    "#C020FF",
+    "#C828FF",
+    "#D030FF",
+    "#D838FF",
+    "#E040FF",
+    "#E848FF",
+    "#F050FF",
+    "#F858FF",
+    "#FF60FF",
+]
 
 if __name__ == "__main__":
     setup_logger()
