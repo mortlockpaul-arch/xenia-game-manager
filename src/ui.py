@@ -48,7 +48,7 @@ import xboxunity_api
 from git_actions import DownloadArtifact
 from archive_window import ArchiveBrowser
 from config import save_config, load_config_file, load_xenia_manager_config, get_app_dir
-from db import Database, Compatibility, XboxGame, Xbox360Game, Platform
+from db import Database, Compatibility, XboxGame, Xbox360Game, Platform, GameSource
 from edge_import import use_xenia_manager_content_folder_for_edge
 from extract import extract_archives, ExtractWorker
 from logging_setup import setup_logger
@@ -770,6 +770,8 @@ class GameLauncher(QMainWindow):
         self.show_differences_btn.clicked.connect(self.show_differences)
         tools_layout.addWidget(self.show_differences_btn)
 
+        from db import GameSource
+        sources = GameSource
 
         self.import_btn = QPushButton("Import Xenia Manager Game List")
         self.import_btn.clicked.connect(partial(self.import_games, "xenia_manager"))
@@ -2031,7 +2033,7 @@ class GameLauncher(QMainWindow):
                 index.row()
             )
 
-    def import_games(self, xenia_version):
+    def import_games(self, game_source: GameSource):
         # if xenia_version == "xemu":
             # scanner = xiso.XboxScanner()
             # scanner.status.connect(self.on_status)
@@ -2042,10 +2044,10 @@ class GameLauncher(QMainWindow):
         # Refresh table
         if self.model is not None:
             self.model.load()
-        self.log(f"Importing {xenia_version} games...")
+        self.log(f"Importing {game_source} games...")
         try:
             # Import games
-            self.db.import_games_from_source(xenia_version, log_callback=self.log, xbox_game_list = self.xbox_game_list)
+            self.db.import_games_from_source(game_source, xbox_game_list=self.xbox_game_list, log_callback=self.log)
             self.refresh("xbox360")
         except FileNotFoundError as e:
             self.log("File not found: " + str(e) + " (No games found)")

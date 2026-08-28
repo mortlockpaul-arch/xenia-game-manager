@@ -12,11 +12,11 @@ import xml.etree.ElementTree as ET  # noqa: N812
 from contextlib import redirect_stdout
 from functools import partial
 from pathlib import Path
-from typing import Callable
+from typing import Callable, cast
 
 from PySide6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QRect, QThread, Signal, QObject, QModelIndex, \
-    Slot, QSize, QProcess
-from PySide6.QtGui import QFont
+    Slot, QSize, QProcess, QEvent
+from PySide6.QtGui import QFont, QMouseEvent
 from PySide6.QtWidgets import (
     QDialog,
     QVBoxLayout,
@@ -31,7 +31,7 @@ from PySide6.QtWidgets import (
     QHeaderView, QApplication, QSizePolicy, QFrame, QGraphicsDropShadowEffect, QCheckBox, QButtonGroup,
     QRadioButton, QProgressBar, QPlainTextEdit, QLineEdit, QAbstractItemView, QTableView,
 )
-from db import ConversionResult, Database, XBLIGGame
+from db import ConversionResult, Database, XBLIGGame, Game, GameSource
 
 from config import get_app_dir, load_config_file
 from logging_setup import setup_logger
@@ -1782,6 +1782,79 @@ class ScanWorker(QObject):
             self.log_signal.emit(f"Scanner error: {e}")
             self.finished_signal.emit([])
 
+from PySide6.QtWidgets import QStyledItemDelegate
+from PySide6.QtGui import QPainter
+from PySide6.QtCore import QRect, QSize, Qt
+
+
+class IconButtonDelegate(QStyledItemDelegate):
+
+    def paint(self, painter, option, index):
+
+        icon = index.data(Qt.ItemDataRole.DecorationRole)
+        game = index.data(Qt.ItemDataRole.UserRole)
+
+        if not icon:
+            return
+
+        painter.save()
+
+        # Button rectangle
+        button_rect = option.rect.adjusted(
+            2, 2, -2, -2
+        )
+
+        # Draw button background/border
+        painter.setPen(Qt.GlobalColor.gray)
+
+        painter.drawRoundedRect(
+            button_rect,
+            6,
+            6,
+        )
+
+        # Draw icon
+        icon_size = 32
+
+        icon_rect = QRect(
+            button_rect.center().x() - icon_size // 2,
+            button_rect.center().y() - icon_size // 2,
+            icon_size,
+            icon_size,
+        )
+
+        icon.paint(
+            painter,
+            icon_rect,
+            Qt.AlignmentFlag.AlignCenter,
+        )
+
+        painter.restore()
+
+    def editorEvent(
+            self,
+            event: QEvent,
+            model,
+            option,
+            index,
+    ):
+        if event.type() == QEvent.Type.MouseButtonRelease:
+            mouse_event = cast(QMouseEvent, event)
+
+            if mouse_event.button() == Qt.MouseButton.LeftButton:
+                game = index.data(Qt.ItemDataRole.UserRole)
+
+                if game:
+                    print(f"Launch {game.title}")
+
+                return True
+
+        return super().editorEvent(
+            event,
+            model,
+            option,
+            index,
+        )
 
 class XBLIGDialog(QDialog):
 
@@ -1909,6 +1982,7 @@ class XBLIGDialog(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.conn = None
         self.scan_worker = None
         self.scan_thread = None
         self.config = load_config_file()
@@ -2567,110 +2641,11 @@ class XBLIGDialog(QDialog):
                 game.publisher = metadata["developer_account"] or metadata["developer"]
 
         self.model.set_games(games)
-
+        game_source: GameSource = "indie"
+        self.db.import_games_from_source(game_source, indie_game_list=games, log_callback=self.log_message)
         self.game_table.setIconSize(QSize(32, 32))
         self.game_table.verticalHeader().setVisible(False)
         self.game_table.verticalHeader().setDefaultSectionSize(40)
-
-    #
-    # def load_games(self, games: list[XBLIGGame]):
-    #     self.columns = {
-    #         "Icon": lambda g: (
-    #             QIcon(str(g.extracted / "DashboardIcon.png"))
-    #             if g.extracted and (g.extracted / "DashboardIcon.png").exists()
-    #             else QIcon()
-    #         ),
-    #         "Title": lambda g: g.title or "",
-    #         "Status": lambda g: (
-    #             "Ready"
-    #             if g.executables is not None and g.xml is not None
-    #             else "Needs Build"
-    #         ),
-    #         "Publisher": lambda g: g.publisher or "",
-    #         "Extracted": lambda g: "Yes" if g.extracted else "No",
-    #         "Decompiled": lambda g: (
-    #             g.decompiled.name
-    #             if g.decompiled
-    #             else ""
-    #         ),
-    #         "Executables": lambda g: str(len(g.executables or [])),
-    #         "DLL Files": lambda g: str(len(g.dll_files or [])),
-    #         "Content Converted": lambda g: (
-    #                 g.content_converted or ""
-    #         ),
-    #         "Content Format": lambda g: (
-    #                 g.content_format or ""
-    #         ),
-    #     }
-    #
-    #     self.game_table.setIconSize(QSize(32, 32))
-    #     self.game_table.verticalHeader().setVisible(False)
-    #     self.game_table.verticalHeader().setDefaultSectionSize(40)
-    #
-    #     columns = list(self.columns.items())
-    #
-    #     self.game_table.setColumnCount(len(columns))
-    #     self.game_table.setHorizontalHeaderLabels(
-    #         [name for name, _ in columns]
-    #     )
-    #     self.game_table.setRowCount(0)
-    #
-    #     for game in games:
-    #         row = self.game_table.rowCount()
-    #         self.game_table.insertRow(row)
-    #
-    #         metadata = self.database.get_xblig_metadata(game.title)
-    #
-    #         if metadata:
-    #             game.publisher = (
-    #                     metadata["developer_account"]
-    #                     or metadata["developer"]
-    #             )
-    #
-    #         for column, (name, getter) in enumerate(columns):
-    #             value = getter(game)
-    #
-    #             if name == "Icon":
-    #                 button = QPushButton()
-    #
-    #                 button.setIcon(value)
-    #                 button.setIconSize(QSize(32, 32))
-    #                 button.setFixedSize(38, 38)
-    #
-    #                 button.setStyleSheet("""
-    #                     QPushButton {
-    #                         border: 1px solid #666;
-    #                         border-radius: 6px;
-    #                         background: transparent;
-    #                         padding: 2px;
-    #                     }
-    #
-    #                     QPushButton:hover {
-    #                         border: 1px solid #aaa;
-    #                         background: rgba(255, 255, 255, 20);
-    #                     }
-    #
-    #                     QPushButton:pressed {
-    #                         background: rgba(255, 255, 255, 40);
-    #                     }
-    #                 """)
-    #
-    #                 button.setToolTip(game.title or "Launch Game")
-    #
-    #                 # We'll connect this to the game action later
-    #                 # button.clicked.connect(
-    #                 #     lambda checked=False, g=game: self.launch_game(g)
-    #                 # )
-    #
-    #                 self.game_table.setCellWidget(
-    #                     row,
-    #                     column,
-    #                     button,
-    #                 )
-    #
-    #             else:
-    #                 item = QTableWidgetItem(str(value))
-    #                 self.game_table.setItem(row, column, item)
 
     from PySide6.QtWidgets import (QDialog, )
 
@@ -3186,15 +3161,45 @@ class XBLIGDialog(QDialog):
         self.model.log.connect(self.log_message)
         self.game_table.setModel(self.model)
         self.game_table.setSortingEnabled(True)
-
         header = self.game_table.horizontalHeader()
-        for column in range(7):
-            header.setSectionResizeMode(column, QHeaderView.ResizeMode.ResizeToContents)
 
-        self.game_table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
-        self.game_table.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
-        self.game_table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        self.game_table.selectionModel().selectionChanged.connect(self.game_selected)
+        # Icon column
+        header.setSectionResizeMode(
+            0,
+            QHeaderView.ResizeMode.Fixed,
+        )
+        header.resizeSection(0, 42)
+
+        # Other columns
+        for column in range(1, self.model.columnCount()):
+            header.setSectionResizeMode(
+                column,
+                QHeaderView.ResizeMode.ResizeToContents,
+            )
+
+        self.game_table.setIconSize(QSize(32, 32))
+        self.game_table.verticalHeader().setDefaultSectionSize(42)
+
+        self.game_table.setItemDelegateForColumn(
+            0,
+            IconButtonDelegate(self.game_table),
+        )
+
+        self.game_table.setSelectionBehavior(
+            QAbstractItemView.SelectionBehavior.SelectRows
+        )
+
+        self.game_table.setSelectionMode(
+            QAbstractItemView.SelectionMode.SingleSelection
+        )
+
+        self.game_table.setEditTriggers(
+            QAbstractItemView.EditTrigger.NoEditTriggers
+        )
+
+        self.game_table.selectionModel().selectionChanged.connect(
+            self.game_selected
+        )
 
         left_splitter.addWidget(self.game_table)
 

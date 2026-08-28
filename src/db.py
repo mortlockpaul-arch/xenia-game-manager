@@ -4,7 +4,7 @@ import shutil
 import sqlite3
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Any
+from typing import Any, Literal
 from pathlib import Path
 import requests
 from config import load_config_file, get_app_dir
@@ -20,6 +20,7 @@ DB_PATH = Path(__file__).resolve().parent / "database" / "games.db"
 
 from dataclasses import dataclass, field, fields
 
+
 class Platform(Enum):
     XBOX = "Xbox"
     XBOX360 = "Xbox360"
@@ -32,6 +33,7 @@ class Platform(Enum):
             Platform.XBOX360: "Xbox 360",
             Platform.INDIE: "Indie"
         }[self]
+
 
 def _json_value(value):
     if isinstance(value, Path):
@@ -51,6 +53,7 @@ def _json_value(value):
 
     return value
 
+
 @dataclass
 class ConversionResult:
     tool: str
@@ -60,6 +63,7 @@ class ConversionResult:
     stdout: str
     stderr: str
     error: str | None = None
+
 
 @dataclass
 class Game:
@@ -71,9 +75,10 @@ class Game:
     play_count: int = 0
     play_time: int = 0
 
+
 @dataclass
 class XBLIGGame(Game):
-    platform: Platform = field( default=Platform.INDIE, init=False, )
+    platform: Platform = field(default=Platform.INDIE, init=False, )
 
     title: str = ""
     icon: Path | None = None
@@ -100,12 +105,12 @@ class XBLIGGame(Game):
 
     def __post_init__(self):
         for name in (
-            "package",
-            "extracted",
-            "game_root",
-            "xml",
-            "decompiled",
-            "icon",
+                "package",
+                "extracted",
+                "game_root",
+                "xml",
+                "decompiled",
+                "icon",
         ):
             value = getattr(self, name)
             if isinstance(value, str):
@@ -162,6 +167,7 @@ class XBLIGGame(Game):
             if field_info.init
         }
 
+
 @dataclass
 class GameDisc:
     media_id: str | None = None
@@ -189,6 +195,7 @@ class GameDisc:
             disc_number=row["disc_number"] or 1,
             label=row["label"],
         )
+
 
 @dataclass
 class Xbox360Game(Game):
@@ -219,10 +226,11 @@ class Xbox360Game(Game):
             discs=discs,
         )
 
+
 @dataclass
 class XboxGame(Game):
-    platform: Platform = field( default=Platform.XBOX, init=False, )
-    emulator: str = field( default="xemu", init=False, )
+    platform: Platform = field(default=Platform.XBOX, init=False, )
+    emulator: str = field(default="xemu", init=False, )
     config_path: Path | None = None
 
     @classmethod
@@ -245,6 +253,44 @@ class XboxGame(Game):
             play_count=row["play_count"] or 0,
             play_time=row["play_time"] or 0,
         )
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "XboxGame":
+        config_path:str = data.get("config_path")
+
+        discs = [
+            GameDisc(
+                media_id=disc.get("media_id"),
+                file_path=(
+                    Path(disc["file_path"])
+                    if disc.get("file_path")
+                    else None
+                ),
+                disc_count=disc.get("disc_count", 1),
+                disc_type=disc.get("disc_type"),
+                disc_swap_required=bool(
+                    disc.get("disc_swap_required", False)
+                ),
+                disc_number=disc.get("disc_number", 1),
+                label=disc.get("label"),
+            )
+            for disc in data.get("discs", [])
+        ]
+
+        return cls(
+            game_id=data["game_id"],
+            title=data.get("title", ""),
+            config_path=(
+                Path(config_path)
+                if config_path
+                else None
+            ),
+            favourite=bool(data.get("favourite", False)),
+            last_played=data.get("last_played"),
+            play_count=data.get("play_count", 0),
+            play_time=data.get("play_time", 0),
+        )
+
 
 class Compatibility:
 
@@ -356,7 +402,6 @@ class Emulator(Enum):
 
 
 def create_xbox360_game_from_xenia_manager(data, ) -> Xbox360Game:
-
     game_id = data.get("game_id")
 
     file_path = data.get(
@@ -391,6 +436,7 @@ def create_xbox360_game_from_xenia_manager(data, ) -> Xbox360Game:
         discs=[disc],
     )
 
+
 def create_xbox360_game_from_edge(
         data: XeniaEdgeGame,
 ) -> Xbox360Game:
@@ -405,29 +451,30 @@ def create_xbox360_game_from_edge(
         discs=[disc],
     )
 
-  #
-  # "games": {
-  #   "41430001": {
-  #     "title_id": "41430001",
-  #     "name": "Dave Mirra Freestyle BMX 2",
-  #     "status": "Playable",
-  #     "status_description": "This title is playable, with minor issues.",
-  #     "url": "https://xemu.app/titles/41430001",
-  #     "images": {
-  #       "front": "images\\41430001\\front.jpg",
-  #       "back": "images\\41430001\\back.jpg",
-  #       "disc": "images\\41430001\\disc.jpg",
-  #       "xtimage": "images\\41430001\\xtimage.png"
-  #     },
-  #     "report": {
-  #       "created_at": 1656748603,
-  #       "xbe_cert_title_id": 1094909953,
-  #       "xbe_headers_sha256": "6c17491189e515042ee99d05d1c84a589a0209f8f58a76a85a8d2fdd91775e3b",
-  #       "xemu_version": "0.7.56",
+
+#
+# "games": {
+#   "41430001": {
+#     "title_id": "41430001",
+#     "name": "Dave Mirra Freestyle BMX 2",
+#     "status": "Playable",
+#     "status_description": "This title is playable, with minor issues.",
+#     "url": "https://xemu.app/titles/41430001",
+#     "images": {
+#       "front": "images\\41430001\\front.jpg",
+#       "back": "images\\41430001\\back.jpg",
+#       "disc": "images\\41430001\\disc.jpg",
+#       "xtimage": "images\\41430001\\xtimage.png"
+#     },
+#     "report": {
+#       "created_at": 1656748603,
+#       "xbe_cert_title_id": 1094909953,
+#       "xbe_headers_sha256": "6c17491189e515042ee99d05d1c84a589a0209f8f58a76a85a8d2fdd91775e3b",
+#       "xemu_version": "0.7.56",
 
 def find_xemu_compatibility_by_name(
-    compatibility: XemuCompatibility,
-    name: str,
+        compatibility: XemuCompatibility,
+        name: str,
 ) -> XemuCompatibilityGame | None:
     name = name.strip().casefold()
 
@@ -439,6 +486,7 @@ def find_xemu_compatibility_by_name(
         ),
         None,
     )
+
 
 def clean_xbox_title(filename: str | Path, normalise_separators=False) -> str:
     title = Path(filename).name
@@ -455,8 +503,8 @@ def clean_xbox_title(filename: str | Path, normalise_separators=False) -> str:
 
     return " ".join(title.split()).strip()
 
-def create_xbox_game(data: XboxRom, compatibility=None) -> XboxGame:
 
+def create_xbox_game(data: XboxRom, compatibility=None) -> XboxGame:
     global game_id, xemu_version
 
     file = data.file
@@ -498,8 +546,8 @@ def create_xbox_game(data: XboxRom, compatibility=None) -> XboxGame:
         discs=[disc],
     )
 
-def xenia_edge_game_from_dict(data) -> Xbox360Game:
 
+def xenia_edge_game_from_dict(data) -> Xbox360Game:
     game_id = data.get("title_id")
     file_path = data.get("path")
 
@@ -543,8 +591,8 @@ def xenia_edge_game_from_dict(data) -> Xbox360Game:
         discs=[disc],
     )
 
-def xenia_manager_game_from_dict(data) -> Xbox360Game:
 
+def xenia_manager_game_from_dict(data) -> Xbox360Game:
     game_id = data.get("game_id")
 
     file_path = (
@@ -583,6 +631,7 @@ def xenia_manager_game_from_dict(data) -> Xbox360Game:
         discs=[disc],
     )
 
+
 def xemu_game_from_dict(data) -> XboxGame:
     game_id = data.get("game_id")
 
@@ -618,9 +667,11 @@ def xemu_game_from_dict(data) -> XboxGame:
         title=strip_disc_suffix(data.get("title") or ""),
         config_path=Path(config_path) if config_path else None,
         play_time=data.get("playtime") or 0,
-        emulator_version=data.get("xemu_version"),
-        discs=[disc],
     )
+
+
+GameSource = Literal["xemu", "xenia_manager", "xenia_edge", "indie"]
+
 
 class Database:
 
@@ -1052,7 +1103,6 @@ class Database:
     #
     #     return None
 
-
     def save_game(self, game: Game):
         with self.conn as con:
             con.execute("""
@@ -1132,23 +1182,21 @@ class Database:
 
     from typing import Literal
 
-    GameSource = Literal["xemu", "xenia_manager", "xenia_edge"]
-
-    def import_games_from_source(
-            self,
-            source: GameSource,
-            xbox_game_list: list[XboxRom] | None,
-            log_callback=None,
-    ):
-        if xbox_game_list is None:
-            xbox_game_list = []
+    def import_games_from_source(self, source: GameSource, xbox_game_list: list[XboxRom] | None = None, log_callback=None, indie_game_list: list[XBLIGGame] | None = None,):
         config = load_config_file()
-        multidisc_info = get_app_dir() / "config" / "disc-info.json"
-        self.compatibility = load_xemu_compatibility()
 
-        if source == "xemu":
+        if source == "indie":
+            assert indie_game_list is not None
+            imported_games = indie_game_list
+            message = (
+                f"Imported {len(imported_games)} {source} Games from Folders"
+            )
+        elif source == "xemu":
+            self.compatibility = load_xemu_compatibility()
+            if xbox_game_list is None:
+                xbox_game_list = []
             imported_games = [
-                create_xbox_game(game,compatibility=self.compatibility)
+                create_xbox_game(game, compatibility=self.compatibility)
                 for game in xbox_game_list
             ]
 
@@ -1258,7 +1306,8 @@ class Database:
         # Multi-disc information
         # ----------------------------------------
 
-        if source != "xemu":
+        if source == "xenia_manager" or source == "xenia_edge":
+            multidisc_info = get_app_dir() / "config" / "disc-info.json"
             self.import_multidisc_json(
                 multidisc_info,
                 log_callback=log_callback,
@@ -1268,7 +1317,18 @@ class Database:
             log_callback(message)
 
     def add_game(self, game: Game):
+
+        platform = game.platform.value
+
+        config_path = getattr(game, "config_path", None)
+        emulator = getattr(game, "emulator", None)
+        discs = getattr(game, "discs", [])
+
         with self.conn as con:
+
+            # ----------------------------------------
+            # Game
+            # ----------------------------------------
 
             con.execute("""
                 INSERT INTO games (
@@ -1283,11 +1343,15 @@ class Database:
                     title = excluded.title,
                     config_path = excluded.config_path
             """, (
-                game.platform.value,
+                platform,
                 game.game_id,
                 game.title,
-                str(game.config_path) if game.config_path else None,
+                str(config_path) if config_path else None,
             ))
+
+            # ----------------------------------------
+            # Gameplay
+            # ----------------------------------------
 
             con.execute("""
                 INSERT INTO gameplay (
@@ -1304,14 +1368,18 @@ class Database:
                     play_count = excluded.play_count,
                     play_time = excluded.play_time
             """, (
-                game.platform.value,
+                platform,
                 game.game_id,
                 game.last_played,
                 game.play_count,
                 game.play_time,
             ))
 
-            for disc in game.discs:
+            # ----------------------------------------
+            # Discs
+            # ----------------------------------------
+
+            for disc in discs:
                 con.execute("""
                     INSERT INTO discs (
                         platform,
@@ -1334,7 +1402,7 @@ class Database:
                         disc_swap_required = excluded.disc_swap_required,
                         label = excluded.label
                 """, (
-                    game.platform.value,
+                    platform,
                     game.game_id,
                     disc.media_id,
                     str(disc.file_path) if disc.file_path else None,
@@ -1345,7 +1413,13 @@ class Database:
                     disc.label,
                 ))
 
-            if game.emulator:
+            # ----------------------------------------
+            # Emulator
+            # ----------------------------------------
+
+            if emulator:
+                version = getattr(game, "emulator_version", None)
+
                 con.execute("""
                     INSERT INTO emulators (
                         platform,
@@ -1357,25 +1431,26 @@ class Database:
                     DO UPDATE SET
                         version = excluded.version
                 """, (
-                    game.platform.value,
-                    game.emulator,
-                    game.emulator_version,
-                ))
-            con.execute("""
-                INSERT INTO compatibility (
                     platform,
-                    game_id,
-                    emulator
-                )
-                VALUES (?, ?, ?)
-                ON CONFLICT(platform, game_id, emulator)
-                DO UPDATE SET
-                    compatibility_updated = CURRENT_TIMESTAMP
-            """, (
-                game.platform.value,
-                game.game_id,
-                game.emulator,
-            ))
+                    emulator,
+                    version,
+                ))
+
+                con.execute("""
+                    INSERT INTO compatibility (
+                        platform,
+                        game_id,
+                        emulator
+                    )
+                    VALUES (?, ?, ?)
+                    ON CONFLICT(platform, game_id, emulator)
+                    DO UPDATE SET
+                        compatibility_updated = CURRENT_TIMESTAMP
+                """, (
+                    platform,
+                    game.game_id,
+                    emulator,
+                ))
 
     def search_games(self, search_text=""):
         with self.conn as con:

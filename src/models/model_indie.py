@@ -3,8 +3,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import cast, Any
 
-from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex, Signal
+from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex, Signal, QSize
 from PySide6.QtGui import QBrush, QColor, QFont, QIcon
+from PySide6.QtWidgets import QPushButton
 
 from config import load_config_file
 from db import Database, XBLIGGame, XboxGame, Platform, Game
@@ -14,276 +15,202 @@ from utils import star, format_disc_type
 DisplayRole = Qt.ItemDataRole.DisplayRole
 ToolTipRole = Qt.ItemDataRole.ToolTipRole
 
-
 class IndieGameTableModel(BaseGameTableModel):
 
     COLUMNS = [
-        ("favourite", "Fav"),
-        ("artwork_path", ""),
+        ("icon", "Icon"),
         ("title", "Title"),
         ("game_id", "Title ID"),
-        ("disc_count", "Discs"),
-        ("disc_type", "Type"),
-        ("last_played", "Last Played"),
-        ("play_count", "Plays"),
-        ("play_time", "Play Time"),
-        ("disc_number", "Disc"),
-        ("emulator_version", "Xemu Version"),
-        ("compatibility_rating", "Compatibility"),
+        ("publisher", "Publisher"),
+        ("content_converted", "Content Converted"),
+        ("content_format", "Content Format"),
+        ("extracted", "Extracted"),
+        ("decompiled", "Decompiled"),
+        ("executables", "Executables"),
+        ("dll_files", "DLL Files"),
         ("platform", "Platform"),
     ]
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, games=None, parent=None):
+        super().__init__(games or [], parent)
+
+        self.config = load_config_file()
+        self.indie_games_path = Path(
+            self.config["indie_games_path"]
+        )
 
         self.db = Database()
-        self.games: list[XBLIGGame] = []
-        self.config = load_config_file()
-        self.indie_games_path = Path(self.config["indie_games_path"])
-        self.load()
 
     def reload_config(self):
         self.config = load_config_file()
-        self.indie_games_path = Path(self.config["indie_games_path"])
+        self.indie_games_path = Path(
+            self.config["indie_games_path"]
+        )
 
-    def load(self, search_text=""):
-        platform = Platform.XBOX
-
-        with self.db.get_db() as con:
-            query = """
-                SELECT *
-                FROM game_view
-                WHERE platform = ?
-            """
-
-            params = [platform.value]
-
-            if search_text:
-                query += " AND title LIKE ?"
-                params.append(f"%{search_text}%")
-
-            query += " ORDER BY title"
-
-            rows = con.execute(query, params)
-
-            self.games = [XboxGame.from_row(row) for row in rows]
-
-        self.layoutChanged.emit()
-
-    def rowCount(self, parent=QModelIndex()):
-        return len(self.games)
-
-    def columnCount(self, parent=None):
-        return len(self.COLUMNS)
-
-    def headerData(self, section, orientation, role=Qt.ItemDataRole.DisplayRole):
-        if role != Qt.ItemDataRole.DisplayRole:
-            return None
-
-        if orientation == Qt.Orientation.Horizontal:
-            return self.COLUMNS[section][1]
-
-        return section + 1
+    def set_games(self, games):
+        self.beginResetModel()
+        self.games = list(games)
+        self.endResetModel()
 
     def get_value(self, game: XBLIGGame, key: str):
         return getattr(game, key, None)
 
-    def data(self, index, role=Qt.ItemDataRole.DisplayRole):
-        compatibility = {
-            "Perfect": ("Perfect", "#2ecc71"),
-            "Playable": ("Playable", "#27ae60"),
-            "Gameplay": ("Gameplay", "#f1c40f"),
-            "Menu": ("Menu", "#e67e22"),
-            "Loads": ("Loads", "#e74c3c"),
-            "Unplayable": ("Unplayable", "#7f8c8d"),
-            None: ("Unknown", "#95a5a6"),
-        }
+    def headerData(
+            self,
+            section,
+            orientation,
+            role=Qt.ItemDataRole.DisplayRole,
+    ):
+        if role != Qt.ItemDataRole.DisplayRole:
+            return None
 
+        if orientation == Qt.Orientation.Horizontal:
+            if 0 <= section < len(self.COLUMNS):
+                return self.COLUMNS[section][1]
+
+            return None
+
+        if orientation == Qt.Orientation.Vertical:
+            return section + 1
+
+        return None
+
+    def data(self, index, role=Qt.ItemDataRole.DisplayRole):
         if not index.isValid():
             return None
 
         game = self.games[index.row()]
-
-        if role == Qt.ItemDataRole.UserRole:
-            return game
-
         key = self.COLUMNS[index.column()][0]
 
         # ----------------------------------------
-        # Compatibility
+        # Return the actual game
         # ----------------------------------------
 
-        if key == "compatibility_rating":
-            rating = self.get_value(game, key)
-
-            text, colour = compatibility.get(
-                rating,
-                compatibility[None],
-            )
-
-            if role == Qt.ItemDataRole.DisplayRole:
-                return text
-
-            if role == Qt.ItemDataRole.ForegroundRole:
-                return QBrush(QColor(colour))
-
-            if role == Qt.ItemDataRole.TextAlignmentRole:
-                return Qt.AlignmentFlag.AlignCenter
-
-            if role == Qt.ItemDataRole.FontRole:
-                font = QFont()
-                font.setBold(True)
-                return font
+        if role == Qt.ItemDataRole.UserRole:
+            return game
 
         # ----------------------------------------
         # Artwork
         # ----------------------------------------
 
-        if role == Qt.ItemDataRole.DecorationRole:
-            if key == "artwork_path" and game.icon:
-                return QIcon(str(game.icon))
+        if key == "icon":
+            if role == Qt.ItemDataRole.DecorationRole:
+                if game.icon and game.icon.exists():
+                    return QIcon(str(game.icon))
+
+                if game.extracted:
+                    icon = game.extracted / "DashboardIcon.png"
+
+                    if icon.exists():
+                        return QIcon(str(icon))
+
+            if role == Qt.ItemDataRole.DisplayRole:
+                return ""
 
         # ----------------------------------------
         # Display
         # ----------------------------------------
 
         if role == Qt.ItemDataRole.DisplayRole:
-            value = self.get_value(game, key)
 
             if key == "platform":
-                if isinstance(value, Platform):
-                    return value.name
+                return game.platform.display_name
 
-                return str(value) if value is not None else ""
+            if key == "extracted":
+                return "Yes" if game.extracted else "No"
 
-            if key == "artwork_path":
+            if key == "decompiled":
+                return (
+                    game.decompiled.name
+                    if game.decompiled
+                    else ""
+                )
+
+            if key == "executables":
+                return str(len(game.executables or []))
+
+            if key == "dll_files":
+                return str(len(game.dll_files or []))
+
+            value = self.get_value(game, key)
+
+            if value is None:
                 return ""
 
-            if key == "favourite":
-                return star(int(value or 0))
+            if isinstance(value, Path):
+                return str(value)
 
-            if key == "last_played":
-                return value or ""
-
-            if key == "play_time":
-                if value is None:
-                    return ""
-
-                play_time = int(cast(float, value))
-                hours, minutes = divmod(play_time, 60)
-
-                return f"{hours}h {minutes}m" if hours else f"{minutes}m"
-
-            if key == "disc_type":
-                return format_disc_type(cast(str, value)) or None
-
-            return value if value is not None else ""
+            return str(value)
 
         # ----------------------------------------
-        # Tooltip
+        # Tooltips
         # ----------------------------------------
 
         if role == Qt.ItemDataRole.ToolTipRole:
+
             if key == "title":
                 paths = self.get_game_paths(index.row())
-                return "\n".join(str(path) for path in paths)
+
+                if paths:
+                    return "\n".join(
+                        str(path)
+                        for path in paths
+                    )
+
+            if key == "icon" and game.icon:
+                return str(game.icon)
 
         return None
 
     def get_game_paths(self, row_index: int) -> list[Path]:
         game = self.get_game(row_index)
-        return []
 
-    def toggle_favourite(self, row_index):
-        if row_index < 0 or row_index >= len(self.games):
+        paths = []
+
+        if game.package:
+            paths.append(game.package)
+
+        if game.extracted:
+            paths.append(game.extracted)
+
+        if game.game_root:
+            paths.append(game.game_root)
+
+        return paths
+
+    def sort(
+        self,
+        column,
+        order=Qt.SortOrder.AscendingOrder,
+    ):
+        if column < 0 or column >= len(self.COLUMNS):
             return
 
-        row = self.games[row_index]
-        game_id = row["game_id"]
-
-        new_value = 0 if int(row.get("favourite", 0)) else 1
-
-        with self.db.get_db() as con:
-            con.execute(
-                """
-                INSERT INTO favourites (game_id, favourite)
-                VALUES (?, ?)
-                ON CONFLICT(game_id)
-                DO UPDATE SET favourite = excluded.favourite
-            """,
-                (game_id, new_value),
-            )
-
-        row["favourite"] = new_value
-
-        index = self.index(row_index, 0)
-        self.dataChanged.emit(index, index, [Qt.ItemDataRole.DisplayRole])
-
-    def add_play_time(self, game_id, minutes):
-        with self.db.get_db() as con:
-            con.execute(
-                """
-                UPDATE gameplay
-                SET play_time = COALESCE(play_time, 0) + ?
-                WHERE game_id = ?
-            """,
-                (minutes, game_id),
-            )
-
-    def mark_played(self, game_id):
-
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        with self.db.get_db() as con:
-
-            con.execute(
-                """
-                UPDATE gameplay
-                SET
-                    play_count = play_count + 1,
-                    last_played = ?
-                WHERE game_id = ?
-            """,
-                (timestamp, game_id),
-            )
-
-    def sort(self, column, order=Qt.SortOrder.AscendingOrder):
-
+        key = self.COLUMNS[column][0]
         reverse = order == Qt.SortOrder.DescendingOrder
 
-        mapping = {
-            0: "favourite",
-            2: "title",
-            3: "game_id",
-            4: "media_id",
-            5: "disc_count",
-            6: "disc_type",
-            7: "last_played",
-            8: "play_count",
-            9: "play_time",
-            10: "disc_number",
-            11: "xenia_version",
-            12: "compatibility_rating",
-        }
+        def sort_value(game):
+            value = self.get_value(game, key)
 
-        field = mapping.get(column)
-        if field is None:
-            return
+            if value is None:
+                return ""
 
-        direction = "DESC" if reverse else "ASC"
+            if isinstance(value, list):
+                return len(value)
 
-        with self.db.get_db() as con:
-            query = f"""
-                    SELECT *
-                    FROM game_view
-                    ORDER BY {field} {direction}
-                """
-            params = ()
-            rows = con.execute(query, params)
-            self.games = [XBLIGGame.from_dict(dict(row)) for row in rows]
+            if isinstance(value, Path):
+                return str(value).casefold()
+
+            if isinstance(value, Platform):
+                return value.value.casefold()
+
+            return str(value).casefold()
+
+        self.layoutAboutToBeChanged.emit()
+
+        self.games.sort(
+            key=sort_value,
+            reverse=reverse,
+        )
+
         self.layoutChanged.emit()
-
-    def set_games(self, games):
-        self.beginResetModel()
-        self.games = list(games)
-        self.endResetModel()
