@@ -3460,7 +3460,7 @@ class XBLIGDialog(QDialog):
                 save_config(self.config)
 
         if type_of_folder == "indie-game-solution-location":
-            folder = QFileDialog.getExistingDirectory(
+            folder = QFileDialog.getOpenFileName(
                 self,
                 "Select Indie Games Solution Folder",
                 self.root_solution_edit.text(),
