@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.1 Open ILSpy Capture Tool Extract and Cleanup">
+    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.2 Decompile Optimize and Solution Configuration">
       <change afterPath="$PROJECT_DIR$/../XBLA-Extract/.idea/xbla-extract.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/game-manager-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/game-manager-config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
     </list>
@@ -53,61 +52,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0000000000000058" />
-      <entry key="S5" value="1.0000020244012715" />
-      <entry key="S10" value="1.0014390432644076" />
-      <entry key="S30" value="1.1708239135266476" />
-      <entry key="S60" value="1.9450516078092797" />
-      <entry key="M2" value="4.126579236829784" />
-      <entry key="M5" value="10.925964166541371" />
-      <entry key="M10" value="18.265918221076074" />
-      <entry key="M15" value="22.98841758648539" />
-      <entry key="M30" value="33.83882388834288" />
-      <entry key="H1" value="52.87892332642543" />
-      <entry key="H2" value="83.29601913591586" />
-      <entry key="H4" value="121.49100791978417" />
-      <entry key="D1" value="300.584103243506" />
-      <entry key="W1" value="1316.4746555113156" />
+      <entry key="MS100" value="1.000000262714934" />
+      <entry key="MS500" value="1.0518994138983853" />
+      <entry key="S2" value="1.9787994719631534" />
+      <entry key="S5" value="3.7745286259122413" />
+      <entry key="S10" value="5.661054798401708" />
+      <entry key="S30" value="8.377511204635251" />
+      <entry key="S60" value="9.558779550131309" />
+      <entry key="M2" value="10.863422532380955" />
+      <entry key="M5" value="15.927083274914796" />
+      <entry key="M10" value="23.506255553651357" />
+      <entry key="M15" value="28.905606580212893" />
+      <entry key="M30" value="40.9021434723317" />
+      <entry key="H1" value="60.726873400730746" />
+      <entry key="H2" value="91.78424087487446" />
+      <entry key="H4" value="130.64867182438377" />
+      <entry key="D1" value="310.821369215504" />
+      <entry key="W1" value="1326.9974938632088" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="3.6486718023353685E-120" />
-      <entry key="S2" value="1.3820816475918605E-30" />
-      <entry key="S5" value="1.1381866307506427E-12" />
-      <entry key="S10" value="1.0668582992837634E-6" />
-      <entry key="S30" value="0.0102181278552538" />
-      <entry key="S60" value="0.10141916193703991" />
-      <entry key="M2" value="0.3437572696153783" />
-      <entry key="M5" value="0.9832844532619729" />
-      <entry key="M10" value="1.6485399058498826" />
-      <entry key="M15" value="2.088202625681053" />
-      <entry key="M30" value="3.329196954994377" />
-      <entry key="H1" value="5.932599790100138" />
-      <entry key="H2" value="10.191404237124797" />
-      <entry key="H4" value="15.677693677527895" />
-      <entry key="D1" value="45.68332431386813" />
-      <entry key="W1" value="252.68521743205588" />
+      <entry key="MS500" value="1.55154916696428E-310" />
+      <entry key="S2" value="3.529322831429142E-78" />
+      <entry key="S5" value="1.0449043910739332E-31" />
+      <entry key="S10" value="3.232498091374431E-16" />
+      <entry key="S30" value="6.8630186367188434E-6" />
+      <entry key="S60" value="0.0026284029160783527" />
+      <entry key="M2" value="0.055339834068512735" />
+      <entry key="M5" value="0.4735802224048468" />
+      <entry key="M10" value="1.1440806931631438" />
+      <entry key="M15" value="1.636857096853152" />
+      <entry key="M30" value="2.9475321636073213" />
+      <entry key="H1" value="5.58218961054039" />
+      <entry key="H2" value="9.885844935210134" />
+      <entry key="H4" value="15.440880348664882" />
+      <entry key="D1" value="45.56758509233989" />
+      <entry key="W1" value="252.59366356552934" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.5433674312630291" />
-      <entry key="MS500" value="0.8851537645795451" />
-      <entry key="S2" value="0.9699619103417378" />
-      <entry key="S5" value="0.9878762967969854" />
-      <entry key="S10" value="0.9951914574406384" />
-      <entry key="S30" value="1.1736708721774487" />
-      <entry key="S60" value="2.0331886021284418" />
-      <entry key="M2" value="4.450105853504887" />
-      <entry key="M5" value="11.882277398688538" />
-      <entry key="M10" value="19.890210605772296" />
-      <entry key="M15" value="25.05595413642991" />
-      <entry key="M30" value="37.15179202132125" />
-      <entry key="H1" value="58.79566531022238" />
-      <entry key="H2" value="93.4718102504192" />
-      <entry key="H4" value="137.1558405315915" />
-      <entry key="D1" value="346.2619451511283" />
-      <entry key="W1" value="1569.156329414908" />
+      <entry key="MS100" value="0.9592643748562427" />
+      <entry key="MS500" value="1.0433241051679285" />
+      <entry key="S2" value="1.97515781007499" />
+      <entry key="S5" value="3.771667944687754" />
+      <entry key="S10" value="5.6574214849080064" />
+      <entry key="S30" value="8.370839894026219" />
+      <entry key="S60" value="9.555320223619544" />
+      <entry key="M2" value="10.911702499332433" />
+      <entry key="M5" value="16.385868710361922" />
+      <entry key="M10" value="24.63255305250156" />
+      <entry key="M15" value="30.5256150759072" />
+      <entry key="M30" value="43.834976385083564" />
+      <entry key="H1" value="66.2939747924085" />
+      <entry key="H2" value="101.65485687135364" />
+      <entry key="H4" value="146.0768433096485" />
+      <entry key="D1" value="356.3834787664008" />
+      <entry key="W1" value="1579.587614180274" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -265,22 +264,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00080" summary="1.0.9 Platform Refactor">
-      <option name="closed" value="true" />
-      <created>1787256160115</created>
-      <option name="number" value="00080" />
-      <option name="presentableId" value="LOCAL-00080" />
-      <option name="project" value="LOCAL" />
-      <updated>1787256160116</updated>
-    </task>
-    <task id="LOCAL-00081" summary="1.0.9 Platform Refactor">
-      <option name="closed" value="true" />
-      <created>1787256226045</created>
-      <option name="number" value="00081" />
-      <option name="presentableId" value="LOCAL-00081" />
-      <option name="project" value="LOCAL" />
-      <updated>1787256226047</updated>
     </task>
     <task id="LOCAL-00082" summary="1.0.9 Platform Refactor">
       <option name="closed" value="true" />
@@ -658,7 +641,23 @@
       <option name="project" value="LOCAL" />
       <updated>1787946531705</updated>
     </task>
-    <option name="localTasksCounter" value="129" />
+    <task id="LOCAL-00129" summary="1.2.2 Decompile Optimize and Solution Configuration">
+      <option name="closed" value="true" />
+      <created>1787951132445</created>
+      <option name="number" value="00129" />
+      <option name="presentableId" value="LOCAL-00129" />
+      <option name="project" value="LOCAL" />
+      <updated>1787951132447</updated>
+    </task>
+    <task id="LOCAL-00130" summary="1.2.2 Decompile Optimize and Solution Configuration">
+      <option name="closed" value="true" />
+      <created>1787951320687</created>
+      <option name="number" value="00130" />
+      <option name="presentableId" value="LOCAL-00130" />
+      <option name="project" value="LOCAL" />
+      <updated>1787951320687</updated>
+    </task>
+    <option name="localTasksCounter" value="131" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -680,7 +679,6 @@
       <path value="$PROJECT_DIR$/../XBLA-Extract" />
       <path value="$PROJECT_DIR$/src/compatibility/xemu_compatibility/xdb" />
     </ignored-roots>
-    <MESSAGE value="1.0.6 Fix argument parsing and scan for game dll files and decompile those too." />
     <MESSAGE value="1.0.6 Tools" />
     <MESSAGE value="1.0.7 Tools" />
     <MESSAGE value="1.0.8 Xemu Support" />
@@ -705,7 +703,8 @@
     <MESSAGE value="1.2.1 Log Colors and Bug Fixing" />
     <MESSAGE value="1.2.1 Open ILSpy Button" />
     <MESSAGE value="1.2.1 Open ILSpy Capture Tool Extract and Cleanup" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.2.1 Open ILSpy Capture Tool Extract and Cleanup" />
+    <MESSAGE value="1.2.2 Decompile Optimize and Solution Configuration" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.2.2 Decompile Optimize and Solution Configuration" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

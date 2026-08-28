@@ -2817,7 +2817,7 @@ class XBLIGDialog(QDialog):
             self.config = load_config_file()
             self.config["indie-game-solution-location"] = str(r"C:\source\Indie-Games\Indie-Games.slnx")
 
-            solution_location = self.config["indie-game-solution_locations"]
+            solution_location = self.config["indie-game-solution_location"]
             self.solution_file = QLineEdit()
             self.solution_file.setText(solution_location)
             self.solution_file.setMinimumHeight(28)
@@ -3463,11 +3463,11 @@ class XBLIGDialog(QDialog):
             folder = QFileDialog.getExistingDirectory(
                 self,
                 "Select Indie Games Solution Folder",
-                self.root_edit.text(),
+                self.root_solution_edit.text(),
             )
 
             if folder:
-                self.root_edit.setText(folder)
+                self.root_solution_edit.setText(folder)
                 self.config["indie-game-solution-location"] = folder
                 save_config(self.config)
 
