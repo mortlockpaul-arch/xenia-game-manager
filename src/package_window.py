@@ -520,7 +520,7 @@ xnb_extractor = (get_app_dir() / "assets/tools/conversion/xnb-extractor/Release/
 
 
 class ConvertXnaProjects(QObject):
-    log_signal = Signal(str)
+    log_signal = Signal(str, str)
     progress_signal = Signal(int, int)
     finished_signal = Signal(ConversionResult)
     total_files_signal = Signal(int)
@@ -533,8 +533,8 @@ class ConvertXnaProjects(QObject):
         self.project_path = Path(project_path)
         self.games = games
 
-    def log_message(self, message):
-        self.log_signal.emit(message)
+    def log_message(self, message, color):
+        self.log_signal.emit(message, color)
 
     from pathlib import Path
 
@@ -1371,11 +1371,20 @@ class ConvertXnaProjects(QObject):
         self.log_message("  Project files copied successfully.")
         return True
 
+    LOG_COLORS = {
+        "normal": "#D4D4D4",  # Light grey
+        "info": "#61AFEF",  # Blue
+        "success": "#98C379",  # Green
+        "warning": "#E5C07B",  # Yellow/orange
+        "error": "#E06C75",  # Red
+        "debug": "#C678DD",  # Purple
+    }
+
     def add_project_to_solution(self, solution_path: Path, project_path: Path,) -> bool:
         solution_path = Path(solution_path).resolve()
         project_path = Path(project_path).resolve()
 
-        self.log_message(f"Adding project to solution: {project_path.name}")
+        self.log_message(f"Adding project to solution: {project_path.name}", self.LOG_COLORS["debug"])
 
         if not solution_path.exists():
             self.log_message(f"  Solution not found: {solution_path}")
@@ -2061,7 +2070,7 @@ class XBLIGDialog(QDialog):
 
     def method_name(self) -> ConvertXnaProjects:
         converter = ConvertXnaProjects(get_app_dir(), self.games, self.options)
-        converter.log_signal.connect(self.log_message_log)
+        converter.log_signal.connect(self.log_message)
         converter.progress_signal.connect(self.update_progress)
         converter.finished_signal.connect(self.tool_finished)
         converter.total_files_signal.connect(self.update_progress)
