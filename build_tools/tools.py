@@ -22,9 +22,9 @@ def tools_setup():
 if __name__ == "__main__":
     # tools_setup()
     #
-    ensure_tool_extracted("ilspy")
-    ensure_tool_extracted("ilspycmd")
-    ensure_tool_extracted("vgmstream")
-    ensure_tool_extracted("conversion")
+    ensure_tool_extracted("ilspy", None)
+    ensure_tool_extracted("ilspycmd", None)
+    ensure_tool_extracted("vgmstream", None)
+    ensure_tool_extracted("conversion", None)
 
 

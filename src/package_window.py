@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET  # noqa: N812
 from contextlib import redirect_stdout
 from functools import partial
 from glob import escape
+from io import StringIO
 from pathlib import Path
 from typing import Callable, cast
 
@@ -337,7 +338,7 @@ def compress_folders(root: Path, source_dirs, archive: Path, delete_original: bo
     return archive
 
 
-def ensure_tool_extracted(name: str):
+def ensure_tool_extracted(name: str, log=None):
     tools_root = get_app_dir() / "assets" / "tools"
 
     relative_path = TOOL_PATHS[name]
@@ -347,14 +348,11 @@ def ensure_tool_extracted(name: str):
     if folder.exists():
         return
 
-    if not archive.exists():
-        raise FileNotFoundError(
-            f"Tool archive not found: {archive}"
-        )
+    if not archive.exists(): raise FileNotFoundError(f"Tool archive not found: {archive}")
 
     folder.mkdir(parents=True, exist_ok=True)
 
-    subprocess.run(
+    result = subprocess.run(
         [
             str(get_7zip()),
             "x",
@@ -364,7 +362,10 @@ def ensure_tool_extracted(name: str):
         cwd=folder,
         check=True,
     )
-
+    if log:
+        for line in result.stdout.splitlines():
+            if line.strip():
+                log(line)
 
 
 
@@ -415,7 +416,7 @@ def get_tool_path(name: str) -> Path:
         raise ValueError(f"Unknown tool: {name}")
 
 
-def cleanup_tool(name: str):
+def cleanup_tool(name: str, log=None):
     tools_root = get_app_dir() / "assets" / "tools"
 
     relative_path = get_tool_path(name)
@@ -426,9 +427,9 @@ def cleanup_tool(name: str):
 
     try:
         shutil.rmtree(folder)
-        print(f"Cleaned up: {folder}")
+        if log: log(f"Cleaned up: {folder}")
     except PermissionError as e:
-        print(f"Cleanup failed for {folder}: {e}")
+        if log: log(f"Cleanup failed for {folder}: {e}")
 
 
 class ToolManager:
@@ -438,11 +439,11 @@ class ToolManager:
 
     def extract(self):
         for tool in self.tools:
-            ensure_tool_extracted(tool)
+            ensure_tool_extracted(tool, None)
 
     def cleanup(self):
         for tool in self.tools:
-            cleanup_tool(tool)
+            cleanup_tool(tool, None)
 
     def __enter__(self):
         self.extract()
@@ -2101,6 +2102,7 @@ class XBLIGDialog(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.ilspy_process = None
         self._rainbow_index = 1
         self.conn = None
         self.scan_worker = None
@@ -2232,7 +2234,7 @@ class XBLIGDialog(QDialog):
             return
         game, indexes = result
         if game:
-            ensure_tool_extracted("conversion")
+            ensure_tool_extracted("conversion", None)
             converter = self.method_name()
 
             self.progress_bar.setRange(0, 0)  # Busy animation
@@ -2247,7 +2249,7 @@ class XBLIGDialog(QDialog):
             destination = get_app_dir() / "logs"
             if source.exists():
                 shutil.copytree(source, destination, dirs_exist_ok=True)
-        cleanup_tool("conversion")
+        cleanup_tool("conversion", None)
         self.validate1_btn.setDisabled(False)
         self.validate2_btn.setDisabled(False)
         self.validate3_btn.setDisabled(False)
@@ -2272,9 +2274,9 @@ class XBLIGDialog(QDialog):
                           open_explorer=None) -> Path:
 
         if use_gui:
-            ensure_tool_extracted("ilspy")
+            ensure_tool_extracted("ilspy", None)
         else:
-            ensure_tool_extracted("ilspycmd")
+            ensure_tool_extracted("ilspycmd", None)
 
         ilspy_exe = ILSPY_GUI if use_gui else ILSPY_CMD
 
@@ -3263,11 +3265,16 @@ class XBLIGDialog(QDialog):
         self.root_browse_btn.setFixedWidth(32)
         self.root_browse_btn.clicked.connect(self.browse_root_folder)
 
+        self.open_ilspy_btn = QPushButton("Open ILSpy")
+        self.open_ilspy_btn.clicked.connect(self.open_ilspy)
+
         options_row.addWidget(self.all_checkbox)
         options_row.addWidget(self.overwrite_check)
         options_row.addWidget(self.cache_check)
         options_row.addWidget(self.root_edit, 1)
         options_row.addWidget(self.root_browse_btn)
+        options_row.addWidget(self.open_ilspy_btn)
+
         options_row.addStretch()
         self.all_checkbox.setSizePolicy(
             QSizePolicy.Policy.Fixed,
@@ -3396,6 +3403,26 @@ class XBLIGDialog(QDialog):
 
         main_layout.addWidget(splitter)
 
+    from contextlib import redirect_stdout
+    from io import StringIO
+
+    def open_ilspy(self):
+        ensure_tool_extracted("ilspy", log=self.log_message,)
+        self.ilspy_process = QProcess(self)
+        self.ilspy_process.setProgram(str(ILSPY_GUI))
+        self.ilspy_process.finished.connect(lambda: cleanup_tool("ilspy", self.log_message))
+        self.ilspy_process.start()
+
+    def _ilspy_finished(self):
+        output = StringIO()
+
+        with redirect_stdout(output):
+            cleanup_tool("ilspy", None)
+
+        for line in output.getvalue().splitlines():
+            if line.strip():
+                self.log_message(line)
+        
     def browse_root_folder(self):
         folder = QFileDialog.getExistingDirectory(
             self,
@@ -3408,16 +3435,16 @@ class XBLIGDialog(QDialog):
             self.config["indie_games_path"] = folder
             save_config(self.config)
 
-    def add_demo_game(self, title, status, extracted, exe):
-
-        row = self.game_table.rowCount()
-
-        self.game_table.insertRow(row)
-
-        self.game_table.setItem(row, 0, QTableWidgetItem(title))
-        self.game_table.setItem(row, 1, QTableWidgetItem(status))
-        self.game_table.setItem(row, 2, QTableWidgetItem(extracted))
-        self.game_table.setItem(row, 3, QTableWidgetItem(exe))
+    # def add_demo_game(self, title, status, extracted, exe):
+    #
+    #     row = self.game_table.rowCount()
+    #
+    #     self.game_table.insertRow(row)
+    #
+    #     self.game_table.setItem(row, 0, QTableWidgetItem(title))
+    #     self.game_table.setItem(row, 1, QTableWidgetItem(status))
+    #     self.game_table.setItem(row, 2, QTableWidgetItem(extracted))
+    #     self.game_table.setItem(row, 3, QTableWidgetItem(exe))
 
     def all_or_one(self, checked):
         self.compress_btn.setText(
