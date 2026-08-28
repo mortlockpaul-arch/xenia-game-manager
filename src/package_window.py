@@ -873,7 +873,6 @@ class ConvertXnaProjects(QObject):
 
             game_info = extracted / "GameInfo.xml"
 
-            title_id = package.parent.parent.name
 
             xml_data = parse_xml(game_info)
 
@@ -882,6 +881,9 @@ class ConvertXnaProjects(QObject):
                     or folder_title
                     or package.stem
             )
+
+            title_id = package.stem.upper()
+            title_id = xml_data.get("xml_title_id") or title_id
 
             decompiled_path_value = (
                     package.parent / "decompiled"
@@ -959,21 +961,13 @@ class ConvertXnaProjects(QObject):
                     title=title,
                     folder_title=folder_title,
                     title_id=title_id,
-
-                    virtual_title_id=xml_data.get(
-                        "virtual_title_id"
-                    ),
-
-                    xml_title_id=xml_data.get(
-                        "xml_title_id"
-                    ),
-
+                    game_id=title_id,
+                    virtual_title_id=xml_data.get( "virtual_title_id" ),
+                    xml_title_id=xml_data.get( "xml_title_id" ),
                     content_type=content_format,
                     content_name="Xbox Live Indie Game",
                     content_format=content_format,
-
                     package=package,
-
                     extracted=(
                         extracted
                         if extracted.exists()
@@ -1940,9 +1934,7 @@ class XBLIGDialog(QDialog):
         self.db = db
 
         self.build_ui()
-        # self.rescan_games_responsive()
         self.load_games(self.games)
-
         self.create_settings_drawer()
         self.apply_style()
 
@@ -3233,8 +3225,6 @@ class XBLIGDialog(QDialog):
         splitter.setStretchFactor(0, 1)
 
         main_layout.addWidget(splitter)
-
-        self.game_table.selectRow(0)
 
     def add_demo_game(self, title, status, extracted, exe):
 

@@ -59,6 +59,8 @@ class BaseGameTableModel(QAbstractTableModel):
     def get_game_id(self, row_index: int) -> str:
         return self.get_game(row_index).game_id
 
+
+
 class DiscGameTableModel(BaseGameTableModel):
 
     def get_game_path(self, row_index: int) -> Path | None:
@@ -69,14 +71,7 @@ class DiscGameTableModel(BaseGameTableModel):
 
         return game.discs[0].file_path
 
-    def get_game_paths(self, row_index: int) -> list[Path]:
-        game = self.get_game(row_index)
 
-        return [
-            disc.file_path
-            for disc in game.discs
-            if disc.file_path is not None
-        ]
 
     def get_media_id(self, row_index: int) -> str | None:
         game = self.get_game(row_index)

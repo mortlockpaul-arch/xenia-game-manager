@@ -3,11 +3,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import cast, Any
 
-from PySide6.QtCore import (
-    Qt,
-    QAbstractTableModel,
-    QModelIndex, Signal
-)
+from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex, Signal
 from PySide6.QtGui import QBrush, QColor, QFont, QIcon
 
 from config import load_config_file
@@ -17,6 +13,7 @@ from utils import star, format_disc_type
 
 DisplayRole = Qt.ItemDataRole.DisplayRole
 ToolTipRole = Qt.ItemDataRole.ToolTipRole
+
 
 class IndieGameTableModel(BaseGameTableModel):
 
@@ -33,7 +30,7 @@ class IndieGameTableModel(BaseGameTableModel):
         ("disc_number", "Disc"),
         ("emulator_version", "Xemu Version"),
         ("compatibility_rating", "Compatibility"),
-        ("platform", "Platform")
+        ("platform", "Platform"),
     ]
 
     def __init__(self):
@@ -48,73 +45,6 @@ class IndieGameTableModel(BaseGameTableModel):
     def reload_config(self):
         self.config = load_config_file()
         self.indie_games_path = Path(self.config["indie_games_path"])
-
-    @staticmethod
-    def normalise_disc_number(title: str) -> str:
-        disc_number = re.compile(r"\(Disc\s+\d+\)", re.IGNORECASE,)
-        return disc_number.sub(
-            "(Disc 1)",
-            title,
-        )
-
-
-    def get_artwork_path(self, row):
-
-        def normalise_artwork_title(artwork_title_string: str) -> str:
-            replacements = {
-                ":": " - ",
-                "™": "",
-            }
-
-            for old, new in replacements.items():
-                artwork_title_string = artwork_title_string.replace(old, new)
-
-            # Remove duplicate spaces
-            artwork_title_string = " ".join(artwork_title_string.split())
-
-            return artwork_title_string.strip()
-
-        disc_suffix = re.compile(
-            r"\s*-\s*Disc\s+\d+\s*-\s*.*$",
-            re.IGNORECASE,
-        )
-        title = cast(str, row.title)
-
-        if not title:
-            return None
-
-        title_remap_icon = {
-            "SEGA Rally™ Online Arcade": "SEGA Rally",
-            "Perfect Dark Zero™": "Perfect Dark Zero",
-            "Geometry Wars™: Retro Evolved": "Geometry Wars Retro Evolved",
-            "JoJo's Bizarre Adventure HD Ver.": "JOJOS BIZARRE ADVENTURE HD Ver",
-            # Specific exception
-            "Metal Gear Solid V: The Phantom Pain (Disc 1)":
-                "Metal Gear Solid V - The Phantom Pain (Disc 1)",
-        }
-
-        # Apply manual remaps first
-        artwork_title = title_remap_icon.get(title, title)
-
-        # Fix punctuation differences
-        artwork_title = normalise_artwork_title(
-            artwork_title
-        )
-
-        base_title = disc_suffix.sub(" (Disc 1)", artwork_title, ).strip()
-        base_title = self.normalise_disc_number(base_title)
-
-        if base_title != title:
-            message = f"Normalising artwork: '{title}' -> '{base_title}'"
-            self.log.emit(message, False, True, False)
-
-        icon = (self.xenia_manager_path / "GameData" / base_title / "Artwork" / "icon.ico")
-
-        if not icon.exists():
-            message = f"Icon not found: '{base_title}'"
-            self.log.emit(message, False, True, False)
-        return icon if icon.exists() else None
-
 
     def load(self, search_text=""):
         platform = Platform.XBOX
@@ -136,10 +66,7 @@ class IndieGameTableModel(BaseGameTableModel):
 
             rows = con.execute(query, params)
 
-            self.games = [
-                XboxGame.from_row(row)
-                for row in rows
-            ]
+            self.games = [XboxGame.from_row(row) for row in rows]
 
         self.layoutChanged.emit()
 
@@ -158,23 +85,7 @@ class IndieGameTableModel(BaseGameTableModel):
 
         return section + 1
 
-    def get_value(self, game: XboxGame, key: str):
-        disc_fields = {
-            "media_id",
-            "file_path",
-            "disc_count",
-            "disc_type",
-            "disc_swap_required",
-            "disc_number",
-            "label",
-        }
-
-        if key in disc_fields:
-            if not game.discs:
-                return None
-
-            return getattr(game.discs[0], key, None)
-
+    def get_value(self, game: XBLIGGame, key: str):
         return getattr(game, key, None)
 
     def data(self, index, role=Qt.ItemDataRole.DisplayRole):
@@ -229,11 +140,8 @@ class IndieGameTableModel(BaseGameTableModel):
         # ----------------------------------------
 
         if role == Qt.ItemDataRole.DecorationRole:
-            if key == "artwork_path":
-                icon_path = self.get_artwork_path(game)
-
-                if icon_path:
-                    return QIcon(str(icon_path))
+            if key == "artwork_path" and game.icon:
+                return QIcon(str(game.icon))
 
         # ----------------------------------------
         # Display
@@ -264,16 +172,10 @@ class IndieGameTableModel(BaseGameTableModel):
                 play_time = int(cast(float, value))
                 hours, minutes = divmod(play_time, 60)
 
-                return (
-                    f"{hours}h {minutes}m"
-                    if hours
-                    else f"{minutes}m"
-                )
+                return f"{hours}h {minutes}m" if hours else f"{minutes}m"
 
             if key == "disc_type":
-                return format_disc_type(
-                    cast(str, value)
-                ) or None
+                return format_disc_type(cast(str, value)) or None
 
             return value if value is not None else ""
 
@@ -288,6 +190,10 @@ class IndieGameTableModel(BaseGameTableModel):
 
         return None
 
+    def get_game_paths(self, row_index: int) -> list[Path]:
+        game = self.get_game(row_index)
+        return []
+
     def toggle_favourite(self, row_index):
         if row_index < 0 or row_index >= len(self.games):
             return
@@ -298,12 +204,15 @@ class IndieGameTableModel(BaseGameTableModel):
         new_value = 0 if int(row.get("favourite", 0)) else 1
 
         with self.db.get_db() as con:
-            con.execute("""
+            con.execute(
+                """
                 INSERT INTO favourites (game_id, favourite)
                 VALUES (?, ?)
                 ON CONFLICT(game_id)
                 DO UPDATE SET favourite = excluded.favourite
-            """, (game_id, new_value))
+            """,
+                (game_id, new_value),
+            )
 
         row["favourite"] = new_value
 
@@ -312,36 +221,35 @@ class IndieGameTableModel(BaseGameTableModel):
 
     def add_play_time(self, game_id, minutes):
         with self.db.get_db() as con:
-            con.execute("""
+            con.execute(
+                """
                 UPDATE gameplay
                 SET play_time = COALESCE(play_time, 0) + ?
                 WHERE game_id = ?
-            """, (minutes, game_id))
+            """,
+                (minutes, game_id),
+            )
 
     def mark_played(self, game_id):
 
-        timestamp = datetime.now().strftime(
-            "%Y-%m-%d %H:%M:%S"
-        )
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         with self.db.get_db() as con:
 
-            con.execute("""
+            con.execute(
+                """
                 UPDATE gameplay
                 SET
                     play_count = play_count + 1,
                     last_played = ?
                 WHERE game_id = ?
-            """, (
-                timestamp,
-                game_id
-            ))
-
-
+            """,
+                (timestamp, game_id),
+            )
 
     def sort(self, column, order=Qt.SortOrder.AscendingOrder):
 
-        reverse = (order == Qt.SortOrder.DescendingOrder)
+        reverse = order == Qt.SortOrder.DescendingOrder
 
         mapping = {
             0: "favourite",
@@ -371,10 +279,8 @@ class IndieGameTableModel(BaseGameTableModel):
                     ORDER BY {field} {direction}
                 """
             params = ()
-            self.games = cast(
-                list[dict[str, Any]],
-                [dict(row) for row in con.execute(query, params)]
-            )
+            rows = con.execute(query, params)
+            self.games = [XBLIGGame.from_dict(dict(row)) for row in rows]
         self.layoutChanged.emit()
 
     def set_games(self, games):

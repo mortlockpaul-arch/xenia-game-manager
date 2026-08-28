@@ -280,6 +280,15 @@ class XboxGameTableModel(DiscGameTableModel):
 
         return None
 
+    def get_game_paths(self, row_index: int) -> list[Path]:
+        game = self.get_game(row_index)
+
+        return [
+            disc.file_path
+            for disc in game.discs
+            if disc.file_path is not None
+        ]
+
     def toggle_favourite(self, row_index):
         if row_index < 0 or row_index >= len(self.games):
             return
@@ -361,8 +370,9 @@ class XboxGameTableModel(DiscGameTableModel):
                     ORDER BY {field} {direction}
                 """
             params = ()
-            self.games = cast(
-                list[dict[str, Any]],
-                [dict(row) for row in con.execute(query, params)]
-            )
+            rows = con.execute(query, params)
+            self.games = [
+                XboxGame.from_dict(dict(row))
+                for row in rows
+            ]
         self.layoutChanged.emit()

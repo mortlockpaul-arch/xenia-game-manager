@@ -12,6 +12,9 @@ from edge_import import import_edge_games, XeniaEdgeGame
 from logging_setup import logger
 from utils import detect_disc_number, strip_disc_suffix, smart_title_case
 from xiso import XboxRom, load_xemu_compatibility, XemuCompatibility, XemuCompatibilityGame
+from enum import Enum
+from pathlib import Path
+from dataclasses import fields
 
 DB_PATH = Path(__file__).resolve().parent / "database" / "games.db"
 
@@ -29,6 +32,24 @@ class Platform(Enum):
             Platform.XBOX360: "Xbox 360",
             Platform.INDIE: "Indie"
         }[self]
+
+def _json_value(value):
+    if isinstance(value, Path):
+        return str(value)
+
+    if isinstance(value, Enum):
+        return value.value
+
+    if isinstance(value, list):
+        return [_json_value(item) for item in value]
+
+    if isinstance(value, dict):
+        return {
+            key: _json_value(item)
+            for key, item in value.items()
+        }
+
+    return value
 
 @dataclass
 class ConversionResult:
@@ -133,23 +154,13 @@ class XBLIGGame(Game):
         return cls(**values)
 
     def to_dict(self):
-        data = {}
-
-        for field_info in fields(self):
-            value = getattr(self, field_info.name)
-
-            if isinstance(value, Path):
-                value = str(value)
-
-            elif isinstance(value, list):
-                value = [
-                    str(item) if isinstance(item, Path) else item
-                    for item in value
-                ]
-
-            data[field_info.name] = value
-
-        return data
+        return {
+            field_info.name: _json_value(
+                getattr(self, field_info.name)
+            )
+            for field_info in fields(self)
+            if field_info.init
+        }
 
 @dataclass
 class GameDisc:
@@ -380,7 +391,6 @@ def create_xbox360_game_from_xenia_manager(data, ) -> Xbox360Game:
         discs=[disc],
     )
 
-
 def create_xbox360_game_from_edge(
         data: XeniaEdgeGame,
 ) -> Xbox360Game:
@@ -429,7 +439,6 @@ def find_xemu_compatibility_by_name(
         ),
         None,
     )
-
 
 def clean_xbox_title(filename: str | Path, normalise_separators=False) -> str:
     title = Path(filename).name

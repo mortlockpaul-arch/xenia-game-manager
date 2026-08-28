@@ -7,12 +7,13 @@
     <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.1.8 Massive Refactor">
       <change afterPath="$PROJECT_DIR$/../XBLA-Extract/.idea/xbla-extract.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/game-manager-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/game-manager-config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/model_bases.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/model_bases.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/model_indie.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/model_indie.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/model_xbox.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/model_xbox.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/model_xbox360.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/model_xbox360.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,60 +58,60 @@
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
       <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0000000000005658" />
-      <entry key="S2" value="1.0014566515368406" />
-      <entry key="S5" value="1.1117777654782375" />
-      <entry key="S10" value="1.5127689568527392" />
-      <entry key="S30" value="2.945378298971309" />
-      <entry key="S60" value="4.038949290964128" />
-      <entry key="M2" value="4.964082056806802" />
-      <entry key="M5" value="5.91740827853315" />
-      <entry key="M10" value="6.715882146981819" />
-      <entry key="M15" value="7.577747856798779" />
-      <entry key="M30" value="10.346812560774259" />
-      <entry key="H1" value="16.690600156875366" />
-      <entry key="H2" value="29.1511577478138" />
-      <entry key="H4" value="46.095563795602544" />
-      <entry key="D1" value="202.8658529350416" />
-      <entry key="W1" value="1206.8052525856447" />
+      <entry key="MS500" value="1.0000000000071743" />
+      <entry key="S2" value="1.0025636835839327" />
+      <entry key="S5" value="1.1454031519710342" />
+      <entry key="S10" value="1.653844816902867" />
+      <entry key="S30" value="3.506592951756711" />
+      <entry key="S60" value="5.012783270682461" />
+      <entry key="M2" value="6.3209324864419365" />
+      <entry key="M5" value="7.608283465973807" />
+      <entry key="M10" value="8.541327669226488" />
+      <entry key="M15" value="9.447770047052707" />
+      <entry key="M30" value="12.260345857685373" />
+      <entry key="H1" value="18.62291933490723" />
+      <entry key="H2" value="31.093333076052325" />
+      <entry key="H4" value="48.05034438478581" />
+      <entry key="D1" value="204.83317906383724" />
+      <entry key="W1" value="1208.7775891099184" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="3.896879973175898E-79" />
-      <entry key="MS500" value="2.0880716608771135E-16" />
-      <entry key="S2" value="1.4970949601899683E-4" />
-      <entry key="S5" value="0.042626113509810555" />
-      <entry key="S10" value="0.30131557863264735" />
-      <entry key="S30" value="1.2799114984435904" />
-      <entry key="S60" value="1.9306307462846108" />
-      <entry key="M2" value="2.4315018015465917" />
-      <entry key="M5" value="3.015349775352355" />
-      <entry key="M10" value="3.695074966379862" />
-      <entry key="M15" value="4.495322119784697" />
-      <entry key="M30" value="6.647643048798517" />
-      <entry key="H1" value="9.194759232462385" />
-      <entry key="H2" value="11.851717047254605" />
-      <entry key="H4" value="14.504740712015138" />
-      <entry key="D1" value="38.448840533643995" />
-      <entry key="W1" value="245.6470993954075" />
+      <entry key="MS100" value="2.6721577684593942E-139" />
+      <entry key="MS500" value="1.9363078784995066E-28" />
+      <entry key="S2" value="1.4691177355797714E-7" />
+      <entry key="S5" value="0.0026693076949923086" />
+      <entry key="S10" value="0.07540202975311784" />
+      <entry key="S30" value="0.8065545724009484" />
+      <entry key="S60" value="1.5325904912783648" />
+      <entry key="M2" value="2.16639702146893" />
+      <entry key="M5" value="2.8792745498570786" />
+      <entry key="M10" value="3.610737735066891" />
+      <entry key="M15" value="4.426657739792314" />
+      <entry key="M30" value="6.596677537650893" />
+      <entry key="H1" value="9.159444667237288" />
+      <entry key="H2" value="11.828935543653685" />
+      <entry key="H4" value="14.490793418639035" />
+      <entry key="D1" value="38.442676201476964" />
+      <entry key="W1" value="245.64147279299453" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.702567952087896E-4" />
-      <entry key="MS500" value="0.1762872450610323" />
-      <entry key="S2" value="0.649432051261178" />
-      <entry key="S5" value="0.9809936615971717" />
-      <entry key="S10" value="1.6750474777916222" />
-      <entry key="S30" value="4.076983451394519" />
-      <entry key="S60" value="5.848061048375163" />
-      <entry key="M2" value="7.314997724585546" />
-      <entry key="M5" value="8.893067572439156" />
-      <entry key="M10" value="10.386142675478387" />
-      <entry key="M15" value="12.05144363574139" />
-      <entry key="M30" value="16.976034136640887" />
-      <entry key="H1" value="25.8714744983829" />
-      <entry key="H2" value="40.99345833943423" />
-      <entry key="H4" value="60.59429752938409" />
-      <entry key="D1" value="241.31136511084588" />
-      <entry key="W1" value="1452.4491317345917" />
+      <entry key="MS100" value="5.609961815789782E-56" />
+      <entry key="MS500" value="9.999012844497134E-12" />
+      <entry key="S2" value="0.003346226038303544" />
+      <entry key="S5" value="0.20257241643571736" />
+      <entry key="S10" value="0.9496249719671425" />
+      <entry key="S30" value="3.853713622886381" />
+      <entry key="S60" value="6.245126221077867" />
+      <entry key="M2" value="8.307829370673435" />
+      <entry key="M5" value="10.40509791689586" />
+      <entry key="M10" value="12.105282604633107" />
+      <entry key="M15" value="13.838051526128735" />
+      <entry key="M30" value="18.831174332259092" />
+      <entry key="H1" value="27.76474082708521" />
+      <entry key="H2" value="42.91097265468032" />
+      <entry key="H4" value="62.53418734504627" />
+      <entry key="D1" value="243.27236916899307" />
+      <entry key="W1" value="1454.4158191183762" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -187,7 +188,7 @@
       <recent name="C:\PycharmProjects\xenia-game-manager\src\config" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.package window">
     <configuration name="Unnamed" type="BatchConfigurationType" factoryName="Batch" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -235,9 +236,6 @@
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="SDK_NAME" value="uv (xenia-game-manager) (2)" />
       <option name="WORKING_DIRECTORY" value="C:\PycharmProjects\xenia-game-manager\src" />
@@ -271,14 +269,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00062" summary="1.0.8 Xemu Support">
-      <option name="closed" value="true" />
-      <created>1787115242745</created>
-      <option name="number" value="00062" />
-      <option name="presentableId" value="LOCAL-00062" />
-      <option name="project" value="LOCAL" />
-      <updated>1787115242746</updated>
     </task>
     <task id="LOCAL-00063" summary="1.0.8 Xemu Support">
       <option name="closed" value="true" />
@@ -664,7 +654,15 @@
       <option name="project" value="LOCAL" />
       <updated>1787808856886</updated>
     </task>
-    <option name="localTasksCounter" value="111" />
+    <task id="LOCAL-00111" summary="1.1.8 Massive Refactor">
+      <option name="closed" value="true" />
+      <created>1787836046782</created>
+      <option name="number" value="00111" />
+      <option name="presentableId" value="LOCAL-00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1787836046784</updated>
+    </task>
+    <option name="localTasksCounter" value="112" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -763,7 +761,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1630</line>
+          <line>1624</line>
           <option name="timeStamp" value="69" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -798,27 +796,27 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2811</line>
+          <line>2803</line>
           <option name="timeStamp" value="96" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1611</line>
+          <line>1605</line>
           <option name="timeStamp" value="113" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2038</line>
+          <line>2030</line>
           <option name="timeStamp" value="114" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2310</line>
+          <line>2302</line>
           <option name="timeStamp" value="116" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2808</line>
+          <line>2800</line>
           <option name="timeStamp" value="117" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -828,7 +826,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/db.py</url>
-          <line>1119</line>
+          <line>1128</line>
           <option name="timeStamp" value="137" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -838,7 +836,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/db.py</url>
-          <line>1215</line>
+          <line>1224</line>
           <option name="timeStamp" value="154" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -848,7 +846,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2096</line>
+          <line>2088</line>
           <option name="timeStamp" value="161" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -893,7 +891,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2056</line>
+          <line>2048</line>
           <option name="timeStamp" value="193" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -918,82 +916,82 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1169</line>
+          <line>1163</line>
           <option name="timeStamp" value="198" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2061</line>
+          <line>2053</line>
           <option name="timeStamp" value="199" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2818</line>
+          <line>2810</line>
           <option name="timeStamp" value="201" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2066</line>
+          <line>2058</line>
           <option name="timeStamp" value="203" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2564</line>
+          <line>2556</line>
           <option name="timeStamp" value="213" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2536</line>
+          <line>2528</line>
           <option name="timeStamp" value="214" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2471</line>
+          <line>2463</line>
           <option name="timeStamp" value="215" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2485</line>
+          <line>2477</line>
           <option name="timeStamp" value="219" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2570</line>
+          <line>2562</line>
           <option name="timeStamp" value="220" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2520</line>
+          <line>2512</line>
           <option name="timeStamp" value="223" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2436</line>
+          <line>2428</line>
           <option name="timeStamp" value="224" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2526</line>
+          <line>2518</line>
           <option name="timeStamp" value="225" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2494</line>
+          <line>2486</line>
           <option name="timeStamp" value="226" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2463</line>
+          <line>2455</line>
           <option name="timeStamp" value="227" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2807</line>
+          <line>2799</line>
           <option name="timeStamp" value="231" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2918</line>
+          <line>2910</line>
           <option name="timeStamp" value="232" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1003,7 +1001,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/models/model_indie.py</url>
-          <line>140</line>
+          <line>69</line>
           <option name="timeStamp" value="239" />
         </line-breakpoint>
       </breakpoints>
