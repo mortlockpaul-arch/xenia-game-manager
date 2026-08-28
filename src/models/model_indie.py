@@ -41,6 +41,9 @@ class IndieGameTableModel(BaseGameTableModel):
 
         self.db = Database()
 
+    def get_game_from_index(self, index: QModelIndex) -> XBLIGGame:
+        return self.games[index.row()]
+
     def reload_config(self):
         self.config = load_config_file()
         self.indie_games_path = Path(

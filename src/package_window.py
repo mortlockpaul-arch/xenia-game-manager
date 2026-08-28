@@ -11,6 +11,7 @@ import traceback
 import xml.etree.ElementTree as ET  # noqa: N812
 from contextlib import redirect_stdout
 from functools import partial
+from glob import escape
 from pathlib import Path
 from typing import Callable, cast
 
@@ -29,11 +30,11 @@ from PySide6.QtWidgets import (
     QFormLayout,
     QGroupBox,
     QHeaderView, QApplication, QSizePolicy, QFrame, QGraphicsDropShadowEffect, QCheckBox, QButtonGroup,
-    QRadioButton, QProgressBar, QPlainTextEdit, QLineEdit, QAbstractItemView, QTableView,
+    QRadioButton, QProgressBar, QPlainTextEdit, QLineEdit, QAbstractItemView, QTableView, QFileDialog,
 )
 from db import ConversionResult, Database, XBLIGGame, Game, GameSource
 
-from config import get_app_dir, load_config_file
+from config import get_app_dir, load_config_file, save_config
 from logging_setup import setup_logger
 from moby_games import MobyGamesClient
 from models.model_indie import IndieGameTableModel
@@ -2024,15 +2025,19 @@ class XBLIGDialog(QDialog):
 
             print()
 
-    def get_selected_game(self) -> tuple[XBLIGGame, list[QModelIndex]] | None:
+
+    def get_selected_game(
+            self,
+    ) -> tuple[XBLIGGame, list[QModelIndex]] | None:
+
         indexes = self.game_table.selectionModel().selectedRows()
 
         if not indexes:
             return None
 
-        row = indexes[0].row()
+        game = self.model.get_game_from_index(indexes[0])
 
-        return self.games[row], indexes
+        return game, indexes
 
     def get_random_games(self):
         random.seed(time.time())
@@ -2409,7 +2414,7 @@ class XBLIGDialog(QDialog):
 
     def log_message_log(self, message):
         logging.info(f"{message}")
-        self.log_message(message)
+        self.log_message(message, "#2ecc71")
 
     # def rescan_games(self, force=False):
     #     self.log_message("Checking game cache...")
@@ -2568,7 +2573,7 @@ class XBLIGDialog(QDialog):
             game, _ = result
             games = [game]
 
-        self.log_message(f"\nChecking {len(games)} Xbox Live Indie Games\n")
+        self.log_message(f"\nChecking {len(games)} Xbox Live Indie Games\n", "#2ecc71")
 
         total = len(games)
 
@@ -2580,10 +2585,7 @@ class XBLIGDialog(QDialog):
             self.log_message(f"[{i}/{total}] Extracting {game.title}...")
             self.extract_game(game)
 
-        self.load_games(self.games)
-
-    def log_message(self, message):
-        self.log_window.appendPlainText(message)
+        self.load_games(self.games, refresh_only=True)
 
     def extract_package(self, game: XBLIGGame):
         package = game.package
@@ -2634,15 +2636,40 @@ class XBLIGDialog(QDialog):
 
         return extracted_path
 
-    def load_games(self, games: list[XBLIGGame]):
+    def load_games(self, games: list[XBLIGGame], refresh_only: bool = False,):
         for game in games:
             metadata = self.db.get_xblig_metadata(game.title)
-            if metadata:
-                game.publisher = metadata["developer_account"] or metadata["developer"]
 
-        self.model.set_games(games)
+            if metadata:
+                game.publisher = (
+                        metadata["developer_account"]
+                        or metadata["developer"]
+                )
+
+        if refresh_only:
+            header = self.game_table.horizontalHeader()
+
+            sort_column = header.sortIndicatorSection()
+            sort_order = header.sortIndicatorOrder()
+
+            self.model.beginResetModel()
+            self.model.games = list(games)
+            self.model.endResetModel()
+
+            if sort_column >= 0:
+                self.model.sort(sort_column, sort_order)
+
+        else:
+            self.model.set_games(games)
+
         game_source: GameSource = "indie"
-        self.db.import_games_from_source(game_source, indie_game_list=games, log_callback=self.log_message)
+
+        self.db.import_games_from_source(
+            game_source,
+            indie_game_list=games,
+            log_callback=self.log_message,
+        )
+
         self.game_table.setIconSize(QSize(32, 32))
         self.game_table.verticalHeader().setVisible(False)
         self.game_table.verticalHeader().setDefaultSectionSize(40)
@@ -2797,16 +2824,24 @@ class XBLIGDialog(QDialog):
     def refresh_games(self):
         self.load_games(self.games)
 
-    def open_selected_folder(self):
+    def open_selected_folder(self, folder="root"):
         if (result := self.get_selected_game()) is None:
             return
-        game, indexes = result
-        if not game or not game.game_root or not game.game_root.exists():
-            self.log_message("No valid game folder selected.")
-            return
+        game, index = result
+        if folder=="root":
+            if not game or not game.game_root or not game.game_root.exists():
+                self.log_message("No valid game folder selected.")
+                return
 
-        subprocess.Popen(["explorer", str(game.game_root)])
-        self.log_message(f"Opened: {game.game_root}")
+            subprocess.Popen(["explorer", str(game.game_root)])
+            self.log_message(f"Opened: {game.game_root}")
+        if folder == "extracted":
+            if not game or not game.extracted or not game.extracted.exists():
+                self.log_message("Game has not been extracted.", "#f1c40f")
+                return
+
+            subprocess.Popen(["explorer", str(game.extracted)])
+            self.log_message(f"Opened: {game.extracted}", "#2ecc71")
 
     def show_settings_drawer(self):
         self.drawer_open = True
@@ -3052,77 +3087,87 @@ class XBLIGDialog(QDialog):
 
     def build_ui(self):
 
-        main_layout = QVBoxLayout(self)
-
-        #
-        # Toolbar
-        #
-
-        toolbar = QHBoxLayout()
         self.scan_btn = QPushButton("Scan Games")
         self.scan_btn.clicked.connect(self.rescan_games_responsive)
-        self.scan_btn.setFixedWidth(120)
-
         self.extract_btn = QPushButton("Extract Selected Game Package")
         self.extract_btn.clicked.connect(self.extract_game_or_games_package)
-        self.extract_btn.setFixedWidth(240)
-
         self.build_btn = QPushButton("Decompile Game and Assemblies")
         self.build_btn.clicked.connect(self.build_selected)
-        self.build_btn.setFixedWidth(240)
-        # self.random_btn = QPushButton("Random Game")
-        # self.random_btn.clicked.connect(self.build_selected)
-
-        # self.build_content_btn = QPushButton("Convert Content")
-        # self.build_content_btn.clicked.connect(self.convert_content)
-        #
-        # self.convert_one_btn = QPushButton("Convert (Selected) Game to FNA Project")
-        # self.convert_one_btn.clicked.connect(self.convert_selected_folders)
-
         self.convert_project_btn = QPushButton("Convert Game Project")
         self.convert_project_btn.clicked.connect(self.convert_game_project)
-        self.convert_project_btn.setFixedWidth(240)
-        #
-        # self.launch_btn = QPushButton("Launch Game")
-        # self.launch_btn.clicked.connect(self.launch_selected)
-        #
-        # self.refresh_btn = QPushButton("Refresh")
-        # self.refresh_btn.clicked.connect(self.refresh_games)
-        # #
-        self.open_folder_btn = QPushButton("Open Folder")
-        self.open_folder_btn.clicked.connect(self.open_selected_folder)
-
+        self.open_folder_btn = QPushButton("Open Game Folder")
+        self.open_folder_btn.clicked.connect(partial(self.open_selected_folder,"root"))
+        self.open_folder_extracted_btn = QPushButton("Open Game Extracted Folder")
+        self.open_folder_extracted_btn.clicked.connect(partial(self.open_selected_folder,"extracted"))
         self.compress_btn = QPushButton("Compress Selected Extracted Content")
         self.compress_btn.clicked.connect(partial(self.compress_decompress_extracted_content, True))
-        # self.compress_btn.setFixedWidth(320)
-
         self.decompress_btn = QPushButton("Decompress Selected Extracted Content")
         self.decompress_btn.clicked.connect(partial(self.compress_decompress_extracted_content, False))
-        # self.decompress_btn.setFixedWidth(320)
+
+        main_layout = QVBoxLayout(self)
+
+        # -----------------------------
+        # Top row - action buttons
+        # -----------------------------
+        button_row = QHBoxLayout()
+
+        button_row.addWidget(self.scan_btn)
+        button_row.addWidget(self.build_btn)
+        button_row.addWidget(self.extract_btn)
+        button_row.addWidget(self.convert_project_btn)
+        button_row.addWidget(self.open_folder_btn)
+        button_row.addWidget(self.open_folder_extracted_btn)
+        button_row.addWidget(self.compress_btn)
+        button_row.addWidget(self.decompress_btn)
+
+        main_layout.addLayout(button_row)
+
+        # -----------------------------
+        # Second row - options
+        # -----------------------------
+        options_row = QHBoxLayout()
 
         self.all_checkbox = QCheckBox("All or One")
         self.all_checkbox.toggled.connect(self.all_or_one)
+
         self.overwrite_check = QCheckBox("Overwrite Extract")
         self.cache_check = QCheckBox("Override Cache")
-        toolbar.addWidget(self.scan_btn)
-        toolbar.addWidget(self.build_btn)
-        toolbar.addWidget(self.extract_btn)
 
-        toolbar.addWidget(self.convert_project_btn)
-        # toolbar.addWidget(self.launch_btn)
-        toolbar.addWidget(self.open_folder_btn)
-        # toolbar.addWidget(self.refresh_btn)
-        toolbar.addWidget(self.compress_btn)
-        toolbar.addWidget(self.decompress_btn)
-        toolbar.addWidget(self.all_checkbox)
-        toolbar.addWidget(self.overwrite_check)
-        toolbar.addWidget(self.cache_check)
-        toolbar.addStretch()
+        self.root_edit = QLineEdit()
+        self.root_edit.setPlaceholderText("Root folder...")
+        self.root_edit.setMaximumWidth(500)
+        root_folder = self.config["indie_games_path"]
+        self.root_edit.setText(root_folder)
 
-        # for button in (self.scan_btn, self.extract_btn, self.build_btn, self.convert_project_btn, self.compress_btn):
-        #     button.setFixedSize(200, 32)
+        self.root_browse_btn = QPushButton("...")
+        self.root_browse_btn.setFixedWidth(32)
+        self.root_browse_btn.clicked.connect(self.browse_root_folder)
 
-        main_layout.addLayout(toolbar)
+        options_row.addWidget(self.all_checkbox)
+        options_row.addWidget(self.overwrite_check)
+        options_row.addWidget(self.cache_check)
+        options_row.addWidget(self.root_edit, 1)
+        options_row.addWidget(self.root_browse_btn)
+        options_row.addStretch()
+        self.all_checkbox.setSizePolicy(
+            QSizePolicy.Policy.Fixed,
+            QSizePolicy.Policy.Fixed,
+        )
+
+        self.overwrite_check.setSizePolicy(
+            QSizePolicy.Policy.Fixed,
+            QSizePolicy.Policy.Fixed,
+        )
+
+        self.cache_check.setSizePolicy(
+            QSizePolicy.Policy.Fixed,
+            QSizePolicy.Policy.Fixed,
+        )
+
+        self.root_edit.setFixedWidth(400)
+        self.root_browse_btn.setFixedWidth(32)
+
+        main_layout.addLayout(options_row)
 
         #
         # Progress Bar
@@ -3231,6 +3276,18 @@ class XBLIGDialog(QDialog):
 
         main_layout.addWidget(splitter)
 
+    def browse_root_folder(self):
+        folder = QFileDialog.getExistingDirectory(
+            self,
+            "Select Root Folder",
+            self.root_edit.text(),
+        )
+
+        if folder:
+            self.root_edit.setText(folder)
+            self.config["indie_games_path"] = folder
+            save_config(self.config)
+
     def add_demo_game(self, title, status, extracted, exe):
 
         row = self.game_table.rowCount()
@@ -3263,6 +3320,16 @@ class XBLIGDialog(QDialog):
             if checked
             else "Decompress Selected Extracted Content"
         )
+
+    from html import escape
+
+    def log_message(self, message, color=None):
+        message = escape(str(message))
+
+        if color:
+            message = f'<span style="color: {color};">{message}</span>'
+
+        self.log_window.appendHtml(message)
 
 
 if __name__ == "__main__":
