@@ -31,6 +31,7 @@ from PySide6.QtWidgets import (
     QGroupBox,
     QHeaderView, QApplication, QSizePolicy, QFrame, QGraphicsDropShadowEffect, QCheckBox, QButtonGroup,
     QRadioButton, QProgressBar, QPlainTextEdit, QLineEdit, QAbstractItemView, QTableView, QFileDialog,
+    QStyledItemDelegate,
 )
 from db import ConversionResult, Database, XBLIGGame, Game, GameSource
 
@@ -533,7 +534,7 @@ class ConvertXnaProjects(QObject):
         self.project_path = Path(project_path)
         self.games = games
 
-    def log_message(self, message, color):
+    def log_message(self, message, color = "#D4D4D4"):
         self.log_signal.emit(message, color)
 
     from pathlib import Path
@@ -607,7 +608,7 @@ class ConvertXnaProjects(QObject):
                 }
 
             except Exception as e:
-                self.log_signal.emit(
+                self.log_message(
                     f"XML error: {xml_file} ({e})"
                 )
                 return {}
@@ -625,11 +626,10 @@ class ConvertXnaProjects(QObject):
         # No files are opened during this pass.
         # ================================================================
 
-        self.log_signal.emit("")
-        self.log_signal.emit(
+        self.log_message(
             f"Scanning folders: {root}"
         )
-
+        self.log_message()
         total_files = 0
         total_folders = 0
 
@@ -651,7 +651,7 @@ class ConvertXnaProjects(QObject):
 
                                 # Log every 1,000 files.
                                 if total_files % 1000 == 0:
-                                    self.log_signal.emit(
+                                    self.log_message(
                                         f"Scanned "
                                         f"{total_files:,} files "
                                         f"across "
@@ -676,7 +676,7 @@ class ConvertXnaProjects(QObject):
                             if entry.name.upper() == "584E07D2":
                                 indie_folders.append(path)
 
-                                self.log_signal.emit(
+                                self.log_message(
                                     f"Found 584E07D2: {path}"
                                 )
 
@@ -696,20 +696,19 @@ class ConvertXnaProjects(QObject):
         # Scan summary
         # ================================================================
 
-        self.log_signal.emit("")
-        self.log_signal.emit(
+        self.log_message(
             "Folder scan complete."
         )
 
-        self.log_signal.emit(
+        self.log_message(
             f"Folders scanned: {total_folders:,}"
         )
 
-        self.log_signal.emit(
+        self.log_message(
             f"Files found: {total_files:,}"
         )
 
-        self.log_signal.emit(
+        self.log_message(
             f"584E07D2 folders found: "
             f"{len(indie_folders):,}"
         )
@@ -723,37 +722,32 @@ class ConvertXnaProjects(QObject):
         # Look only inside discovered 584E07D2 folders.
         # ================================================================
 
-        self.log_signal.emit("")
-        self.log_signal.emit(
+        self.log_message(
             "Scanning XBLIG package folders..."
         )
 
         files_scanned = 0
         last_progress = -1
 
-        for indie_index, indie_folder in enumerate(
-                indie_folders,
-                start=1,
-        ):
-            self.log_signal.emit("")
-            self.log_signal.emit(
+        for indie_index, indie_folder in enumerate(indie_folders, start=1,):
+            self.log_message(
                 f"[XBLIG folder "
                 f"{indie_index}/{len(indie_folders)}]"
             )
 
-            self.log_signal.emit(
+            self.log_message(
                 f"  {indie_folder}"
             )
 
             package_folder = indie_folder / "00000002"
 
             if not package_folder.is_dir():
-                self.log_signal.emit(
+                self.log_message(
                     "  └─ 00000002 not found"
                 )
                 continue
 
-            self.log_signal.emit(
+            self.log_message(
                 f"  └─ Scanning: {package_folder}"
             )
 
@@ -771,7 +765,7 @@ class ConvertXnaProjects(QObject):
                     last_progress = progress
 
                 if files_scanned % 1000 == 0:
-                    self.log_signal.emit(
+                    self.log_message(
                         f"Scanned "
                         f"{files_scanned:,} / "
                         f"{total_files:,} files..."
@@ -780,7 +774,7 @@ class ConvertXnaProjects(QObject):
                 if is_stfs(path):
                     packages.append(path)
 
-                    self.log_signal.emit(
+                    self.log_message(
                         f"  STFS package found: "
                         f"{path}"
                     )
@@ -789,19 +783,17 @@ class ConvertXnaProjects(QObject):
         # Package summary
         # ================================================================
 
-        self.log_signal.emit("")
-        self.log_signal.emit(
+        self.log_message(
             f"Found {len(packages):,} STFS package(s)."
         )
 
         if not packages:
             self.progress_signal.emit(total_files, total_files)
 
-            self.log_signal.emit("")
-            self.log_signal.emit(
+            self.log_message(
                 "==================="
             )
-            self.log_signal.emit(
+            self.log_message(
                 "Scanner found 0 XBLIG game(s)."
             )
 
@@ -815,8 +807,7 @@ class ConvertXnaProjects(QObject):
 
         total_packages = len(packages)
 
-        self.log_signal.emit("")
-        self.log_signal.emit(
+        self.log_message(
             f"Processing {total_packages:,} package(s)..."
         )
 
@@ -832,13 +823,12 @@ class ConvertXnaProjects(QObject):
 
             self.progress_signal.emit(total_files, total_files)
 
-            self.log_signal.emit("")
-            self.log_signal.emit(
+            self.log_message(
                 f"[Package "
                 f"{index}/{total_packages}]"
             )
 
-            self.log_signal.emit(
+            self.log_message(
                 f"  {package}"
             )
 
@@ -920,7 +910,7 @@ class ConvertXnaProjects(QObject):
             dll_files: list[Path] = []
 
             if extracted.is_dir():
-                self.log_signal.emit(
+                self.log_message(
                     f"  Scanning extracted: "
                     f"{extracted}"
                 )
@@ -938,17 +928,17 @@ class ConvertXnaProjects(QObject):
                     elif suffix == ".dll":
                         dll_files.append(path)
 
-                self.log_signal.emit(
+                self.log_message(
                     f"  Scanned "
                     f"{extracted_files:,} extracted files"
                 )
 
-            self.log_signal.emit(
+            self.log_message(
                 f"  Executables: "
                 f"{len(exe_files):,}"
             )
 
-            self.log_signal.emit(
+            self.log_message(
                 f"  DLLs: "
                 f"{len(dll_files):,}"
             )
@@ -1006,7 +996,7 @@ class ConvertXnaProjects(QObject):
                 )
             )
 
-            self.log_signal.emit(
+            self.log_message(
                 f"  Processed: {title}"
             )
 
@@ -1016,12 +1006,12 @@ class ConvertXnaProjects(QObject):
 
         self.progress_signal.emit(files_scanned, total_files)
 
-        self.log_signal.emit("")
-        self.log_signal.emit(
+        self.log_message("")
+        self.log_message(
             "==================="
         )
 
-        self.log_signal.emit(
+        self.log_message(
             f"Scanner found "
             f"{len(games):,} XBLIG game(s)."
         )
@@ -1031,14 +1021,14 @@ class ConvertXnaProjects(QObject):
     def convert_xnb_folder_tools(self, game: XBLIGGame, tool_id: int = 1):
 
         if game.extracted is None:
-            self.log_signal.emit(f"Game not extracted: {game}")
+            self.log_message(f"Game not extracted: {game}")
             return None
 
         content_dir = game.extracted / "584E07D1" / "Content"
         output_dir = content_dir.parent / "Content_Output"
 
         if not content_dir.exists():
-            self.log_signal.emit(f"Content folder not found: {content_dir}")
+            self.log_message(f"Content folder not found: {content_dir}")
             return None
 
         # alba = (get_app_dir() / "assets/tools/conversion/Alba.XnaConvert.0.1.2/Alba.XnaConvert.exe")
@@ -1078,17 +1068,17 @@ class ConvertXnaProjects(QObject):
                 if checkbox.isChecked():
                     cmd.append(f"--{option}")
         else:
-            self.log_signal.emit(f"Unknown tool id: {tool_id}")
+            self.log_message(f"Unknown tool id: {tool_id}")
             return None
 
-        self.log_signal.emit(f"Running {tool_name}...")
+        self.log_message(f"Running {tool_name}...")
 
         try:
             stdout_lines = []
             stderr_lines = []
 
-            self.log_signal.emit("Full command:")
-            self.log_signal.emit(" ".join(cmd))
+            self.log_message("Full command:")
+            self.log_message(" ".join(cmd))
 
             with subprocess.Popen(
                     cmd,
@@ -1103,12 +1093,12 @@ class ConvertXnaProjects(QObject):
                 for line in process.stdout:
                     line = line.rstrip()
                     stdout_lines.append(line)
-                    self.log_signal.emit(line)
+                    self.log_message(line)
 
                 for line in process.stderr:
                     line = line.rstrip()
                     stderr_lines.append(line)
-                    self.log_signal.emit(f"ERR: {line}")
+                    self.log_message(f"ERR: {line}")
 
                 process.wait()
 
@@ -1139,11 +1129,11 @@ class ConvertXnaProjects(QObject):
                 stderr=stderr,
             )
 
-            self.log_signal.emit(
+            self.log_message(
                 f"{tool_name}: {'SUCCESS' if success else 'FAILED'}"
             )
 
-            self.log_signal.emit(
+            self.log_message(
                 f"Generated files: {len(output_files)}"
             )
 
@@ -1156,7 +1146,7 @@ class ConvertXnaProjects(QObject):
 
             failed_folders.append(content_dir)
 
-            self.log_signal.emit(
+            self.log_message(
                 f"ERROR running {tool_name}: {e}"
             )
 
@@ -1172,15 +1162,14 @@ class ConvertXnaProjects(QObject):
 
             self.finished_signal.emit(result)
 
-        self.log_signal.emit("")
-        self.log_signal.emit("===================")
-        self.log_signal.emit("Conversion complete")
-        self.log_signal.emit(
+        self.log_message("===================")
+        self.log_message("Conversion complete")
+        self.log_message(
             f"Failed folders: {len(failed_folders)}"
         )
 
         for folder in failed_folders:
-            self.log_signal.emit(str(folder))
+            self.log_message(str(folder))
 
         return result
 
@@ -1606,7 +1595,7 @@ class ConvertXnaProjects(QObject):
             # self.remove_xna_usings(folder.parent)
 
         except Exception as e:
-            self.log_signal.emit(f"FAILED {path_to_csproj_file}: {e}")
+            self.log_message(f"FAILED {path_to_csproj_file}: {e}")
 
     # def method_name(self, game:XBLIGGame):
     #     if game.extracted is not None:
@@ -1765,24 +1754,27 @@ class ScanWorker(QObject):
             # current_mtime = get_folder_mtime(self.root)
             cache = None if self.force else load_cache()
             if cache:
-                self.log_signal.emit("Checking game cache...")
+                self.log_message("Checking game cache...")
                 games = cache["games"]
-                self.log_signal.emit(f"Loaded {len(games)} games from cache.")
+                self.log_message(f"Loaded {len(games)} games from cache.")
                 self.total_files_signal.emit(100)
             else:
-                self.log_signal.emit("Scanning folders...")
+                self.log_message("Scanning folders...")
                 if not self.root.exists():
-                    self.log_signal.emit(f"Folder {self.root} does not exist.")
+                    self.log_message(f"Folder {self.root} does not exist.")
                     self.total_files_signal.emit(100)
                 else:
                     games = self.converter.find_packages(self.root)
                     save_cache(games)
-                    self.log_signal.emit("Cache updated.")
+                    self.log_message("Cache updated.")
             self.finished_signal.emit(games)
 
         except Exception as e:
-            self.log_signal.emit(f"Scanner error: {e}")
+            self.log_message(f"Scanner error: {e}")
             self.finished_signal.emit([])
+
+    def log_message(self, message: str, color: str = "#61AFEF"):
+        self.log_signal.emit(message, color)
 
 from PySide6.QtWidgets import QStyledItemDelegate
 from PySide6.QtGui import QPainter
