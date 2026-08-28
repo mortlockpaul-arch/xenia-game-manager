@@ -2814,12 +2814,12 @@ class XBLIGDialog(QDialog):
             options_group = QGroupBox("Build Options")
             options_layout = QVBoxLayout(options_group)
 
-            self.config = load_config_file()
-            solution_location = self.config["indie-game-solution-location"]
-
-            self.solution_file = QLineEdit()
-            self.solution_file.setText(solution_location)
-            self.solution_file.setMinimumHeight(28)
+            # self.config = load_config_file()
+            # solution_location = self.config["indie-game-solution-location"]
+            #
+            # self.solution_file = QLineEdit()
+            # self.solution_file.setText(solution_location)
+            # self.solution_file.setMinimumHeight(28)
             # Decompile
             self.decompile_check = QCheckBox("Decompile executable")
             self.decompile_check.setChecked(True)
@@ -2857,7 +2857,7 @@ class XBLIGDialog(QDialog):
             self.decompile_cli.setEnabled(True)
             self.decompile_gui.setEnabled(True)
 
-            options_layout.addWidget(self.solution_file)
+            # options_layout.addWidget(self.solution_file)
             options_layout.addWidget(self.convert_csproj_check)
             options_layout.addWidget(self.convert_content_check)
             options_layout.addWidget(self.open_vs_check)
