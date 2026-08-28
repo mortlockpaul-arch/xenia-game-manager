@@ -24,14 +24,23 @@ def load_xenia_manager_config():
         raise RuntimeError(f"Config Load Error: {e}") from e
     return config, xenia_manager_path
 
-def load_config_file(config_dir = Path(get_app_dir(), "config")):
-    config_file = os.path.join(config_dir, "game-manager-config.json")
-    try:
-        with open(config_file, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception as e:
-        raise RuntimeError(f"Config Load Error: {e}") from e
+def load_config_file(config_dir=Path(get_app_dir(), "config")):
+    config_file = config_dir / "game-manager-config.json"
 
+    try:
+        with config_file.open("r", encoding="utf-8") as f:
+            return json.load(f)
+
+    except json.JSONDecodeError as e:
+        raise RuntimeError(
+            f"Invalid JSON in {config_file}: "
+            f"line {e.lineno}, column {e.colno}: {e.msg}"
+        ) from e
+
+    except FileNotFoundError as e:
+        raise RuntimeError(
+            f"Config file not found: {config_file}"
+        ) from e
 
 def save_config(data: dict, config_dir = Path(get_app_dir(),"config")):
     config_file = os.path.join(config_dir, "game-manager-config.json")

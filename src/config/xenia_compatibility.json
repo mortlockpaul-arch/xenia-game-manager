@@ -1,5 +1,43 @@
 [
   {
+    "issue": 1207,
+    "id": "4C4107D7",
+    "title": "LEGO Star Wars: The Complete Saga",
+    "updated": "2026-08-27T22:15:16Z",
+    "state": "Unknown",
+    "labels": {
+      "state": [],
+      "others": []
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1207"
+  },
+  {
+    "issue": 1206,
+    "id": "4C4107DF",
+    "title": "LEGO Indiana Jones: The Original Adventures",
+    "updated": "2026-08-27T22:14:44Z",
+    "state": "Unknown",
+    "labels": {
+      "state": [],
+      "others": []
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1206"
+  },
+  {
+    "issue": 1204,
+    "id": "4B4E0807",
+    "title": "DanceDanceRevolution",
+    "updated": "2026-08-27T02:50:19Z",
+    "state": "Playable",
+    "labels": {
+      "state": [
+        "state-playable"
+      ],
+      "others": []
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1204"
+  },
+  {
     "issue": 1203,
     "id": "465307D6",
     "title": "Armored Core 4 (WW)",
@@ -895,14 +933,13 @@
     "issue": 1135,
     "id": "465307E4",
     "title": "Dark Souls II",
-    "updated": "2026-07-27T17:53:56Z",
+    "updated": "2026-08-27T19:52:33Z",
     "state": "Playable",
     "labels": {
       "state": [
         "state-playable"
       ],
       "others": [
-        "gpu-drawing-corrupt",
         "gpu-readback",
         "vsync-off-speedup",
         "gpu-occlusion-query",
@@ -1367,7 +1404,7 @@
     "issue": 1100,
     "id": "425307E6",
     "title": "Elder Scrolls V: Skyrim",
-    "updated": "2026-07-08T19:00:00Z",
+    "updated": "2026-08-27T01:08:54Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -2194,7 +2231,7 @@
     "issue": 1042,
     "id": "465307DA",
     "title": "Armored Core: For Answer",
-    "updated": "2026-05-04T05:40:38Z",
+    "updated": "2026-08-27T21:14:13Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -2228,7 +2265,7 @@
     "issue": 1039,
     "id": "415608A7",
     "title": "Prototype 2",
-    "updated": "2026-07-08T14:58:30Z",
+    "updated": "2026-08-26T22:29:13Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -2920,7 +2957,7 @@
     "issue": 985,
     "id": "4D530808",
     "title": "Halo Wars",
-    "updated": "2026-08-19T11:27:11Z",
+    "updated": "2026-08-27T21:14:39Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -2968,7 +3005,7 @@
     "issue": 981,
     "id": "4D53085B",
     "title": "Halo Reach",
-    "updated": "2026-08-06T13:37:34Z",
+    "updated": "2026-08-27T19:53:29Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -2980,6 +3017,7 @@
         "gpu-readback",
         "vsync-off-speedup",
         "gpu-occlusion-query",
+        "gpu-viz-query",
         "gpu-async-compile-issues"
       ]
     },
@@ -3064,7 +3102,7 @@
     "issue": 974,
     "id": "57520841",
     "title": "The LEGO Movie Video Game",
-    "updated": "2026-07-19T13:24:28Z",
+    "updated": "2026-08-26T23:37:41Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -3210,7 +3248,7 @@
     "issue": 964,
     "id": "555308CE",
     "title": "Assassin's Creed Rogue",
-    "updated": "2026-05-08T11:19:16Z",
+    "updated": "2026-08-26T21:17:52Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -3219,7 +3257,8 @@
       "others": [
         "gpu-drawing-corrupt",
         "gpu-drawing-missing",
-        "crash-random"
+        "crash-random",
+        "gpu-xps"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/964"
@@ -5486,7 +5525,7 @@
     "issue": 820,
     "id": "534507F1",
     "title": "The Incredible Hulk",
-    "updated": "2026-06-16T01:44:45Z",
+    "updated": "2026-08-26T23:00:50Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -6505,7 +6544,7 @@
     "issue": 755,
     "id": "434307D2",
     "title": "Dead Rising",
-    "updated": "2026-08-12T03:32:31Z",
+    "updated": "2026-08-27T22:56:09Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -7797,7 +7836,7 @@
     "issue": 666,
     "id": "41560881",
     "title": "Spider-Man: Shattered Dimensions",
-    "updated": "2026-08-25T16:33:43Z",
+    "updated": "2026-08-26T21:31:18Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -8393,7 +8432,7 @@
     "issue": 626,
     "id": "5451080D",
     "title": "Red Faction: Guerrilla",
-    "updated": "2026-08-10T18:33:50Z",
+    "updated": "2026-08-27T23:35:19Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -8883,7 +8922,7 @@
     "issue": 595,
     "id": "5841125E",
     "title": "Joy Ride Turbo",
-    "updated": "2026-08-02T16:50:16Z",
+    "updated": "2026-08-26T18:47:47Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -10283,7 +10322,7 @@
     "issue": 506,
     "id": "494707F4",
     "title": "Ghostbusters",
-    "updated": "2025-03-06T03:42:12Z",
+    "updated": "2026-08-27T21:07:12Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -10523,7 +10562,7 @@
     "issue": 492,
     "id": "544307D5",
     "title": "NINJA GAIDEN II",
-    "updated": "2026-06-18T20:07:02Z",
+    "updated": "2026-08-27T12:14:43Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -11174,14 +11213,13 @@
     "issue": 449,
     "id": "565507DA",
     "title": "TimeShift",
-    "updated": "2026-07-21T10:23:20Z",
+    "updated": "2026-08-26T18:14:29Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
-        "gpu-drawing-corrupt",
         "tech-engine-saber3d",
         "gpu-occlusion-query"
       ]
@@ -11713,7 +11751,7 @@
     "issue": 418,
     "id": "534307EC",
     "title": "Tomb Raider: Underworld",
-    "updated": "2025-09-27T21:42:46Z",
+    "updated": "2026-08-27T21:09:46Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -12164,7 +12202,7 @@
     "issue": 392,
     "id": "534307D4",
     "title": "Tomb Raider: Legend",
-    "updated": "2026-08-23T03:05:57Z",
+    "updated": "2026-08-27T21:53:57Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -12728,7 +12766,7 @@
     "issue": 358,
     "id": "54540859",
     "title": "Top Spin 4",
-    "updated": "2026-07-20T11:17:18Z",
+    "updated": "2026-08-27T16:38:33Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -12737,7 +12775,8 @@
       "others": [
         "marketplace-delisted",
         "tech-middleware-havok",
-        "vsync-off-speedup"
+        "vsync-off-speedup",
+        "gpu-xps"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/358"
@@ -12746,14 +12785,15 @@
     "issue": 357,
     "id": "545407FF",
     "title": "Top Spin 3",
-    "updated": "2026-07-20T11:56:39Z",
+    "updated": "2026-08-27T16:38:32Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
-        "vsync-off-speedup"
+        "vsync-off-speedup",
+        "gpu-xps"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/357"
@@ -15501,7 +15541,7 @@
     "issue": 192,
     "id": "425607E7",
     "title": "Split/Second",
-    "updated": "2026-07-27T18:34:40Z",
+    "updated": "2026-08-27T01:34:37Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -15511,7 +15551,8 @@
         "gpu-drawing-corrupt",
         "gpu-drawing-missing",
         "gpu-shader-errors",
-        "requires_render_target_rov_fsi"
+        "requires_render_target_rov_fsi",
+        "gpu-xps"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/192"
@@ -15660,7 +15701,7 @@
     "issue": 178,
     "id": "425607FE",
     "title": "Cars 2",
-    "updated": "2026-07-08T23:59:35Z",
+    "updated": "2026-08-27T09:11:37Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -15668,7 +15709,8 @@
       ],
       "others": [
         "gpu-drawing-corrupt",
-        "gpu-drawing-missing"
+        "gpu-drawing-missing",
+        "gpu-occlusion-querybatch"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/178"
@@ -16335,7 +16377,7 @@
     "issue": 136,
     "id": "534507E3",
     "title": "Phantasy Star Universe",
-    "updated": "2026-08-10T18:49:56Z",
+    "updated": "2026-08-26T21:17:30Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -16345,7 +16387,8 @@
         "gpu-drawing-missing",
         "tech-middleware-criware",
         "vsync-off-speedup",
-        "gpu-drawing-black"
+        "gpu-drawing-black",
+        "gpu-xps"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/136"
@@ -16442,7 +16485,7 @@
     "issue": 128,
     "id": "4E4D07D1",
     "title": "Ace Combat 6",
-    "updated": "2026-07-27T18:37:47Z",
+    "updated": "2026-08-27T23:36:33Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -16963,7 +17006,7 @@
     "issue": 85,
     "id": "5451085D",
     "title": "WWE Smackdown VS Raw 2011",
-    "updated": "2026-08-24T13:36:22Z",
+    "updated": "2026-08-27T12:37:21Z",
     "state": "Gameplay",
     "labels": {
       "state": [
