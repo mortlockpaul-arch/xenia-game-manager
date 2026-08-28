@@ -2843,10 +2843,10 @@ class XBLIGDialog(QDialog):
 
             options_layout.addLayout(decompile_layout)
 
-            self.convert_csproj_check = QCheckBox("Convert project (.csproj)")
-            self.convert_content_check = QCheckBox("Add To Solution")
-            self.open_vs_check = QCheckBox("Open project in Visual Studio")
-            self.open_explorer_check = QCheckBox("Open project folder in Explorer")
+            self.convert_csproj_check = QCheckBox("Convert Games's .csproj File or Files.")
+            self.convert_content_check = QCheckBox("Add To Indie Game Solution")
+            self.open_vs_check = QCheckBox("Open Indie Game Solution in Visual Studio.")
+            self.open_explorer_check = QCheckBox("Open Decompiled Project Folder.")
 
             self.convert_csproj_check.setChecked(True)
             self.convert_content_check.setChecked(True)
@@ -2927,18 +2927,22 @@ class XBLIGDialog(QDialog):
         # if options["convert_content"]:
         #
         if options["convert_csproj"] or options["add_to_solution"]:
-            if game.decompiled is not None:
-                converter = self.method_name()
-                path_to_csproj_file = get_cs_project_folders([game], self.log_message)
-                for project in path_to_csproj_file:
-                    try:
-                        converter.convert_project_folder(project, options["add_to_solution"], game.dll_files)
-                    except Exception as e:
-                        self.log_message(f"FAILED {project}: {e}")
+            # if game.decompiled is not None:
+            converter = self.method_name()
+            csproj_files = get_cs_project_folders([game], self.log_message)
+            for project in csproj_files:
+                try:
+                    converter.convert_project_folder(project, options["add_to_solution"], game.dll_files)
+                except Exception as e:
+                    self.log_message(f"FAILED {project}: {e}")
         if options["open_visual_studio"]:
-            if game.executables is not None:
+            self.log_message("Opening Solution in Visual Studio. The Decompiled Projects Should Have Been Added.")
+            if game.decompiled is not None:
                 solution = self.config["indie-game-solution-location"]
-                subprocess.Popen(["explorer", str(solution)])
+                subprocess.Popen(str(solution))
+            else:
+                self.log_message("Game has not been Decompiled.")
+
         # folder = game.extracted
         # content_dir = folder / "584E07D1" / "Content"
         # assert game.decompiled is not None

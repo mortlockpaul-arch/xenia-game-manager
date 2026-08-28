@@ -135,7 +135,7 @@
     "Python.main.executor": "Run",
     "Python.main_updater.executor": "Run",
     "Python.netplay.executor": "Run",
-    "Python.package window.executor": "Debug",
+    "Python.package window.executor": "Run",
     "Python.package.executor": "Run",
     "Python.package_window.executor": "Run",
     "Python.setup.executor": "Run",
@@ -264,22 +264,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00084" summary="1.0.9 Platform Refactor">
-      <option name="closed" value="true" />
-      <created>1787341917257</created>
-      <option name="number" value="00084" />
-      <option name="presentableId" value="LOCAL-00084" />
-      <option name="project" value="LOCAL" />
-      <updated>1787341917258</updated>
-    </task>
-    <task id="LOCAL-00085" summary="1.1.0 Decompiler and Extractor Tools">
-      <option name="closed" value="true" />
-      <created>1787344288919</created>
-      <option name="number" value="00085" />
-      <option name="presentableId" value="LOCAL-00085" />
-      <option name="project" value="LOCAL" />
-      <updated>1787344288921</updated>
     </task>
     <task id="LOCAL-00086" summary="1.1.0 Decompiler and Extractor Tools">
       <option name="closed" value="true" />
@@ -657,7 +641,23 @@
       <option name="project" value="LOCAL" />
       <updated>1787951840275</updated>
     </task>
-    <option name="localTasksCounter" value="133" />
+    <task id="LOCAL-00133" summary="1.2.2 Decompile Optimize and Solution Configuration">
+      <option name="closed" value="true" />
+      <created>1787953082526</created>
+      <option name="number" value="00133" />
+      <option name="presentableId" value="LOCAL-00133" />
+      <option name="project" value="LOCAL" />
+      <updated>1787953082526</updated>
+    </task>
+    <task id="LOCAL-00134" summary="1.2.2 Decompile Optimize and Solution Configuration">
+      <option name="closed" value="true" />
+      <created>1787953107008</created>
+      <option name="number" value="00134" />
+      <option name="presentableId" value="LOCAL-00134" />
+      <option name="project" value="LOCAL" />
+      <updated>1787953107009</updated>
+    </task>
+    <option name="localTasksCounter" value="135" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -941,7 +941,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>3048</line>
+          <line>3049</line>
           <option name="timeStamp" value="232" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -956,7 +956,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>3431</line>
+          <line>3432</line>
           <option name="timeStamp" value="245" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -976,13 +976,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>3461</line>
+          <line>3462</line>
           <option name="timeStamp" value="252" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>3467</line>
+          <line>3468</line>
           <option name="timeStamp" value="253" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>2937</line>
+          <option name="timeStamp" value="256" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
