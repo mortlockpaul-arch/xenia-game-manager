@@ -2842,7 +2842,7 @@ class XBLIGDialog(QDialog):
         if options["convert_csproj"] or options["add_to_solution"]:
             # if game.decompiled is not None:
             converter = self.method_name()
-            csproj_files = get_cs_project_folders([game], self.log_message)
+            csproj_files = get_cs_project_folders(game, self.log_message)
             for project in csproj_files:
                 try:
                     converter.convert_project_folder(project, options["add_to_solution"], game.dll_files)

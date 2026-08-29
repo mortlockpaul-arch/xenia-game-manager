@@ -262,14 +262,6 @@
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
     </task>
-    <task id="LOCAL-00091" summary="1.1.1 Logging Initialisation">
-      <option name="closed" value="true" />
-      <created>1787543217585</created>
-      <option name="number" value="00091" />
-      <option name="presentableId" value="LOCAL-00091" />
-      <option name="project" value="LOCAL" />
-      <updated>1787543217585</updated>
-    </task>
     <task id="LOCAL-00092" summary="1.1.2 Extraction Worker">
       <option name="closed" value="true" />
       <created>1787594305863</created>
@@ -654,7 +646,15 @@
       <option name="project" value="LOCAL" />
       <updated>1788038228997</updated>
     </task>
-    <option name="localTasksCounter" value="140" />
+    <task id="LOCAL-00140" summary="1.2.3 Simplify and Remove All Checkbox">
+      <option name="closed" value="true" />
+      <created>1788039276331</created>
+      <option name="number" value="00140" />
+      <option name="presentableId" value="LOCAL-00140" />
+      <option name="project" value="LOCAL" />
+      <updated>1788039276333</updated>
+    </task>
+    <option name="localTasksCounter" value="141" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
