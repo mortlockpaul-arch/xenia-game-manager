@@ -1746,47 +1746,37 @@ def run_in_background(func, *args):
 
 def _decompress_games(game: XBLIGGame, log):
     if game.extracted is None or not game.package:
-        return
+        return game
     root = game.extracted / "584E07D1"
     archive = root / "Content.7z"
-
     try:
         log(f"Decompressing {game.title}: {archive} folder(s)")
         decompress_content(archive, root, log_callback=log, delete_archive=True)
-
     except Exception as e:
         log(f"Failed to decompress {game.title}: {type(e).__name__}: {e}")
-
+    return game
 
 def _compress_games(game: XBLIGGame, log):
     if game.extracted is None or not game.package:
-        return
-
+        return game
     root = game.extracted / "584E07D1"
     xnb_files = list(root.rglob("*.xnb"))
     xnb_folders = list({p.parent for p in xnb_files})
 
     if not xnb_folders:
         log(f"No Content folders found for {game.title}: in {root}")
-        return
-
+        return game
     content_folders = [
         p for p in xnb_folders
         if not any(parent in xnb_folders for parent in p.parents)
     ]
-
     archive = root / "Content.7z"
-
     try:
         log(f"Compressing {len(content_folders)} {game.title} Content Folders")
         compress_folders(root, content_folders, archive, True, log_callback=log)
-
     except Exception as e:
-        log(
-            f"Failed to compress {game.title}: "
-            f"{type(e).__name__}: {e}"
-        )
-
+        log(f"Failed to compress {game.title}: {type(e).__name__}: {e}")
+    return game
 
 class CompressWorker(QObject):
     log = Signal(str)
@@ -2564,14 +2554,15 @@ class XBLIGDialog(QDialog):
             func = partial(_compress_games, game, self.log_message)
         else:
             func = partial(_decompress_games, game, self.log_message)
-        self.run_worker(func)
+        self.game = game
+        self.run_worker(func, game)
 
-    def run_worker(self, func: Callable[..., None] | Callable[..., None]):
+    def run_worker(self, func: Callable[..., None] | Callable[..., None], game=None):
         thread = QThread(self)
         self.compress_thread = thread
         worker = CompressWorker(func)
         self.compress_worker = worker
-
+        self.game = game
         worker.log.connect(self.log_message)
         worker.finished.connect(self.compress_thread.quit)
         worker.finished.connect(worker.deleteLater)
@@ -2582,10 +2573,8 @@ class XBLIGDialog(QDialog):
         self.compress_thread.start()
 
     def _worker_finished(self) -> None:
-
         self.game.extracted = self.extracted
         self.game.exe = next(self.extracted.rglob("*.exe"), None)
-
         self.log_message(f"Extracted {self.game.title} successfully")
         save_cache(self.games)
         self.load_games(self.games)
@@ -2675,7 +2664,7 @@ class XBLIGDialog(QDialog):
             from functools import partial
             func = partial(extract_live_pirs, package, extracted_path, None)
             self.game = game
-            self.run_worker(func)
+            self.run_worker(func, game)
             self.log_message_log(f"Extracted to: {extracted_path}")
 
         except Exception as e:
