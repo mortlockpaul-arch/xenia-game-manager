@@ -1278,7 +1278,8 @@ class ConvertXnaProjects(QObject):
         self.log_message(f"Updating project: {project_path.name}")
         self.log_message(f"  Project path: {project_path}")
 
-        tree = ET.parse(project_path)
+        with open(project_path, "rb") as f:
+            tree = ET.parse(f)
         root = tree.getroot()
 
         # ---------------------------------------------------------
@@ -1428,8 +1429,8 @@ class ConvertXnaProjects(QObject):
         # ---------------------------------------------------------
 
         ET.indent(tree, space="\t")
-        tree.write(project_path, encoding="utf-8", xml_declaration=True)
-
+        with open(project_path, "wb") as f:
+            tree.write(f, encoding="utf-8", xml_declaration=True)
         self.log_message(
             f"  Project updated successfully: {project_path.name}"
         )
@@ -1498,38 +1499,44 @@ class ConvertXnaProjects(QObject):
         # Move / synchronise project
         # ---------------------------------------------------------
 
-        if project_dir.resolve() != destination_dir.resolve():
+        # if project_dir.resolve() != destination_dir.resolve():
 
-            if destination_dir.exists():
-                self.log_message("  Destination already exists.")
-
-                projects = list(destination_dir.rglob("*.csproj"))
-                if not projects:
-                    self.log_message("Error: No .csproj found in destination.")
-                    return False
-                try:
-                    projects[0].rename(destination_project)
-                    self.log_message(f"Renamed {projects[0].name} -> {destination_project.name}")
-                    if not self.copy_project_files(project_dir, destination_dir):
-                        return False
-                    project_path = destination_project
-                    self.log_message(f"Copied Project: {project_path.name}")
-                except OSError as exc:
-                    self.log_message(f"Error Copying Project: {exc}")
-                    return False
-            else:
+        if destination_dir.exists():
+            try:
+                shutil.rmtree(destination_dir)
+                self.log_message(f"Destination Project Folder {destination_dir} exists.")
                 self.log_message(f"Moving project to: {destination_dir}")
-                try:
-                    shutil.move(str(project_dir), str(destination_dir))
-                except OSError as exc:
-                    self.log_message(f"  ERROR moving project: {exc}")
+                shutil.move(str(project_dir), str(destination_dir))
+            except OSError as exc:
+                self.log_message(f"  ERROR moving project: {exc}")
+                return False
+            projects = list(destination_dir.rglob("*.csproj"))
+            if not projects:
+                self.log_message("Error: No .csproj found in destination.")
+                return False
+            try:
+                projects[0].rename(destination_project)
+                self.log_message(f"Renamed {projects[0].name} -> {destination_project.name}")
+                if not self.copy_project_files(project_dir, destination_dir):
                     return False
-
                 project_path = destination_project
-                self.log_message("  Project moved successfully.")
-
+                self.log_message(f"Copied Project: {project_path.name}")
+            except OSError as exc:
+                self.log_message(f"Error Copying Project: {exc}")
+                return False
         else:
-            self.log_message("  Project is already in the destination.")
+            self.log_message(f"Moving project to: {destination_dir}")
+            try:
+                shutil.move(str(project_dir), str(destination_dir))
+            except OSError as exc:
+                self.log_message(f"  ERROR moving project: {exc}")
+                return False
+
+        project_path = destination_project
+        self.log_message("Project moved successfully.")
+
+        # else:
+        #     self.log_message("  Project is already in the destination.")
 
         try:
             project_path_value = os.path.relpath(
@@ -1652,17 +1659,6 @@ class ConvertXnaProjects(QObject):
 
         self.log_message("  Solution updated successfully.")
         return True
-
-    def convert_project_folder(self, csproj_file: Path, game_dll_files=None):
-        try:
-            self.clean_csproj(csproj_file, game_dll_files)
-
-
-            # add_xna_compat(folder.parent)
-            # self.remove_xna_usings(folder.parent)
-
-        except Exception as e:
-            self.log_message(f"FAILED {csproj_file}: {e}")
 
     # def method_name(self, game:XBLIGGame):
     #     if game.extracted is not None:
@@ -2127,20 +2123,20 @@ class XBLIGDialog(QDialog):
             f"Scanner {value}%"
         )
 
-    def convert_game_project(self):
-        if (result := self.get_selected_game()) is None:
-            return
-        game, _ = result
-        converter = self.method_name()
-        projects = get_cs_project_folders(game, self.log_message)
-        self.log_message(f"Found {len(projects)} projects")
-        for project in projects:
-            try:
-                converter.convert_project_folder(project)
-            except Exception as e:
-                self.log_message(
-                    f"FAILED {project}: {e}"
-                )
+    # def convert_game_project(self):
+    #     if (result := self.get_selected_game()) is None:
+    #         return
+    #     game, _ = result
+    #     converter = self.method_name()
+    #     projects = get_cs_project_folders(game, self.log_message)
+    #     self.log_message(f"Found {len(projects)} projects")
+    #     for project in projects:
+    #         try:
+    #             converter.convert_project_folder(project)
+    #         except Exception as e:
+    #             self.log_message(
+    #                 f"FAILED {project}: {e}"
+    #             )
 
     def convert_content(self, tool_id=1):
         self.validate1_btn.setDisabled(True)
@@ -2819,13 +2815,12 @@ class XBLIGDialog(QDialog):
                                                          dest_content_folder=game.decompiled,
                                                          dll_files=game.dll_files,
                                                          log_callback=self.log_message)
-
         if options["convert_csproj"]:
-            for project in csproj_files:
+            for csproj_file in csproj_files:
                 try:
-                    converter.convert_project_folder(project, game.dll_files)
+                    converter.clean_csproj(csproj_file, game.dll_files)
                 except Exception as e:
-                    self.log_message(f"Failed to Convert {project}: {e}")
+                    self.log_message(f"FAILED {csproj_file}: {e}")
         if options["add_to_solution"]:
             csproj_files = get_cs_project_folders(game, self.log_message)
             for csproj_file in csproj_files:
@@ -3124,8 +3119,8 @@ class XBLIGDialog(QDialog):
         self.extract_btn.clicked.connect(self.extract_game_package)
         self.build_btn = QPushButton("Decompile Game and Assemblies")
         self.build_btn.clicked.connect(self.build_selected)
-        self.convert_project_btn = QPushButton("Convert Game Project Files")
-        self.convert_project_btn.clicked.connect(self.convert_game_project)
+        # self.convert_project_btn = QPushButton("Convert Game Project Files")
+        # self.convert_project_btn.clicked.connect(self.convert_game_project)
         self.open_folder_btn = QPushButton("Open Game Folder")
         self.open_folder_btn.clicked.connect(partial(self.open_selected_folder,"root"))
         self.open_folder_extracted_btn = QPushButton("Open Game Extracted Folder")
@@ -3145,7 +3140,7 @@ class XBLIGDialog(QDialog):
         button_row.addWidget(self.scan_btn)
         button_row.addWidget(self.build_btn)
         button_row.addWidget(self.extract_btn)
-        button_row.addWidget(self.convert_project_btn)
+        # button_row.addWidget(self.convert_project_btn)
         button_row.addWidget(self.open_folder_btn)
         button_row.addWidget(self.open_folder_extracted_btn)
         button_row.addWidget(self.compress_btn)
