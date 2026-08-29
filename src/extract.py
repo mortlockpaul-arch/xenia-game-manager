@@ -52,9 +52,8 @@ def extract_archives(folder, log_callback=None, subfolder=False, remove_archives
 
         output_dir = folder / archive.stem if subfolder else folder
 
-        root = get_app_dir() / "downloads"
         relative_path = Path(archive).relative_to(folder)
-        log(f"Archive: {relative_path}")
+        log(f"Archive: {archive}")
 
         output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -67,17 +66,13 @@ def extract_archives(folder, log_callback=None, subfolder=False, remove_archives
         ]
 
         try:
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True
-            )
+            result = subprocess.run(cmd, capture_output=True, text=True)
 
             if result.returncode == 0:
-
+                log(result.stdout)
                 if remove_archives:
                     archive.unlink()
-
+                    log(f"Deleted Archive: {archive}")
                 count += 1
                 log(f"Extracted: {relative_path}")
 

@@ -456,46 +456,29 @@ class ToolManager:
         self.cleanup()
 
 
-def get_cs_project_folders(
-        games: list[XBLIGGame],
-        log_callback: Callable[[str], None] | None = None,
-) -> list[Path]:
+def get_cs_project_folders(game: XBLIGGame, log_callback: Callable[[str], None] | None = None) -> list[Path]:
     projects = []
+    if game.decompiled is None:
+        raise ValueError("Game has not been decompiled")
 
-    for game in games:
-        if game.decompiled is None:
+    assert game.folder_title is not None
+    new_path = game.decompiled / f"{game.folder_title}.csproj"
+    cs_proj_files = game.decompiled.rglob("*.csproj")
+    for project in cs_proj_files:
+        if project == new_path:
+            projects.append(project)
             continue
+        try:
+            if project.name == game.title + ".csproj":
+                project.rename(new_path)
+                log_callback(f"Renamed {project.name} -> {new_path.name}")
+        except PermissionError:
+            log_callback(f"Could not Rename {project.name}. Maybe its open in Visual Studio.")
 
-        assert game.folder_title is not None
-        new_path = game.decompiled / f"{game.folder_title}.csproj"
-
-        for project in game.decompiled.rglob("*.csproj"):
-            if project == new_path:
-                projects.append(project)
-                continue
-
-            if new_path.exists():
-                if log_callback:
-                    log_callback(
-                        f"  Project already exists: {new_path.name}; "
-                        f"removing duplicate {project.name}"
-                    )
-                project.unlink()
-            else:
-                try:
-                    project.rename(new_path)
-                    if log_callback:
-                        log_callback(
-                            f"  Renamed {project.name} -> {new_path.name}"
-                        )
-                except PermissionError:
-                    log_callback(f"Could not Rename {project.name}. Maybe its open in Visual Studio.")
-
-            if new_path not in projects:
-                projects.append(new_path)
+        if new_path not in projects:
+            projects.append(new_path)
 
     return projects
-
 
 def add_xna_compat(project_folder):
     project_folder = Path(project_folder)
@@ -1373,7 +1356,7 @@ class ConvertXnaProjects(QObject):
 
         properties = {
             "GenerateAssemblyInfo": "false",
-            "TargetFramework": "net10.0",
+            "TargetFramework": "net481",
             "ImplicitUsings": "enable",
             "Nullable": "enable",
             "Platforms": "AnyCPU",
@@ -1536,44 +1519,21 @@ class ConvertXnaProjects(QObject):
                 self.log_message("  Destination already exists.")
 
                 projects = list(destination_dir.rglob("*.csproj"))
-
-                if destination_project.exists():
+                if not projects:
+                    self.log_message("Error: No .csproj found in destination.")
+                    return False
+                try:
+                    projects[0].rename(destination_project)
+                    self.log_message(f"Renamed {projects[0].name} -> {destination_project.name}")
                     if not self.copy_project_files(project_dir, destination_dir):
                         return False
-
                     project_path = destination_project
-                    self.log_message(
-                        f"  Updated existing project: {project_path.name}"
-                    )
-
-                elif len(projects) == 1:
-                    try:
-                        projects[0].rename(destination_project)
-                        if not self.copy_project_files(project_dir, destination_dir):
-                            return False
-                        project_path = destination_project
-                        self.log_message(
-                            f"  Renamed {projects[0].name} -> "
-                            f"{destination_project.name}"
-                        )
-                    except OSError as exc:
-                        self.log_message(f"  ERROR renaming project: {exc}")
-                        return False
-
-                elif not projects:
-                    self.log_message("  ERROR: No .csproj found in destination.")
+                    self.log_message(f"Copied Project: {project_path.name}")
+                except OSError as exc:
+                    self.log_message(f"Error Copying Project: {exc}")
                     return False
-
-                else:
-                    self.log_message(
-                        f"  ERROR: Found {len(projects)} .csproj files "
-                        "in destination."
-                    )
-                    return False
-
             else:
-                self.log_message(f"  Moving project to: {destination_dir}")
-
+                self.log_message(f"Moving project to: {destination_dir}")
                 try:
                     shutil.move(str(project_dir), str(destination_dir))
                 except OSError as exc:
@@ -1586,10 +1546,6 @@ class ConvertXnaProjects(QObject):
         else:
             self.log_message("  Project is already in the destination.")
 
-        # ---------------------------------------------------------
-        # Solution project path
-        # ---------------------------------------------------------
-
         try:
             project_path_value = os.path.relpath(
                 project_path,
@@ -1599,7 +1555,7 @@ class ConvertXnaProjects(QObject):
             project_path_value = project_path.as_posix()
             self.log_message("  Project is on a different drive.")
 
-        self.log_message(f"  Solution path: {project_path_value}")
+        self.log_message(f"Solution path: {project_path_value}")
 
         # ---------------------------------------------------------
         # Parse solution
@@ -1709,22 +1665,23 @@ class ConvertXnaProjects(QObject):
         self.log_message("  Solution updated successfully.")
         return True
 
-    def convert_project_folder(self, path_to_csproj_file: Path, add_to_solution=True, game_dll_files=None):
+    def convert_project_folder(self, csproj_file: Path, add_to_solution=True, game_dll_files=None):
         try:
-            self.clean_csproj(path_to_csproj_file, game_dll_files)
+            self.clean_csproj(csproj_file, game_dll_files)
 
             if add_to_solution:
-                solution_path = Path(r"C:\source\Indie-Games\Indie-Games.slnx")
+                # solution_path = Path(r"C:\source\Indie-Games\Indie-Games.slnx")
+                solution_path = self.config["indie-game-solution-location"]
                 self.add_project_to_solution(
                     solution_path,
-                    path_to_csproj_file,
+                    csproj_file,
                 )
 
             # add_xna_compat(folder.parent)
             # self.remove_xna_usings(folder.parent)
 
         except Exception as e:
-            self.log_message(f"FAILED {path_to_csproj_file}: {e}")
+            self.log_message(f"FAILED {csproj_file}: {e}")
 
     # def method_name(self, game:XBLIGGame):
     #     if game.extracted is not None:
@@ -1787,54 +1744,48 @@ def run_in_background(func, *args):
     ).start()
 
 
-def _decompress_games(games: list[XBLIGGame], log):
-    for i, game in enumerate(games, 1):
-        if game.extracted is None or not game.package:
-            continue
-        root = game.extracted / "584E07D1"
-        archive = root / "Content.7z"
+def _decompress_games(game: XBLIGGame, log):
+    if game.extracted is None or not game.package:
+        return
+    root = game.extracted / "584E07D1"
+    archive = root / "Content.7z"
 
-        try:
-            log(f"[{i}/{len(games)}] Decompressing {game.title}: {archive} folder(s)")
-            decompress_content(archive, root, log_callback=log, delete_archive=True)
+    try:
+        log(f"Decompressing {game.title}: {archive} folder(s)")
+        decompress_content(archive, root, log_callback=log, delete_archive=True)
 
-        except Exception as e:
-            log(f"Failed to decompress {game.title}: {type(e).__name__}: {e}")
+    except Exception as e:
+        log(f"Failed to decompress {game.title}: {type(e).__name__}: {e}")
 
 
-def _compress_games(games: list[XBLIGGame], log):
-    for i, game in enumerate(games, 1):
-        if game.extracted is None or not game.package:
-            continue
+def _compress_games(game: XBLIGGame, log):
+    if game.extracted is None or not game.package:
+        return
 
-        root = game.extracted / "584E07D1"
-        xnb_files = list(root.rglob("*.xnb"))
-        xnb_folders = list({p.parent for p in xnb_files})
+    root = game.extracted / "584E07D1"
+    xnb_files = list(root.rglob("*.xnb"))
+    xnb_folders = list({p.parent for p in xnb_files})
 
-        if not xnb_folders:
-            log(f"No XNB folders found for {game.title}: {root}")
-            continue
+    if not xnb_folders:
+        log(f"No Content folders found for {game.title}: in {root}")
+        return
 
-        content_folders = [
-            p for p in xnb_folders
-            if not any(parent in xnb_folders for parent in p.parents)
-        ]
+    content_folders = [
+        p for p in xnb_folders
+        if not any(parent in xnb_folders for parent in p.parents)
+    ]
 
-        archive = root / "Content.7z"
+    archive = root / "Content.7z"
 
-        try:
-            log(
-                f"[{i}/{len(games)}] Compressing {game.title}: "
-                f"{len(content_folders)} folder(s)"
-            )
+    try:
+        log(f"Compressing {len(content_folders)} {game.title} Content Folders")
+        compress_folders(root, content_folders, archive, True, log_callback=log)
 
-            compress_folders(root, content_folders, archive, True, log_callback=log)
-
-        except Exception as e:
-            log(
-                f"Failed to compress {game.title}: "
-                f"{type(e).__name__}: {e}"
-            )
+    except Exception as e:
+        log(
+            f"Failed to compress {game.title}: "
+            f"{type(e).__name__}: {e}"
+        )
 
 
 class CompressWorker(QObject):
@@ -2119,7 +2070,7 @@ class XBLIGDialog(QDialog):
         self.worker = None
         self.compress_thread = None
         self.decompress_btn = None
-        self.all_checkbox = None
+        # self.all_checkbox = None
         self.options = None
         self.drawer_open = False
         self._last_mtime = None
@@ -2206,26 +2157,17 @@ class XBLIGDialog(QDialog):
         )
 
     def convert_game_project(self):
-        if self.all_checkbox.isChecked():
-            games = self.games
-        else:
-            if (result := self.get_selected_game()) is None:
-                return
-            game, _ = result
-            games = [game]
-
-        self.log_message(f"\nChecking {len(games)} Xbox Live Indie Games\n")
+        if (result := self.get_selected_game()) is None:
+            return
+        game, _ = result
         converter = self.method_name()
-
-        projects = get_cs_project_folders(games, self.log_message)
-
-        print(f"Found {len(projects)} projects")
-
+        projects = get_cs_project_folders(game, self.log_message)
+        self.log_message(f"Found {len(projects)} projects")
         for project in projects:
             try:
                 converter.convert_project_folder(project, True)
             except Exception as e:
-                print(
+                self.log_message(
                     f"FAILED {project}: {e}"
                 )
 
@@ -2612,20 +2554,16 @@ class XBLIGDialog(QDialog):
         else:
             self.decompiled_lbl.setText("-")
 
-    def compress_decompress_extracted_content(self, mode: bool):
-        selected = self.get_selected_game()
-        games: list[XBLIGGame] = self.games if self.all_checkbox.isChecked() else []
-        if selected is not None:
-            games = [selected[0]]
-
-        self.log_message(f"\nChecking {len(games)} Xbox Live Indie Games\n")
-        if not games:
+    def compress_decompress_extracted_content(self, compress: bool):
+        result = self.get_selected_game()
+        if not result:
             return
-
-        if mode:
-            func = partial(_compress_games, games, self.log_message)
+        game, _ = result
+        if compress:
+            self.log_message(f"Compressing Game {game.title}")
+            func = partial(_compress_games, game, self.log_message)
         else:
-            func = partial(_decompress_games, games, self.log_message)
+            func = partial(_decompress_games, game, self.log_message)
         self.run_worker(func)
 
     def run_worker(self, func: Callable[..., None] | Callable[..., None]):
@@ -2684,32 +2622,18 @@ class XBLIGDialog(QDialog):
                 f"Error extracting {game.title}: {type(e).__name__}: {e}"
             )
 
-    def extract_game_or_games_package(self):
+    def extract_game_package(self):
         if self.overwrite_check.isChecked():
             overwrite = True
         else:
             overwrite = False
-
-        if self.all_checkbox.isChecked():
-            games = self.games
-        else:
-            if (result := self.get_selected_game()) is None:
-                return
-            game, _ = result
-            games = [game]
-
-        self.log_message(f"\nChecking {len(games)} Xbox Live Indie Games\n", "#2ecc71")
-
-        total = len(games)
-
-        for i, game in enumerate(games, 1):
-            if game.extracted is not None or not game.package:
-                self.log_message_log(f"{game.title} Already Extracted")
-                if not overwrite: continue
-
-            self.log_message(f"[{i}/{total}] Extracting {game.title}...")
-            self.extract_game(game)
-
+        if (result := self.get_selected_game()) is None:
+            return
+        game, _ = result
+        if game.extracted is not None or not game.package:
+            self.log_message_log(f"{game.title} Already Extracted")
+            if not overwrite: return
+        self.extract_game(game)
         self.load_games(self.games, refresh_only=True)
 
     def extract_package(self, game: XBLIGGame):
@@ -3221,11 +3145,11 @@ class XBLIGDialog(QDialog):
 
         self.scan_btn = QPushButton("Scan Games")
         self.scan_btn.clicked.connect(self.rescan_games_responsive)
-        self.extract_btn = QPushButton("Extract Selected Game Package")
-        self.extract_btn.clicked.connect(self.extract_game_or_games_package)
+        self.extract_btn = QPushButton("Extract Game Package")
+        self.extract_btn.clicked.connect(self.extract_game_package)
         self.build_btn = QPushButton("Decompile Game and Assemblies")
         self.build_btn.clicked.connect(self.build_selected)
-        self.convert_project_btn = QPushButton("Convert Game Project")
+        self.convert_project_btn = QPushButton("Convert Game Project Files")
         self.convert_project_btn.clicked.connect(self.convert_game_project)
         self.open_folder_btn = QPushButton("Open Game Folder")
         self.open_folder_btn.clicked.connect(partial(self.open_selected_folder,"root"))
@@ -3258,9 +3182,9 @@ class XBLIGDialog(QDialog):
         # Second row - options
         # -----------------------------
         options_row = QHBoxLayout()
-
-        self.all_checkbox = QCheckBox("All or One")
-        self.all_checkbox.toggled.connect(self.all_or_one)
+        #
+        # self.all_checkbox = QCheckBox("All or One")
+        # self.all_checkbox.toggled.connect(self.all_or_one)
 
         self.overwrite_check = QCheckBox("Overwrite Extract")
         self.cache_check = QCheckBox("Override Cache")
@@ -3291,7 +3215,7 @@ class XBLIGDialog(QDialog):
         self.open_ilspy_btn = QPushButton("Open ILSpy")
         self.open_ilspy_btn.clicked.connect(self.open_ilspy)
 
-        options_row.addWidget(self.all_checkbox)
+        # options_row.addWidget(self.all_checkbox)
         options_row.addWidget(self.overwrite_check)
         options_row.addWidget(self.cache_check)
         options_row.addWidget(self.root_edit, 1)
@@ -3302,10 +3226,10 @@ class XBLIGDialog(QDialog):
         options_row.addWidget(self.open_ilspy_btn)
 
         options_row.addStretch()
-        self.all_checkbox.setSizePolicy(
-            QSizePolicy.Policy.Fixed,
-            QSizePolicy.Policy.Fixed,
-        )
+        # self.all_checkbox.setSizePolicy(
+        #     QSizePolicy.Policy.Fixed,
+        #     QSizePolicy.Policy.Fixed,
+        # )
 
         self.overwrite_check.setSizePolicy(
             QSizePolicy.Policy.Fixed,
@@ -3484,28 +3408,6 @@ class XBLIGDialog(QDialog):
     #     self.game_table.setItem(row, 1, QTableWidgetItem(status))
     #     self.game_table.setItem(row, 2, QTableWidgetItem(extracted))
     #     self.game_table.setItem(row, 3, QTableWidgetItem(exe))
-
-    def all_or_one(self, checked):
-        self.compress_btn.setText(
-            "Compress All Extracted Content"
-            if checked
-            else "Compress Selected Extracted Content"
-        )
-        self.extract_btn.setText(
-            "Extract All Game Packages"
-            if checked
-            else "Extract Selected Game Package"
-        )
-        self.convert_project_btn.setText(
-            "Convert Game Projects"
-            if checked
-            else "Convert Game Project"
-        )
-        self.decompress_btn.setText(
-            "Decompress All Extracted Content"
-            if checked
-            else "Decompress Selected Extracted Content"
-        )
 
     from html import escape
 

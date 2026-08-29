@@ -17,6 +17,7 @@ import traceback
 from dataclasses import dataclass
 from datetime import datetime
 from functools import partial
+from glob import escape
 from pathlib import Path
 
 import keyring
@@ -343,10 +344,8 @@ class GameLauncher(QMainWindow):
         base_dir = get_app_dir()
         self.extract_downloaded_archives_btn.setEnabled(False)
 
-        download_folder_list = [
-            Path("D:/Downloads"),
-            get_app_dir() / "downloads"
-        ]
+        indie_path = self.config["indie_games_path"]
+        download_folder_list = [Path(indie_path), get_app_dir() / "downloads"]
         self.extract_thread = QThread()
         self.extract_worker = ExtractWorker(
             download_folder_list
@@ -354,7 +353,7 @@ class GameLauncher(QMainWindow):
 
         self.extract_worker.moveToThread(self.extract_thread)
         self.extract_thread.started.connect(self.extract_worker.run)
-        self.extract_worker.log_window.connect(self.log)
+        self.extract_worker.log_window.connect(self.log_message)
         self.extract_worker.finished.connect(self.extract_finished)
         self.extract_worker.finished.connect(lambda count: self.extract_thread.quit())
         self.extract_worker.finished.connect(self.extract_worker.deleteLater)
@@ -367,9 +366,9 @@ class GameLauncher(QMainWindow):
 
         if count:
             noun = "archive" if count == 1 else "archives"
-            self.log(f"Extraction complete. {count} {noun} extracted.")
+            self.log_message(f"Extraction complete. {count} {noun} extracted.")
         else:
-            self.log("Extraction complete. No archives were extracted.")
+            self.log_message("Extraction complete. No archives were extracted.")
 
     def check_for_updates(self, name="Xenia Game Manager"):
 
@@ -377,9 +376,9 @@ class GameLauncher(QMainWindow):
         self.update_worker.show_message.connect(
             self.show_update_message
         )
-        self.update_worker.log.connect(self.log)
+        self.update_worker.log.connect(self.log_message)
         self.update_worker.progress.connect(self.update_progress)
-        self.update_worker.error.connect(self.log)
+        self.update_worker.error.connect(self.log_message)
         self.update_worker.quit_app.connect(self.close_app)
         self.update_worker.finished.connect(
             self.update_finished
@@ -399,7 +398,7 @@ class GameLauncher(QMainWindow):
         )
 
     def update_finished(self):
-        self.log("Update check complete")
+        self.log_message("Update check complete")
         self.load_saved_config()
         self.update_worker.deleteLater()
 
@@ -412,11 +411,12 @@ class GameLauncher(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self._rainbow_index = 1
         self.platform = None
         self.scanner = None
         self.xbox_unity_api = None
 
-        self.model:XboxGameTableModel | Xbox360GameTableModel
+        self.model: XboxGameTableModel | Xbox360GameTableModel = None
         self.xbox_game_list: list[xiso.XboxRom] = []
         self.launch_edge = None
         self.extract_worker = None
@@ -488,7 +488,7 @@ class GameLauncher(QMainWindow):
         self.db.init_db()
 
         self.model = Xbox360GameTableModel()
-        self.model.log.connect(self.log)
+        self.model.log.connect(self.log_message)
 
         self.setFixedSize(1640, 950)
 
@@ -562,7 +562,7 @@ class GameLauncher(QMainWindow):
         self.build_ui()
         self.load_saved_config()
 
-        self.compatibility = Compatibility(self.db, self.log)
+        self.compatibility = Compatibility(self.db, self.log_message)
 
         setup_logger()
         QTimer.singleShot(5000, self.scan_for_xisos)
@@ -887,11 +887,11 @@ class GameLauncher(QMainWindow):
 
         # logs go to your UI
         self.reorg_worker.log.connect(
-            self.log
+            self.log_message
         )
 
         self.reorg_worker.error.connect(
-            lambda e: self.log(f"Error: {e}")
+            lambda e: self.log_message(f"Error: {e}")
         )
 
         # cleanup
@@ -936,15 +936,15 @@ class GameLauncher(QMainWindow):
                 self.finished.emit()
     def download_experimental_releases(self):
         config = load_config_file()
-        self.log(clear_console=True)
+        self.log_message(clear_console=True)
         github_environment_variable = keyring.get_password("Xenia Game Manager", "github_token")
         if not github_environment_variable:
-            self.log("Generate a Personal Github Token before downloading experimental releases.")
-            self.log("Make sure it has Update GitHub Action workflows scope enabled.")
+            self.log_message("Generate a Personal Github Token before downloading experimental releases.")
+            self.log_message("Make sure it has Update GitHub Action workflows scope enabled.")
             return
 
         def log(message):
-            self.log(message)
+            self.log_message(message)
 
         releases = [
             {
@@ -992,7 +992,7 @@ class GameLauncher(QMainWindow):
             if xenia_manager_installed and xenia_version != "edge":
                 xenia_manager_config, xenia_manager_path = load_xenia_manager_config()
                 if not xenia_manager_config:
-                    self.log(f"Config Load Error: No such file or directory: {xenia_manager_path} for {xenia_version}")
+                    self.log_message(f"Config Load Error: No such file or directory: {xenia_manager_path} for {xenia_version}")
                     continue
                 configuration_location = xenia_manager_config["emulators"][f"{xenia_version}"]["configuration_location"]
                 emulator_location = Path(xenia_manager_config["emulators"][f"{xenia_version}"]["emulator_location"])
@@ -1018,9 +1018,9 @@ class GameLauncher(QMainWindow):
                 valid, message = downloader.check_token()
 
                 if valid:
-                    self.log(message)
+                    self.log_message(message)
                 else:
-                    self.log(message)
+                    self.log_message(message)
                     break
 
                 log(f"Downloading {release['name']}...")
@@ -1040,9 +1040,9 @@ class GameLauncher(QMainWindow):
                 hours = age.seconds // 3600
                 minutes = (age.seconds % 3600) // 60
 
-                self.log(f"version {version} is {days} days, {hours} hours, {minutes} minutes old")
+                self.log_message(f"version {version} is {days} days, {hours} hours, {minutes} minutes old")
 
-                if extract_archives(folder=folder, log_callback=self.log) != 1:
+                if extract_archives(folder=folder, log_callback=self.log_message) != 1:
                     log(f"Failed extracting {zip_file}")
                 else:
                     log(f"Finished {release['name']}")
@@ -1050,19 +1050,19 @@ class GameLauncher(QMainWindow):
                     save_config(config)
                 self.load_saved_config()
             except requests.exceptions.RequestException as e:
-                self.log(f"Network error: {e}")
-                self.log(traceback.format_exc())
+                self.log_message(f"Network error: {e}")
+                self.log_message(traceback.format_exc())
             except OSError as e:
                 if e.errno == errno.ENOSPC:
-                    self.log("Download failed: the destination drive is out of disk space.")
+                    self.log_message("Download failed: the destination drive is out of disk space.")
                 else:
-                    self.log(f"Download failed: {e}")
+                    self.log_message(f"Download failed: {e}")
             except Exception as e:
-                self.log(f"Error downloading '{folder}': {e}")
+                self.log_message(f"Error downloading '{folder}': {e}")
 
     def use_xenia_manager_content_for_edge(self):
         try:
-            use_xenia_manager_content_folder_for_edge(log_callback=self.log)
+            use_xenia_manager_content_folder_for_edge(log_callback=self.log_message)
             # self.log("Xenia Edge is now using the Xenia Manager content folder.")
             # QMessageBox.information(
             #     self,
@@ -1070,7 +1070,7 @@ class GameLauncher(QMainWindow):
             #     "Xenia Edge is now using the Xenia Manager content folder."
             # )
         except RuntimeError as e:
-            self.log(traceback.format_exc(), console_log=False)
+            self.log_message(traceback.format_exc(), console_log=False)
         except Exception as e:
             QMessageBox.critical(
                 self,
@@ -1079,7 +1079,7 @@ class GameLauncher(QMainWindow):
             )
 
     def on_optimize_xenia_clicked(self):
-        xenia_edge_optimise_settings(self.log)
+        xenia_edge_optimise_settings(self.log_message)
 
     def remove_clean_folders(self):
         folder = QFileDialog.getExistingDirectory(
@@ -1090,7 +1090,7 @@ class GameLauncher(QMainWindow):
         if not folder:
             return
 
-        count = remove_empty_folders(folder, self.log)
+        count = remove_empty_folders(folder, self.log_message)
 
         QMessageBox.information(
             self,
@@ -1161,10 +1161,10 @@ class GameLauncher(QMainWindow):
         try:
             manager_config, xenia_manager_path = load_xenia_manager_config()
             if manager_config == {}:
-                self.log("Configure Xenia Manager No Configuration Exists")
+                self.log_message("Configure Xenia Manager No Configuration Exists")
                 return
         except Exception as e:
-            self.log(f"Config Load Error: {e}")
+            self.log_message(f"Config Load Error: {e}")
             return
 
         manager_paths = {
@@ -1319,9 +1319,9 @@ class GameLauncher(QMainWindow):
             self.worker = DownloadWorker(files)
             self.worker.overall_progress.connect(self.update_overall_progress)
             self.worker.file_progress.connect(self.update_file_progress)
-            self.worker.log.connect(self.log)
-            self.worker.finished.connect(lambda: self.log("Finished"))
-            self.worker.error.connect(self.log)
+            self.worker.log.connect(self.log_message)
+            self.worker.finished.connect(lambda: self.log_message("Finished"))
+            self.worker.error.connect(self.log_message)
             self.worker.start()
 
     def open_web_page(self, url: str):
@@ -1567,7 +1567,7 @@ class GameLauncher(QMainWindow):
             with open(config_file, "r", encoding="utf-8") as f:
                 data = json.load(f)
         except Exception:
-            self.log("Netplay Info Missing")
+            self.log_message("Netplay Info Missing")
             return
         netplay_games = data["games"]
         netplay_lookup = {
@@ -1593,7 +1593,7 @@ class GameLauncher(QMainWindow):
         try:
             self.launch_game()
         except Exception as e:
-            self.log(f"Error: {e}")
+            self.log_message(f"Error: {e}")
 
     def toggle_settings(self):
         self.settings_panel.setVisible(self.settings_btn.isChecked())
@@ -1601,11 +1601,11 @@ class GameLauncher(QMainWindow):
     def select_folder(self):
         folder = QFileDialog.getExistingDirectory(self, "Select Games Folder")
         if folder:
-            self.log(f"Selected: {folder}")
+            self.log_message(f"Selected: {folder}")
 
     def search_and_download_tus(self):
         if not self.model.games:
-            self.log("Error: No games loaded")
+            self.log_message("Error: No games loaded")
             return
         # try:
         #     self.login()
@@ -1618,7 +1618,7 @@ class GameLauncher(QMainWindow):
             token=self.token,
             api_key=self.api_key
         )
-        self.worker.log.connect(self.log)
+        self.worker.log.connect(self.log_message)
         self.worker.progress.connect(self.update_file_progress)
         self.worker.game_progress.connect(self.update_game_progress)
         self.worker.finished.connect(self.download_finished)
@@ -1654,7 +1654,7 @@ class GameLauncher(QMainWindow):
         )
 
     def update_game_progress(self, current, total):
-        self.log(f"Game progress: {current}/{total}")
+        self.log_message(f"Game progress: {current}/{total}")
 
     @staticmethod
     def human_size(size):
@@ -1666,13 +1666,13 @@ class GameLauncher(QMainWindow):
         return f"{size:.1f} PB"
 
     def download_finished(self, stats):
-        self.log("\n=== SUMMARY ===")
-        self.log(f"Games: {stats['games_total']}")
-        self.log(f"With TUs: {stats['games_with_tu']}")
-        self.log(f"Downloaded: {stats['tus_downloaded']}")
-        self.log(f"Errors: {stats['errors']}")
+        self.log_message("\n=== SUMMARY ===")
+        self.log_message(f"Games: {stats['games_total']}")
+        self.log_message(f"With TUs: {stats['games_with_tu']}")
+        self.log_message(f"Downloaded: {stats['tus_downloaded']}")
+        self.log_message(f"Errors: {stats['errors']}")
 
-        self.log("Done: TU download completed")
+        self.log_message("Done: TU download completed")
 
     def pick_emulator_path(self, button_name):
 
@@ -1768,7 +1768,7 @@ class GameLauncher(QMainWindow):
             install_path = exe.parent
             if not exe.exists() and not xenia_manager_installed:
                 installer = XeniaManagerInstaller()
-                exe = installer.install(log_callback=self.log)
+                exe = installer.install(log_callback=self.log_message)
 
             if exe and exe.exists():
                 self.config["xenia_manager_installed"] = True
@@ -1804,7 +1804,7 @@ class GameLauncher(QMainWindow):
                 installer.INSTALL_PATH = install_path
                 installer.MANAGER_OR_EDGE = "Edge"
 
-                exe = installer.install(log_callback=self.log)
+                exe = installer.install(log_callback=self.log_message)
 
             if exe and exe.exists():
                 # Create portable.txt
@@ -1827,7 +1827,7 @@ class GameLauncher(QMainWindow):
         self.load_saved_config()
 
     def login(self):
-        self.xbox_unity_api = xboxunity_api.XBoxUnity(log_callback=self.log)
+        self.xbox_unity_api = xboxunity_api.XBoxUnity(log_callback=self.log_message)
         # username = self.entry_user.text().strip()
         # password = self.entry_pass.text().strip()
         # api_key = self.entry_apikey.text().strip()
@@ -1862,14 +1862,14 @@ class GameLauncher(QMainWindow):
         #     self.log("Login Error: Enter username/password")
         #     return
 
-        self.log("Checking XboxUnity...")
+        self.log_message("Checking XboxUnity...")
 
         try:
             if not self.xbox_unity_api.test_connectivity():
-                self.log("Error: Cannot reach XboxUnity")
+                self.log_message("Error: Cannot reach XboxUnity")
                 return
         except Exception as e:
-            self.log(str(e))
+            self.log_message(str(e))
             return
 
         # self.log("Logging in...")
@@ -1938,22 +1938,133 @@ class GameLauncher(QMainWindow):
             ]
             clipboard.setText("\n".join(values))
 
-    def log(self, message: str = "", console_log: bool=True, log_log:bool=True, clear_console:bool=False):
+    def log_message(self, message: str = "", console_log: bool = True, log_log: bool = True, clear_console: bool = False, color=None):
         if clear_console:
             self.log_window.clear()
             return
         timestamp = datetime.now().strftime("%H:%M:%S")
-
+        message = escape(str(message))
+        if color is None:
+            color = self.RAINBOW_COLORS[self._rainbow_index]
+            self._rainbow_index = (self._rainbow_index + 1) % len(self.RAINBOW_COLORS)
         # UI console
         if console_log:
-            self.log_window.appendPlainText(
-                f"[{timestamp}] {message}"
-            )
-
-        # File log
+            self.log_window.appendHtml(f'<span style="color: {color};">[{timestamp}] {message}</span>')
         if log_log: logging.info(message)
 
         return
+
+    RAINBOW_COLORS = [
+        "#FF4D4D",
+        "#FF5252",
+        "#FF5C5C",
+        "#FF6666",
+        "#FF7070",
+        "#FF7A7A",
+        "#FF4757",
+        "#FF3F4F",
+        "#FF3850",
+        "#FF3048",
+
+        "#FF493D",
+        "#FF5138",
+        "#FF5933",
+        "#FF6130",
+        "#FF692B",
+        "#FF7025",
+        "#FF7820",
+        "#FF801B",
+        "#FF8816",
+        "#FF9011",
+
+        "#FF9810",
+        "#FFA00F",
+        "#FFA80E",
+        "#FFB00D",
+        "#FFB80C",
+        "#FFC00B",
+        "#FFC70A",
+        "#FFCE0A",
+        "#FFD50A",
+        "#FFDC0A",
+
+        "#FFE20A",
+        "#FFE80A",
+        "#FFEE0A",
+        "#FFF30A",
+        "#FFF80A",
+        "#FFFC12",
+        "#F8FF18",
+        "#EEFF20",
+        "#E4FF27",
+        "#DAFF2E",
+
+        "#D0FF35",
+        "#C4FF3C",
+        "#B8FF43",
+        "#ACFF4A",
+        "#A0FF51",
+        "#94FF58",
+        "#88FF5F",
+        "#7CFF66",
+        "#70FF6D",
+        "#64FF74",
+
+        "#58FF7B",
+        "#4CFF82",
+        "#40FF89",
+        "#34FF90",
+        "#28FF97",
+        "#20FF9E",
+        "#18FFA5",
+        "#10FFAC",
+        "#08FFB3",
+        "#00FFBA",
+
+        "#00F8C4",
+        "#00F0CE",
+        "#00E8D8",
+        "#00E0E2",
+        "#00D8EC",
+        "#00D0F6",
+        "#00C8FF",
+        "#00BFFF",
+        "#18B7FF",
+        "#30AFFF",
+
+        "#48A7FF",
+        "#60A0FF",
+        "#7898FF",
+        "#9090FF",
+        "#8888FF",
+        "#8080FF",
+        "#7878FF",
+        "#7070FF",
+        "#6868FF",
+        "#6060FF",
+
+        "#6858FF",
+        "#7050FF",
+        "#7848FF",
+        "#8040FF",
+        "#8838FF",
+        "#9030FF",
+        "#9828FF",
+        "#A020FF",
+        "#A818FF",
+        "#B010FF",
+
+        "#B818FF",
+        "#C020FF",
+        "#C828FF",
+        "#D030FF",
+        "#D838FF",
+        "#E040FF",
+        "#E848FF",
+        "#F050FF",
+        "#F858FF",
+        "#FF60FF",
+    ]
 
     # -------------------------
     # Search
@@ -2003,20 +2114,20 @@ class GameLauncher(QMainWindow):
         self.on_status("")
 
     def on_status(self, message):
-        self.log(message)
+        self.log_message(message)
 
     def refresh(self, platform="xbox360"):
         # width = self.table.columnWidth(2)
         # print(width)
         if platform == "xbox360":
             self.model = Xbox360GameTableModel()
-            self.model.log.connect(self.log)
+            self.model.log.connect(self.log_message)
             self.table.setModel(self.model)
             self.model.load()
             self.platform = Platform.XBOX360
         if platform == "xbox":
             self.model = XboxGameTableModel()
-            self.model.log.connect(self.log)
+            self.model.log.connect(self.log_message)
             self.table.setModel(self.model)
             self.model.load()
             self.platform = Platform.XBOX
@@ -2044,15 +2155,15 @@ class GameLauncher(QMainWindow):
         # Refresh table
         if self.model is not None:
             self.model.load()
-        self.log(f"Importing {game_source} games...")
+        self.log_message(f"Importing {game_source} games...")
         try:
             # Import games
-            self.db.import_games_from_source(game_source, xbox_game_list=self.xbox_game_list, log_callback=self.log)
+            self.db.import_games_from_source(game_source, xbox_game_list=self.xbox_game_list, log_callback=self.log_message)
             self.refresh("xbox360")
         except FileNotFoundError as e:
-            self.log("File not found: " + str(e) + " (No games found)")
+            self.log_message("File not found: " + str(e) + " (No games found)")
         except Exception as e:
-            self.log("Import Failed: " + str(e))
+            self.log_message("Import Failed: " + str(e))
 
     # -------------------------
     # Launch Game
@@ -2108,11 +2219,11 @@ class GameLauncher(QMainWindow):
             game_id = self.model.get_game_id(row)
 
             if game_path is None:
-                self.log(f"No game path configured for: {game}")
+                self.log_message(f"No game path configured for: {game}")
                 raise Exception(f"No game path configured for: {game}")
 
             if not game_path.exists():
-                self.log(f"Game path missing: {game_path}")
+                self.log_message(f"Game path missing: {game_path}")
                 raise Exception(f"Game path missing: {game_path}")
             try:
                 import subprocess
@@ -2126,13 +2237,11 @@ class GameLauncher(QMainWindow):
                     str(game_path),
                 ]
 
-                self.log(
-                    "Launching xemu:\n"
-                    + " ".join(
-                        f'"{arg}"' if " " in str(arg) else str(arg)
-                        for arg in cmd
-                    )
-                )
+                self.log_message("Launching xemu:\n"
+                                 + " ".join(
+                    f'"{arg}"' if " " in str(arg) else str(arg)
+                    for arg in cmd
+                ))
 
                 self.process = subprocess.Popen(cmd)
 
@@ -2235,15 +2344,15 @@ class GameLauncher(QMainWindow):
                 output_config = Path(new_path)
                 merge_toml(default_config, asset_config, output_config)
                 # shutil.copy(asset_config, new_path)
-                self.log(f"Merged {asset_config.name} into {output_config}")
+                self.log_message(f"Merged {asset_config.name} into {output_config}")
             elif db_game_config_source and Path(db_game_config_source).exists():
                 shutil.copy(db_game_config_source, xenia_exe_configuration_location)
-                self.log(f"Copied {db_game_config_source} to {xenia_exe_configuration_location}")
+                self.log_message(f"Copied {db_game_config_source} to {xenia_exe_configuration_location}")
             else:
-                self.log(f"Config Missing: {xenia_exe_configuration_location}")
+                self.log_message(f"Config Missing: {xenia_exe_configuration_location}")
 
             if game_path and not Path(game_path).exists():
-                self.log(f"Game path Missing: {game_path}")
+                self.log_message(f"Game path Missing: {game_path}")
                 raise Exception
             try:
                 import subprocess
@@ -2284,7 +2393,7 @@ class GameLauncher(QMainWindow):
     # -------------------------
 
     def show_differences(self):
-        show_differences(self.log)
+        show_differences(self.log_message)
 
     def fix_titles(self):
 
@@ -2313,11 +2422,11 @@ class GameLauncher(QMainWindow):
                         cleaned,
                         row["game_id"]
                     ))
-                    self.log(f"Cleaned Title {row["title"]} to {cleaned}")
+                    self.log_message(f"Cleaned Title {row["title"]} to {cleaned}")
                     updated += 1
 
         self.model.load()
-        self.log(f"Updated {updated} games")
+        self.log_message(f"Updated {updated} games")
 
     # -------------------------
     # Style
