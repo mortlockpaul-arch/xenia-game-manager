@@ -460,24 +460,9 @@ def get_cs_project_folders(game: XBLIGGame, log_callback: Callable[[str], None] 
     projects = []
     if game.decompiled is None:
         raise ValueError("Game has not been decompiled")
-
-    assert game.folder_title is not None
-    new_path = game.decompiled / f"{game.folder_title}.csproj"
     cs_proj_files = game.decompiled.rglob("*.csproj")
     for project in cs_proj_files:
-        if project == new_path:
             projects.append(project)
-            continue
-        try:
-            if project.name == game.title + ".csproj":
-                project.rename(new_path)
-                log_callback(f"Renamed {project.name} -> {new_path.name}")
-        except PermissionError:
-            log_callback(f"Could not Rename {project.name}. Maybe its open in Visual Studio.")
-
-        if new_path not in projects:
-            projects.append(new_path)
-
     return projects
 
 def add_xna_compat(project_folder):
@@ -1639,7 +1624,10 @@ class ConvertXnaProjects(QObject):
         ET.SubElement(
             folder,
             "Project",
-            {"Path": project_path_value},
+            {
+                "Path": project_path_value,
+                "Name": game.title,
+            },
         )
 
         self.log_message(
@@ -1665,17 +1653,10 @@ class ConvertXnaProjects(QObject):
         self.log_message("  Solution updated successfully.")
         return True
 
-    def convert_project_folder(self, csproj_file: Path, add_to_solution=True, game_dll_files=None):
+    def convert_project_folder(self, csproj_file: Path, game_dll_files=None):
         try:
             self.clean_csproj(csproj_file, game_dll_files)
 
-            if add_to_solution:
-                # solution_path = Path(r"C:\source\Indie-Games\Indie-Games.slnx")
-                solution_path = self.config["indie-game-solution-location"]
-                self.add_project_to_solution(
-                    solution_path,
-                    csproj_file,
-                )
 
             # add_xna_compat(folder.parent)
             # self.remove_xna_usings(folder.parent)
@@ -2155,7 +2136,7 @@ class XBLIGDialog(QDialog):
         self.log_message(f"Found {len(projects)} projects")
         for project in projects:
             try:
-                converter.convert_project_folder(project, True)
+                converter.convert_project_folder(project)
             except Exception as e:
                 self.log_message(
                     f"FAILED {project}: {e}"
@@ -2826,6 +2807,8 @@ class XBLIGDialog(QDialog):
             return
 
         options = dlg.options()
+        converter = self.method_name()
+        csproj_files = get_cs_project_folders(game, self.log_message)
 
         if options["decompile"]:
             self.log_message("Decompiling selected game...")
@@ -2837,17 +2820,20 @@ class XBLIGDialog(QDialog):
                                                          dll_files=game.dll_files,
                                                          log_callback=self.log_message)
 
-        # if options["convert_content"]:
-        #
-        if options["convert_csproj"] or options["add_to_solution"]:
-            # if game.decompiled is not None:
-            converter = self.method_name()
-            csproj_files = get_cs_project_folders(game, self.log_message)
+        if options["convert_csproj"]:
             for project in csproj_files:
                 try:
-                    converter.convert_project_folder(project, options["add_to_solution"], game.dll_files)
+                    converter.convert_project_folder(project, game.dll_files)
                 except Exception as e:
-                    self.log_message(f"FAILED {project}: {e}")
+                    self.log_message(f"Failed to Convert {project}: {e}")
+        if options["add_to_solution"]:
+            csproj_files = get_cs_project_folders(game, self.log_message)
+            for csproj_file in csproj_files:
+                solution_path = self.config["indie-game-solution-location"]
+                converter.add_project_to_solution(
+                    solution_path,
+                    csproj_file,
+                )
         if options["open_visual_studio"]:
             self.log_message("Opening Solution in Visual Studio. The Decompiled Projects Should Have Been Added.")
             if game.decompiled is not None:
