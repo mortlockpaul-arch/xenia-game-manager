@@ -6,12 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.3 Add Reference-Projects">
       <change afterPath="$PROJECT_DIR$/../XBLA-Extract/.idea/xbla-extract.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/archive_content_window.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/archive_digital_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build_tools/build.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/build.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build_tools/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/archive_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/archive_indie_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/game-manager-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/game-manager-config.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,60 +56,60 @@
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
       <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0000033765936454" />
-      <entry key="S2" value="1.0428666652684588" />
-      <entry key="S5" value="1.2836944484171964" />
-      <entry key="S10" value="1.5353804544656668" />
-      <entry key="S30" value="2.3192706287090523" />
-      <entry key="S60" value="3.891933898172852" />
-      <entry key="M2" value="5.927599776283905" />
-      <entry key="M5" value="8.025139040427845" />
-      <entry key="M10" value="8.994185137195739" />
-      <entry key="M15" value="9.50135229341598" />
-      <entry key="M30" value="10.713904343948162" />
-      <entry key="H1" value="13.250690129666316" />
-      <entry key="H2" value="18.95609390879918" />
-      <entry key="H4" value="37.516725026544464" />
-      <entry key="D1" value="335.87204388285795" />
-      <entry key="W1" value="1480.7591429823237" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0000000000029412" />
+      <entry key="S5" value="1.0000317399854175" />
+      <entry key="S10" value="1.0077497690013717" />
+      <entry key="S30" value="1.3486770192817887" />
+      <entry key="S60" value="1.9875932422877671" />
+      <entry key="M2" value="2.7699206561591767" />
+      <entry key="M5" value="3.733646501905095" />
+      <entry key="M10" value="4.271532548704563" />
+      <entry key="M15" value="4.558133370443583" />
+      <entry key="M30" value="5.679732873565521" />
+      <entry key="H1" value="8.811739134065618" />
+      <entry key="H2" value="15.281611584909038" />
+      <entry key="H4" value="32.689874795341225" />
+      <entry key="D1" value="324.3564630086166" />
+      <entry key="W1" value="1475.1343803370273" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="1.3969878736286565E-79" />
-      <entry key="S2" value="1.9444055953723716E-20" />
-      <entry key="S5" value="1.4670326307551184E-8" />
-      <entry key="S10" value="1.5475120055690283E-4" />
-      <entry key="S30" value="0.08288731820361758" />
-      <entry key="S60" value="0.40566478864351746" />
-      <entry key="M2" value="0.899908084885914" />
-      <entry key="M5" value="1.4527837641287717" />
-      <entry key="M10" value="1.7045097615126104" />
-      <entry key="M15" value="1.7978295791574281" />
-      <entry key="M30" value="1.9023447524107722" />
-      <entry key="H1" value="2.0289541211939723" />
-      <entry key="H2" value="2.524285706584576" />
-      <entry key="H4" value="5.848444840418679" />
-      <entry key="D1" value="56.748951162331956" />
-      <entry key="W1" value="279.83465828393906" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="1.1497024534950878E-193" />
+      <entry key="S30" value="7.507094775645075E-65" />
+      <entry key="S60" value="1.2208413154256009E-32" />
+      <entry key="M2" value="1.561148104879985E-16" />
+      <entry key="M5" value="7.209403925897439E-7" />
+      <entry key="M10" value="0.001200739183846333" />
+      <entry key="M15" value="0.014233596446904988" />
+      <entry key="M30" value="0.1692669965662493" />
+      <entry key="H1" value="0.6052206792246799" />
+      <entry key="H2" value="1.3786666624699873" />
+      <entry key="H4" value="4.322159416483266" />
+      <entry key="D1" value="53.9594983039724" />
+      <entry key="W1" value="277.8269481209595" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="5.643670667265853E-19" />
-      <entry key="MS500" value="2.2403672816868187E-4" />
-      <entry key="S2" value="0.13006368795202897" />
-      <entry key="S5" value="0.5744627589363909" />
-      <entry key="S10" value="1.0368804907072842" />
-      <entry key="S30" value="2.131350715133753" />
-      <entry key="S60" value="4.080985757661254" />
-      <entry key="M2" value="6.669224226131171" />
-      <entry key="M5" value="9.394392904906875" />
-      <entry key="M10" value="10.651940075488204" />
-      <entry key="M15" value="11.2655725233806" />
-      <entry key="M30" value="12.595708745513159" />
-      <entry key="H1" value="15.266550697243401" />
-      <entry key="H2" value="21.47201861838907" />
-      <entry key="H4" value="43.35842057106518" />
-      <entry key="D1" value="392.61342005654825" />
-      <entry key="W1" value="1760.5895467776552" />
+      <entry key="MS100" value="0.39776824187745935" />
+      <entry key="MS500" value="0.8316220983749064" />
+      <entry key="S2" value="0.9549519179127047" />
+      <entry key="S5" value="0.9817623108464828" />
+      <entry key="S10" value="0.9984843357063352" />
+      <entry key="S30" value="1.344054314611022" />
+      <entry key="S60" value="1.9836803791155846" />
+      <entry key="M2" value="2.7669288578083218" />
+      <entry key="M5" value="3.7319408466161366" />
+      <entry key="M10" value="4.271709401997127" />
+      <entry key="M15" value="4.571403001271731" />
+      <entry key="M30" value="5.8468025784541515" />
+      <entry key="H1" value="9.41286366591244" />
+      <entry key="H2" value="16.655615107796613" />
+      <entry key="H4" value="37.006997580697394" />
+      <entry key="D1" value="378.3087504945491" />
+      <entry key="W1" value="1752.9571033249795" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -131,6 +131,8 @@
     "PowerShell.Unnamed.executor": "Run",
     "PowerShell.cleanup_repo.ps1.executor": "Run",
     "Python.a.executor": "Run",
+    "Python.archive_content_window.executor": "Run",
+    "Python.archive_digital_window.executor": "Run",
     "Python.archive_indie_window.executor": "Run",
     "Python.build.executor": "Run",
     "Python.convert_xna_projects.executor": "Debug",
@@ -187,7 +189,7 @@
       <recent name="C:\PycharmProjects\xenia-game-manager\src\config" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.package window">
+  <component name="RunManager">
     <configuration name="Unnamed" type="BatchConfigurationType" factoryName="Batch" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -268,14 +270,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00102" summary="1.1.6 Multiple Executables and Seperate Assembly Decompile. Add References properly.">
-      <option name="closed" value="true" />
-      <created>1787721288619</created>
-      <option name="number" value="00102" />
-      <option name="presentableId" value="LOCAL-00102" />
-      <option name="project" value="LOCAL" />
-      <updated>1787721288619</updated>
     </task>
     <task id="LOCAL-00103" summary="1.1.6 Multiple Executables and Seperate Assembly Decompile. Add References properly.">
       <option name="closed" value="true" />
@@ -661,7 +655,15 @@
       <option name="project" value="LOCAL" />
       <updated>1788082429663</updated>
     </task>
-    <option name="localTasksCounter" value="151" />
+    <task id="LOCAL-00151" summary="1.2.3 Add Reference-Projects">
+      <option name="closed" value="true" />
+      <created>1788128697062</created>
+      <option name="number" value="00151" />
+      <option name="presentableId" value="LOCAL-00151" />
+      <option name="project" value="LOCAL" />
+      <updated>1788128697063</updated>
+    </task>
+    <option name="localTasksCounter" value="152" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

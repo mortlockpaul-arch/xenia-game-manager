@@ -22,7 +22,19 @@ executables = [
         script=str(root / "archive_digital_window.py"),
         base="console",
         icon=str(root / "assets" / "icons" / "app.ico"),
-        target_name="xbox-game-manager-archive-downloader"
+        target_name="xbox-game-manager-digital-downloader"
+    ),
+    Executable(
+        script=str(root / "archive_indie_window.py"),
+        base="console",
+        icon=str(root / "assets" / "icons" / "app.ico"),
+        target_name="xbox-game-manager-indie-downloader"
+    ),
+    Executable(
+        script=str(root / "archive_content_window.py"),
+        base="console",
+        icon=str(root / "assets" / "icons" / "app.ico"),
+        target_name="xbox-game-manager-content-downloader"
     ),
     Executable(
         script=str(root / "xbox_unity_window.py"),
