@@ -19,7 +19,7 @@ executables = [
         target_name="xbox-game-manager-updater"
     ),
     Executable(
-        script=str(root / "archive_window.py"),
+        script=str(root / "archive_digital_window.py"),
         base="console",
         icon=str(root / "assets" / "icons" / "app.ico"),
         target_name="xbox-game-manager-archive-downloader"

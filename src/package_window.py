@@ -458,7 +458,7 @@ class ToolManager:
 
 def get_cs_project_folders(game: Path | None, log_callback: Callable[[str], None] | None = None,) -> list[Path]:
     if game is None:
-        raise ValueError("Game has not been decompiled")
+        raise ValueError(f"Game has no project files.")
     cs_proj_files = list(game.rglob("*.csproj"))
     return cs_proj_files
 
@@ -1567,18 +1567,28 @@ class ConvertXnaProjects(QObject):
         "debug": "#C678DD",  # Purple
     }
 
-    def add_project_to_solution(self, solution_path: Path, project_path: Path, game=None, add_to_archive_folder=None) -> bool:
+    def add_project_to_solution(
+            self,
+            solution_path: Path,
+            project_path: Path,
+            game=None,
+            add_to_archive_folder=False,
+    ) -> bool:
+
         solution_path = Path(solution_path).resolve()
         project_path = Path(project_path).resolve()
 
-        self.log_message(f"Adding project to solution: {project_path.name}", self.LOG_COLORS["debug"])
+        self.log_message(
+            f"Adding project to solution: {project_path.name}",
+            self.LOG_COLORS["debug"],
+        )
 
         if not solution_path.exists():
-            self.log_message(f"  Solution not found: {solution_path}")
+            self.log_message(f"Solution not found: {solution_path}")
             return False
 
         if not project_path.exists():
-            self.log_message(f"  Project not found: {project_path}")
+            self.log_message(f"Project not found: {project_path}")
             return False
 
         # ---------------------------------------------------------
@@ -1591,52 +1601,47 @@ class ConvertXnaProjects(QObject):
         project_dir = project_path.parent
         destination_dir = archive_dir / project_dir.name
         destination_project = destination_dir / project_path.name
-        game.archived = destination_dir
+
+        if add_to_archive_folder:
+            game.archived = destination_dir
 
         self.log_message(f"  Source:      {project_dir}")
         self.log_message(f"  Destination: {destination_dir}")
 
         # ---------------------------------------------------------
-        # Move / synchronise project
+        # Copy project
         # ---------------------------------------------------------
 
-        # if project_dir.resolve() != destination_dir.resolve():
-        copy_mode = True
-        delete_destination = True
-
-        if destination_dir.exists() and delete_destination:
+        if destination_dir.exists():
             try:
                 shutil.rmtree(destination_dir)
-                self.log_message(f"Destination Project Folder {destination_dir} exists.")
             except OSError as exc:
-                self.log_message(f"Error Removing project: {destination_dir} {exc}")
+                self.log_message(f"Error removing project: {exc}")
                 return False
 
-        if copy_mode:
-            try:
-                self.log_message(f"Copying project to: {destination_dir}")
-                if not self.copy_project_files(project_dir, destination_dir):
-                    return False
-                project_path = destination_project
-                self.log_message(f"Copied Project: {project_path.name} to {destination_dir}")
-            except OSError as exc:
-                self.log_message(f"Error Copying Project: {exc}")
+        try:
+            self.log_message(f"Copying project to: {destination_dir}")
+
+            if not self.copy_project_files(project_dir, destination_dir):
                 return False
-        else:
-            self.log_message(f"Moving project to: {destination_dir}")
-            shutil.move(str(project_dir), str(destination_dir))
+
             project_path = destination_project
-            self.log_message("Project moved successfully.")
+            self.log_message(f"Copied Project: {project_path.name}")
+        except OSError as exc:
+            self.log_message(f"Error copying project: {exc}")
+            return False
 
-        projects = list(destination_dir.rglob("*.csproj"))
-        if not projects:
+        if not list(destination_dir.rglob("*.csproj")):
             self.log_message("Error: No .csproj found in destination.")
             return False
 
+        # ---------------------------------------------------------
+        # Project path
+        # ---------------------------------------------------------
+
         try:
             project_path_value = os.path.relpath(
-                project_path,
-                solution_path.parent,
+                project_path, solution_path.parent
             ).replace("\\", "/")
         except ValueError:
             project_path_value = project_path.as_posix()
@@ -1644,127 +1649,78 @@ class ConvertXnaProjects(QObject):
 
         self.log_message(f"Solution path: {solution_path}")
         self.log_message(f"Project path: {project_path_value}")
+
         # ---------------------------------------------------------
         # Parse solution
         # ---------------------------------------------------------
 
         try:
-            with open(solution_path, "rb") as f:
-                tree = ET.parse(f)
+            tree = ET.parse(solution_path)
         except ET.ParseError as exc:
-            self.log_message(f"  ERROR reading solution: {exc}")
+            self.log_message(f"ERROR reading solution: {exc}")
             return False
 
         root = tree.getroot()
-        project_name = project_path.stem
-        destination_dir = destination_dir.resolve()
 
         # ---------------------------------------------------------
-        # Remove existing entries
-        # ---------------------------------------------------------
-
-        removed = 0
-
-        for parent in root.iter():
-            for project in list(parent):
-                if project.tag != "Project":
-                    continue
-
-                existing_path = project.get("Path")
-                if not existing_path:
-                    continue
-
-                existing = Path(existing_path)
-
-                if not existing.is_absolute():
-                    existing = solution_path.parent / existing
-
-                try:
-                    existing = existing.resolve()
-                except OSError:
-                    continue
-
-                same_name = existing.stem.lower() == project_name.lower()
-                same_location = (
-                        existing == project_path
-                        or destination_dir in existing.parents
-                )
-
-                if add_to_archive_folder:
-                    if same_name or same_location:
-                        self.log_message(
-                            f"  Removing duplicate solution entry: {existing_path}"
-                        )
-                        parent.remove(project)
-                        removed += 1
-
-        if removed:
-            self.log_message(f"  Removed {removed} duplicate solution entry(s).")
-
-        # ---------------------------------------------------------
-        # Find / create archive folder
+        # Remove existing entry for this exact project
         # ---------------------------------------------------------
 
         if add_to_archive_folder:
-            folder = next(
-                (
-                    element
-                    for element in root.findall("Folder")
-                    if element.get("Name") == "/indie-game-archive/"
-                ),
-                None,
-            )
+            for parent in root.iter():
+                for project in list(parent):
+                    path = project.get("Path")
 
-            if folder is None:
-                self.log_message(
-                    "  Creating /indie-game-archive/ solution folder."
-                )
+                    if project.tag == "Project" and path:
+                        existing = Path(path)
+                        if not existing.is_absolute():
+                            existing = solution_path.parent / existing
 
-                folder = ET.SubElement(
-                    root,
-                    "Folder",
-                    {"Name": "/indie-game-archive/"},
-                )
-        else:
-            folder = next(
-                (
-                    element
-                    for element in root.findall("Folder")
-                    if element.get("Name") == "/Reference-Projects/"
-                ),
-                None,
-            )
+                        try:
+                            if existing.resolve() == project_path:
+                                parent.remove(project)
+                                self.log_message(
+                                    f"  Removed duplicate: {path}"
+                                )
+                        except OSError:
+                            pass
 
-            if folder is None:
-                self.log_message(
-                    "  Creating /Reference-Projects/ solution folder."
-                )
+        # ---------------------------------------------------------
+        # Find / create solution folder
+        # ---------------------------------------------------------
 
-                folder = ET.SubElement(
-                    root,
-                    "Folder",
-                    {"Name": "/Reference-Projects/"},
-                )
+        folder_name = (
+            "/indie-game-archive/"
+            if add_to_archive_folder
+            else "/Reference-Projects/"
+        )
+
+        folder = next(
+            (
+                element
+                for element in root.findall("Folder")
+                if element.get("Name") == folder_name
+            ),
+            None,
+        )
+
+        if folder is None:
+            folder = ET.SubElement(root, "Folder", {"Name": folder_name})
+            self.log_message(f"  Created {folder_name} solution folder.")
 
         # ---------------------------------------------------------
         # Add project
         # ---------------------------------------------------------
 
-        existing = root.find(f".//Project[@Path='{project_path_value}']")
-
-        if existing is None:
-            ET.SubElement(
-                folder,
-                "Project",
-                {"Path": project_path_value},
-            )
-
-            self.log_message(
-                f"  Added {project_path.name} to /indie-game-archive/"
-            )
+        if not any(
+                p.get("Path") == project_path_value
+                for p in root.iter("Project")
+        ):
+            ET.SubElement(folder, "Project", {"Path": project_path_value})
+            self.log_message(f"  Added {project_path.name} to {folder_name}")
         else:
             self.log_message(
-                f"  Project already exists in solution: {project_path.name}"
+                f"  Project already exists: {project_path.name}"
             )
 
         # ---------------------------------------------------------
@@ -1774,14 +1730,13 @@ class ConvertXnaProjects(QObject):
         ET.indent(tree, space="  ")
 
         try:
-            with open(solution_path, "wb") as f:
-                tree.write(
-                    f,
-                    encoding="utf-8",
-                    xml_declaration=True,
-                )
+            tree.write(
+                solution_path,
+                encoding="utf-8",
+                xml_declaration=True,
+            )
         except OSError as exc:
-            self.log_message(f"  ERROR saving solution: {exc}")
+            self.log_message(f"ERROR saving solution: {exc}")
             return False
 
         self.log_message("  Solution updated successfully.")
@@ -2710,6 +2665,8 @@ class XBLIGDialog(QDialog):
             self.log_message(f"Extracted {game.title} successfully")
             save_cache(self.games)
             self.load_games(self.games)
+            self.update_labels(game)
+
         except Exception as e:
             self.log_message(
                 f"Error extracting {game.title}: {type(e).__name__}: {e}"
@@ -2947,7 +2904,7 @@ class XBLIGDialog(QDialog):
                                                              dll_files=game.dll_files,
                                                              log_callback=self.log_message)
         except ValueError as e:
-            self.log_message("Failed to Decompile: {e}")
+            self.log_message(f"Failed to Decompile: {e}")
 
         if options["convert_csproj"]:
             cs_proj_files = get_cs_project_folders(game.decompiled, self.log_message)
@@ -2956,7 +2913,7 @@ class XBLIGDialog(QDialog):
                 try:
                     converter.clean_csproj(csproj_file, dll_files, game, resx_files)
                 except Exception as e:
-                    self.log_message(f"FAILED {csproj_file}: {e}")
+                    self.log_message(f"Failed to Convert: {csproj_file}: {e}")
 
         if options["add_to_solution"]:
             cs_proj_files = get_cs_project_folders(game.decompiled, self.log_message)
@@ -2983,21 +2940,12 @@ class XBLIGDialog(QDialog):
 
             cs_proj_files = get_cs_project_folders(game.decompiled, self.log_message)
             for csproj_file in cs_proj_files:
-                if (
-                        game.folder_title is not None
-                        and (
-                        game.title.lower() in csproj_file.stem.lower()
-                        or any(
-                    csproj_file.stem.lower() == executable.stem.lower()
-                    for executable in game.executables
-                )
-                )
-                ):
+                add_to_archive = ( game.folder_title is not None and (game.title.lower() in csproj_file.stem.lower() or any(csproj_file.stem.lower() == executable.stem.lower() for executable in game.executables)))
+                try:
                     solution_path = self.config["indie-game-solution-location"]
-                    converter.add_project_to_solution(solution_path, csproj_file, game, add_to_archive_folder=True)
-                else:
-                    solution_path = self.config["indie-game-solution-location"]
-                    converter.add_project_to_solution(solution_path, csproj_file, game, add_to_archive_folder=False)
+                    converter.add_project_to_solution(solution_path, csproj_file, game, add_to_archive_folder=add_to_archive)
+                except Exception as e:
+                    self.log_message(f"Failed to Add Project to Solution {e}")
 
         if options["open_visual_studio"]:
             self.log_message("Opening Solution in Visual Studio. The Decompiled Projects Should Have Been Added.")

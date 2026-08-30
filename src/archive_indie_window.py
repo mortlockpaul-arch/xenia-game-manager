@@ -1,5 +1,8 @@
+import logging
 import os
 import re
+from datetime import datetime
+from glob import escape
 from urllib.parse import quote
 
 import requests
@@ -11,7 +14,7 @@ from PySide6.QtCore import (
 from PySide6.QtGui import (
     QColor,
     QStandardItem,
-    QStandardItemModel, QBrush, QIcon,
+    QStandardItemModel, QBrush, QIcon, QFont,
 )
 from PySide6.QtWidgets import (
     QDialog,
@@ -22,21 +25,26 @@ from PySide6.QtWidgets import (
     QLabel,
     QProgressBar,
     QTableView,
-    QHeaderView,
+    QHeaderView, QWidget, QSizePolicy, QPlainTextEdit,
 )
 
 import updater
 from db import Database
+from logging_setup import setup_logger
+from ui import DownloadWorker
 
-ARCHIVES = [
+ARCHIVES_DLC = [
     *[f"XBOX_360_DLC_{i}" for i in range(1, 6)],
     "XBOX_360_XBLA_DLC",
 ]
-ARCHIVES_XBLIG = [
+ARCHIVES_DIGITAL = [
     *[f"microsoft_xbox360_digital_part{i}" for i in range(1, 5)],
     "xblig_neowarez",
 ]
-
+ARCHIVES_INDIE = [
+    *[f"XBOX_360_XBLIG_{i}" for i in range(1, 4)],
+    "xblig_neowarez",
+]
 class ArchiveSortProxyModel(QSortFilterProxyModel):
     def lessThan(self, left, right):
         if left.column() == 6:
@@ -58,20 +66,23 @@ class SizeItem(QStandardItem):
 
 class Loader(QThread):
 
-    name_parameter = "DLC"
+    name_parameter = "Xbox 360 Indie Games"
     fileFound = Signal(dict)
     progress = Signal(int, int)
     finishedLoading = Signal()
 
-    def __init__(self, name_parameter="DLC", parent=None):
+    def __init__(self, name_parameter="Xbox 360 Indie Games", parent=None):
         super().__init__(parent)
 
         self.name_parameter = name_parameter
-        self.archives = (
-            ARCHIVES
-            if self.name_parameter == "DLC"
-            else ARCHIVES_XBLIG
-        )
+        if self.name_parameter == "Xbox 360 Indie Games":
+            self.archives = ARCHIVES_INDIE
+        elif self.name_parameter == "Xbox 360 Digital":
+            self.archives = ARCHIVES_DIGITAL
+        elif self.name_parameter == "Xbox 360 DLC":
+            self.archives = ARCHIVES_DLC
+        else:
+            self.archives = []
 
     def run(self):
 
@@ -256,10 +267,63 @@ class ArchiveBrowser(QDialog):
         }
         """)
 
-    def __init__(self, db, parent=None, name_parameter="DLC"):
+    def start_download(self):
+        files = self.selected_files()
+
+        if not files:
+            self.log_message("No files selected for download.")
+            return
+
+        self.log_message(f"Starting download of {len(files)} file(s)...")
+
+        # Prevent starting another download while one is running
+        self.ok_button.setEnabled(False)
+        self.ok_button.setText("Downloading...")
+
+        # Reset progress
+        self.progress_overall.setValue(0)
+        self.progress_current.setValue(0)
+        self.overall_label.setText("0 B / 0 B (0%)")
+        self.current_label.setText("Current File")
+
+        # Keep a reference to the worker
+        self.worker = DownloadWorker(files)
+
+        self.worker.overall_progress.connect(
+            self.update_overall_progress
+        )
+
+        self.worker.file_progress.connect(
+            self.update_file_progress
+        )
+
+        self.worker.log.connect(
+            self.log_message
+        )
+
+        self.worker.error.connect(
+            self.log_message
+        )
+
+        self.worker.finished.connect(
+            self.download_finished
+        )
+
+        self.worker.start()
+
+    def download_finished(self):
+        self.log_message("Finished downloading selected files.")
+
+        self.ok_button.setEnabled(True)
+        self.ok_button.setText("Download Selected")
+
+        self.progress_current.setValue(100)
+
+    def __init__(self, db, parent=None, name_parameter="Xbox 360 Indie Games"):
 
         super().__init__(parent)
 
+        self._rainbow_index = 1
         self.db = db
         self.name_parameter = name_parameter
         self.setWindowTitle(f"Archive.org {name_parameter} Browser")
@@ -279,7 +343,7 @@ class ArchiveBrowser(QDialog):
         self.search.setClearButtonEnabled(True)
         self.refresh = QPushButton("Refresh")
         self.ok_button = QPushButton("Download Selected")
-        self.ok_button.clicked.connect(self.accept)
+        self.ok_button.clicked.connect(self.start_download)
         top.addWidget(self.ok_button)
         top.addWidget(QLabel("Search"))
         top.addWidget(self.search)
@@ -290,6 +354,42 @@ class ArchiveBrowser(QDialog):
         self.progress = QProgressBar()
         layout.addWidget(self.progress)
 
+        # ================= PROGRESS =================
+        self.progress_overall = QProgressBar()
+        self.progress_current = QProgressBar()
+        self.current_label = QLabel("Current File")
+        self.overall_label = QLabel("Overall")
+
+        for bar in (self.progress_overall, self.progress_current):
+            bar.setMaximumHeight(18)
+            bar.setTextVisible(True)
+            bar.setSizePolicy(
+                QSizePolicy.Policy.Expanding,
+                QSizePolicy.Policy.Fixed
+            )
+            bar.setRange(0, 100)
+            bar.setValue(0)
+
+        progress_widget = QWidget()
+        progress_layout = QHBoxLayout(progress_widget)
+        progress_layout.setContentsMargins(10, 0, 10, 5)
+        progress_layout.setSpacing(20)
+
+        # Left side
+        overall_layout = QHBoxLayout()
+        overall_layout.addWidget(self.overall_label)
+        overall_layout.addWidget(self.progress_overall)
+
+        # Right side
+        current_layout = QHBoxLayout()
+        current_layout.addWidget(self.current_label)
+        current_layout.addWidget(self.progress_current)
+
+        # Each group gets 50% of the width
+        progress_layout.addLayout(overall_layout, 1)
+        progress_layout.addLayout(current_layout, 1)
+
+        layout.addWidget(progress_widget)
         self.model = QStandardItemModel()
 
         self.model.setHorizontalHeaderLabels([
@@ -367,6 +467,14 @@ class ArchiveBrowser(QDialog):
 
         self.select_all.clicked.connect(self.check_all)
         self.select_none.clicked.connect(self.uncheck_all)
+
+        self.log_window = QPlainTextEdit()
+        self.log_window.setReadOnly(True)
+        self.log_window.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
+        self.log_window.setFont(QFont("Consolas", 9))
+        self.log_window.setMaximumHeight(150)
+        self.log_window.setPlaceholderText("Application log...")
+        layout.addWidget(self.log_window)
 
         self.load_archive()
         self.apply_style()
@@ -644,15 +752,199 @@ class ArchiveBrowser(QDialog):
 
         return files
 
+    def open_archive_browser(self, name):
+        self.archive_browser = ArchiveBrowser(
+            self.db,
+            self,
+            name_parameter=name,
+        )
+        self.archive_browser.show()
+
+    def log_message(self, message: str = "", console_log: bool = True, log_log: bool = True, clear_console: bool = False, color=None):
+        if clear_console:
+            self.log_window.clear()
+            return
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        message = escape(str(message))
+        if color is None:
+            color = self.RAINBOW_COLORS[self._rainbow_index]
+            self._rainbow_index = (self._rainbow_index + 1) % len(self.RAINBOW_COLORS)
+        # UI console
+        if console_log:
+            self.log_window.appendHtml(f'<span style="color: {color};">[{timestamp}] {message}</span>')
+        if log_log: logging.info(message)
+
+        return
+
+    RAINBOW_COLORS = [
+        "#FF4D4D",
+        "#FF5252",
+        "#FF5C5C",
+        "#FF6666",
+        "#FF7070",
+        "#FF7A7A",
+        "#FF4757",
+        "#FF3F4F",
+        "#FF3850",
+        "#FF3048",
+
+        "#FF493D",
+        "#FF5138",
+        "#FF5933",
+        "#FF6130",
+        "#FF692B",
+        "#FF7025",
+        "#FF7820",
+        "#FF801B",
+        "#FF8816",
+        "#FF9011",
+
+        "#FF9810",
+        "#FFA00F",
+        "#FFA80E",
+        "#FFB00D",
+        "#FFB80C",
+        "#FFC00B",
+        "#FFC70A",
+        "#FFCE0A",
+        "#FFD50A",
+        "#FFDC0A",
+
+        "#FFE20A",
+        "#FFE80A",
+        "#FFEE0A",
+        "#FFF30A",
+        "#FFF80A",
+        "#FFFC12",
+        "#F8FF18",
+        "#EEFF20",
+        "#E4FF27",
+        "#DAFF2E",
+
+        "#D0FF35",
+        "#C4FF3C",
+        "#B8FF43",
+        "#ACFF4A",
+        "#A0FF51",
+        "#94FF58",
+        "#88FF5F",
+        "#7CFF66",
+        "#70FF6D",
+        "#64FF74",
+
+        "#58FF7B",
+        "#4CFF82",
+        "#40FF89",
+        "#34FF90",
+        "#28FF97",
+        "#20FF9E",
+        "#18FFA5",
+        "#10FFAC",
+        "#08FFB3",
+        "#00FFBA",
+
+        "#00F8C4",
+        "#00F0CE",
+        "#00E8D8",
+        "#00E0E2",
+        "#00D8EC",
+        "#00D0F6",
+        "#00C8FF",
+        "#00BFFF",
+        "#18B7FF",
+        "#30AFFF",
+
+        "#48A7FF",
+        "#60A0FF",
+        "#7898FF",
+        "#9090FF",
+        "#8888FF",
+        "#8080FF",
+        "#7878FF",
+        "#7070FF",
+        "#6868FF",
+        "#6060FF",
+
+        "#6858FF",
+        "#7050FF",
+        "#7848FF",
+        "#8040FF",
+        "#8838FF",
+        "#9030FF",
+        "#9828FF",
+        "#A020FF",
+        "#A818FF",
+        "#B010FF",
+
+        "#B818FF",
+        "#C020FF",
+        "#C828FF",
+        "#D030FF",
+        "#D838FF",
+        "#E040FF",
+        "#E848FF",
+        "#F050FF",
+        "#F858FF",
+        "#FF60FF",
+    ]
+
+    def update_file_progress(self, progress):
+        done, total, filename = progress
+        if total:
+            percent = int(done * 100 / total)
+        else:
+            percent = 0
+
+        self.progress_current.setRange(0, 100)
+        self.progress_current.setValue(percent)
+
+        self.current_label.setText(
+            f"{filename} ({self.human_size(done)} / {self.human_size(total)})"
+        )
+
+    def update_overall_progress(self, progress):
+        done, total = progress
+        if total:
+            percent = int(done * 100 / total)
+        else:
+            percent = 0
+
+        self.progress_overall.setRange(0, 100)
+        self.progress_overall.setValue(percent)
+
+        self.overall_label.setText(
+            f"{self.human_size(done)} / {self.human_size(total)} ({percent}%)"
+        )
+
+    @staticmethod
+    def human_size(size):
+        size = int(size)
+        for unit in ("B", "KB", "MB", "GB", "TB"):
+            if size < 1024:
+                return f"{size:.1f} {unit}"
+            size /= 1024
+        return f"{size:.1f} PB"
+
 if __name__ == "__main__":
     import sys
     from PySide6.QtWidgets import QApplication
 
+    setup_logger()
+
     app = QApplication(sys.argv)
     dbase = Database()
-    dlg = ArchiveBrowser(db=dbase)
-    dlg.exec()
 
-    print(dlg.selected_files())
+    archive = {
+        "indie": "Xbox 360 Indie Games",
+        "digital": "Xbox 360 Digital",
+        "dlc": "Xbox 360 DLC",
+    }
+
+    dlg = ArchiveBrowser(
+        db=dbase,
+        name_parameter=archive["indie"],
+    )
+
+    dlg.show()
 
     sys.exit(app.exec())

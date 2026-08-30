@@ -47,7 +47,6 @@ from keyring.backends.Windows import WinVaultKeyring
 
 import xboxunity_api
 from git_actions import DownloadArtifact
-from archive_window import ArchiveBrowser
 from config import save_config, load_config_file, load_xenia_manager_config, get_app_dir
 from db import Database, Compatibility, XboxGame, Xbox360Game, Platform, GameSource
 from edge_import import use_xenia_manager_content_folder_for_edge
