@@ -1567,7 +1567,7 @@ class ConvertXnaProjects(QObject):
         "debug": "#C678DD",  # Purple
     }
 
-    def add_project_to_solution(self, solution_path: Path, project_path: Path, game=None) -> bool:
+    def add_project_to_solution(self, solution_path: Path, project_path: Path, game=None, add_to_archive_folder=None) -> bool:
         solution_path = Path(solution_path).resolve()
         project_path = Path(project_path).resolve()
 
@@ -1690,12 +1690,13 @@ class ConvertXnaProjects(QObject):
                         or destination_dir in existing.parents
                 )
 
-                if same_name or same_location:
-                    self.log_message(
-                        f"  Removing duplicate solution entry: {existing_path}"
-                    )
-                    parent.remove(project)
-                    removed += 1
+                if add_to_archive_folder:
+                    if same_name or same_location:
+                        self.log_message(
+                            f"  Removing duplicate solution entry: {existing_path}"
+                        )
+                        parent.remove(project)
+                        removed += 1
 
         if removed:
             self.log_message(f"  Removed {removed} duplicate solution entry(s).")
@@ -1704,25 +1705,46 @@ class ConvertXnaProjects(QObject):
         # Find / create archive folder
         # ---------------------------------------------------------
 
-        folder = next(
-            (
-                element
-                for element in root.findall("Folder")
-                if element.get("Name") == "/indie-game-archive/"
-            ),
-            None,
-        )
-
-        if folder is None:
-            self.log_message(
-                "  Creating /indie-game-archive/ solution folder."
+        if add_to_archive_folder:
+            folder = next(
+                (
+                    element
+                    for element in root.findall("Folder")
+                    if element.get("Name") == "/indie-game-archive/"
+                ),
+                None,
             )
 
-            folder = ET.SubElement(
-                root,
-                "Folder",
-                {"Name": "/indie-game-archive/"},
+            if folder is None:
+                self.log_message(
+                    "  Creating /indie-game-archive/ solution folder."
+                )
+
+                folder = ET.SubElement(
+                    root,
+                    "Folder",
+                    {"Name": "/indie-game-archive/"},
+                )
+        else:
+            folder = next(
+                (
+                    element
+                    for element in root.findall("Folder")
+                    if element.get("Name") == "/Reference-Projects/"
+                ),
+                None,
             )
+
+            if folder is None:
+                self.log_message(
+                    "  Creating /Reference-Projects/ solution folder."
+                )
+
+                folder = ET.SubElement(
+                    root,
+                    "Folder",
+                    {"Name": "/Reference-Projects/"},
+                )
 
         # ---------------------------------------------------------
         # Add project
@@ -2914,16 +2936,18 @@ class XBLIGDialog(QDialog):
         resx_files, dll_files = get_game_resources(game.extracted)
         game.dll_files = dll_files
 
-        if options["decompile"]:
-            self.log_message("Decompiling selected game...")
-            self.decompile_selected(game, open_explorer=True, use_gui=options["decompile_gui"])
+        try:
+            if options["decompile"]:
+                self.log_message("Decompiling selected game...")
+                self.decompile_selected(game, open_explorer=True, use_gui=options["decompile_gui"])
 
-            content_root_dir = game.extracted / "584E07D1"
-            copy_extracted_folder_content_and_references(source_content_root_folder=content_root_dir,
-                                                         dest_content_folder=game.decompiled,
-                                                         dll_files=game.dll_files,
-                                                         log_callback=self.log_message)
-
+                content_root_dir = game.extracted / "584E07D1"
+                copy_extracted_folder_content_and_references(source_content_root_folder=content_root_dir,
+                                                             dest_content_folder=game.decompiled,
+                                                             dll_files=game.dll_files,
+                                                             log_callback=self.log_message)
+        except ValueError as e:
+            self.log_message("Failed to Decompile: {e}")
 
         if options["convert_csproj"]:
             cs_proj_files = get_cs_project_folders(game.decompiled, self.log_message)
@@ -2970,7 +2994,10 @@ class XBLIGDialog(QDialog):
                 )
                 ):
                     solution_path = self.config["indie-game-solution-location"]
-                    converter.add_project_to_solution(solution_path, csproj_file, game)
+                    converter.add_project_to_solution(solution_path, csproj_file, game, add_to_archive_folder=True)
+                else:
+                    solution_path = self.config["indie-game-solution-location"]
+                    converter.add_project_to_solution(solution_path, csproj_file, game, add_to_archive_folder=False)
 
         if options["open_visual_studio"]:
             self.log_message("Opening Solution in Visual Studio. The Decompiled Projects Should Have Been Added.")
