@@ -2683,12 +2683,11 @@ class XBLIGDialog(QDialog):
                 self.log_message(f"Failed to extract {game.title}")
                 return
             #
-            # game.extracted = extracted
-            # game.exe = next(extracted.rglob("*.exe"), None)
-            #
-            # self.log_message(f"Extracted {game.title} successfully")
-            # save_cache(self.games)
-            # self.load_games(self.games)
+            game.extracted = extracted
+            game.exe = next(extracted.rglob("*.exe"), None)
+            self.log_message(f"Extracted {game.title} successfully")
+            save_cache(self.games)
+            self.load_games(self.games)
         except Exception as e:
             self.log_message(
                 f"Error extracting {game.title}: {type(e).__name__}: {e}"
@@ -2938,7 +2937,7 @@ class XBLIGDialog(QDialog):
         if options["add_to_solution"]:
             cs_proj_files = get_cs_project_folders(game.decompiled, self.log_message)
             for csproj_file in cs_proj_files:
-                if game.title in csproj_file.name and game.folder_title is not None:
+                if game.title.lower() in csproj_file.stem.lower() and game.folder_title is not None:
                     new_csproj_file = csproj_file.with_name(f"{game.folder_title}.csproj")
                     try:
                         csproj_file.rename(new_csproj_file)
@@ -2951,7 +2950,7 @@ class XBLIGDialog(QDialog):
 
             cs_proj_files = get_cs_project_folders(game.decompiled, self.log_message)
             for csproj_file in cs_proj_files:
-                if game.folder_title is not None and game.folder_title in csproj_file.name:
+                if game.folder_title is not None and game.title.lower() in csproj_file.stem.lower():
                     solution_path = self.config["indie-game-solution-location"]
                     converter.add_project_to_solution(solution_path, csproj_file, game)
 
