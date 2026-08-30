@@ -1364,6 +1364,7 @@ class ConvertXnaProjects(QObject):
             "AllowUnsafeBlocks": "True",
             "CheckForOverflowUnderflow": "False",
             "EnableDefaultEmbeddedResourceItems": "False",
+            "PlatformTarget": "x86"
         }
 
         for name, value in properties.items():
