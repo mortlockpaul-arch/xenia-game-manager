@@ -2937,7 +2937,16 @@ class XBLIGDialog(QDialog):
         if options["add_to_solution"]:
             cs_proj_files = get_cs_project_folders(game.decompiled, self.log_message)
             for csproj_file in cs_proj_files:
-                if game.title.lower() in csproj_file.stem.lower() and game.folder_title is not None:
+                if (
+                        game.folder_title is not None
+                        and (
+                        game.title.lower() in csproj_file.stem.lower()
+                        or any(
+                    csproj_file.stem.lower() == executable.stem.lower()
+                    for executable in game.executables
+                )
+                )
+                ):
                     new_csproj_file = csproj_file.with_name(f"{game.folder_title}.csproj")
                     try:
                         csproj_file.rename(new_csproj_file)
@@ -2950,7 +2959,16 @@ class XBLIGDialog(QDialog):
 
             cs_proj_files = get_cs_project_folders(game.decompiled, self.log_message)
             for csproj_file in cs_proj_files:
-                if game.folder_title is not None and game.title.lower() in csproj_file.stem.lower():
+                if (
+                        game.folder_title is not None
+                        and (
+                        game.title.lower() in csproj_file.stem.lower()
+                        or any(
+                    csproj_file.stem.lower() == executable.stem.lower()
+                    for executable in game.executables
+                )
+                )
+                ):
                     solution_path = self.config["indie-game-solution-location"]
                     converter.add_project_to_solution(solution_path, csproj_file, game)
 
