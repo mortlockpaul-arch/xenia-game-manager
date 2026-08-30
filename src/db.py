@@ -102,6 +102,7 @@ class XBLIGGame(Game):
     dll_files: list[Path] = field(default_factory=list)
     xml: Path | None = None
     decompiled: Path | None = None
+    archived: Path | None = None
 
     def __post_init__(self):
         for name in (
@@ -110,6 +111,7 @@ class XBLIGGame(Game):
                 "game_root",
                 "xml",
                 "decompiled",
+                "archived",
                 "icon",
         ):
             value = getattr(self, name)

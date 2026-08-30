@@ -456,18 +456,20 @@ class ToolManager:
         self.cleanup()
 
 
-def get_cs_project_folders(
-    game: XBLIGGame,
-    log_callback: Callable[[str], None] | None = None,
-) -> tuple[list[Path], list[Path], list[Path]]:
-    if game.decompiled is None:
+def get_cs_project_folders(game: Path | None, log_callback: Callable[[str], None] | None = None,) -> list[Path]:
+    if game is None:
         raise ValueError("Game has not been decompiled")
+    cs_proj_files = list(game.rglob("*.csproj"))
+    return cs_proj_files
 
-    cs_proj_files = list(game.decompiled.rglob("*.csproj"))
-    resx_files = list(game.decompiled.rglob("*.resx"))
-    dll_files = list(game.decompiled.rglob("*.dll"))
+def get_game_resources(game: Path | None, log_callback: Callable[[str], None] | None = None,) -> tuple[list[Path], list[Path]]:
+    if game is None:
+        raise ValueError("Game has not been extracted")
 
-    return cs_proj_files, resx_files, dll_files
+    resx_files = list(game.rglob("*.resx"))
+    dll_files = list(game.rglob("*.dll"))
+
+    return resx_files, dll_files
 
 def add_xna_compat(project_folder):
     project_folder = Path(project_folder)
@@ -1282,7 +1284,7 @@ class ConvertXnaProjects(QObject):
         "cs", "da", "fi", "nb", "sv",
     }
 
-    def clean_csproj(self, project_path: Path, game_dll_files=None, game=None, resx_files=None) -> None:
+    def clean_csproj(self, project_path: Path, game_dll_files:list[Path], game=None, resx_files=None) -> None:
         project_path = Path(project_path)
 
         self.log_message(f"Updating project: {project_path.name}")
@@ -1361,6 +1363,7 @@ class ConvertXnaProjects(QObject):
             "LangVersion": "14.0",
             "AllowUnsafeBlocks": "True",
             "CheckForOverflowUnderflow": "False",
+            "EnableDefaultEmbeddedResourceItems": "False",
         }
 
         for name, value in properties.items():
@@ -1399,9 +1402,13 @@ class ConvertXnaProjects(QObject):
             normal_dlls = []
             satellite_dlls = []
 
-            for dll in map(Path, game_dll_files):
-                relative_path = dll.relative_to(project_path)
-                parts = relative_path.parts
+            for dll in game_dll_files:
+                try:
+                    relative_path = dll.relative_to(project_path.parent)
+                    parts = relative_path.parts
+                except ValueError as e:
+                    self.log_message(f"Error Adding DLL {str(dll)} relative to {str(project_path)}")
+                    continue
 
                 is_satellite = (
                         dll.name.lower().endswith(".resources.dll")
@@ -1472,17 +1479,20 @@ class ConvertXnaProjects(QObject):
                     ).text = "PreserveNewest"
 
         resx_group = ET.SubElement(root, tag("ItemGroup"))
-
         for resx in resx_files:
             resx = Path(resx)
-
-            relative_path = resx.relative_to(project_path).as_posix()
-
-            ET.SubElement(
-                resx_group,
-                tag("EmbeddedResource"),
-                {"Include": relative_path},
-            )
+            try:
+                relative_path = resx.relative_to(project_path.parent).as_posix()
+                ET.SubElement(
+                    resx_group,
+                    tag("EmbeddedResource"),
+                    {"Include": relative_path},
+                )
+            except ValueError:
+                self.log_message(
+                    f"Error adding DLL {resx} relative to {project_path.parent}"
+                )
+                continue
 
         # ---------------------------------------------------------
         # Content files
@@ -1580,6 +1590,7 @@ class ConvertXnaProjects(QObject):
         project_dir = project_path.parent
         destination_dir = archive_dir / project_dir.name
         destination_project = destination_dir / project_path.name
+        game.archived = destination_dir
 
         self.log_message(f"  Source:      {project_dir}")
         self.log_message(f"  Destination: {destination_dir}")
@@ -1694,14 +1705,18 @@ class ConvertXnaProjects(QObject):
 
         folder = next(
             (
-                element for element in root.findall("Folder")
+                element
+                for element in root.findall("Folder")
                 if element.get("Name") == "/indie-game-archive/"
             ),
             None,
         )
 
         if folder is None:
-            self.log_message("  Creating /indie-game-archive/ solution folder.")
+            self.log_message(
+                "  Creating /indie-game-archive/ solution folder."
+            )
+
             folder = ET.SubElement(
                 root,
                 "Folder",
@@ -1712,18 +1727,22 @@ class ConvertXnaProjects(QObject):
         # Add project
         # ---------------------------------------------------------
 
-        ET.SubElement(
-            folder,
-            "Project",
-            {
-                "Path": project_path_value,
-                "Name": game.title,
-            },
-        )
+        existing = root.find(f".//Project[@Path='{project_path_value}']")
 
-        self.log_message(
-            f"  Added {project_path.name} to /indie-game-archive/"
-        )
+        if existing is None:
+            ET.SubElement(
+                folder,
+                "Project",
+                {"Path": project_path_value},
+            )
+
+            self.log_message(
+                f"  Added {project_path.name} to /indie-game-archive/"
+            )
+        else:
+            self.log_message(
+                f"  Project already exists in solution: {project_path.name}"
+            )
 
         # ---------------------------------------------------------
         # Save
@@ -2890,7 +2909,9 @@ class XBLIGDialog(QDialog):
 
         options = dlg.options()
         converter = self.method_name()
-        cs_proj_files, resx_files, dll_files = get_cs_project_folders(game, self.log_message)
+
+
+        resx_files, dll_files = get_game_resources(game.extracted)
         game.dll_files = dll_files
 
         if options["decompile"]:
@@ -2902,20 +2923,37 @@ class XBLIGDialog(QDialog):
                                                          dest_content_folder=game.decompiled,
                                                          dll_files=game.dll_files,
                                                          log_callback=self.log_message)
+
+
         if options["convert_csproj"]:
+            cs_proj_files = get_cs_project_folders(game.decompiled, self.log_message)
+            resx_files, dll_files = get_game_resources(game.decompiled)
             for csproj_file in cs_proj_files:
                 try:
-                    converter.clean_csproj(csproj_file, game.dll_files, game, resx_files)
+                    converter.clean_csproj(csproj_file, dll_files, game, resx_files)
                 except Exception as e:
                     self.log_message(f"FAILED {csproj_file}: {e}")
+
         if options["add_to_solution"]:
+            cs_proj_files = get_cs_project_folders(game.decompiled, self.log_message)
             for csproj_file in cs_proj_files:
-                solution_path = self.config["indie-game-solution-location"]
-                converter.add_project_to_solution(
-                    solution_path,
-                    csproj_file,
-                    game
-                )
+                if game.title in csproj_file.name and game.folder_title is not None:
+                    new_csproj_file = csproj_file.with_name(f"{game.folder_title}.csproj")
+                    try:
+                        csproj_file.rename(new_csproj_file)
+                        self.log_message(f"  Renamed project: {csproj_file.name} -> {new_csproj_file.name}")
+
+                    except OSError as e:
+                        self.log_message(
+                            f"  ERROR renaming {csproj_file}: {e}"
+                        )
+
+            cs_proj_files = get_cs_project_folders(game.decompiled, self.log_message)
+            for csproj_file in cs_proj_files:
+                if game.folder_title is not None and game.folder_title in csproj_file.name:
+                    solution_path = self.config["indie-game-solution-location"]
+                    converter.add_project_to_solution(solution_path, csproj_file, game)
+
         if options["open_visual_studio"]:
             self.log_message("Opening Solution in Visual Studio. The Decompiled Projects Should Have Been Added.")
             if game.decompiled is not None:
