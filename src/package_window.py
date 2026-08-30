@@ -14,7 +14,7 @@ from functools import partial
 from glob import escape
 from io import StringIO
 from pathlib import Path
-from typing import Callable, cast
+from typing import Callable, cast, Iterator
 
 from PySide6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QRect, QThread, Signal, QObject, QModelIndex, \
     Slot, QSize, QProcess, QEvent
@@ -456,14 +456,18 @@ class ToolManager:
         self.cleanup()
 
 
-def get_cs_project_folders(game: XBLIGGame, log_callback: Callable[[str], None] | None = None) -> list[Path]:
-    projects = []
+def get_cs_project_folders(
+    game: XBLIGGame,
+    log_callback: Callable[[str], None] | None = None,
+) -> tuple[list[Path], list[Path], list[Path]]:
     if game.decompiled is None:
         raise ValueError("Game has not been decompiled")
-    cs_proj_files = game.decompiled.rglob("*.csproj")
-    for project in cs_proj_files:
-            projects.append(project)
-    return projects
+
+    cs_proj_files = list(game.decompiled.rglob("*.csproj"))
+    resx_files = list(game.decompiled.rglob("*.resx"))
+    dll_files = list(game.decompiled.rglob("*.dll"))
+
+    return cs_proj_files, resx_files, dll_files
 
 def add_xna_compat(project_folder):
     project_folder = Path(project_folder)
@@ -1272,7 +1276,13 @@ class ConvertXnaProjects(QObject):
 
     from pathlib import Path
 
-    def clean_csproj(self, project_path: Path, game_dll_files=None) -> None:
+    LANGUAGE_FOLDERS = {
+        "de", "es", "fr", "it", "pt", "ru",
+        "ja", "ko", "zh", "nl", "pl",
+        "cs", "da", "fi", "nb", "sv",
+    }
+
+    def clean_csproj(self, project_path: Path, game_dll_files=None, game=None, resx_files=None) -> None:
         project_path = Path(project_path)
 
         self.log_message(f"Updating project: {project_path.name}")
@@ -1295,20 +1305,20 @@ class ConvertXnaProjects(QObject):
         # Preserve AssemblyName
         # ---------------------------------------------------------
 
-        assembly_name = next(
-            (
-                assembly.text.strip()
-                for group in root.findall(tag("PropertyGroup"))
-                for assembly in [group.find(tag("AssemblyName"))]
-                if assembly is not None and assembly.text
-            ),
-            None,
-        )
-
-        if assembly_name:
-            self.log_message(f"  Preserving AssemblyName: {assembly_name}")
-        else:
-            self.log_message("  No AssemblyName found; using project default.")
+        # assembly_name = next(
+        #     (
+        #         assembly.text.strip()
+        #         for group in root.findall(tag("PropertyGroup"))
+        #         for assembly in [group.find(tag("AssemblyName"))]
+        #         if assembly is not None and assembly.text
+        #     ),
+        #     None,
+        # )
+        #
+        # if assembly_name:
+        #     self.log_message(f"  Preserving AssemblyName: {assembly_name}")
+        # else:
+        #     self.log_message("  No AssemblyName found; using project default.")
 
         # ---------------------------------------------------------
         # Remove existing PropertyGroups / ItemGroups
@@ -1337,6 +1347,7 @@ class ConvertXnaProjects(QObject):
 
         propgroup = ET.SubElement(root, tag("PropertyGroup"))
 
+        assembly_name = game.title
         if assembly_name:
             ET.SubElement(propgroup, tag("AssemblyName")).text = assembly_name
 
@@ -1385,23 +1396,93 @@ class ConvertXnaProjects(QObject):
         # ---------------------------------------------------------
 
         if game_dll_files:
-            self.log_message(f"  Adding {len(game_dll_files)} game DLL reference(s)...")
-
-            dll_group = ET.SubElement(root, tag("ItemGroup"))
+            normal_dlls = []
+            satellite_dlls = []
 
             for dll in map(Path, game_dll_files):
-                reference = ET.SubElement(
-                    dll_group,
-                    tag("Reference"),
-                    {"Include": dll.stem},
+                relative_path = dll.relative_to(project_path)
+                parts = relative_path.parts
+
+                is_satellite = (
+                        dll.name.lower().endswith(".resources.dll")
+                        or (
+                                len(parts) > 1
+                                and parts[0].lower() in self.LANGUAGE_FOLDERS
+                        )
                 )
 
-                ET.SubElement(reference, tag("HintPath")).text = dll.name
-                ET.SubElement(reference, tag("Private")).text = "True"
+                if is_satellite:
+                    satellite_dlls.append((dll, relative_path))
+                else:
+                    normal_dlls.append((dll, relative_path))
 
-                self.log_message(f"    Added DLL: {dll.name}")
-        else:
-            self.log_message("  No game DLL references supplied.")
+            # ---------------------------------------------------------
+            # Normal DLL references
+            # ---------------------------------------------------------
+
+            if normal_dlls:
+                self.log_message(
+                    f"  Adding {len(normal_dlls)} game DLL reference(s)..."
+                )
+
+                dll_group = ET.SubElement(root, tag("ItemGroup"))
+
+                for dll, relative_path in normal_dlls:
+                    reference = ET.SubElement(
+                        dll_group,
+                        tag("Reference"),
+                        {"Include": dll.stem},
+                    )
+
+                    ET.SubElement(
+                        reference,
+                        tag("HintPath"),
+                    ).text = relative_path.as_posix()
+
+                    ET.SubElement(
+                        reference,
+                        tag("Private"),
+                    ).text = "True"
+
+            # ---------------------------------------------------------
+            # Satellite DLLs
+            # ---------------------------------------------------------
+
+            if satellite_dlls:
+                self.log_message(
+                    f"  Adding {len(satellite_dlls)} satellite DLL(s) "
+                    "to output..."
+                )
+
+                satellite_group = ET.SubElement(
+                    root,
+                    tag("ItemGroup"),
+                )
+
+                for dll, relative_path in satellite_dlls:
+                    resource = ET.SubElement(
+                        satellite_group,
+                        tag("None"),
+                        {"Include": relative_path.as_posix()},
+                    )
+
+                    ET.SubElement(
+                        resource,
+                        tag("CopyToOutputDirectory"),
+                    ).text = "PreserveNewest"
+
+        resx_group = ET.SubElement(root, tag("ItemGroup"))
+
+        for resx in resx_files:
+            resx = Path(resx)
+
+            relative_path = resx.relative_to(project_path).as_posix()
+
+            ET.SubElement(
+                resx_group,
+                tag("EmbeddedResource"),
+                {"Include": relative_path},
+            )
 
         # ---------------------------------------------------------
         # Content files
@@ -1446,10 +1527,18 @@ class ConvertXnaProjects(QObject):
         try:
             destination_dir.mkdir(parents=True, exist_ok=True)
 
-            for source in source_dir.iterdir():
-                if source.is_file():
-                    shutil.copy2(source, destination_dir / source.name)
-                    self.log_message(f"    Copied: {source.name}")
+            for source in source_dir.rglob("*"):
+                relative_path = source.relative_to(source_dir)
+                destination = destination_dir / relative_path
+
+                if source.is_dir():
+                    destination.mkdir(parents=True, exist_ok=True)
+                    self.log_message(f"    Created folder: {relative_path}")
+
+                elif source.is_file():
+                    destination.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(source, destination)
+                    self.log_message(f"    Copied: {relative_path}")
 
         except OSError as exc:
             self.log_message(f"  ERROR copying project files: {exc}")
@@ -1508,7 +1597,7 @@ class ConvertXnaProjects(QObject):
                 shutil.rmtree(destination_dir)
                 self.log_message(f"Destination Project Folder {destination_dir} exists.")
             except OSError as exc:
-                self.log_message(f"  ERROR moving project: {exc}")
+                self.log_message(f"Error Removing project: {destination_dir} {exc}")
                 return False
 
         if copy_mode:
@@ -2489,12 +2578,13 @@ class XBLIGDialog(QDialog):
         )
 
         self.dll_files_lbl.setText(
-            "\n".join(dll.name for dll in game.dll_files) if game.dll_files else "-"
+            "\n".join(str(dll) for dll in game.dll_files)
+            if game.dll_files else "-"
         )
 
         if game.executables:
             self.exe_lbl.setText(
-                "\n".join(executable.name for executable in game.executables) if game.executables else "-")
+                "\n".join(str(executable) for executable in game.executables) if game.executables else "-")
         else:
             self.exe_lbl.setText("-")
 
@@ -2800,7 +2890,8 @@ class XBLIGDialog(QDialog):
 
         options = dlg.options()
         converter = self.method_name()
-        csproj_files = get_cs_project_folders(game, self.log_message)
+        cs_proj_files, resx_files, dll_files = get_cs_project_folders(game, self.log_message)
+        game.dll_files = dll_files
 
         if options["decompile"]:
             self.log_message("Decompiling selected game...")
@@ -2812,13 +2903,13 @@ class XBLIGDialog(QDialog):
                                                          dll_files=game.dll_files,
                                                          log_callback=self.log_message)
         if options["convert_csproj"]:
-            for csproj_file in csproj_files:
+            for csproj_file in cs_proj_files:
                 try:
-                    converter.clean_csproj(csproj_file, game.dll_files)
+                    converter.clean_csproj(csproj_file, game.dll_files, game, resx_files)
                 except Exception as e:
                     self.log_message(f"FAILED {csproj_file}: {e}")
         if options["add_to_solution"]:
-            for csproj_file in csproj_files:
+            for csproj_file in cs_proj_files:
                 solution_path = self.config["indie-game-solution-location"]
                 converter.add_project_to_solution(
                     solution_path,
