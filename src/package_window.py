@@ -1467,7 +1467,7 @@ class ConvertXnaProjects(QObject):
         "debug": "#C678DD",  # Purple
     }
 
-    def add_project_to_solution(self, solution_path: Path, project_path: Path,) -> bool:
+    def add_project_to_solution(self, solution_path: Path, project_path: Path, game=None) -> bool:
         solution_path = Path(solution_path).resolve()
         project_path = Path(project_path).resolve()
 
@@ -1500,43 +1500,37 @@ class ConvertXnaProjects(QObject):
         # ---------------------------------------------------------
 
         # if project_dir.resolve() != destination_dir.resolve():
+        copy_mode = True
+        delete_destination = True
 
-        if destination_dir.exists():
+        if destination_dir.exists() and delete_destination:
             try:
                 shutil.rmtree(destination_dir)
                 self.log_message(f"Destination Project Folder {destination_dir} exists.")
-                self.log_message(f"Moving project to: {destination_dir}")
-                shutil.move(str(project_dir), str(destination_dir))
             except OSError as exc:
                 self.log_message(f"  ERROR moving project: {exc}")
                 return False
-            projects = list(destination_dir.rglob("*.csproj"))
-            if not projects:
-                self.log_message("Error: No .csproj found in destination.")
-                return False
+
+        if copy_mode:
             try:
-                projects[0].rename(destination_project)
-                self.log_message(f"Renamed {projects[0].name} -> {destination_project.name}")
+                self.log_message(f"Copying project to: {destination_dir}")
                 if not self.copy_project_files(project_dir, destination_dir):
                     return False
                 project_path = destination_project
-                self.log_message(f"Copied Project: {project_path.name}")
+                self.log_message(f"Copied Project: {project_path.name} to {destination_dir}")
             except OSError as exc:
                 self.log_message(f"Error Copying Project: {exc}")
                 return False
         else:
             self.log_message(f"Moving project to: {destination_dir}")
-            try:
-                shutil.move(str(project_dir), str(destination_dir))
-            except OSError as exc:
-                self.log_message(f"  ERROR moving project: {exc}")
-                return False
+            shutil.move(str(project_dir), str(destination_dir))
+            project_path = destination_project
+            self.log_message("Project moved successfully.")
 
-        project_path = destination_project
-        self.log_message("Project moved successfully.")
-
-        # else:
-        #     self.log_message("  Project is already in the destination.")
+        projects = list(destination_dir.rglob("*.csproj"))
+        if not projects:
+            self.log_message("Error: No .csproj found in destination.")
+            return False
 
         try:
             project_path_value = os.path.relpath(
@@ -1547,14 +1541,15 @@ class ConvertXnaProjects(QObject):
             project_path_value = project_path.as_posix()
             self.log_message("  Project is on a different drive.")
 
-        self.log_message(f"Solution path: {project_path_value}")
-
+        self.log_message(f"Solution path: {solution_path}")
+        self.log_message(f"Project path: {project_path_value}")
         # ---------------------------------------------------------
         # Parse solution
         # ---------------------------------------------------------
 
         try:
-            tree = ET.parse(solution_path)
+            with open(solution_path, "rb") as f:
+                tree = ET.parse(f)
         except ET.ParseError as exc:
             self.log_message(f"  ERROR reading solution: {exc}")
             return False
@@ -1648,11 +1643,12 @@ class ConvertXnaProjects(QObject):
         ET.indent(tree, space="  ")
 
         try:
-            tree.write(
-                solution_path,
-                encoding="utf-8",
-                xml_declaration=False,
-            )
+            with open(solution_path, "wb") as f:
+                tree.write(
+                    f,
+                    encoding="utf-8",
+                    xml_declaration=True,
+                )
         except OSError as exc:
             self.log_message(f"  ERROR saving solution: {exc}")
             return False
@@ -2822,12 +2818,12 @@ class XBLIGDialog(QDialog):
                 except Exception as e:
                     self.log_message(f"FAILED {csproj_file}: {e}")
         if options["add_to_solution"]:
-            csproj_files = get_cs_project_folders(game, self.log_message)
             for csproj_file in csproj_files:
                 solution_path = self.config["indie-game-solution-location"]
                 converter.add_project_to_solution(
                     solution_path,
                     csproj_file,
+                    game
                 )
         if options["open_visual_studio"]:
             self.log_message("Opening Solution in Visual Studio. The Decompiled Projects Should Have Been Added.")
