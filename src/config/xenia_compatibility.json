@@ -1,5 +1,35 @@
 [
   {
+    "issue": 1209,
+    "id": "5451089C",
+    "title": "Pictionary: Ultimate Edition",
+    "updated": "2026-08-30T14:11:05Z",
+    "state": "Playable",
+    "labels": {
+      "state": [
+        "state-playable"
+      ],
+      "others": []
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1209"
+  },
+  {
+    "issue": 1208,
+    "id": "4E4D0827",
+    "title": "Dr. Kawashima's Body and Brain Exercises",
+    "updated": "2026-08-29T23:10:43Z",
+    "state": "Loads",
+    "labels": {
+      "state": [
+        "state-load"
+      ],
+      "others": [
+        "tech-kinect-required"
+      ]
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1208"
+  },
+  {
     "issue": 1207,
     "id": "4C4107D7",
     "title": "LEGO Star Wars: The Complete Saga",
@@ -7834,13 +7864,15 @@
     "issue": 666,
     "id": "41560881",
     "title": "Spider-Man: Shattered Dimensions",
-    "updated": "2026-08-26T21:31:18Z",
-    "state": "Gameplay",
+    "updated": "2026-08-30T11:47:27Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
-      "others": []
+      "others": [
+        "gpu-drawing-corrupt"
+      ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/666"
   },
@@ -8385,11 +8417,11 @@
     "issue": 629,
     "id": "565507E8",
     "title": "F.E.A.R: Files",
-    "updated": "2026-04-07T17:24:15Z",
-    "state": "Gameplay",
+    "updated": "2026-08-30T18:53:28Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
       "others": []
     },
@@ -12201,11 +12233,11 @@
     "issue": 392,
     "id": "534307D4",
     "title": "Tomb Raider: Legend",
-    "updated": "2026-08-28T18:35:10Z",
-    "state": "Gameplay",
+    "updated": "2026-08-30T11:39:00Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
       "others": [
         "gpu-drawing-corrupt",

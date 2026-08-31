@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.3 Add Reference-Projects">
+    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.3 Downloader Setup">
       <change afterPath="$PROJECT_DIR$/../XBLA-Extract/.idea/xbla-extract.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/archive_content_window.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/archive_digital_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build_tools/build.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/build.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build_tools/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/game-manager-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/game-manager-config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/xenia_compatibility.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/xenia_compatibility.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,61 +52,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0000000000029412" />
-      <entry key="S5" value="1.0000317399854175" />
-      <entry key="S10" value="1.0077497690013717" />
-      <entry key="S30" value="1.3486770192817887" />
-      <entry key="S60" value="1.9875932422877671" />
-      <entry key="M2" value="2.7699206561591767" />
-      <entry key="M5" value="3.733646501905095" />
-      <entry key="M10" value="4.271532548704563" />
-      <entry key="M15" value="4.558133370443583" />
-      <entry key="M30" value="5.679732873565521" />
-      <entry key="H1" value="8.811739134065618" />
-      <entry key="H2" value="15.281611584909038" />
-      <entry key="H4" value="32.689874795341225" />
-      <entry key="D1" value="324.3564630086166" />
-      <entry key="W1" value="1475.1343803370273" />
+      <entry key="MS100" value="1.0000000000000042" />
+      <entry key="MS500" value="1.0013379429058105" />
+      <entry key="S2" value="1.2231774100954116" />
+      <entry key="S5" value="1.9013396633136765" />
+      <entry key="S10" value="2.7092644803204835" />
+      <entry key="S30" value="4.19456664039394" />
+      <entry key="S60" value="4.93994556957859" />
+      <entry key="M2" value="5.49755404383739" />
+      <entry key="M5" value="6.646582991705144" />
+      <entry key="M10" value="7.962540295617873" />
+      <entry key="M15" value="8.744153003137722" />
+      <entry key="M30" value="10.431554722528434" />
+      <entry key="H1" value="13.799295807790035" />
+      <entry key="H2" value="20.385808448048735" />
+      <entry key="H4" value="37.723640748697925" />
+      <entry key="D1" value="328.7466516675174" />
+      <entry key="W1" value="1480.086709067803" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
       <entry key="MS500" value="0.0" />
       <entry key="S2" value="0.0" />
       <entry key="S5" value="0.0" />
-      <entry key="S10" value="1.1497024534950878E-193" />
-      <entry key="S30" value="7.507094775645075E-65" />
-      <entry key="S60" value="1.2208413154256009E-32" />
-      <entry key="M2" value="1.561148104879985E-16" />
-      <entry key="M5" value="7.209403925897439E-7" />
-      <entry key="M10" value="0.001200739183846333" />
-      <entry key="M15" value="0.014233596446904988" />
-      <entry key="M30" value="0.1692669965662493" />
-      <entry key="H1" value="0.6052206792246799" />
-      <entry key="H2" value="1.3786666624699873" />
-      <entry key="H4" value="4.322159416483266" />
-      <entry key="D1" value="53.9594983039724" />
-      <entry key="W1" value="277.8269481209595" />
+      <entry key="S10" value="2.520298018173587E-212" />
+      <entry key="S30" value="4.526481107262152E-71" />
+      <entry key="S60" value="9.479897132432447E-36" />
+      <entry key="M2" value="4.350270973395962E-18" />
+      <entry key="M5" value="1.7215840882119293E-7" />
+      <entry key="M10" value="5.867635452069688E-4" />
+      <entry key="M15" value="0.00883061482899026" />
+      <entry key="M30" value="0.13332464474512043" />
+      <entry key="H1" value="0.5371342330604103" />
+      <entry key="H2" value="1.2988045780511086" />
+      <entry key="H4" value="4.195107068931656" />
+      <entry key="D1" value="53.69183923734584" />
+      <entry key="W1" value="277.62965338485293" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.39776824187745935" />
-      <entry key="MS500" value="0.8316220983749064" />
-      <entry key="S2" value="0.9549519179127047" />
-      <entry key="S5" value="0.9817623108464828" />
-      <entry key="S10" value="0.9984843357063352" />
-      <entry key="S30" value="1.344054314611022" />
-      <entry key="S60" value="1.9836803791155846" />
-      <entry key="M2" value="2.7669288578083218" />
-      <entry key="M5" value="3.7319408466161366" />
-      <entry key="M10" value="4.271709401997127" />
-      <entry key="M15" value="4.571403001271731" />
-      <entry key="M30" value="5.8468025784541515" />
-      <entry key="H1" value="9.41286366591244" />
-      <entry key="H2" value="16.655615107796613" />
-      <entry key="H4" value="37.006997580697394" />
-      <entry key="D1" value="378.3087504945491" />
-      <entry key="W1" value="1752.9571033249795" />
+      <entry key="MS100" value="3.3156669038305205E-10" />
+      <entry key="MS500" value="0.014039591407882596" />
+      <entry key="S2" value="0.5584840753257888" />
+      <entry key="S5" value="1.546291136893526" />
+      <entry key="S10" value="2.5110421389795428" />
+      <entry key="S30" value="4.121582589898608" />
+      <entry key="S60" value="4.90207253527326" />
+      <entry key="M2" value="5.478108789234489" />
+      <entry key="M5" value="6.638314446151932" />
+      <entry key="M10" value="7.958675331018904" />
+      <entry key="M15" value="8.749746586838905" />
+      <entry key="M30" value="10.561826771866832" />
+      <entry key="H1" value="14.33213316201401" />
+      <entry key="H2" value="21.679889086086636" />
+      <entry key="H4" value="41.913693742089436" />
+      <entry key="D1" value="382.4312882666984" />
+      <entry key="W1" value="1757.7121363787292" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -121,58 +118,58 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "Batch.Unnamed.executor": "Run",
-    "Batch.cleanup_repo.executor": "Run",
-    "Batch.start.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "PowerShell.Unnamed.executor": "Run",
-    "PowerShell.cleanup_repo.ps1.executor": "Run",
-    "Python.a.executor": "Run",
-    "Python.archive_content_window.executor": "Run",
-    "Python.archive_digital_window.executor": "Run",
-    "Python.archive_indie_window.executor": "Run",
-    "Python.build.executor": "Run",
-    "Python.convert_xna_projects.executor": "Debug",
-    "Python.import_xblig_metadata.executor": "Run",
-    "Python.main-updater.executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.main_updater.executor": "Run",
-    "Python.netplay.executor": "Run",
-    "Python.package window.executor": "Run",
-    "Python.package.executor": "Run",
-    "Python.package_window.executor": "Run",
-    "Python.setup.executor": "Run",
-    "Python.stfs_extract.executor": "Debug",
-    "Python.stfs_extract_gui.executor": "Run",
-    "Python.tools.executor": "Run",
-    "Python.utils.executor": "Debug",
-    "Python.xiso.executor": "Run",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "C:/PycharmProjects/xenia-game-manager/src",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.jshint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.jshint": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "Errors",
-    "to.speed.mode.migration.done": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;Batch.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;Batch.cleanup_repo.executor&quot;: &quot;Run&quot;,
+    &quot;Batch.start.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;PowerShell.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;PowerShell.cleanup_repo.ps1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.a.executor&quot;: &quot;Run&quot;,
+    &quot;Python.archive_content_window.executor&quot;: &quot;Run&quot;,
+    &quot;Python.archive_digital_window.executor&quot;: &quot;Run&quot;,
+    &quot;Python.archive_indie_window.executor&quot;: &quot;Run&quot;,
+    &quot;Python.build.executor&quot;: &quot;Run&quot;,
+    &quot;Python.convert_xna_projects.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.import_xblig_metadata.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main-updater.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main_updater.executor&quot;: &quot;Run&quot;,
+    &quot;Python.netplay.executor&quot;: &quot;Run&quot;,
+    &quot;Python.package window.executor&quot;: &quot;Run&quot;,
+    &quot;Python.package.executor&quot;: &quot;Run&quot;,
+    &quot;Python.package_window.executor&quot;: &quot;Run&quot;,
+    &quot;Python.setup.executor&quot;: &quot;Run&quot;,
+    &quot;Python.stfs_extract.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.stfs_extract_gui.executor&quot;: &quot;Run&quot;,
+    &quot;Python.tools.executor&quot;: &quot;Run&quot;,
+    &quot;Python.utils.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.xiso.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/PycharmProjects/xenia-game-manager/src&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\PycharmProjects\xenia-game-manager\src" />
@@ -189,7 +186,7 @@
       <recent name="C:\PycharmProjects\xenia-game-manager\src\config" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.main">
     <configuration name="Unnamed" type="BatchConfigurationType" factoryName="Batch" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -237,6 +234,9 @@
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="SDK_NAME" value="uv (xenia-game-manager) (2)" />
       <option name="WORKING_DIRECTORY" value="C:\PycharmProjects\xenia-game-manager\src" />
@@ -270,14 +270,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00103" summary="1.1.6 Multiple Executables and Seperate Assembly Decompile. Add References properly.">
-      <option name="closed" value="true" />
-      <created>1787721636548</created>
-      <option name="number" value="00103" />
-      <option name="presentableId" value="LOCAL-00103" />
-      <option name="project" value="LOCAL" />
-      <updated>1787721636548</updated>
     </task>
     <task id="LOCAL-00104" summary="1.1.6 Multiple Executables and Seperate Assembly Decompile. Add References properly.">
       <option name="closed" value="true" />
@@ -663,7 +655,15 @@
       <option name="project" value="LOCAL" />
       <updated>1788128697063</updated>
     </task>
-    <option name="localTasksCounter" value="152" />
+    <task id="LOCAL-00152" summary="1.2.3 Downloader Setup">
+      <option name="closed" value="true" />
+      <created>1788129808193</created>
+      <option name="number" value="00152" />
+      <option name="presentableId" value="LOCAL-00152" />
+      <option name="project" value="LOCAL" />
+      <updated>1788129808193</updated>
+    </task>
+    <option name="localTasksCounter" value="153" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -685,7 +685,6 @@
       <path value="$PROJECT_DIR$/../XBLA-Extract" />
       <path value="$PROJECT_DIR$/src/compatibility/xemu_compatibility/xdb" />
     </ignored-roots>
-    <MESSAGE value="1.1.0 Decompiler and Extractor Tools" />
     <MESSAGE value="1.1.1 Logging Initialisation" />
     <MESSAGE value="1.1.2 Extraction Worker" />
     <MESSAGE value="1.1.2 Rename csproj to game title." />
@@ -710,7 +709,8 @@
     <MESSAGE value="1.2.3 Add Resource Files to csproj files." />
     <MESSAGE value="1.2.3 Platform Target" />
     <MESSAGE value="1.2.3 Add Reference-Projects" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.2.3 Add Reference-Projects" />
+    <MESSAGE value="1.2.3 Downloader Setup" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.2.3 Downloader Setup" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

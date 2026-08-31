@@ -16,7 +16,7 @@ from enum import Enum
 from pathlib import Path
 from dataclasses import fields
 
-DB_PATH = Path(__file__).resolve().parent / "database" / "games.db"
+DB_PATH = get_app_dir() / "database" / "games.db"
 
 from dataclasses import dataclass, field, fields
 
