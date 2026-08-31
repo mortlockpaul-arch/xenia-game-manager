@@ -2634,56 +2634,41 @@ class XBLIGDialog(QDialog):
 
     def _worker_finished(self) -> None:
         self.game.extracted = self.extracted
-        self.game.exe = next(self.extracted.rglob("*.exe"), None)
+        self.game.executables = list(self.extracted.rglob("*.exe"))
         self.log_message(f"Extracted {self.game.title} successfully")
         save_cache(self.games)
         self.load_games(self.games)
 
-    def extract_game(self, game=None):
-        if game is None:
-            if (result := self.get_selected_game()) is None:
-                return
-            game, _ = result
-
-        # if game.extracted is not None:
-        #     self.log_message(f"{game.title} Already Extracted.")
-        #     return
-
-        if not game.package:
-            self.log_message(f"{game.title} has no package.")
+    def extract_game_package(self):
+        overwrite = self.overwrite_check.isChecked()
+        if (result := self.get_selected_game()) is None:
+            self.log_message(f"No game selected.")
             return
+        self.game, _ = result
 
+        if not self.game.package:
+            self.log_message(f"{self.game.title} has no package.")
+            return
+        if self.game.extracted is not None or not self.game.package:
+            self.log_message_log(f"{self.game.title} Already Extracted")
+            if not overwrite: return
         try:
-            extracted = self.extract_package(game)
-
+            extracted = self.extract_package(self.game)
             if extracted is None:
-                self.log_message(f"Failed to extract {game.title}")
+                self.log_message(f"Failed to extract {self.game.title}")
                 return
             #
-            game.extracted = extracted
-            game.exe = next(extracted.rglob("*.exe"), None)
-            self.log_message(f"Extracted {game.title} successfully")
+            self.game.extracted = extracted
+            self.game.executables = list(extracted.rglob("*.exe"))
+            self.log_message(f"Extracted {self.game.title} successfully")
             save_cache(self.games)
             self.load_games(self.games)
-            self.update_labels(game)
+            self.update_labels(self.game)
 
         except Exception as e:
             self.log_message(
-                f"Error extracting {game.title}: {type(e).__name__}: {e}"
+                f"Error extracting {self.game.title}: {type(e).__name__}: {e}"
             )
-
-    def extract_game_package(self):
-        if self.overwrite_check.isChecked():
-            overwrite = True
-        else:
-            overwrite = False
-        if (result := self.get_selected_game()) is None:
-            return
-        game, _ = result
-        if game.extracted is not None or not game.package:
-            self.log_message_log(f"{game.title} Already Extracted")
-            if not overwrite: return
-        self.extract_game(game)
         self.load_games(self.games, refresh_only=True)
 
     def extract_package(self, game: XBLIGGame):
