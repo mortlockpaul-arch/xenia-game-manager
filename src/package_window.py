@@ -14,10 +14,10 @@ from functools import partial
 from glob import escape
 from io import StringIO
 from pathlib import Path
-from typing import Callable, cast, Iterator
+from typing import Callable, cast
 
-from PySide6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QRect, QThread, Signal, QObject, QModelIndex, \
-    Slot, QSize, QProcess, QEvent
+from PySide6.QtCore import QPropertyAnimation, QEasingCurve, QThread, Signal, QObject, QModelIndex, \
+    Slot, QProcess, QEvent
 from PySide6.QtGui import QFont, QMouseEvent
 from PySide6.QtWidgets import (
     QDialog,
@@ -27,14 +27,12 @@ from PySide6.QtWidgets import (
     QWidget,
     QPushButton,
     QLabel,
-    QTableWidgetItem,
     QFormLayout,
     QGroupBox,
     QHeaderView, QApplication, QSizePolicy, QFrame, QGraphicsDropShadowEffect, QCheckBox, QButtonGroup,
     QRadioButton, QProgressBar, QPlainTextEdit, QLineEdit, QAbstractItemView, QTableView, QFileDialog,
-    QStyledItemDelegate,
 )
-from db import ConversionResult, Database, XBLIGGame, Game, GameSource
+from db import ConversionResult, Database, XBLIGGame, GameSource
 
 from config import get_app_dir, load_config_file, save_config
 from logging_setup import setup_logger
@@ -1528,67 +1526,33 @@ class ConvertXnaProjects(QObject):
         )
 
     from pathlib import Path
-    def copy_project_files(
-            self,
-            source_dir: Path,
-            destination_dir: Path,
-    ) -> bool:
-        self.log_message(f"  Copying project files to: {destination_dir}")
-
-        try:
-            destination_dir.mkdir(parents=True, exist_ok=True)
-
-            for source in source_dir.rglob("*"):
-                relative_path = source.relative_to(source_dir)
-                destination = destination_dir / relative_path
-
-                if source.is_dir():
-                    destination.mkdir(parents=True, exist_ok=True)
-                    self.log_message(f"    Created folder: {relative_path}")
-
-                elif source.is_file():
-                    destination.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copy2(source, destination)
-                    self.log_message(f"    Copied: {relative_path}")
-
-        except OSError as exc:
-            self.log_message(f"  ERROR copying project files: {exc}")
-            return False
-
-        self.log_message("  Project files copied successfully.")
-        return True
 
     LOG_COLORS = {
-        "normal": "#D4D4D4",  # Light grey
-        "info": "#61AFEF",  # Blue
-        "success": "#98C379",  # Green
-        "warning": "#E5C07B",  # Yellow/orange
-        "error": "#E06C75",  # Red
-        "debug": "#C678DD",  # Purple
+        "normal": "#D4D4D4",    # Light grey
+        "info": "#61AFEF",      # Blue
+        "success": "#98C379",   # Green
+        "warning": "#E5C07B",   # Yellow/orange
+        "error": "#E06C75",     # Red
+        "debug": "#C678DD",     # Purple
     }
 
-    def add_project_to_solution(
-            self,
-            solution_path: Path,
-            project_path: Path,
-            game=None,
-            add_to_archive_folder=False,
-    ) -> bool:
+    def add_project_to_solution(self, solution_path: Path, project_path: Path, game=None,
+                                add_to_solution_archive_folder=False, move_decompiled_project=True) -> bool:
 
         solution_path = Path(solution_path).resolve()
         project_path = Path(project_path).resolve()
 
-        self.log_message(
-            f"Adding project to solution: {project_path.name}",
-            self.LOG_COLORS["debug"],
-        )
+        def log_message(message):
+            self.log_message(message, self.LOG_COLORS["debug"])
+
+        log_message(f"Adding project to solution: {project_path.name}")
 
         if not solution_path.exists():
             self.log_message(f"Solution not found: {solution_path}")
             return False
 
         if not project_path.exists():
-            self.log_message(f"Project not found: {project_path}")
+            log_message(f"Project not found: {project_path}")
             return False
 
         # ---------------------------------------------------------
@@ -1602,33 +1566,45 @@ class ConvertXnaProjects(QObject):
         destination_dir = archive_dir / project_dir.name
         destination_project = destination_dir / project_path.name
 
-        if add_to_archive_folder:
+        if add_to_solution_archive_folder:
             game.archived = destination_dir
 
-        self.log_message(f"  Source:      {project_dir}")
-        self.log_message(f"  Destination: {destination_dir}")
+        log_message(f"  Source:      {project_dir}")
+        log_message(f"  Destination: {destination_dir}")
 
         # ---------------------------------------------------------
-        # Copy project
+        # Move Project Files
         # ---------------------------------------------------------
-
-        if destination_dir.exists():
-            try:
-                shutil.rmtree(destination_dir)
-            except OSError as exc:
-                self.log_message(f"Error removing project: {exc}")
-                return False
-
         try:
-            self.log_message(f"Copying project to: {destination_dir}")
+            log_message(f"Moving project to: {destination_dir}")
+            if destination_dir.exists():
+                try:
+                    shutil.rmtree(destination_dir)
+                except OSError as exc:
+                    self.log_message(f"Error removing project: {exc}")
+                    return False
 
-            if not self.copy_project_files(project_dir, destination_dir):
-                return False
-
+            self.log_message(f"Moving project files to: {destination_dir}")
+            try:
+                destination_dir.mkdir(parents=True, exist_ok=True)
+                for source in project_dir.rglob("*"):
+                    relative_path = source.relative_to(project_dir)
+                    destination = destination_dir / relative_path
+                    if source.is_dir():
+                        destination.mkdir(parents=True, exist_ok=True)
+                        log_message(f"Created Destination Folder: {relative_path}")
+                    elif source.is_file():
+                        destination.parent.mkdir(parents=True, exist_ok=True)
+                        shutil.move(source, destination)
+                        log_message(f"Moved: {relative_path}")
+            except OSError as exc1:
+                self.log_message(f"Error Moving Project Files: {exc1}")
+                result = False
+            log_message("Project Files Moved Successfully.")
             project_path = destination_project
-            self.log_message(f"Copied Project: {project_path.name}")
+            log_message(f"Moved Project: {project_path.name}")
         except OSError as exc:
-            self.log_message(f"Error copying project: {exc}")
+            self.log_message(f"Error Moving Project: {exc}")
             return False
 
         if not list(destination_dir.rglob("*.csproj")):
@@ -1645,10 +1621,10 @@ class ConvertXnaProjects(QObject):
             ).replace("\\", "/")
         except ValueError:
             project_path_value = project_path.as_posix()
-            self.log_message("  Project is on a different drive.")
+            self.log_message("Project is on a different drive.")
 
-        self.log_message(f"Solution path: {solution_path}")
-        self.log_message(f"Project path: {project_path_value}")
+        log_message(f"Solution path: {solution_path}")
+        log_message(f"Project path: {project_path_value}")
 
         # ---------------------------------------------------------
         # Parse solution
@@ -1666,7 +1642,7 @@ class ConvertXnaProjects(QObject):
         # Remove existing entry for this exact project
         # ---------------------------------------------------------
 
-        if add_to_archive_folder:
+        if add_to_solution_archive_folder:
             for parent in root.iter():
                 for project in list(parent):
                     path = project.get("Path")
@@ -1679,7 +1655,7 @@ class ConvertXnaProjects(QObject):
                         try:
                             if existing.resolve() == project_path:
                                 parent.remove(project)
-                                self.log_message(
+                                log_message(
                                     f"  Removed duplicate: {path}"
                                 )
                         except OSError:
@@ -1691,7 +1667,7 @@ class ConvertXnaProjects(QObject):
 
         folder_name = (
             "/indie-game-archive/"
-            if add_to_archive_folder
+            if add_to_solution_archive_folder
             else "/Reference-Projects/"
         )
 
@@ -1706,7 +1682,7 @@ class ConvertXnaProjects(QObject):
 
         if folder is None:
             folder = ET.SubElement(root, "Folder", {"Name": folder_name})
-            self.log_message(f"  Created {folder_name} solution folder.")
+            log_message(f"  Created {folder_name} solution folder.")
 
         # ---------------------------------------------------------
         # Add project
@@ -1717,9 +1693,9 @@ class ConvertXnaProjects(QObject):
                 for p in root.iter("Project")
         ):
             ET.SubElement(folder, "Project", {"Path": project_path_value})
-            self.log_message(f"  Added {project_path.name} to {folder_name}")
+            log_message(f"  Added {project_path.name} to {folder_name}")
         else:
-            self.log_message(
+            log_message(
                 f"  Project already exists: {project_path.name}"
             )
 
@@ -1739,7 +1715,7 @@ class ConvertXnaProjects(QObject):
             self.log_message(f"ERROR saving solution: {exc}")
             return False
 
-        self.log_message("  Solution updated successfully.")
+        log_message("  Solution updated successfully.")
         return True
 
     # def method_name(self, game:XBLIGGame):
@@ -1906,7 +1882,6 @@ class ScanWorker(QObject):
         self.log_signal.emit(message, color)
 
 from PySide6.QtWidgets import QStyledItemDelegate
-from PySide6.QtGui import QPainter
 from PySide6.QtCore import QRect, QSize, Qt
 
 
@@ -2806,7 +2781,7 @@ class XBLIGDialog(QDialog):
             self.convert_content_check = QCheckBox("Add To Indie Game Solution")
             self.open_vs_check = QCheckBox("Open Indie Game Solution in Visual Studio.")
             self.open_explorer_check = QCheckBox("Open Decompiled Project Folder.")
-
+            self.convert_content_move_check = QCheckBox("Move Project to Indie Game Solution")
             self.convert_csproj_check.setChecked(True)
             self.convert_content_check.setChecked(True)
 
@@ -2819,6 +2794,7 @@ class XBLIGDialog(QDialog):
             # options_layout.addWidget(self.solution_file)
             options_layout.addWidget(self.convert_csproj_check)
             options_layout.addWidget(self.convert_content_check)
+            options_layout.addWidget(self.convert_content_move_check)
             options_layout.addWidget(self.open_vs_check)
             options_layout.addWidget(self.open_explorer_check)
 
@@ -2848,6 +2824,7 @@ class XBLIGDialog(QDialog):
                 "convert_csproj": self.convert_csproj_check.isChecked(),
                 "add_to_solution": self.convert_content_check.isChecked(),
                 # "convert_content": self.convert_content_check.isChecked(),
+                "convert_content_move_check": self.convert_content_move_check.isChecked(),
                 "open_visual_studio": self.open_vs_check.isChecked(),
                 "open_explorer": self.open_explorer_check.isChecked(),
             }
@@ -2903,16 +2880,7 @@ class XBLIGDialog(QDialog):
         if options["add_to_solution"]:
             cs_proj_files = get_cs_project_folders(game.decompiled, self.log_message)
             for csproj_file in cs_proj_files:
-                if (
-                        game.folder_title is not None
-                        and (
-                        game.title.lower() in csproj_file.stem.lower()
-                        or any(
-                    csproj_file.stem.lower() == executable.stem.lower()
-                    for executable in game.executables
-                )
-                )
-                ):
+                if game.folder_title is not None and (game.title.lower() in csproj_file.stem.lower() or any(csproj_file.stem.lower() == executable.stem.lower() for executable in game.executables)):
                     new_csproj_file = csproj_file.with_name(f"{game.folder_title}.csproj")
                     try:
                         csproj_file.rename(new_csproj_file)
@@ -2928,7 +2896,8 @@ class XBLIGDialog(QDialog):
                 add_to_archive = ( game.folder_title is not None and (game.title.lower() in csproj_file.stem.lower() or any(csproj_file.stem.lower() == executable.stem.lower() for executable in game.executables)))
                 try:
                     solution_path = self.config["indie-game-solution-location"]
-                    converter.add_project_to_solution(solution_path, csproj_file, game, add_to_archive_folder=add_to_archive)
+                    converter.add_project_to_solution(solution_path, csproj_file, game,
+                                                      add_to_solution_archive_folder=add_to_archive)
                 except Exception as e:
                     self.log_message(f"Failed to Add Project to Solution {e}")
 
@@ -3426,9 +3395,6 @@ class XBLIGDialog(QDialog):
 
         main_layout.addWidget(splitter)
 
-    from contextlib import redirect_stdout
-    from io import StringIO
-
     def open_ilspy(self):
         ensure_tool_extracted("ilspy", log=self.log_message,)
         self.ilspy_process = QProcess(self)
@@ -3481,8 +3447,6 @@ class XBLIGDialog(QDialog):
     #     self.game_table.setItem(row, 1, QTableWidgetItem(status))
     #     self.game_table.setItem(row, 2, QTableWidgetItem(extracted))
     #     self.game_table.setItem(row, 3, QTableWidgetItem(exe))
-
-    from html import escape
 
     # def log_message(self, message, color=None):
     #     message = escape(str(message))

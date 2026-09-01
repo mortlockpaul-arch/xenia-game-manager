@@ -1,32 +1,32 @@
+
 # Xenia Game Manager Launcher Rebuilder
 
-PySide6 Xenia / Xemu Game Manager and Launcher for Xbox and Xbox 360 games. Indie game decompiler and Content Rebuilder.
+A Windows application for managing and organizing Xbox 360 games for Xenia.
 
-The Manager imports your Game List from Xenia Manager or Xenia Edge , stores game metadata in SQLite, provides title cleanup, archive tools, favourites, search, sorting, multi-disc support, play tracking.
+## Download
 
----
+**[🎮 Get Xenia Game Manager](https://pmortlock.itch.io/xenia-game-manager)**
 
-# Features
+The latest Windows releases are available on itch.io, including:
 
-## Library Management
+* Portable version
+* Windows MSI installer
 
-- Import games from Xenia Manager or Xenia Edge Game List and Identify Multi Disc games
-- Import .xiso files and Launch Xemu
-- Indie Game Decompiler and Content Rebuilder ( With the XNB Extractor or Other Tools Included )
-- Add Favourites
-- Optimize Xenia and Edge Games 
-- Extract Downloaded Archives
-- Unify Content folders for Xenia Canary, Netplay and Mousehook.
+## Support
+
+If Xenia Game Manager is useful to you, and you'd like to support development:
+
+**[☕ Buy Me a Coffee](https://buymeacoffee.com/polomolo)**
 
 ---
 # License
 Personal use project.
+
 ## Third-Party Projects
 
 This software integrates with:
 
-- Xenia Manager / Netplay / Mousehook and Canary
-- Xenia Edge
+- Xenia Manager / Netplay / Mousehook / Edge and Canary
 
 All trademarks, copyrights, and intellectual property remain the property of their respective owners.
 
