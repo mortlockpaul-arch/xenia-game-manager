@@ -12,7 +12,7 @@ from logging_setup import setup_logger
 
 root = get_app_dir()
 build_dir = root / "build"
-current_folder = Path(__file__).parent
+current_folder = build_dir
 
 executables = [
     {
@@ -74,9 +74,8 @@ optimize = 2
 
 icon = root / "assets" / "icons" / "app.ico"
 
-
 def create_defaults(version):
-    logging.info("Creating default game manager database and configuration files...")
+    logger.info("Creating default game manager database and configuration files...")
 
     base_path = root
 
@@ -91,22 +90,22 @@ def create_defaults(version):
 
     def backup_existing(path: Path):
         if not path.exists():
-            logging.info(f"  No existing file to back up: {path.name}")
+            logger.info(f"  No existing file to back up: {path.name}")
             return
 
         backup = backup_dir / path.name
 
         if backup.exists():
-            logging.info(f"  Removing old backup: {backup.name}")
+            logger.info(f"  Removing old backup: {backup.name}")
             backup.unlink()
 
-        logging.info(f"  Backing up {path.name} -> {backup}")
+        logger.info(f"  Backing up {path.name} -> {backup}")
         shutil.copy2(path, backup)
 
     config = load_config_file()
     config["game_manager_version"] = version
     save_config(config)
-    logging.info("Done.")
+    logger.info("Done.")
 
 def copy_optimized_settings():
     settings_dest = root / "assets" / "settings"
@@ -126,17 +125,17 @@ def copy_optimized_settings():
         if not dst.exists() or not filecmp.cmp(src, dst, shallow=False):
             shutil.copy2(src, dst)
             copied += 1
-            logging.info(f"Copied: {dst}")
+            logger.info(f"Copied: {dst}")
 
     if copied == 0:
-        logging.info("All optimized settings are already up to date.")
+        logger.info("All optimized settings are already up to date.")
     else:
-        logging.info(f"Updated {copied} file(s).")
+        logger.info(f"Updated {copied} file(s).")
 
 def cleanup_egg_info():
     for egg_info in current_folder.glob("*.egg-info"):
         shutil.rmtree(egg_info)
-        logging.info(f"Deleted: {egg_info}")
+        logger.info(f"Deleted: {egg_info}")
 
 def build_executable(executable):
     from cx_Freeze import Executable, setup
@@ -179,12 +178,13 @@ def build_executable(executable):
     )
 
 def zip_portable(executable):
-    build_dir_current = Path(current_folder / "build") / executable["target_name"]
+    build_dir_current = Path(current_folder) / executable["target_name"]
     out_zip = Path(current_folder / "dist") / f"{executable['target_name']}-portable.zip"
-
+    logger.info(f"{build_dir_current}")
+    logger.info(f"{out_zip}")
     if out_zip.exists():
         out_zip.unlink()
-        logging.info(f"Deleting existing portable zip: {out_zip}")
+        logger.info(f"Deleting existing portable zip: {out_zip}")
 
     out_zip.parent.mkdir(exist_ok=True)
 
@@ -196,12 +196,18 @@ def zip_portable(executable):
         # Add portable.txt to the root of the ZIP
         zipf.writestr("portable.txt", "")
 
-    logging.info(f"Portable zip created: {out_zip}")
+    logger.info(f"Portable zip created: {out_zip}")
 
 def build_all():
     build_dir.mkdir(exist_ok=True)
     for executable in executables:
         build_executable(executable)
+        zip_portable(executable)
+    cleanup_egg_info()
+
+def build_portables():
+    build_dir.mkdir(exist_ok=True)
+    for executable in executables:
         zip_portable(executable)
     cleanup_egg_info()
 
@@ -284,13 +290,15 @@ def build_msi():
         script_args=["bdist_msi"],
     )
 
-
 if __name__ == "__main__":
+    logger = setup_logger()
     if len(sys.argv) > 1 and sys.argv[1].lower() == "msi":
         build_msi()
     else:
-        build_all()
-        logger = setup_logger()
-        create_defaults(version="1.2.3")
-        tools_setup()
-        copy_optimized_settings()
+        if len(sys.argv) > 1 and sys.argv[1].lower() == "portables":
+            build_portables()
+        else:
+            build_all()
+            create_defaults(version="1.2.3")
+            tools_setup()
+            copy_optimized_settings()

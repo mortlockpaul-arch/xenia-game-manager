@@ -4,20 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.3 Downloader Setup">
+    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.3 Distribution and Build Tools">
       <change afterPath="$PROJECT_DIR$/../XBLA-Extract/.idea/xbla-extract.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build_tools/build_individuals.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/xenia-game-manager.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/xenia-game-manager.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.run/build.run.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.run/build.run.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build_tools/Xenia_Game_Manager.egg-info/SOURCES.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/Xenia_Game_Manager.egg-info/SOURCES.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build_tools/build.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/build.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build_tools/cleanup_repo.ps1" beforeDir="false" afterPath="$PROJECT_DIR$/src/scripts/cleanup_repo.ps1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build_tools/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/xenia_compatibility.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/xenia_compatibility.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/model_xbox.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/model_xbox.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scripts/build_projects_clean.ps1" beforeDir="false" afterPath="$PROJECT_DIR$/src/scripts/build_projects_clean.ps1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build_tools/Xenia_Game_Manager.egg-info/PKG-INFO" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build_tools/Xenia_Game_Manager.egg-info/SOURCES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build_tools/Xenia_Game_Manager.egg-info/dependency_links.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build_tools/Xenia_Game_Manager.egg-info/top_level.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build_tools/build_individuals.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/build_individuals.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logging_setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/logging_setup.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,61 +57,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="9.893597323557547E-160" />
-      <entry key="S2" value="1.7735300752666375E-40" />
-      <entry key="S5" value="1.257579424071063E-16" />
-      <entry key="S10" value="1.1214184874840717E-8" />
-      <entry key="S30" value="0.0022383220370299044" />
-      <entry key="S60" value="0.04731090822453004" />
-      <entry key="M2" value="0.21751070833713004" />
-      <entry key="M5" value="0.5434479193251844" />
-      <entry key="M10" value="0.7767718478972836" />
-      <entry key="M15" value="1.0475338805620555" />
-      <entry key="M30" value="2.2612955191693405" />
-      <entry key="H1" value="4.317062976353178" />
-      <entry key="H2" value="7.031230384130009" />
-      <entry key="H4" value="12.025923529753298" />
-      <entry key="D1" value="194.15519549349727" />
-      <entry key="W1" value="1392.1786730929725" />
+      <entry key="MS100" value="4.9118796434008216E-24" />
+      <entry key="MS500" value="2.3049738007182393E-5" />
+      <entry key="S2" value="0.10182687586058813" />
+      <entry key="S5" value="0.600217686712696" />
+      <entry key="S10" value="1.1293392772979212" />
+      <entry key="S30" value="2.0778193671383676" />
+      <entry key="S60" value="2.7193715589511953" />
+      <entry key="M2" value="3.240274405311524" />
+      <entry key="M5" value="3.7218268817601685" />
+      <entry key="M10" value="4.334659434264943" />
+      <entry key="M15" value="5.103885618494251" />
+      <entry key="M30" value="7.432223809244545" />
+      <entry key="H1" value="10.955773395963828" />
+      <entry key="H2" value="15.302603014917016" />
+      <entry key="H4" value="21.423622046801167" />
+      <entry key="D1" value="199.73606981936715" />
+      <entry key="W1" value="1397.638714062002" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0" />
-      <entry key="S5" value="1.0" />
-      <entry key="S10" value="1.0" />
-      <entry key="S30" value="1.0" />
-      <entry key="S60" value="1.0" />
-      <entry key="M2" value="1.0" />
-      <entry key="M5" value="1.0" />
-      <entry key="M10" value="1.0000000000001412" />
-      <entry key="M15" value="1.0000000034173278" />
-      <entry key="M30" value="1.000082665877235" />
-      <entry key="H1" value="1.0128589376991781" />
-      <entry key="H2" value="1.162738467939055" />
-      <entry key="H4" value="1.7099554599980555" />
-      <entry key="D1" value="29.297676533332" />
-      <entry key="W1" value="255.27092420722522" />
+      <entry key="MS500" value="1.0000000101164532" />
+      <entry key="S2" value="1.013652589561214" />
+      <entry key="S5" value="1.297860750016111" />
+      <entry key="S10" value="1.9098036932231823" />
+      <entry key="S30" value="2.9959722308264913" />
+      <entry key="S60" value="3.4438693161592773" />
+      <entry key="M2" value="3.707021480444107" />
+      <entry key="M5" value="3.9128023526959153" />
+      <entry key="M10" value="4.127222308021764" />
+      <entry key="M15" value="4.30911242835083" />
+      <entry key="M30" value="4.710826322424742" />
+      <entry key="H1" value="5.152190827079455" />
+      <entry key="H2" value="5.601494928012449" />
+      <entry key="H4" value="6.291791917609481" />
+      <entry key="D1" value="33.196945677209655" />
+      <entry key="W1" value="258.8920749838813" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="3.824907235988683E-8" />
-      <entry key="MS500" value="0.03284915340899082" />
-      <entry key="S2" value="0.4257268538744725" />
-      <entry key="S5" value="0.7106445310129798" />
-      <entry key="S10" value="0.8429973605257116" />
-      <entry key="S30" value="0.9468954179285819" />
-      <entry key="S60" value="1.0192191159854591" />
-      <entry key="M2" value="1.2033148246790382" />
-      <entry key="M5" value="1.5377064691084352" />
-      <entry key="M10" value="1.7738396777471133" />
-      <entry key="M15" value="2.04543704856" />
-      <entry key="M30" value="3.2599483968838032" />
-      <entry key="H1" value="5.328843946660299" />
-      <entry key="H2" value="8.19298071886313" />
-      <entry key="H4" value="13.7347064245533" />
-      <entry key="D1" value="223.44853704186505" />
-      <entry key="W1" value="1647.445574621983" />
+      <entry key="MS100" value="6.40696218031657E-5" />
+      <entry key="MS500" value="0.14500806524461868" />
+      <entry key="S2" value="0.7118262000405643" />
+      <entry key="S5" value="1.5819329802936057" />
+      <entry key="S10" value="2.7214949819326346" />
+      <entry key="S30" value="4.838415117047445" />
+      <entry key="S60" value="6.005910808079065" />
+      <entry key="M2" value="6.854012434576092" />
+      <entry key="M5" value="7.592750317024374" />
+      <entry key="M10" value="8.4397982211918" />
+      <entry key="M15" value="9.397829776542833" />
+      <entry key="M30" value="12.134951487566502" />
+      <entry key="H1" value="16.103477565961253" />
+      <entry key="H2" value="20.90140605318121" />
+      <entry key="H4" value="27.713436346315053" />
+      <entry key="D1" value="232.92866601461867" />
+      <entry key="W1" value="1656.5267629437665" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -146,6 +141,7 @@
     "Python.archive_indie_window.executor": "Run",
     "Python.build individuals.executor": "Run",
     "Python.build msi.executor": "Run",
+    "Python.build portables.executor": "Run",
     "Python.build.executor": "Run",
     "Python.convert_xna_projects.executor": "Debug",
     "Python.import_xblig_metadata.executor": "Run",
@@ -201,7 +197,7 @@
       <recent name="C:\PycharmProjects\xenia-game-manager\src\models" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.build portables">
     <configuration name="Unnamed" type="BatchConfigurationType" factoryName="Batch" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -257,6 +253,31 @@
       <option name="RUN_TOOL" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/build_tools/build_individuals.py" />
       <option name="PARAMETERS" value="msi" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="build portables" type="PythonConfigurationType" factoryName="Python">
+      <module name="xenia-game-manager" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="uv (xenia-game-manager) (2)" />
+      <option name="WORKING_DIRECTORY" value="C:\PycharmProjects\xenia-game-manager\build_tools" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/build_tools/build_individuals.py" />
+      <option name="PARAMETERS" value="portables" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -321,6 +342,7 @@
       <item itemvalue="Python.main-updater" />
       <item itemvalue="Python.build" />
       <item itemvalue="Python.build individuals" />
+      <item itemvalue="Python.build portables" />
       <item itemvalue="Python.build msi" />
       <item itemvalue="Python.main" />
       <item itemvalue="Python.package window" />
@@ -333,14 +355,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00107" summary="1.1.8 Column Sorting Enabled.">
-      <option name="closed" value="true" />
-      <created>1787791680683</created>
-      <option name="number" value="00107" />
-      <option name="presentableId" value="LOCAL-00107" />
-      <option name="project" value="LOCAL" />
-      <updated>1787791680685</updated>
     </task>
     <task id="LOCAL-00108" summary="1.1.8 Column Sorting Enabled.">
       <option name="closed" value="true" />
@@ -726,7 +740,15 @@
       <option name="project" value="LOCAL" />
       <updated>1788291151529</updated>
     </task>
-    <option name="localTasksCounter" value="156" />
+    <task id="LOCAL-00156" summary="1.2.3 Distribution and Build Tools">
+      <option name="closed" value="true" />
+      <created>1788316809478</created>
+      <option name="number" value="00156" />
+      <option name="presentableId" value="LOCAL-00156" />
+      <option name="project" value="LOCAL" />
+      <updated>1788316809480</updated>
+    </task>
+    <option name="localTasksCounter" value="157" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -748,7 +770,6 @@
       <path value="$PROJECT_DIR$/../XBLA-Extract" />
       <path value="$PROJECT_DIR$/src/compatibility/xemu_compatibility/xdb" />
     </ignored-roots>
-    <MESSAGE value="1.1.1 Logging Initialisation" />
     <MESSAGE value="1.1.2 Extraction Worker" />
     <MESSAGE value="1.1.2 Rename csproj to game title." />
     <MESSAGE value="1.1.3 Fix DLL references when moving decompiled project to source folder." />
@@ -773,7 +794,8 @@
     <MESSAGE value="1.2.3 Platform Target" />
     <MESSAGE value="1.2.3 Add Reference-Projects" />
     <MESSAGE value="1.2.3 Downloader Setup" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.2.3 Downloader Setup" />
+    <MESSAGE value="1.2.3 Distribution and Build Tools" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.2.3 Distribution and Build Tools" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1024,9 +1046,19 @@
           <option name="timeStamp" value="289" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/xiso.py</url>
-          <line>52</line>
-          <option name="timeStamp" value="292" />
+          <url>file://$PROJECT_DIR$/build_tools/build_individuals.py</url>
+          <line>294</line>
+          <option name="timeStamp" value="294" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/build_tools/build_individuals.py</url>
+          <line>298</line>
+          <option name="timeStamp" value="295" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/build_tools/build_individuals.py</url>
+          <line>188</line>
+          <option name="timeStamp" value="296" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
