@@ -2504,7 +2504,7 @@ class XBLIGDialog(QDialog):
         self.scan_btn.setEnabled(True)
 
     def log_message_log(self, message):
-        logging.info(f"{message}")
+        logger.info(f"{message}")
         self.log_message(message, "#2ecc71")
 
     # def rescan_games(self, force=False):
@@ -3582,7 +3582,7 @@ RAINBOW_COLORS = [
 ]
 
 if __name__ == "__main__":
-    setup_logger()
+    logger = setup_logger()
 
     app = QApplication(sys.argv)
     xbdlg = XBLIGDialog()
