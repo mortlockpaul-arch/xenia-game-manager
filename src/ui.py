@@ -564,7 +564,7 @@ class GameLauncher(QMainWindow):
         self.compatibility = Compatibility(self.db, self.log_message)
 
         setup_logger()
-        QTimer.singleShot(5000, self.scan_for_xisos)
+
 
     def scan_for_xisos(self):
         self.scanner = xiso.XboxScanner()
@@ -785,10 +785,6 @@ class GameLauncher(QMainWindow):
 
         self.export_btn = QPushButton("Update Xenia Manager Game List")
         self.export_btn.clicked.connect(self.export_titles)
-
-        # self.refresh_btn = QPushButton("Refresh")
-        # self.refresh_btn.clicked.connect(self.refresh)
-        # tools_layout.addWidget(self.refresh_btn)
 
         self.xenia_edge_optimise_btn = QPushButton("Create Xenia Edge Optimised Settings")
         self.xenia_edge_optimise_btn.clicked.connect(self.on_optimize_xenia_clicked)
@@ -1360,6 +1356,10 @@ class GameLauncher(QMainWindow):
         self.search.setFixedWidth(250)
         toolbar.addWidget(self.search)
 
+
+        self.refresh_xbox_btn = QPushButton("Scan for XBox Xisos")
+        self.refresh_xbox_btn.clicked.connect(self.scan_for_xisos)
+
         self.netplay_button = QPushButton("Netplay Compatible Games")
         self.netplay_button.clicked.connect(self.netplay_compatibility)
 
@@ -1413,6 +1413,7 @@ class GameLauncher(QMainWindow):
         toolbar.addWidget(self.netplay_button)
         toolbar.addWidget(self.refresh_btn)
         toolbar.addWidget(refresh_btn)
+        toolbar.addWidget(self.refresh_xbox_btn)
         toolbar.addWidget(self.browser_button)
         toolbar.addWidget(self.browser_close_button)
         toolbar.addWidget(self.launch_manager)
@@ -2096,21 +2097,16 @@ class GameLauncher(QMainWindow):
     # Refresh
     # -------------------------
     def xiso_scan_finished(self, results):
-        self.on_status("")
-        self.on_status("XISO FILES:")
-
-        for xiso_file in results:
-            self.on_status(f"  {xiso_file.file}")
-
-        self.on_status("")
-        self.on_status("XBOX ROM PATHS:")
-
+        # self.on_status("")
+        # self.on_status("XISO FILES:")
+        #
+        # for xiso_file in results:
+        #     self.on_status(f"  {xiso_file.file}")
+        #
         self.xiso_scan_result_folders = {xiso_file.rom_path for xiso_file in results}
         for path in sorted(self.xbox_game_list, key=lambda p: str(p).lower()):
             self.on_status(f"  {path}")
         self.xbox_game_list = results
-
-        self.on_status("")
 
     def on_status(self, message):
         self.log_message(message)

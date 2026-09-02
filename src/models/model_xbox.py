@@ -157,22 +157,6 @@ class XboxGameTableModel(DiscGameTableModel):
         return section + 1
 
     def get_value(self, game: XboxGame, key: str):
-        disc_fields = {
-            "media_id",
-            "file_path",
-            "disc_count",
-            "disc_type",
-            "disc_swap_required",
-            "disc_number",
-            "label",
-        }
-
-        if key in disc_fields:
-            if not game.discs:
-                return None
-
-            return getattr(game.discs[0], key, None)
-
         return getattr(game, key, None)
 
     def data(self, index, role=Qt.ItemDataRole.DisplayRole):

@@ -1,3 +1,4 @@
+build_individuals.py
 setup.py
 Xenia_Game_Manager.egg-info/PKG-INFO
 Xenia_Game_Manager.egg-info/SOURCES.txt

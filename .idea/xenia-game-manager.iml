@@ -75,6 +75,7 @@
       <excludeFolder url="file://$MODULE_DIR$/src/cache" />
       <excludeFolder url="file://$MODULE_DIR$/src/compatibility" />
       <excludeFolder url="file://$MODULE_DIR$/build_tools/Xenia_Game_Manager.egg-info" />
+      <excludeFolder url="file://$MODULE_DIR$/src/build" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="jdk" jdkName="uv (xenia-game-manager) (2)" jdkType="Python SDK" />

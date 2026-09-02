@@ -2971,7 +2971,7 @@
     "issue": 988,
     "id": "535107DB",
     "title": "Infinite Undiscovery",
-    "updated": "2026-07-05T16:23:13Z",
+    "updated": "2026-09-01T04:39:14Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -4533,7 +4533,7 @@
     "issue": 885,
     "id": "5451080B",
     "title": "WWE SmackDown vs. Raw 2008",
-    "updated": "2026-06-07T21:23:33Z",
+    "updated": "2026-08-31T02:36:22Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -10195,14 +10195,13 @@
     "issue": 516,
     "id": "454108CF",
     "title": "Dante's Inferno",
-    "updated": "2026-07-25T05:18:03Z",
+    "updated": "2026-09-01T10:31:08Z",
     "state": "Playable",
     "labels": {
       "state": [
         "state-playable"
       ],
       "others": [
-        "gpu-drawing-missing",
         "vsync-off-speedup"
       ]
     },
@@ -11970,7 +11969,7 @@
     "issue": 406,
     "id": "555307DC",
     "title": "Far Cry: Instincts Predator",
-    "updated": "2026-06-23T19:57:07Z",
+    "updated": "2026-09-01T16:48:54Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -11978,6 +11977,7 @@
       ],
       "others": [
         "tech-engine-cry",
+        "gpu-readback",
         "gpu-occlusion-query",
         "gpu-viz-query"
       ]
@@ -12958,7 +12958,7 @@
     "issue": 348,
     "id": "454109C3",
     "title": "FIFA 14",
-    "updated": "2026-08-12T19:05:24Z",
+    "updated": "2026-09-01T16:04:22Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -16409,17 +16409,15 @@
     "issue": 136,
     "id": "534507E3",
     "title": "Phantasy Star Universe",
-    "updated": "2026-08-26T21:17:30Z",
+    "updated": "2026-08-30T22:30:16Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
-        "gpu-drawing-missing",
         "tech-middleware-criware",
         "vsync-off-speedup",
-        "gpu-drawing-black",
         "gpu-xps"
       ]
     },
@@ -17544,7 +17542,7 @@
     "issue": 45,
     "id": "4D530A26",
     "title": "Gears of War: Judgment",
-    "updated": "2026-06-01T12:53:54Z",
+    "updated": "2026-09-01T16:47:32Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -17553,6 +17551,7 @@
       "others": [
         "gpu-drawing-corrupt",
         "tech-engine-unreal",
+        "gpu-readback",
         "gpu-occlusion-query"
       ]
     },

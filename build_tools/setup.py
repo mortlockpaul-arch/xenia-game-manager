@@ -46,7 +46,7 @@ executables = [
             script=str(root  / "package_window.py"),
             base="gui",
             icon=str(root  / "assets" / "icons" / "app.ico"),
-            target_name="xbox-indie-rebuilder"
+            target_name="xbox-game-rebuilder"
         )
 ]
 

@@ -6,11 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.3 Downloader Setup">
       <change afterPath="$PROJECT_DIR$/../XBLA-Extract/.idea/xbla-extract.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/scripts/build_projects.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/scripts/build_projects_clean.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build_tools/build_individuals.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/xenia-game-manager.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/xenia-game-manager.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.run/build.run.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.run/build.run.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build_tools/Xenia_Game_Manager.egg-info/SOURCES.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/Xenia_Game_Manager.egg-info/SOURCES.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build_tools/build.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/build.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build_tools/cleanup_repo.ps1" beforeDir="false" afterPath="$PROJECT_DIR$/src/scripts/cleanup_repo.ps1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build_tools/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/xenia_compatibility.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/xenia_compatibility.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/model_xbox.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/model_xbox.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scripts/build_projects_clean.ps1" beforeDir="false" afterPath="$PROJECT_DIR$/src/scripts/build_projects_clean.ps1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,8 +30,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="PowerShell File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -55,61 +62,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0000412921018225" />
-      <entry key="S2" value="1.0891203112994075" />
-      <entry key="S5" value="1.5160915195074696" />
-      <entry key="S10" value="1.9931308955476632" />
-      <entry key="S30" value="2.576745483398581" />
-      <entry key="S60" value="2.8465055347710013" />
-      <entry key="M2" value="3.537252879548573" />
-      <entry key="M5" value="5.755105281120019" />
-      <entry key="M10" value="7.671357970003527" />
-      <entry key="M15" value="8.581333677951523" />
-      <entry key="M30" value="9.677298425381805" />
-      <entry key="H1" value="10.30905691902393" />
-      <entry key="H2" value="10.958311328247895" />
-      <entry key="H4" value="15.94663874972905" />
-      <entry key="D1" value="227.8854226876589" />
-      <entry key="W1" value="1424.5462400702058" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="9.893597323557547E-160" />
+      <entry key="S2" value="1.7735300752666375E-40" />
+      <entry key="S5" value="1.257579424071063E-16" />
+      <entry key="S10" value="1.1214184874840717E-8" />
+      <entry key="S30" value="0.0022383220370299044" />
+      <entry key="S60" value="0.04731090822453004" />
+      <entry key="M2" value="0.21751070833713004" />
+      <entry key="M5" value="0.5434479193251844" />
+      <entry key="M10" value="0.7767718478972836" />
+      <entry key="M15" value="1.0475338805620555" />
+      <entry key="M30" value="2.2612955191693405" />
+      <entry key="H1" value="4.317062976353178" />
+      <entry key="H2" value="7.031230384130009" />
+      <entry key="H4" value="12.025923529753298" />
+      <entry key="D1" value="194.15519549349727" />
+      <entry key="W1" value="1392.1786730929725" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="1.558947427165047E-298" />
-      <entry key="S2" value="3.533522552655189E-75" />
-      <entry key="S5" value="1.6571131729533542E-30" />
-      <entry key="S10" value="1.303414702783337E-15" />
-      <entry key="S30" value="1.340970382774876E-5" />
-      <entry key="S60" value="0.004889321783305023" />
-      <entry key="M2" value="0.0973189238670852" />
-      <entry key="M5" value="0.5945400510459359" />
-      <entry key="M10" value="1.0897266404478427" />
-      <entry key="M15" value="1.334005573835263" />
-      <entry key="M30" value="1.6332842660722025" />
-      <entry key="H1" value="1.8074772595826627" />
-      <entry key="H2" value="1.9294081026306011" />
-      <entry key="H4" value="2.4445450263081496" />
-      <entry key="D1" value="34.773248767297055" />
-      <entry key="W1" value="261.86751601993274" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0" />
+      <entry key="S60" value="1.0" />
+      <entry key="M2" value="1.0" />
+      <entry key="M5" value="1.0" />
+      <entry key="M10" value="1.0000000000001412" />
+      <entry key="M15" value="1.0000000034173278" />
+      <entry key="M30" value="1.000082665877235" />
+      <entry key="H1" value="1.0128589376991781" />
+      <entry key="H2" value="1.162738467939055" />
+      <entry key="H4" value="1.7099554599980555" />
+      <entry key="D1" value="29.297676533332" />
+      <entry key="W1" value="255.27092420722522" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.28322097132394963" />
-      <entry key="MS500" value="0.7770397070669036" />
-      <entry key="S2" value="1.0203219327095079" />
-      <entry key="S5" value="1.4598514390990707" />
-      <entry key="S10" value="1.943118780950331" />
-      <entry key="S30" value="2.549721555472442" />
-      <entry key="S60" value="2.8338335479961736" />
-      <entry key="M2" value="3.6118557641980376" />
-      <entry key="M5" value="6.316289684158014" />
-      <entry key="M10" value="8.733104694718266" />
-      <entry key="M15" value="9.893045377140806" />
-      <entry key="M30" value="11.297228078416433" />
-      <entry key="H1" value="12.109218441176019" />
-      <entry key="H2" value="12.88379372362461" />
-      <entry key="H4" value="18.388447157206162" />
-      <entry key="D1" value="262.6534320517229" />
-      <entry key="W1" value="1686.4096239496578" />
+      <entry key="MS100" value="3.824907235988683E-8" />
+      <entry key="MS500" value="0.03284915340899082" />
+      <entry key="S2" value="0.4257268538744725" />
+      <entry key="S5" value="0.7106445310129798" />
+      <entry key="S10" value="0.8429973605257116" />
+      <entry key="S30" value="0.9468954179285819" />
+      <entry key="S60" value="1.0192191159854591" />
+      <entry key="M2" value="1.2033148246790382" />
+      <entry key="M5" value="1.5377064691084352" />
+      <entry key="M10" value="1.7738396777471133" />
+      <entry key="M15" value="2.04543704856" />
+      <entry key="M30" value="3.2599483968838032" />
+      <entry key="H1" value="5.328843946660299" />
+      <entry key="H2" value="8.19298071886313" />
+      <entry key="H4" value="13.7347064245533" />
+      <entry key="D1" value="223.44853704186505" />
+      <entry key="W1" value="1647.445574621983" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -132,10 +139,13 @@
     "PowerShell.build_projects.ps1.executor": "Run",
     "PowerShell.build_projects_clean.ps1.executor": "Run",
     "PowerShell.cleanup_repo.ps1.executor": "Run",
+    "PowerShell.dotnet-install.ps1.executor": "Run",
     "Python.a.executor": "Run",
     "Python.archive_content_window.executor": "Run",
     "Python.archive_digital_window.executor": "Run",
     "Python.archive_indie_window.executor": "Run",
+    "Python.build individuals.executor": "Run",
+    "Python.build msi.executor": "Run",
     "Python.build.executor": "Run",
     "Python.convert_xna_projects.executor": "Debug",
     "Python.import_xblig_metadata.executor": "Run",
@@ -184,14 +194,14 @@
       <recent name="C:\PycharmProjects\xenia-game-manager\src\assets" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\PycharmProjects\xenia-game-manager\src\scripts" />
       <recent name="C:\PycharmProjects\xenia-game-manager\build_tools" />
       <recent name="C:\PycharmProjects\xenia-game-manager\src" />
       <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\tools" />
       <recent name="C:\PycharmProjects\xenia-game-manager\src\models" />
-      <recent name="C:\PycharmProjects\xenia-game-manager\src\config" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.main">
     <configuration name="Unnamed" type="BatchConfigurationType" factoryName="Batch" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -203,6 +213,55 @@
     </configuration>
     <configuration name="Unnamed" type="PowerShellRunType" factoryName="PowerShell" nameIsGenerated="true" scriptUrl="C:\PycharmProjects\xenia-game-manager\src\downloads\xblig\Manic Miner 360 (World) (XBLIG)\584E07D2\00000002\C0FC5430D7DA3E67452F6A32CB00F2F58780E70B58_extracted\584E07D1\Manic Miner 360.exe" executablePath="$PROJECT_DIR$/../../WINDOWS/System32/WindowsPowerShell/v1.0/powershell.exe">
       <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="build individuals" type="PythonConfigurationType" factoryName="Python">
+      <module name="xenia-game-manager" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="uv (xenia-game-manager) (2)" />
+      <option name="WORKING_DIRECTORY" value="C:\PycharmProjects\xenia-game-manager\build_tools" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/build_tools/build_individuals.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="build msi" type="PythonConfigurationType" factoryName="Python">
+      <module name="xenia-game-manager" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="C:\PycharmProjects\xenia-game-manager\build_tools" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/build_tools/build_individuals.py" />
+      <option name="PARAMETERS" value="msi" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
     <configuration name="main-updater" type="PythonConfigurationType" factoryName="Python">
@@ -261,6 +320,8 @@
       <item itemvalue="PowerShell.Unnamed" />
       <item itemvalue="Python.main-updater" />
       <item itemvalue="Python.build" />
+      <item itemvalue="Python.build individuals" />
+      <item itemvalue="Python.build msi" />
       <item itemvalue="Python.main" />
       <item itemvalue="Python.package window" />
     </list>
@@ -272,14 +333,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00106" summary="1.1.8 Progress Update Refactor. Non Default Folders. Scanner optimization.">
-      <option name="closed" value="true" />
-      <created>1787791516798</created>
-      <option name="number" value="00106" />
-      <option name="presentableId" value="LOCAL-00106" />
-      <option name="project" value="LOCAL" />
-      <updated>1787791516798</updated>
     </task>
     <task id="LOCAL-00107" summary="1.1.8 Column Sorting Enabled.">
       <option name="closed" value="true" />
@@ -665,7 +718,15 @@
       <option name="project" value="LOCAL" />
       <updated>1788205251685</updated>
     </task>
-    <option name="localTasksCounter" value="155" />
+    <task id="LOCAL-00155" summary="1.2.3 Downloader Setup">
+      <option name="closed" value="true" />
+      <created>1788291151527</created>
+      <option name="number" value="00155" />
+      <option name="presentableId" value="LOCAL-00155" />
+      <option name="project" value="LOCAL" />
+      <updated>1788291151529</updated>
+    </task>
+    <option name="localTasksCounter" value="156" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -734,7 +795,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1586</line>
+          <line>1587</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -749,7 +810,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/build_tools/build.py</url>
-          <line>67</line>
+          <line>19</line>
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -759,12 +820,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1752</line>
+          <line>1753</line>
           <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1767</line>
+          <line>1768</line>
           <option name="timeStamp" value="78" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -774,12 +835,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>987</line>
+          <line>983</line>
           <option name="timeStamp" value="85" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1063</line>
+          <line>1059</line>
           <option name="timeStamp" value="86" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -824,32 +885,32 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>2259</line>
+          <line>2255</line>
           <option name="timeStamp" value="157" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>2213</line>
+          <line>2209</line>
           <option name="timeStamp" value="162" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>2212</line>
+          <line>2208</line>
           <option name="timeStamp" value="163" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>2217</line>
+          <line>2213</line>
           <option name="timeStamp" value="164" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>2266</line>
+          <line>2262</line>
           <option name="timeStamp" value="165" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1697</line>
+          <line>1698</line>
           <option name="timeStamp" value="173" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -909,7 +970,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1680</line>
+          <line>1681</line>
           <option name="timeStamp" value="235" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -954,13 +1015,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1955</line>
+          <line>1956</line>
           <option name="timeStamp" value="286" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
           <line>2871</line>
           <option name="timeStamp" value="289" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/xiso.py</url>
+          <line>52</line>
+          <option name="timeStamp" value="292" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
