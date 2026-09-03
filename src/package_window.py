@@ -249,7 +249,7 @@ def load_cache():
         return None
 
 
-def copy_content_and_references(source_content_root_folder: Path | None, dest_content_folder: Path, log_callback=None):
+def copy_compressed_content_and_references(source_content_root_folder: Path | None, dest_content_folder: Path, log_callback=None):
     if source_content_root_folder is None:
         return
     if not source_content_root_folder.exists():
@@ -1556,9 +1556,10 @@ class ConvertXnaProjects(QObject):
             destination_dir: Path,
     ) -> Path | None:
         """
-        Move all files from the project directory to destination_dir.
+        Move a decompiled project to the archive.
 
-        Returns the new project path on success, otherwise None.
+        If a 584E07D1 folder exists anywhere in the project, its contents
+        are moved directly into the root of the archived project.
         """
 
         project_path = Path(project_path).resolve()
@@ -1575,44 +1576,91 @@ class ConvertXnaProjects(QObject):
 
         try:
             if destination_dir.exists():
-                try:
-                    shutil.rmtree(destination_dir)
-                except OSError as exc:
-                    self.log_message(
-                        f"Error removing existing destination: {exc}"
-                    )
-                    return None
+                shutil.rmtree(destination_dir)
 
             destination_dir.mkdir(parents=True, exist_ok=True)
 
-            for source in project_dir.rglob("*"):
-                relative_path = source.relative_to(project_dir)
-                destination = destination_dir / relative_path
+            # Find 584E07D1 anywhere in the project.
+            content_folder = next(
+                (
+                    path
+                    for path in project_dir.rglob("584E07D1")
+                    if path.is_dir()
+                ),
+                None,
+            )
 
-                if source.is_dir():
-                    destination.mkdir(parents=True, exist_ok=True)
-                    self.log_message(
-                        f"Created Destination Folder: {relative_path}"
-                    )
+            # ---------------------------------------------------------
+            # Move 584E07D1 contents to project root
+            # ---------------------------------------------------------
 
-                elif source.is_file():
-                    destination.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.move(source, destination)
-                    self.log_message(f"Moved: {relative_path}")
+            if content_folder:
+                self.log_message(
+                    f"Flattening content folder: {content_folder}"
+                )
+
+                for source in content_folder.iterdir():
+                    destination = destination_dir / source.name
+
+                    if source.is_dir():
+                        shutil.move(
+                            str(source),
+                            str(destination),
+                        )
+                        self.log_message(
+                            f"Moved Folder: {source.name}"
+                        )
+                    else:
+                        shutil.move(
+                            str(source),
+                            str(destination),
+                        )
+                        self.log_message(
+                            f"Moved: {source.name}"
+                        )
+
+            # ---------------------------------------------------------
+            # Move everything else
+            # ---------------------------------------------------------
+
+            for source in project_dir.iterdir():
+
+                # The 584E07D1 folder has already been emptied/moved.
+                if source == content_folder:
+                    continue
+
+                destination = destination_dir / source.name
+
+                shutil.move(
+                    str(source),
+                    str(destination),
+                )
+
+                self.log_message(
+                    f"Moved: {source.name}"
+                )
 
         except OSError as exc:
-            self.log_message(f"Error moving project files: {exc}")
+            self.log_message(
+                f"Error moving project files: {exc}"
+            )
             return None
 
+        # ---------------------------------------------------------
+        # Verify project
+        # ---------------------------------------------------------
+
         if not list(destination_dir.rglob("*.csproj")):
-            self.log_message("Error: No .csproj found in destination.")
+            self.log_message(
+                "Error: No .csproj found in destination."
+            )
             return None
 
         self.log_message(
             f"Project moved successfully: {destination_project.name}"
         )
 
-        return destination_project
+        return
 
     def add_project_to_solution(
             self,
@@ -1625,6 +1673,7 @@ class ConvertXnaProjects(QObject):
 
         solution_path = Path(solution_path).resolve()
         project_path = Path(project_path).resolve()
+        original_project_path = project_path
 
         def log_message(message):
             self.log_message(message, self.LOG_COLORS["debug"])
@@ -1649,7 +1698,7 @@ class ConvertXnaProjects(QObject):
         project_dir = project_path.parent
         destination_dir = archive_dir / project_dir.name
 
-        if add_to_solution_archive_folder:
+        if add_to_solution_archive_folder and game is not None:
             game.archived = destination_dir
 
         log_message(f"  Source:      {project_dir}")
@@ -1670,6 +1719,10 @@ class ConvertXnaProjects(QObject):
 
             project_path = destination_project
 
+            log_message(
+                f"  Project moved: {original_project_path} -> {project_path}"
+            )
+
         # ---------------------------------------------------------
         # Project path
         # ---------------------------------------------------------
@@ -1680,8 +1733,15 @@ class ConvertXnaProjects(QObject):
                 solution_path.parent,
             ).replace("\\", "/")
 
+            original_project_path_value = os.path.relpath(
+                original_project_path,
+                solution_path.parent,
+            ).replace("\\", "/")
+
         except ValueError:
             project_path_value = project_path.as_posix()
+            original_project_path_value = original_project_path.as_posix()
+
             self.log_message("Project is on a different drive.")
 
         log_message(f"Solution path: {solution_path}")
@@ -1700,28 +1760,28 @@ class ConvertXnaProjects(QObject):
         root = tree.getroot()
 
         # ---------------------------------------------------------
-        # Remove existing entry for this exact project
+        # Remove existing entries
         # ---------------------------------------------------------
 
-        if add_to_solution_archive_folder:
-            for parent in root.iter():
-                for project in list(parent):
-                    path = project.get("Path")
+        for parent in root.iter():
+            for project in list(parent):
+                if project.tag != "Project":
+                    continue
 
-                    if project.tag == "Project" and path:
-                        existing = Path(path)
+                path = project.get("Path")
 
-                        if not existing.is_absolute():
-                            existing = solution_path.parent / existing
+                if not path:
+                    continue
 
-                        try:
-                            if existing.resolve() == project_path:
-                                parent.remove(project)
-                                log_message(
-                                    f"  Removed duplicate: {path}"
-                                )
-                        except OSError:
-                            pass
+                if path in (
+                        original_project_path_value,
+                        project_path_value,
+                ):
+                    parent.remove(project)
+
+                    log_message(
+                        f"  Removed existing project entry: {path}"
+                    )
 
         # ---------------------------------------------------------
         # Find / create solution folder
@@ -1757,24 +1817,15 @@ class ConvertXnaProjects(QObject):
         # Add project
         # ---------------------------------------------------------
 
-        if not any(
-                p.get("Path") == project_path_value
-                for p in root.iter("Project")
-        ):
-            ET.SubElement(
-                folder,
-                "Project",
-                {"Path": project_path_value},
-            )
+        ET.SubElement(
+            folder,
+            "Project",
+            {"Path": project_path_value},
+        )
 
-            log_message(
-                f"  Added {project_path.name} to {folder_name}"
-            )
-
-        else:
-            log_message(
-                f"  Project already exists: {project_path.name}"
-            )
+        log_message(
+            f"  Added {project_path.name} to {folder_name}"
+        )
 
         # ---------------------------------------------------------
         # Save
@@ -1795,7 +1846,6 @@ class ConvertXnaProjects(QObject):
         log_message("  Solution updated successfully.")
 
         return True
-
     # def method_name(self, game:XBLIGGame):
     #     if game.extracted is not None:
     #         folder = game.extracted
@@ -2362,6 +2412,7 @@ class XBLIGDialog(QDialog):
         # Keep the queue/process alive for the duration of the operation.
         self._ilspy_queue = targets
         self._ilspy_process = None
+        self._ilspy_project_dir = output_dir
         self._ilspy_game = game
         self._ilspy_output_dir = output_dir
         self._ilspy_exe = ilspy_exe
@@ -2425,9 +2476,8 @@ class XBLIGDialog(QDialog):
                 lambda: self._log_process_output(process)
             )
             process.readyReadStandardError.connect(
-                lambda: self._log_process_error(process)
+                lambda: self._log_process_output(process)
             )
-
 
         process.errorOccurred.connect(
             lambda error, target=target:
@@ -2459,26 +2509,17 @@ class XBLIGDialog(QDialog):
         process.start()
 
     def _log_process_output(self, process: QProcess) -> None:
-        output = bytes(
-            process.readAllStandardOutput().data()
-        ).decode(
-            "utf-8",
-            errors="replace",
-        ).rstrip()
+        for data in (
+                process.readAllStandardOutput(),
+                process.readAllStandardError(),
+        ):
+            text = bytes(data.data()).decode(
+                "utf-8",
+                errors="replace",
+            ).rstrip()
 
-        if output:
-            self.log_message(output)
-
-    def _log_process_error(self, process: QProcess) -> None:
-        error = bytes(
-            process.readAllStandardError().data()
-        ).decode(
-            "utf-8",
-            errors="replace",
-        ).rstrip()
-
-        if error:
-            self.log_message(error)
+            if text:
+                self.log_message(text)
 
     def _decompile_process_finished(
             self,
@@ -2486,23 +2527,20 @@ class XBLIGDialog(QDialog):
             exit_code,
             exit_status,
     ):
-        """Handle completion of one ILSpy process."""
-
         self.log_message(
             f"ILSpy finished: {target.name} "
             f"(exit code: {exit_code})"
         )
 
         self.on_decompile_finished(
+            self._ilspy_project_dir,
             self._ilspy_game,
             exit_code,
             exit_status,
         )
 
-        # Release the finished process before starting the next one.
         self._ilspy_process = None
 
-        # Start the next item in the queue.
         self._start_next_decompile()
 
     def on_decompile_finished(self, project_dir, game, exit_code, exit_status):
@@ -2978,9 +3016,9 @@ class XBLIGDialog(QDialog):
                 raise ValueError(f"No game folder found for {game.title}")
             if game_folder.resolve() != dest_content_folder.resolve():
                 self.log_message(f"Moving Project: {game_folder} to {dest_content_folder}")
-                copy_content_and_references(source_content_root_folder=game_folder,
-                                            dest_content_folder=dest_content_folder,
-                                            log_callback=self.log_message)
+                copy_compressed_content_and_references(source_content_root_folder=game_folder,
+                                                       dest_content_folder=dest_content_folder,
+                                                       log_callback=self.log_message)
 
             cs_proj_files = get_cs_project_folders(game_folder, self.log_message)
             for csproj_file in cs_proj_files:
