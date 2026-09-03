@@ -152,8 +152,8 @@ def build_executable(executable):
 
     setup(
         name=executable["target_name"],
-        version="1.2.1",
-        description="Xenia Game Manager",
+        version="1.2.4",
+        description="Xbox Game Manager",
         options={
             "build_exe": {
                 "build_exe": str(target_dir),
@@ -299,6 +299,6 @@ if __name__ == "__main__":
             build_portables()
         else:
             build_all()
-            create_defaults(version="1.2.3")
+            create_defaults(version="1.2.4")
             tools_setup()
             copy_optimized_settings()
