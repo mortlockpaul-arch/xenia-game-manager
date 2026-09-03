@@ -104,14 +104,17 @@ def move_folders_to_type(root):
         print(f"Moving {folder} -> {dest}")
         shutil.move(str(folder), str(dest))
 
+
 def open_solution(project_dir: Path):
     for csproj in project_dir.glob("*.csproj"):
         os.startfile(csproj)
         return
 
+
 DECOMPILER = get_app_dir() / "assets" / "tools"
 ILSPY_GUI = DECOMPILER / "ILSpy" / "publish" / "ILSpy.exe"
 ILSPY_CMD = DECOMPILER / "ILSpyCmd" / "Release" / "net10.0" / "ilspycmd.exe"
+
 
 def cleanup_nested_categories(root):
     root = Path(root)
@@ -162,6 +165,7 @@ def cleanup_nested_categories(root):
                 print(f"Removed empty folder: {nested}")
             except OSError:
                 pass
+
 
 class QtLogger(io.TextIOBase):
     def __init__(self, callback):
@@ -244,36 +248,32 @@ def load_cache():
         print(f"Failed to load cache: {e}")
         return None
 
-def copy_extracted_folder_content_and_references(source_content_root_folder, dest_content_folder, dll_files,
-                                                 log_callback=None, ):
-    source_content_root_folder = Path(source_content_root_folder)
-    dest_content_folder = Path(dest_content_folder)
 
-    log = log_callback or print
-
+def copy_content_and_references(source_content_root_folder: Path | None, dest_content_folder: Path, log_callback=None):
+    if source_content_root_folder is None:
+        return
     if not source_content_root_folder.exists():
         archives = sorted(source_content_root_folder.parent.glob("Content*.7z"))
-
         if archives:
-            log(f"Content folder missing, extracting {len(archives)} archive(s)...")
+            log_callback(f"Content folder missing, extracting {len(archives)} archive(s)...")
             for archive in archives:
-                decompress_content(archive, source_content_root_folder.parent, log_callback=log)
+                decompress_content(archive, source_content_root_folder.parent, log_callback=log_callback)
         else:
             raise FileNotFoundError(
                 f"Content folder or archive not found: {source_content_root_folder}"
             )
+    if dest_content_folder.exists() and dest_content_folder.is_dir():
+        shutil.rmtree(dest_content_folder, ignore_errors=True)
 
-    # if dest_content_folder.exists() and dest_content_folder.is_dir():
-    #     shutil.rmtree(dest_content_folder, ignore_errors=True)
-    shutil.copytree(source_content_root_folder, dest_content_folder, dirs_exist_ok=True)
+    def copy_with_log(src, dst):
+        log_callback(f"Copying: {src} -> {dst}")
+        return shutil.copy2(src, dst)
 
-    for dll in dll_files:
-        try:
-            shutil.copy2(dll, dest_content_folder.parent / dll.name)
-        except Exception as e:
-            log(f"Failed to copy DLL {dll}: {type(e).__name__}: {e}")
-
-
+    shutil.copytree(
+        source_content_root_folder,
+        dest_content_folder,
+        copy_function=copy_with_log,
+    )
 def get_7zip() -> Path:
     seven_zip = (
             get_app_dir()
@@ -369,8 +369,6 @@ def ensure_tool_extracted(name: str, log=None):
                 log(line)
 
 
-
-
 def compress_tool(name: str):
     tools_root = get_app_dir() / "assets" / "tools"
 
@@ -454,13 +452,15 @@ class ToolManager:
         self.cleanup()
 
 
-def get_cs_project_folders(game: Path | None, log_callback: Callable[[str], None] | None = None,) -> list[Path]:
+def get_cs_project_folders(game: Path | None, log_callback: Callable[[str], None] | None = None, ) -> list[Path]:
     if game is None:
         raise ValueError(f"Game has no project files.")
     cs_proj_files = list(game.rglob("*.csproj"))
     return cs_proj_files
 
-def get_game_resources(game: Path | None, log_callback: Callable[[str], None] | None = None,) -> tuple[list[Path], list[Path]]:
+
+def get_game_resources(game: Path | None, log_callback: Callable[[str], None] | None = None, ) -> tuple[
+    list[Path], list[Path]]:
     if game is None:
         raise ValueError("Game has not been extracted")
 
@@ -468,6 +468,7 @@ def get_game_resources(game: Path | None, log_callback: Callable[[str], None] | 
     dll_files = list(game.rglob("*.dll"))
 
     return resx_files, dll_files
+
 
 def add_xna_compat(project_folder):
     project_folder = Path(project_folder)
@@ -494,6 +495,20 @@ def add_xna_compat(project_folder):
 alba = (get_app_dir() / "assets/tools/conversion/Alba.XnaConvert.0.1.2/Alba.XnaConvert.exe")
 xnb_cli = (get_app_dir() / "assets/tools/conversion/xnbcli-windows-x64/xnbcli.exe")
 xnb_extractor = (get_app_dir() / "assets/tools/conversion/xnb-extractor/Release/net481/XnbExtractor.exe")
+
+
+def create_launch_settings(project_path: Path, game_title=None):
+    launch_settings_path = project_path / "Properties" / "launchSettings.json"
+    launch_settings_path.parent.mkdir(parents=True, exist_ok=True)
+    settings = {
+        "profiles": {
+            f"{game_title}": {
+                "commandName": "Project",
+                "debugEngines": "managed-dotnet,native",
+            }
+        }
+    }
+    launch_settings_path.write_text(json.dumps(settings, indent=2), encoding="utf-8", )
 
 
 class ConvertXnaProjects(QObject):
@@ -830,7 +845,7 @@ class ConvertXnaProjects(QObject):
         files_scanned = 0
         last_progress = -1
 
-        for indie_index, indie_folder in enumerate(indie_folders, start=1,):
+        for indie_index, indie_folder in enumerate(indie_folders, start=1, ):
             self.log_message(
                 f"[XBLIG folder "
                 f"{indie_index}/{len(indie_folders)}]"
@@ -947,25 +962,21 @@ class ConvertXnaProjects(QObject):
             # Paths
             # ------------------------------------------------------------
 
-            indie_games_path = Path(
-                self.config["indie_games_path"]
-            )
+            indie_games_path = Path(self.config["indie_games_path"])
 
-            decompiled = (
-                    indie_games_path
-                    / "decompiled"
-                    / folder_title
-            )
+            solution_path = Path(self.config["indie-game-solution-location"])
+            archived_base = (solution_path.parent / "indie-game-archive")
+            archived = (solution_path.parent / "indie-game-archive" / folder_title)
 
-            extracted = (
-                    indie_games_path
-                    / "extracted"
-                    / folder_title
-            )
+            decompiled = (indie_games_path / "decompiled" / folder_title) if (
+                    indie_games_path / "decompiled" / folder_title).exists() else archived
+            extracted = (indie_games_path / "extracted" / folder_title) if (
+                    indie_games_path / "extracted" / folder_title).exists() else archived
+
+            decompiled = decompiled if any(decompiled.rglob("*")) else archived
+            extracted = extracted if any(extracted.rglob("*")) else archived
 
             game_info = extracted / "GameInfo.xml"
-
-
             xml_data = parse_xml(game_info)
 
             title = (
@@ -1054,8 +1065,8 @@ class ConvertXnaProjects(QObject):
                     folder_title=folder_title,
                     title_id=title_id,
                     game_id=title_id,
-                    virtual_title_id=xml_data.get( "virtual_title_id" ),
-                    xml_title_id=xml_data.get( "xml_title_id" ),
+                    virtual_title_id=xml_data.get("virtual_title_id"),
+                    xml_title_id=xml_data.get("xml_title_id"),
                     content_type=content_format,
                     content_name="Xbox Live Indie Game",
                     content_format=content_format,
@@ -1085,15 +1096,9 @@ class ConvertXnaProjects(QObject):
                         else None
                     ),
 
-                    decompiled=(
-                        decompiled
-                        if decompiled.exists()
-                        else (
-                            decompiled_path_value
-                            if decompiled_path_value.exists()
-                            else None
-                        )
-                    ),
+                    archived=(archived if archived.exists() else None),
+                    decompiled=(decompiled if decompiled.exists() else (
+                        decompiled_path_value if decompiled_path_value.exists() else None)),
                 )
             )
 
@@ -1282,12 +1287,15 @@ class ConvertXnaProjects(QObject):
         "cs", "da", "fi", "nb", "sv",
     }
 
-    def clean_csproj(self, project_path: Path, game_dll_files:list[Path], game=None, resx_files=None) -> None:
+    import json
+    from pathlib import Path
+
+    def clean_csproj(self, project_path: Path, game_dll_files: list[Path], game=None, resx_files=None) -> None:
         project_path = Path(project_path)
 
         self.log_message(f"Updating project: {project_path.name}")
         self.log_message(f"  Project path: {project_path}")
-
+        create_launch_settings(project_path.parent, game.folder_title)
         with open(project_path, "rb") as f:
             tree = ET.parse(f)
         root = tree.getroot()
@@ -1351,20 +1359,26 @@ class ConvertXnaProjects(QObject):
         if assembly_name:
             ET.SubElement(propgroup, tag("AssemblyName")).text = assembly_name
 
+        rns = game.title
+        suo = "Program"
         properties = {
             "GenerateAssemblyInfo": "false",
-            "TargetFramework": "net481",
+            "TargetFramework": "net8.0-windows",
             "ImplicitUsings": "enable",
             "Nullable": "enable",
-            "Platforms": "AnyCPU",
             "OutputType": "WinExe",
             "LangVersion": "14.0",
             "AllowUnsafeBlocks": "True",
             "CheckForOverflowUnderflow": "False",
             "EnableDefaultEmbeddedResourceItems": "False",
-            "PlatformTarget": "x86"
+            "PlatformTarget": "x64",
+            "Platforms": "x86;x64",
+            "RootNameSpace": f"{rns}",
+            "StartupObject": f"{rns}.{suo}",
+            "ApplicationIcon": "gamethumbnail.png"
         }
-
+        # < RootNamespace > Manic_Miner_360 < / RootNamespace >
+        # < StartupObject > Manic_Miner_360.Program < / StartupObject >
         for name, value in properties.items():
             ET.SubElement(propgroup, tag(name)).text = value
             self.log_message(f"    {name} = {value}")
@@ -1373,7 +1387,7 @@ class ConvertXnaProjects(QObject):
         # Contents.csproj
         # ---------------------------------------------------------
 
-        content_project = Path(r"..\..\Content-References\Contents.csproj")
+        content_project = Path(r"..\..\Content-References\FNA.Contents.csproj")
 
         self.log_message(
             f"  Adding project reference: {content_project}"
@@ -1528,16 +1542,86 @@ class ConvertXnaProjects(QObject):
     from pathlib import Path
 
     LOG_COLORS = {
-        "normal": "#D4D4D4",    # Light grey
-        "info": "#61AFEF",      # Blue
-        "success": "#98C379",   # Green
-        "warning": "#E5C07B",   # Yellow/orange
-        "error": "#E06C75",     # Red
-        "debug": "#C678DD",     # Purple
+        "normal": "#D4D4D4",  # Light grey
+        "info": "#61AFEF",  # Blue
+        "success": "#98C379",  # Green
+        "warning": "#E5C07B",  # Yellow/orange
+        "error": "#E06C75",  # Red
+        "debug": "#C678DD",  # Purple
     }
 
-    def add_project_to_solution(self, solution_path: Path, project_path: Path, game=None,
-                                add_to_solution_archive_folder=False, move_decompiled_project=True) -> bool:
+    def move_project_to_archive(
+            self,
+            project_path: Path,
+            destination_dir: Path,
+    ) -> Path | None:
+        """
+        Move all files from the project directory to destination_dir.
+
+        Returns the new project path on success, otherwise None.
+        """
+
+        project_path = Path(project_path).resolve()
+        destination_dir = Path(destination_dir).resolve()
+
+        project_dir = project_path.parent
+        destination_project = destination_dir / project_path.name
+
+        self.log_message(
+            f"Moving project files:\n"
+            f"  Source:      {project_dir}\n"
+            f"  Destination: {destination_dir}"
+        )
+
+        try:
+            if destination_dir.exists():
+                try:
+                    shutil.rmtree(destination_dir)
+                except OSError as exc:
+                    self.log_message(
+                        f"Error removing existing destination: {exc}"
+                    )
+                    return None
+
+            destination_dir.mkdir(parents=True, exist_ok=True)
+
+            for source in project_dir.rglob("*"):
+                relative_path = source.relative_to(project_dir)
+                destination = destination_dir / relative_path
+
+                if source.is_dir():
+                    destination.mkdir(parents=True, exist_ok=True)
+                    self.log_message(
+                        f"Created Destination Folder: {relative_path}"
+                    )
+
+                elif source.is_file():
+                    destination.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.move(source, destination)
+                    self.log_message(f"Moved: {relative_path}")
+
+        except OSError as exc:
+            self.log_message(f"Error moving project files: {exc}")
+            return None
+
+        if not list(destination_dir.rglob("*.csproj")):
+            self.log_message("Error: No .csproj found in destination.")
+            return None
+
+        self.log_message(
+            f"Project moved successfully: {destination_project.name}"
+        )
+
+        return destination_project
+
+    def add_project_to_solution(
+            self,
+            solution_path: Path,
+            project_path: Path,
+            game=None,
+            add_to_solution_archive_folder=False,
+            move_decompiled_project=False,
+    ) -> bool:
 
         solution_path = Path(solution_path).resolve()
         project_path = Path(project_path).resolve()
@@ -1564,7 +1648,6 @@ class ConvertXnaProjects(QObject):
 
         project_dir = project_path.parent
         destination_dir = archive_dir / project_dir.name
-        destination_project = destination_dir / project_path.name
 
         if add_to_solution_archive_folder:
             game.archived = destination_dir
@@ -1573,43 +1656,19 @@ class ConvertXnaProjects(QObject):
         log_message(f"  Destination: {destination_dir}")
 
         # ---------------------------------------------------------
-        # Move Project Files
+        # Move Project
         # ---------------------------------------------------------
-        try:
-            log_message(f"Moving project to: {destination_dir}")
-            if destination_dir.exists():
-                try:
-                    shutil.rmtree(destination_dir)
-                except OSError as exc:
-                    self.log_message(f"Error removing project: {exc}")
-                    return False
 
-            self.log_message(f"Moving project files to: {destination_dir}")
-            try:
-                destination_dir.mkdir(parents=True, exist_ok=True)
-                for source in project_dir.rglob("*"):
-                    relative_path = source.relative_to(project_dir)
-                    destination = destination_dir / relative_path
-                    if source.is_dir():
-                        destination.mkdir(parents=True, exist_ok=True)
-                        log_message(f"Created Destination Folder: {relative_path}")
-                    elif source.is_file():
-                        destination.parent.mkdir(parents=True, exist_ok=True)
-                        shutil.move(source, destination)
-                        log_message(f"Moved: {relative_path}")
-            except OSError as exc1:
-                self.log_message(f"Error Moving Project Files: {exc1}")
-                result = False
-            log_message("Project Files Moved Successfully.")
+        if move_decompiled_project:
+            destination_project = self.move_project_to_archive(
+                project_path,
+                destination_dir,
+            )
+
+            if destination_project is None:
+                return False
+
             project_path = destination_project
-            log_message(f"Moved Project: {project_path.name}")
-        except OSError as exc:
-            self.log_message(f"Error Moving Project: {exc}")
-            return False
-
-        if not list(destination_dir.rglob("*.csproj")):
-            self.log_message("Error: No .csproj found in destination.")
-            return False
 
         # ---------------------------------------------------------
         # Project path
@@ -1617,8 +1676,10 @@ class ConvertXnaProjects(QObject):
 
         try:
             project_path_value = os.path.relpath(
-                project_path, solution_path.parent
+                project_path,
+                solution_path.parent,
             ).replace("\\", "/")
+
         except ValueError:
             project_path_value = project_path.as_posix()
             self.log_message("Project is on a different drive.")
@@ -1649,6 +1710,7 @@ class ConvertXnaProjects(QObject):
 
                     if project.tag == "Project" and path:
                         existing = Path(path)
+
                         if not existing.is_absolute():
                             existing = solution_path.parent / existing
 
@@ -1681,8 +1743,15 @@ class ConvertXnaProjects(QObject):
         )
 
         if folder is None:
-            folder = ET.SubElement(root, "Folder", {"Name": folder_name})
-            log_message(f"  Created {folder_name} solution folder.")
+            folder = ET.SubElement(
+                root,
+                "Folder",
+                {"Name": folder_name},
+            )
+
+            log_message(
+                f"  Created {folder_name} solution folder."
+            )
 
         # ---------------------------------------------------------
         # Add project
@@ -1692,8 +1761,16 @@ class ConvertXnaProjects(QObject):
                 p.get("Path") == project_path_value
                 for p in root.iter("Project")
         ):
-            ET.SubElement(folder, "Project", {"Path": project_path_value})
-            log_message(f"  Added {project_path.name} to {folder_name}")
+            ET.SubElement(
+                folder,
+                "Project",
+                {"Path": project_path_value},
+            )
+
+            log_message(
+                f"  Added {project_path.name} to {folder_name}"
+            )
+
         else:
             log_message(
                 f"  Project already exists: {project_path.name}"
@@ -1716,6 +1793,7 @@ class ConvertXnaProjects(QObject):
             return False
 
         log_message("  Solution updated successfully.")
+
         return True
 
     # def method_name(self, game:XBLIGGame):
@@ -1791,6 +1869,7 @@ def _decompress_games(game: XBLIGGame, log):
         log(f"Failed to decompress {game.title}: {type(e).__name__}: {e}")
     return game
 
+
 def _compress_games(game: XBLIGGame, log):
     if game.extracted is None or not game.package:
         return game
@@ -1812,6 +1891,7 @@ def _compress_games(game: XBLIGGame, log):
     except Exception as e:
         log(f"Failed to compress {game.title}: {type(e).__name__}: {e}")
     return game
+
 
 class CompressWorker(QObject):
     log = Signal(str)
@@ -1880,6 +1960,7 @@ class ScanWorker(QObject):
 
     def log_message(self, message: str, color: str = "#61AFEF"):
         self.log_signal.emit(message, color)
+
 
 from PySide6.QtWidgets import QStyledItemDelegate
 from PySide6.QtCore import QRect, QSize, Qt
@@ -1953,6 +2034,7 @@ class IconButtonDelegate(QStyledItemDelegate):
             option,
             index,
         )
+
 
 class XBLIGDialog(QDialog):
 
@@ -2124,7 +2206,6 @@ class XBLIGDialog(QDialog):
 
             print()
 
-
     def get_selected_game(
             self,
     ) -> tuple[XBLIGGame, list[QModelIndex]] | None:
@@ -2239,213 +2320,196 @@ class XBLIGDialog(QDialog):
             if result.stderr:
                 self.log_message_log(result.stderr)
 
-    def decompile_project(self, game: XBLIGGame, dll_files: list[Path], parent=None, use_gui=False,
-                          open_explorer=None) -> Path:
+    def decompile_project(self, game: XBLIGGame, parent=None, use_gui=False,) -> Path:
 
-        if use_gui:
-            ensure_tool_extracted("ilspy", None)
-        else:
-            ensure_tool_extracted("ilspycmd", None)
+        ensure_tool_extracted(
+            "ilspy" if use_gui else "ilspycmd",
+            None,
+        )
 
         ilspy_exe = ILSPY_GUI if use_gui else ILSPY_CMD
 
         assert game.folder_title is not None
         assert game.extracted is not None
+        assert game.executables is not None
 
-        game_root_name = Path(game.folder_title)
-        extracted_name = Path(game.extracted).name
-
-        attrs = {
-            "decompiled": (
-                "decompiled",
-                Path(self.config["indie_games_path"]) / "decompiled" / game_root_name
-            ),
-            "extracted": (
-                "extracted",
-                Path(self.config["indie_games_path"]) / "extracted" / extracted_name
-            ),
-        }
-
-        attr_name, decompiled = attrs["decompiled"]
-        attr_name, extracted = attrs["extracted"]
-
-        output_dir = decompiled
+        output_dir = (
+                Path(self.config["indie_games_path"])
+                / "extracted"
+                / Path(game.extracted).name
+        )
         output_dir.mkdir(parents=True, exist_ok=True)
 
         self.log_message(f"Output Folder: {output_dir}")
         self.log_message(f"ILSpy: {ilspy_exe}")
-        assert game.executables is not None
-        for executable in game.executables:
-            self.log_message(f"Generating Visual Studio project for {executable.name}...")
 
-            if not use_gui:
-                arguments = [
-                    "-p",
-                    "-o",
-                    str(output_dir),
-                    "-r",
-                    str(executable.parent),
-                    "--nested-directories",
-                    str(executable),
-                ]
-            else:
-                arguments = [
-                    str(executable),
-                ]
+        # ---------------------------------------------------------
+        # Build decompilation queue
+        # ---------------------------------------------------------
 
-            process = QProcess(parent)
-            process.setProgram(str(ilspy_exe))
-            process.setArguments(arguments)
-            if extracted: process.setWorkingDirectory(str(extracted))
+        targets = [
+                      (executable, True)
+                      for executable in game.executables
+                  ] + [
+                      (dll, False)
+                      for dll in game.dll_files
+                  ]
 
-            self.log_message(f"Command: {ilspy_exe} {' '.join(arguments)}")
-            self.log_message(f"Working directory: {process.workingDirectory()}")
+        if not targets:
+            self.log_message("No executables or DLLs found to decompile.")
+            return output_dir
 
-            if not use_gui:
-                process.readyReadStandardOutput.connect(
-                    lambda: self.log_message(
-                        bytes(
-                            process.readAllStandardOutput().data()
-                        ).decode(
-                            "utf-8",
-                            errors="replace",
-                        )
-                    )
-                )
+        # Keep the queue/process alive for the duration of the operation.
+        self._ilspy_queue = targets
+        self._ilspy_process = None
+        self._ilspy_game = game
+        self._ilspy_output_dir = output_dir
+        self._ilspy_exe = ilspy_exe
+        self._ilspy_use_gui = use_gui
 
-                process.readyReadStandardError.connect(
-                    lambda: self.log_message(
-                        bytes(
-                            process.readAllStandardError().data()
-                        ).decode(
-                            "utf-8",
-                            errors="replace",
-                        )
-                    )
-                )
-
-            process.errorOccurred.connect(
-                lambda error: self.log_message(
-                    f"ILSpy process error: {error}"
-                )
-            )
-
-            process.started.connect(
-                lambda: self.log_message(
-                    f"ILSpy started: {executable.name}"
-                )
-            )
-
-            process.finished.connect(
-                lambda exit_code, exit_status:
-                self.on_decompile_finished(
-                    open_explorer,
-                    output_dir,
-                    game,
-                    exit_code,
-                    exit_status,
-                )
-            )
-
-            self.log_message("Starting ILSpy...")
-            process.start()
-
-        for dll in dll_files:
-            if not use_gui:
-                arguments = [
-                    "-p",
-                    "-o",
-                    str(output_dir),
-                    "--nested-directories",
-                    str(dll),
-                ]
-            else:
-                arguments = [
-                    str(dll),
-                ]
-
-            process = QProcess(parent)
-            process.setProgram(str(ilspy_exe))
-            process.setArguments(arguments)
-            if extracted: process.setWorkingDirectory(str(extracted))
-
-            self.log_message(f"Command: {ilspy_exe} {' '.join(arguments)}")
-            self.log_message(f"Working directory: {process.workingDirectory()}")
-
-            if not use_gui:
-                process.readyReadStandardOutput.connect(
-                    lambda: self.log_message(
-                        bytes(
-                            process.readAllStandardOutput().data()
-                        ).decode(
-                            "utf-8",
-                            errors="replace",
-                        )
-                    )
-                )
-
-                process.readyReadStandardError.connect(
-                    lambda: self.log_message(
-                        bytes(
-                            process.readAllStandardError().data()
-                        ).decode(
-                            "utf-8",
-                            errors="replace",
-                        )
-                    )
-                )
-
-            process.errorOccurred.connect(
-                lambda error: self.log_message(
-                    f"ILSpy process error: {error}"
-                )
-            )
-
-            process.started.connect(
-                lambda: self.log_message(
-                    f"ILSpy started: {executable.name}"
-                )
-            )
-
-            process.finished.connect(
-                lambda exit_code, exit_status:
-                self.on_decompile_finished(
-                    open_explorer,
-                    output_dir,
-                    game,
-                    exit_code,
-                    exit_status,
-                )
-            )
-
-            self.log_message("Starting ILSpy...")
-            process.start()
+        self._start_next_decompile(parent)
 
         return output_dir
 
-    def decompile_selected(self, game: XBLIGGame, open_explorer: bool = True, use_gui=False, ):
-        executables = game.executables
-        dlls = game.dll_files
-        if not executables: raise ValueError("No Executables: Extract the game first.")
+    def _start_next_decompile(self, parent=None):
+        """Start the next item in the ILSpy decompilation queue."""
 
-        try:
-            project_dir = self.decompile_project(game, dlls, parent=self, use_gui=use_gui, open_explorer=open_explorer)
-            if game.decompiled is None:
-                game.decompiled = project_dir
-        except Exception as e:
-            self.log_message(
-                f"ERROR decompiling {game.title}: "
-                f"{type(e).__name__}: {e}"
+        if not self._ilspy_queue:
+            self.log_message("All ILSpy decompilation jobs completed.")
+            self._ilspy_process = None
+            return
+
+        target, is_executable = self._ilspy_queue.pop(0)
+
+        output_dir = self._ilspy_output_dir
+        ilspy_exe = self._ilspy_exe
+        use_gui = self._ilspy_use_gui
+        game = self._ilspy_game
+
+        if use_gui:
+            arguments = [str(target)]
+        else:
+            arguments = [
+                "-p",
+                "-o",
+                str(output_dir),
+            ]
+
+            if is_executable:
+                arguments.extend([
+                    "-r",
+                    str(target.parent),
+                ])
+
+            arguments.extend([
+                "--nested-directories",
+                str(target),
+            ])
+
+        process = QProcess(parent)
+        self._ilspy_process = process
+
+        process.setProgram(str(ilspy_exe))
+        process.setArguments(arguments)
+        process.setWorkingDirectory(str(output_dir))
+
+        self.log_message(
+            f"Command: {ilspy_exe} {' '.join(arguments)}"
+        )
+        self.log_message(
+            f"Working directory: {process.workingDirectory()}"
+        )
+
+        if not use_gui:
+            process.readyReadStandardOutput.connect(
+                lambda: self._log_process_output(process)
             )
-            self.log_message(traceback.format_exc())
+            process.readyReadStandardError.connect(
+                lambda: self._log_process_error(process)
+            )
 
-    def on_decompile_finished(self, open_explorer, project_dir, game, exit_code, exit_status, ):
+
+        process.errorOccurred.connect(
+            lambda error, target=target:
+            self.log_message(
+                f"ILSpy process error ({target.name}): {error}"
+            )
+        )
+
+        process.started.connect(
+            lambda target=target:
+            self.log_message(
+                f"ILSpy started: {target.name}"
+            )
+        )
+
+        process.finished.connect(
+            lambda exit_code, exit_status, target=target:
+            self._decompile_process_finished(
+                target,
+                exit_code,
+                exit_status,
+            )
+        )
+
+        self.log_message(
+            f"Starting ILSpy: {target.name}"
+        )
+
+        process.start()
+
+    def _log_process_output(self, process: QProcess) -> None:
+        output = bytes(
+            process.readAllStandardOutput().data()
+        ).decode(
+            "utf-8",
+            errors="replace",
+        ).rstrip()
+
+        if output:
+            self.log_message(output)
+
+    def _log_process_error(self, process: QProcess) -> None:
+        error = bytes(
+            process.readAllStandardError().data()
+        ).decode(
+            "utf-8",
+            errors="replace",
+        ).rstrip()
+
+        if error:
+            self.log_message(error)
+
+    def _decompile_process_finished(
+            self,
+            target,
+            exit_code,
+            exit_status,
+    ):
+        """Handle completion of one ILSpy process."""
+
+        self.log_message(
+            f"ILSpy finished: {target.name} "
+            f"(exit code: {exit_code})"
+        )
+
+        self.on_decompile_finished(
+            self._ilspy_game,
+            exit_code,
+            exit_status,
+        )
+
+        # Release the finished process before starting the next one.
+        self._ilspy_process = None
+
+        # Start the next item in the queue.
+        self._start_next_decompile()
+
+    def on_decompile_finished(self, project_dir, game, exit_code, exit_status):
         self.log_message(f"ILSpy finished: exit code={exit_code}, status={exit_status}")
 
         if exit_code != 0:
-            self.log_message(
-                f"ILSpy failed while decompiling {game.title}"
-            )
+            self.log_message(f"ILSpy failed while decompiling {game.title}")
             return
 
         profile_string = (
@@ -2459,12 +2523,10 @@ class XBLIGDialog(QDialog):
 
         game.decompiled = project_dir
 
-        self.log_message(
-            f"Decompiled project: {project_dir}"
-        )
+        self.log_message(f"Decompiled project: {project_dir}")
 
-        if open_explorer:
-            subprocess.Popen(["explorer", str(project_dir)])
+        # if open_explorer:
+        #     subprocess.Popen(["explorer", str(project_dir)])
 
     def update_scan_progress(self, current: int, total: int):
         value = int(current * 100 / total) if total else 0
@@ -2620,7 +2682,7 @@ class XBLIGDialog(QDialog):
             self.log_message(f"No game selected.")
             return
         self.game, _ = result
-
+        self.log_message("Extracting Game Package", clear_console=True)
         if not self.game.package:
             self.log_message(f"{self.game.title} has no package.")
             return
@@ -2641,22 +2703,12 @@ class XBLIGDialog(QDialog):
             self.update_labels(self.game)
 
         except Exception as e:
-            self.log_message(
-                f"Error extracting {self.game.title}: {type(e).__name__}: {e}"
-            )
+            self.log_message(f"Error extracting {self.game.title}: {type(e).__name__}: {e}")
         self.load_games(self.games, refresh_only=True)
 
     def extract_package(self, game: XBLIGGame):
-        package = game.package
-
-        if not package:
-            return None
-
-        package = Path(package)
-
-        if not package.exists():
-            self.log_message_log(f"Package missing: {package}")
-            return None
+        assert game.package is not None
+        package = Path(game.package)
 
         from stfs_extract import extract_live_pirs
         assert game.folder_title is not None
@@ -2675,9 +2727,14 @@ class XBLIGDialog(QDialog):
         attr_name, decompiled = attrs["decompiled"]
         attr_name, extracted_path = attrs["extracted"]
 
+        if not package.exists():
+            self.log_message_log(f"Package missing: {package}")
+            return extracted_path
+
         # extracted_path = package.parent / "extracted"
 
         extracted_path.mkdir(parents=True, exist_ok=True)
+        game.extracted = extracted_path
         self.extracted = extracted_path
 
         try:
@@ -2691,11 +2748,11 @@ class XBLIGDialog(QDialog):
         except Exception as e:
             self.log_message(f"Extraction failed for {game.title}: {type(e).__name__}: {e}")
             self.log_message(traceback.format_exc())
-            return None
+            return extracted_path
 
         return extracted_path
 
-    def load_games(self, games: list[XBLIGGame], refresh_only: bool = False,):
+    def load_games(self, games: list[XBLIGGame], refresh_only: bool = False, ):
         for game in games:
             metadata = self.db.get_xblig_metadata(game.title)
 
@@ -2778,10 +2835,11 @@ class XBLIGDialog(QDialog):
             options_layout.addLayout(decompile_layout)
 
             self.convert_csproj_check = QCheckBox("Convert Games's .csproj File or Files.")
-            self.convert_content_check = QCheckBox("Add To Indie Game Solution")
+            self.convert_content_check = QCheckBox("Convert Games's Content Files with Default Converter.")
+            self.add_to_solution_check = QCheckBox("Add To Indie Game Solution")
             self.open_vs_check = QCheckBox("Open Indie Game Solution in Visual Studio.")
             self.open_explorer_check = QCheckBox("Open Decompiled Project Folder.")
-            self.convert_content_move_check = QCheckBox("Move Project to Indie Game Solution")
+            self.archive_project_check = QCheckBox("Archive Project to Indie Game Solution")
             self.convert_csproj_check.setChecked(True)
             self.convert_content_check.setChecked(True)
 
@@ -2793,8 +2851,9 @@ class XBLIGDialog(QDialog):
 
             # options_layout.addWidget(self.solution_file)
             options_layout.addWidget(self.convert_csproj_check)
+            options_layout.addWidget(self.archive_project_check)
             options_layout.addWidget(self.convert_content_check)
-            options_layout.addWidget(self.convert_content_move_check)
+            options_layout.addWidget(self.add_to_solution_check)
             options_layout.addWidget(self.open_vs_check)
             options_layout.addWidget(self.open_explorer_check)
 
@@ -2822,28 +2881,20 @@ class XBLIGDialog(QDialog):
                 "decompile": self.decompile_check.isChecked(),
                 "decompile_gui": self.decompile_gui.isChecked(),
                 "convert_csproj": self.convert_csproj_check.isChecked(),
-                "add_to_solution": self.convert_content_check.isChecked(),
-                # "convert_content": self.convert_content_check.isChecked(),
-                "convert_content_move_check": self.convert_content_move_check.isChecked(),
+                "add_to_solution": self.add_to_solution_check.isChecked(),
+                "convert_content": self.convert_content_check.isChecked(),
+                "archive_project": self.archive_project_check.isChecked(),
                 "open_visual_studio": self.open_vs_check.isChecked(),
                 "open_explorer": self.open_explorer_check.isChecked(),
             }
 
-    def build_selected(self):
+    def decompile(self):
         if (result := self.get_selected_game()) is None:
             return
         game, indexes = result
-        if not game:
+        if not game.folder_title:
             return
-        if game.extracted is None:
-            self.log_message("Extracted game not found.")
-            return
-        # decompile options
-        # convert csproj
-        # convert content
-        # open in visual studio
-        # open in explorer
-        # run button cancel button
+
         dlg = self.BuildSelectedDialog()
         if not dlg.exec():
             return
@@ -2851,53 +2902,93 @@ class XBLIGDialog(QDialog):
         options = dlg.options()
         converter = self.method_name()
 
+        decompile_state = bool(game.decompiled is not None and any(p.is_file() for p in game.decompiled.rglob("*")))
+        archived_state = bool(game.archived is not None and any(p.is_file() for p in game.archived.rglob("*")))
+        extracted_state = bool(game.extracted is not None and any(p.is_file() for p in game.extracted.rglob("*")))
 
-        resx_files, dll_files = get_game_resources(game.extracted)
-        game.dll_files = dll_files
+        if extracted_state and game.extracted is not None:
+            game_folder = game.extracted
+        elif archived_state:
+            game_folder = game.archived
+        elif decompile_state:
+            game_folder = game.decompiled
+        else:
+            raise ValueError(f"No game folder found for {game.title}")
 
-        try:
-            if options["decompile"]:
-                self.log_message("Decompiling selected game...")
-                self.decompile_selected(game, open_explorer=True, use_gui=options["decompile_gui"])
+        if game.extracted is None and game.archived is None or extracted_state == False:
+            self.log_message("Game not Extracted or Archived. Extracting now.")
+            game.extracted = self.extract_package(game)
+            assert game.extracted is not None
+            game_folder = game.extracted
 
-                content_root_dir = game.extracted / "584E07D1"
-                copy_extracted_folder_content_and_references(source_content_root_folder=content_root_dir,
-                                                             dest_content_folder=game.decompiled,
-                                                             dll_files=game.dll_files,
-                                                             log_callback=self.log_message)
-        except ValueError as e:
-            self.log_message(f"Failed to Decompile: {e}")
+        resx_files, game.dll_files = get_game_resources(game_folder)
+
+        assert game_folder is not None
+        if not game.executables and game.decompiled is not None:
+            game.executables = list(game_folder.rglob("*.exe"))
+
+        if options["decompile"]:
+            self.log_message(f"Decompiling {game.folder_title} at {game_folder}", clear_console=True)
+            try:
+                project_dir = self.decompile_project(game, parent=self, use_gui=options["decompile_gui"])
+                if game.decompiled is None:
+                    game.decompiled = project_dir
+            except Exception as e:
+                self.log_message(f"Failed to Decompile: {game.title}: {e}")
 
         if options["convert_csproj"]:
-            cs_proj_files = get_cs_project_folders(game.decompiled, self.log_message)
-            resx_files, dll_files = get_game_resources(game.decompiled)
-            for csproj_file in cs_proj_files:
-                try:
-                    converter.clean_csproj(csproj_file, dll_files, game, resx_files)
-                except Exception as e:
-                    self.log_message(f"Failed to Convert: {csproj_file}: {e}")
+            cs_proj_files = get_cs_project_folders(game_folder, self.log_message)
+            if len(cs_proj_files) != 0:
+                self.log_message(f"Found {len(cs_proj_files)} csproj files in {game_folder}")
+                resx_files, dll_files = get_game_resources(game_folder)
+                for csproj_file in cs_proj_files:
+                    try:
+                        converter.clean_csproj(csproj_file, dll_files, game, resx_files)
+                    except Exception as e:
+                        self.log_message(f"Failed to Convert: {csproj_file}: {e}")
+                cs_proj_files = get_cs_project_folders(game_folder, self.log_message)
+                for csproj_file in cs_proj_files:
+                    if game.folder_title is not None and (game.title.lower() in csproj_file.stem.lower() or any(
+                            csproj_file.stem.lower() == executable.stem.lower() for executable in game.executables)):
+                        new_csproj_file = csproj_file.with_name(f"{game.folder_title}.csproj")
+                        try:
+                            if not new_csproj_file.exists():
+                                csproj_file.rename(new_csproj_file)
+                                self.log_message(f"  Renamed project: {csproj_file.name} -> {new_csproj_file.name}")
+
+                        except OSError as e:
+                            self.log_message(f"  ERROR renaming {csproj_file}: {e}")
+            else:
+                self.log_message(f"No csproj files found in {game_folder} you should probably decompile first")
 
         if options["add_to_solution"]:
-            cs_proj_files = get_cs_project_folders(game.decompiled, self.log_message)
-            for csproj_file in cs_proj_files:
-                if game.folder_title is not None and (game.title.lower() in csproj_file.stem.lower() or any(csproj_file.stem.lower() == executable.stem.lower() for executable in game.executables)):
-                    new_csproj_file = csproj_file.with_name(f"{game.folder_title}.csproj")
-                    try:
-                        csproj_file.rename(new_csproj_file)
-                        self.log_message(f"  Renamed project: {csproj_file.name} -> {new_csproj_file.name}")
+            solution_path = Path(self.config["indie-game-solution-location"])
+            if game_folder is None:
+                raise ValueError(f"No Game Folder for {game.title}")
 
-                    except OSError as e:
-                        self.log_message(
-                            f"  ERROR renaming {csproj_file}: {e}"
-                        )
+            folder_title = game.folder_title
+            if not isinstance(folder_title, str):
+                raise ValueError(f"No folder title for {game.title}")
 
-            cs_proj_files = get_cs_project_folders(game.decompiled, self.log_message)
+            dest_content_folder = (solution_path.parent / "indie-game-archive" / folder_title)
+
+            if not isinstance(game_folder, Path):
+                raise ValueError(f"No folder title for {game.title}")
+            if game_folder is None:
+                raise ValueError(f"No game folder found for {game.title}")
+            if game_folder.resolve() != dest_content_folder.resolve():
+                self.log_message(f"Moving Project: {game_folder} to {dest_content_folder}")
+                copy_content_and_references(source_content_root_folder=game_folder,
+                                            dest_content_folder=dest_content_folder,
+                                            log_callback=self.log_message)
+
+            cs_proj_files = get_cs_project_folders(game_folder, self.log_message)
             for csproj_file in cs_proj_files:
-                add_to_archive = ( game.folder_title is not None and (game.title.lower() in csproj_file.stem.lower() or any(csproj_file.stem.lower() == executable.stem.lower() for executable in game.executables)))
+                add_to_archive = (game.folder_title is not None and (
+                        game.title.lower() in csproj_file.stem.lower() or any(
+                    csproj_file.stem.lower() == executable.stem.lower() for executable in game.executables)))
                 try:
-                    solution_path = self.config["indie-game-solution-location"]
-                    converter.add_project_to_solution(solution_path, csproj_file, game,
-                                                      add_to_solution_archive_folder=add_to_archive)
+                    converter.add_project_to_solution(solution_path, csproj_file, game, add_to_solution_archive_folder=add_to_archive, move_decompiled_project=options["archive_project"])
                 except Exception as e:
                     self.log_message(f"Failed to Add Project to Solution {e}")
 
@@ -2926,7 +3017,7 @@ class XBLIGDialog(QDialog):
         if (result := self.get_selected_game()) is None:
             return
         game, index = result
-        if folder=="root":
+        if folder == "root":
             if not game or not game.game_root or not game.game_root.exists():
                 self.log_message("No valid game folder selected.")
                 return
@@ -3002,25 +3093,50 @@ class XBLIGDialog(QDialog):
             ),
         }
 
-        attr_name, path, attr_path_value = attrs[files]
-
         try:
-            if path and path.exists():
-                shutil.rmtree(path)
-                self.log_message(f"Deleted: {path}")
-                setattr(game, str(attr_name), None)
-            elif attr_path_value and attr_path_value.exists():
-                shutil.rmtree(attr_path_value)
-                self.log_message(f"Deleted: {attr_path_value}")
-                setattr(game, str(attr_name), None)
-            elif path:
-                self.log_message(f"{path} does not exist")
-            elif attr_path_value:
-                self.log_message(f"{attr_path_value} does not exist")
+            if files == "bin-obj":
+                if game.archived is None:
+                    self.log_message("Game has not been archived.")
+                    return
+                script = get_app_dir() / "scripts" / "build_projects_clean.ps1"
+                result = subprocess.run(
+                    [
+                        "powershell.exe",
+                        "-ExecutionPolicy", "Bypass",
+                        "-File", str(script),
+                        "-Folder", str(game.archived.stem),
+                    ],
+                    check=False,
+                    capture_output=True,
+                    text=True
+                )
+                self.log_message(result.stdout)
+            else:
+                try:
+                    attr_name, path, attr_path_value = attrs[files]
+                    if path is not None and path.exists():
+                        shutil.rmtree(path)
+                        self.log_message(f"Deleted: {path}")
+                        setattr(game, str(attr_name), None)
+                    elif attr_path_value and attr_path_value.exists():
+                        shutil.rmtree(attr_path_value)
+                        self.log_message(f"Deleted: {attr_path_value}")
+                        setattr(game, str(attr_name), None)
+                    elif path:
+                        self.log_message(f"{path} does not exist")
+                    elif attr_path_value:
+                        self.log_message(f"{attr_path_value} does not exist")
+                except PermissionError as e:
+                    self.log_message(f"Unable to delete files.': {e}")
+                    return
+        except Exception as e:
+            self.log_message(f"Unable to delete '{str(game.title)} bin and obj': {e}")
+            return
 
         except PermissionError as e:
-            self.log_message(f"Unable to delete '{path}': {e}")
+            self.log_message(f"Unable to delete '{str(game.title)} bin and obj': {e}")
             return
+
         self.update_labels(game)
         self.load_games(self.games)
 
@@ -3103,7 +3219,8 @@ class XBLIGDialog(QDialog):
         self.open_xml_btn.clicked.connect(partial(self.delete_game_files, "extracted"))
         self.export_btn = QPushButton("Delete Decompiled")
         self.export_btn.clicked.connect(partial(self.delete_game_files, "decompiled"))
-
+        self.export_btn = QPushButton("Delete Decompiled Bin and Obj Folders")
+        self.export_btn.clicked.connect(partial(self.delete_game_files, "bin-obj"))
         # actions.addWidget(self.run_btn)
         actions.addWidget(self.validate1_btn)
         actions.addWidget(self.validate2_btn)
@@ -3190,13 +3307,13 @@ class XBLIGDialog(QDialog):
         self.extract_btn = QPushButton("Extract Game Package")
         self.extract_btn.clicked.connect(self.extract_game_package)
         self.build_btn = QPushButton("Decompile Game and Assemblies")
-        self.build_btn.clicked.connect(self.build_selected)
+        self.build_btn.clicked.connect(self.decompile)
         # self.convert_project_btn = QPushButton("Convert Game Project Files")
         # self.convert_project_btn.clicked.connect(self.convert_game_project)
         self.open_folder_btn = QPushButton("Open Game Folder")
-        self.open_folder_btn.clicked.connect(partial(self.open_selected_folder,"root"))
+        self.open_folder_btn.clicked.connect(partial(self.open_selected_folder, "root"))
         self.open_folder_extracted_btn = QPushButton("Open Game Extracted Folder")
-        self.open_folder_extracted_btn.clicked.connect(partial(self.open_selected_folder,"extracted"))
+        self.open_folder_extracted_btn.clicked.connect(partial(self.open_selected_folder, "extracted"))
         self.compress_btn = QPushButton("Compress Selected Extracted Content")
         self.compress_btn.clicked.connect(partial(self.compress_decompress_extracted_content, True))
         self.decompress_btn = QPushButton("Decompress Selected Extracted Content")
@@ -3396,7 +3513,7 @@ class XBLIGDialog(QDialog):
         main_layout.addWidget(splitter)
 
     def open_ilspy(self):
-        ensure_tool_extracted("ilspy", log=self.log_message,)
+        ensure_tool_extracted("ilspy", log=self.log_message, )
         self.ilspy_process = QProcess(self)
         self.ilspy_process.setProgram(str(ILSPY_GUI))
         self.ilspy_process.finished.connect(lambda: cleanup_tool("ilspy", self.log_message))
@@ -3411,7 +3528,7 @@ class XBLIGDialog(QDialog):
         for line in output.getvalue().splitlines():
             if line.strip():
                 self.log_message(line)
-        
+
     def browse_root_folder(self, type_of_folder=None):
         if type_of_folder == "indie_games_path":
             folder = QFileDialog.getExistingDirectory(
@@ -3456,9 +3573,9 @@ class XBLIGDialog(QDialog):
     #
     #     self.log_window.appendHtml(message)
 
-    def log_message(self, message, color=None):
+    def log_message(self, message, color=None, clear_console=False):
         message = escape(str(message))
-
+        if clear_console: self.log_window.clear()
         if color is None:
             color = RAINBOW_COLORS[self._rainbow_index]
             self._rainbow_index = (
@@ -3468,6 +3585,7 @@ class XBLIGDialog(QDialog):
         self.log_window.appendHtml(
             f'<span style="color: {color};">{message}</span>'
         )
+
 
 RAINBOW_COLORS = [
     "#FF4D4D",
