@@ -1608,14 +1608,7 @@ class ConvertXnaProjects(QObject):
 
         return
 
-    def add_project_to_solution(
-            self,
-            solution_path: Path,
-            project_path: Path,
-            game=None,
-            add_to_solution_archive_folder=False,
-            move_decompiled_project=False,
-    ) -> bool:
+    def add_project_to_solution(self, solution_path: Path, project_path: Path, game=None, add_to_solution_archive_folder=False, move_decompiled_project=False,) -> bool:
 
         solution_path = Path(solution_path).resolve()
         project_path = Path(project_path).resolve()
@@ -1654,20 +1647,15 @@ class ConvertXnaProjects(QObject):
         # Move Project
         # ---------------------------------------------------------
 
-        if move_decompiled_project:
+        if move_decompiled_project and project_path.resolve() != destination_dir.resolve():
             destination_project = self.move_project_to_archive(
                 project_path,
                 destination_dir,
             )
-
             if destination_project is None:
                 return False
-
             project_path = destination_project
-
-            log_message(
-                f"  Project moved: {original_project_path} -> {project_path}"
-            )
+            log_message(f"  Project moved: {original_project_path} -> {project_path}")
 
         # ---------------------------------------------------------
         # Project path
@@ -1705,10 +1693,6 @@ class ConvertXnaProjects(QObject):
 
         root = tree.getroot()
 
-        # ---------------------------------------------------------
-        # Remove existing entries
-        # ---------------------------------------------------------
-
         for parent in root.iter():
             for project in list(parent):
                 if project.tag != "Project":
@@ -1716,18 +1700,13 @@ class ConvertXnaProjects(QObject):
 
                 path = project.get("Path")
 
-                if not path:
-                    continue
-
-                if path in (
-                        original_project_path_value,
-                        project_path_value,
-                ):
+                if path == original_project_path_value:
                     parent.remove(project)
+                    log_message(f"  Removed old project entry: {path}")
 
-                    log_message(
-                        f"  Removed existing project entry: {path}"
-                    )
+                elif path == project_path_value:
+                    parent.remove(project)
+                    log_message(f"  Removed existing project entry: {path}")
 
         # ---------------------------------------------------------
         # Find / create solution folder
@@ -1792,6 +1771,8 @@ class ConvertXnaProjects(QObject):
         log_message("  Solution updated successfully.")
 
         return True
+
+
     # def method_name(self, game:XBLIGGame):
     #     if game.extracted is not None:
     #         folder = game.extracted
@@ -2908,15 +2889,14 @@ class XBLIGDialog(QDialog):
             if len(cs_proj_files_extracted)>0:
                 game_folder = game.extracted
 
-        if game_folder is None:
-            self.log_message(f"No game folder found for {game.title}")
-            self.log_message("Game not Extracted or Archived. Extracting now.")
-            game.extracted = self.extract_package(game)
-            assert game.extracted is not None
-            game_folder = game.extracted
-            self.decompiler(game, game_folder, options)
+        # if game_folder is None:
+        #     self.log_message(f"No game folder found for {game.title}")
+        #     self.log_message("Game not Extracted or Archived. Extracting now.")
+        #     game.extracted = self.extract_package(game)
+        #     assert game.extracted is not None
+        #     game_folder = game.extracted
+        #     self.decompiler(game, game_folder, options)
 
-        assert game_folder is not None
         game.executables = list(game_folder.rglob("*.exe"))
         resx_files, game.dll_files = get_game_resources(game_folder)
 
@@ -2927,14 +2907,15 @@ class XBLIGDialog(QDialog):
 
         folder_title = game.folder_title
         solution_path = Path(self.config["indie-game-solution-location"])
-        # dest_content_folder = (solution_path.parent / "indie-game-archive" / folder_title)
 
-        if not isinstance(game_folder, Path):
-            raise ValueError(f"No folder title for {game.title}")
-        if game_folder is None:
-            raise ValueError(f"No game folder found for {game.title}")
-        self.log_message(f"Decompressing Project Content Archives: {game_folder}")
-        decompress_content_archives(source_content_root_folder=game_folder, log_callback=self.log_message)
+        # dest_content_folder = (solution_path.parent / "indie-game-archive" / folder_title)
+        #
+        # if not isinstance(game_folder, Path):
+        #     raise ValueError(f"No folder title for {game.title}")
+        # if game_folder is None:
+        #     raise ValueError(f"No game folder found for {game.title}")
+        # self.log_message(f"Decompressing Project Content Archives: {game_folder}")
+        # decompress_content_archives(source_content_root_folder=game_folder, log_callback=self.log_message)
 
         if options["convert_csproj"]:
             cs_proj_files = get_cs_project_folders(game_folder, self.log_message)
@@ -2979,19 +2960,20 @@ class XBLIGDialog(QDialog):
         t = ToolManager()
         t.cleanup()
 
-    def decompiler(self, game: XBLIGGame, game_folder: Path, options: dict[str, bool]):
-        output_dir = Path(game_folder)
-        output_dir.mkdir(parents=True, exist_ok=True)
-        assert game.folder_title is not None
-        folder_title = game.folder_title
-        self.log_message(f"Decompiling {folder_title} to {output_dir}", clear_console=True)
-        try:
-            project_dir = self.decompile_project(game, parent=self, use_gui=options["decompile_gui"],
-                                                 output_dir=output_dir)
-            if game.decompiled is None:
-                game.decompiled = project_dir
-        except Exception as e:
-            self.log_message(f"Failed to Decompile: {game.title}: {e}")
+    def decompiler(self, game: XBLIGGame, game_folder: Path | None, options: dict[str, bool]):
+        if game_folder:
+            output_dir = Path(game_folder)
+            output_dir.mkdir(parents=True, exist_ok=True)
+            assert game.folder_title is not None
+            folder_title = game.folder_title
+            self.log_message(f"Decompiling {folder_title} to {output_dir}", clear_console=True)
+            try:
+                project_dir = self.decompile_project(game, parent=self, use_gui=options["decompile_gui"],
+                                                     output_dir=output_dir)
+                if game.decompiled is None:
+                    game.decompiled = project_dir
+            except Exception as e:
+                self.log_message(f"Failed to Decompile: {game.title}: {e}")
 
     def rename_project(self, game: XBLIGGame, game_folder: Path | None):
         cs_proj_files = get_cs_project_folders(game_folder, self.log_message)
