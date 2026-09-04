@@ -209,18 +209,18 @@ def list_live_pirs(input_path):
     return entries
 
 
-def extract_live_pirs(input_path, output_dir, selected_ids=None):
+def extract_live_pirs(input_path, output_dir, selected_ids=None, log=None):
     """Extract files from a LIVE/PIRS STFS package.
 
     If selected_ids is provided (a set of entry IDs), only those entries
     are extracted. Entry IDs correspond to the 'id' field from list_live_pirs().
     """
-    sys.stdout.reconfigure(encoding='utf-8')
+    # sys.stdout.reconfigure(encoding='utf-8')
     magic, start, offset, ft_data = _parse_stfs_header(input_path)
 
-    print(f"Magic: {magic}")
-    print(f"Data start: 0x{start:X}")
-    print(f"Hash table offset: 0x{offset:X}")
+    log(f"Magic: {magic}","info")
+    log(f"Data start: 0x{start:X}","info")
+    log(f"Hash table offset: 0x{offset:X}","info")
 
     paths = {0xFFFF: ""}
 
@@ -253,23 +253,23 @@ def extract_live_pirs(input_path, output_dir, selected_ids=None):
 
         type_str = "DIR " if is_dir else "FILE"
         contig = " [contiguous]" if is_contiguous else ""
-        print(f"  [{type_str}] {outname:<40s} {filelen:>12d} bytes  start_block={startclust}  blocks={clustsize1}{contig}  path={pathind}")
+        log(f"  [{type_str}] {outname:<40s} {filelen:>12d} bytes  start_block={startclust}  blocks={clustsize1}{contig}  path={pathind}","info")
 
         if name_len < 1 or name_len > 40:
-            print(f"    WARNING: Name length {name_len} out of range, skipping")
+            log(f"    WARNING: Name length {name_len} out of range, skipping","info")
             continue
 
         if clustsize1 != clustsize2:
-            print(f"    WARNING: Cluster sizes don't match ({clustsize1} != {clustsize2})")
+            log(f"    WARNING: Cluster sizes don't match ({clustsize1} != {clustsize2})","info")
 
         if is_dir:
             paths[i] = paths.get(pathind, "") + outname + "/"
             full_dir = os.path.join(output_dir, paths[i])
             os.makedirs(full_dir, exist_ok=True)
-            print(f"    -> Created directory: {paths[i]}")
+            log(f"    -> Created directory: {paths[i]}","info")
         else:
             if selected_ids is not None and i not in selected_ids:
-                print(f"    -> Skipped (not selected)")
+                log(f"    -> Skipped (not selected)","info")
                 continue
 
             parent = paths.get(pathind, "")
@@ -287,7 +287,7 @@ def extract_live_pirs(input_path, output_dir, selected_ids=None):
                     infile.seek(realstart)
                     chunk = infile.read(min(0x1000, remaining))
                     if not chunk:
-                        print(f"    WARNING: Read failed at offset 0x{realstart:X}")
+                        log(f"    WARNING: Read failed at offset 0x{realstart:X}")
                         break
                     file_data.extend(chunk)
                     cur_clust += 1
@@ -306,11 +306,11 @@ def extract_live_pirs(input_path, output_dir, selected_ids=None):
             elif file_magic == b'\x89PNG':
                 magic_str = " >> PNG image"
 
-            print(f"    -> Extracted: {out_path} ({filelen} bytes){magic_str}")
+            log(f"    -> Extracted: {out_path} ({filelen} bytes){magic_str}","info")
             files_extracted.append((outname, out_path, filelen, file_magic))
 
     os.chdir(original_dir)
-    print(f"\nDone! Extracted {len(files_extracted)} file(s) to {output_dir}")
+    log(f"\nDone! Extracted {len(files_extracted)} file(s) to {output_dir}","info")
 
     return files_extracted
 

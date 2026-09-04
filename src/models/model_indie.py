@@ -101,11 +101,15 @@ class IndieGameTableModel(BaseGameTableModel):
                 if game.icon and game.icon.exists():
                     return QIcon(str(game.icon))
 
-                if game.extracted:
+                if game.extracted and game.extracted.exists() and (game.extracted / "DashboardIcon.png").exists():
                     icon = game.extracted / "DashboardIcon.png"
-
-                    if icon.exists():
-                        return QIcon(str(icon))
+                    return QIcon(str(icon))
+                if game.decompiled and game.decompiled.exists() and (game.decompiled / "DashboardIcon.png").exists():
+                    icon = game.decompiled / "DashboardIcon.png"
+                    return QIcon(str(icon))
+                if game.archived and game.archived.exists() and (game.archived / "DashboardIcon.png").exists():
+                    icon = game.archived / "DashboardIcon.png"
+                    return QIcon(str(icon))
 
             if role == Qt.ItemDataRole.DisplayRole:
                 return ""
