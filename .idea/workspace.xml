@@ -8,7 +8,9 @@
       <change afterPath="$PROJECT_DIR$/../XBLA-Extract/.idea/xbla-extract.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/model_indie.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/model_indie.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stfs_extract.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/stfs_extract.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,54 +62,54 @@
       <entry key="S10" value="1.0" />
       <entry key="S30" value="1.0" />
       <entry key="S60" value="1.0" />
-      <entry key="M2" value="1.0000000000000002" />
-      <entry key="M5" value="1.000000718387365" />
-      <entry key="M10" value="1.0012208562254086" />
-      <entry key="M15" value="1.0162100285880415" />
-      <entry key="M30" value="1.371139804477961" />
-      <entry key="H1" value="4.024357489917161" />
-      <entry key="H2" value="12.461147198058718" />
-      <entry key="H4" value="29.349272104042527" />
-      <entry key="D1" value="241.4027498215411" />
-      <entry key="W1" value="1510.36099263751" />
+      <entry key="M2" value="1.0000000001963445" />
+      <entry key="M5" value="1.0002191174160957" />
+      <entry key="M10" value="1.0288537068386563" />
+      <entry key="M15" value="1.168959978529861" />
+      <entry key="M30" value="2.2051432101087176" />
+      <entry key="H1" value="4.983398011170915" />
+      <entry key="H2" value="11.577471069850283" />
+      <entry key="H4" value="26.744851183727764" />
+      <entry key="D1" value="233.0707657579687" />
+      <entry key="W1" value="1503.931241534758" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="3.061863427387757E-189" />
-      <entry key="MS500" value="1.9824268130732157E-38" />
-      <entry key="S2" value="3.7523150112341004E-10" />
-      <entry key="S5" value="1.6971479985700984E-4" />
-      <entry key="S10" value="0.013027463293251296" />
-      <entry key="S30" value="0.23529893024438778" />
-      <entry key="S60" value="0.4850762107590804" />
-      <entry key="M2" value="0.696474127846168" />
-      <entry key="M5" value="0.8652910016907274" />
-      <entry key="M10" value="0.93082881479191" />
-      <entry key="M15" value="0.9601995039024093" />
-      <entry key="M30" value="1.0707756137215847" />
-      <entry key="H1" value="1.4887540150922778" />
-      <entry key="H2" value="2.670698392029169" />
-      <entry key="H4" value="5.023614902178784" />
-      <entry key="D1" value="47.33884307534466" />
-      <entry key="W1" value="292.26567437311735" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="7.144008164341167E-229" />
+      <entry key="S10" value="8.452223473347807E-115" />
+      <entry key="S30" value="9.454901099178557E-39" />
+      <entry key="S60" value="9.723633148764421E-20" />
+      <entry key="M2" value="3.120045208863955E-10" />
+      <entry key="M5" value="1.6961941250004934E-4" />
+      <entry key="M10" value="0.017460046622020206" />
+      <entry key="M15" value="0.090631865436357" />
+      <entry key="M30" value="0.51967428573287" />
+      <entry key="H1" value="1.407386979462742" />
+      <entry key="H2" value="2.862655124733784" />
+      <entry key="H4" value="5.396387550209509" />
+      <entry key="D1" value="46.34457337094045" />
+      <entry key="W1" value="291.6982280743046" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="3.0210817706040605E-13" />
-      <entry key="MS500" value="0.0031335201810644003" />
-      <entry key="S2" value="0.23659639561581433" />
-      <entry key="S5" value="0.5619191589316634" />
-      <entry key="S10" value="0.7591082669394158" />
-      <entry key="S30" value="1.120589568323935" />
-      <entry key="S60" value="1.4137522271333178" />
-      <entry key="M2" value="1.6549844593371401" />
-      <entry key="M5" value="1.8468377649440713" />
-      <entry key="M10" value="1.9224591041818828" />
-      <entry key="M15" value="1.96988693905091" />
-      <entry key="M30" value="2.438274771904623" />
-      <entry key="H1" value="5.510324448723989" />
-      <entry key="H2" value="15.128827441962686" />
-      <entry key="H4" value="34.36959579801376" />
-      <entry key="D1" value="288.7362376076495" />
-      <entry key="W1" value="1802.6221209235912" />
+      <entry key="MS100" value="0.47963205966263217" />
+      <entry key="MS500" value="0.8633395585744118" />
+      <entry key="S2" value="0.9639298077406432" />
+      <entry key="S5" value="0.9854127202602957" />
+      <entry key="S10" value="0.9926795657513535" />
+      <entry key="S30" value="0.9975538766096193" />
+      <entry key="S60" value="0.9987761894486769" />
+      <entry key="M2" value="0.9993879078998934" />
+      <entry key="M5" value="1.000142658731353" />
+      <entry key="M10" value="1.046124367106187" />
+      <entry key="M15" value="1.2592711015456817" />
+      <entry key="M30" value="2.724014310360989" />
+      <entry key="H1" value="6.3894980916824835" />
+      <entry key="H2" value="14.438288805955914" />
+      <entry key="H4" value="32.138783137104305" />
+      <entry key="D1" value="279.4103228698864" />
+      <entry key="W1" value="1795.6249639111243" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -315,9 +317,6 @@
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="SDK_NAME" value="uv (xenia-game-manager) (2)" />
       <option name="WORKING_DIRECTORY" value="C:\PycharmProjects\xenia-game-manager\src" />
@@ -354,14 +353,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00114" summary="1.1.9 Models and Icons">
-      <option name="closed" value="true" />
-      <created>1787902615507</created>
-      <option name="number" value="00114" />
-      <option name="presentableId" value="LOCAL-00114" />
-      <option name="project" value="LOCAL" />
-      <updated>1787902615508</updated>
     </task>
     <task id="LOCAL-00115" summary="1.1.9 Models and Icons">
       <option name="closed" value="true" />
@@ -747,7 +738,15 @@
       <option name="project" value="LOCAL" />
       <updated>1788538158372</updated>
     </task>
-    <option name="localTasksCounter" value="163" />
+    <task id="LOCAL-00163" summary="1.2.5 Optimisations to many things.">
+      <option name="closed" value="true" />
+      <created>1788558235396</created>
+      <option name="number" value="00163" />
+      <option name="presentableId" value="LOCAL-00163" />
+      <option name="project" value="LOCAL" />
+      <updated>1788558235397</updated>
+    </task>
+    <option name="localTasksCounter" value="164" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

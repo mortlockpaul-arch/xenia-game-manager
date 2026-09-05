@@ -96,6 +96,27 @@ class IndieGameTableModel(BaseGameTableModel):
         # Artwork
         # ----------------------------------------
 
+        if role == Qt.ItemDataRole.BackgroundRole:
+            if game.archived is not None and game.archived.exists():
+                return QBrush(QColor("#304830"))
+
+            return QBrush(QColor("#483030"))
+
+        if role == Qt.ItemDataRole.BackgroundRole:
+            if game.extracted.exists():
+                return QBrush(QColor("#pink"))
+
+            return QBrush(QColor("#483030"))
+
+        if role == Qt.ItemDataRole.BackgroundRole:
+            if game.decompiled.exists() :
+                return QBrush(QColor("#red"))
+
+            return QBrush(QColor("#483030"))
+
+
+            return QBrush(QColor("#483030"))
+
         if key == "icon":
             if role == Qt.ItemDataRole.DecorationRole:
                 if game.icon and game.icon.exists():

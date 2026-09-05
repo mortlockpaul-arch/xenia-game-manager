@@ -255,7 +255,7 @@ def decompress_content_archives(source_content_root_folder: Path | None, log_cal
     if not source_content_root_folder.exists():
         archives = sorted(source_content_root_folder.parent.glob("Content*.7z"))
         if archives:
-            log_callback(f"Content folder missing, extracting {len(archives)} archive(s)...","Info")
+            log_callback(f"Content folder missing, extracting {len(archives)} archive(s)...","success")
             for archive in archives:
                 decompress_content(archive, source_content_root_folder.parent, log_callback=log_callback)
         else:
@@ -300,9 +300,9 @@ def decompress_content(archive: Path, output_dir: Path | None = None, delete_arc
 
     arguments = [get_7zip(), "x", str(archive), f"-o{output_dir}", "-y"]
 
-    if show_command: log_callback(f"7-zip command: {arguments}","Info")
+    if show_command: log_callback(f"7-zip command: {arguments}","success")
     subprocess.run(arguments, check=True)
-    log_callback(f"Decompression Completed","Info")
+    log_callback(f"Decompression Completed","success")
     if delete_archive: archive.unlink()
     return output_dir
 
@@ -312,7 +312,7 @@ def compress_folders(root: Path, source_dirs, archive: Path, delete_original: bo
 
 
     if log_callback:
-        log_callback("Compressing: " + ", ".join(map(str, source_dirs)),"Info")
+        log_callback("Compressing: " + ", ".join(map(str, source_dirs)),"success")
 
     relative_folders = [folder.relative_to(root) for folder in source_dirs]
     command = [str(get_7zip()), "a", "-t7z", "-mx=9", "-m0=lzma2", "-mmt=on", "-ms=on"]
@@ -343,7 +343,7 @@ def compress_folders(root: Path, source_dirs, archive: Path, delete_original: bo
     return_code = process.wait()
 
     if return_code != 0:
-        log_callback(f"7-Zip failed with exit code: {return_code:#010x}","Info")
+        log_callback(f"7-Zip failed with exit code: {return_code:#010x}","success")
 
     if delete_original:
         for source_dir in source_dirs:
@@ -1840,10 +1840,10 @@ def _decompress_games(game: XBLIGGame, log):
     root = game.extracted / "584E07D1"
     archive = root / "Content.7z"
     try:
-        log(f"Decompressing {game.title}: {archive} folder(s)","Info")
+        log(f"Decompressing {game.title}: {archive} folder(s)","success")
         decompress_content(archive, root, log_callback=log, delete_archive=True)
     except Exception as e:
-        log(f"Failed to decompress {game.title}: {type(e).__name__}: {e}","Info")
+        log(f"Failed to decompress {game.title}: {type(e).__name__}: {e}","success")
     return game
 
 CONTENT_EXTENSIONS = {
@@ -1860,7 +1860,7 @@ def _compress_games(game: XBLIGGame, log):
     archive = root / "Content.7z"
 
     if archive.exists():
-        log(f"Archive already exists: {archive} Decompress.","Info")
+        log(f"Archive already exists: {archive} Decompress.","success")
         return archive
     files = [
         p
@@ -1872,7 +1872,7 @@ def _compress_games(game: XBLIGGame, log):
     folders = list({p.parent for p in files})
 
     if not folders:
-        log(f"No content files found for {game.title}: {root}","Info")
+        log(f"No content files found for {game.title}: {root}","success")
         return game
 
     content_folders = list({p.parent for p in files})
@@ -1882,11 +1882,11 @@ def _compress_games(game: XBLIGGame, log):
     # ]
 
     try:
-        log(f"Compressing {len(folders)} {game.title} Content Folders","Info")
+        log(f"Compressing {len(folders)} {game.title} Content Folders","success")
         compress_folders(root, content_folders, archive, True, log_callback=log)
-        log(f"Compressed {game.title} successfully","Info")
+        log(f"Compressed {game.title} successfully","success")
     except Exception as e:
-        log(f"Failed to compress {game.title}: {type(e).__name__}: {e}","Info")
+        log(f"Failed to compress {game.title}: {type(e).__name__}: {e}","success")
     return game
 
 
@@ -2889,13 +2889,13 @@ class XBLIGDialog(QDialog):
             if len(cs_proj_files_extracted)>0:
                 game_folder = game.extracted
 
-        # if game_folder is None:
-        #     self.log_message(f"No game folder found for {game.title}")
-        #     self.log_message("Game not Extracted or Archived. Extracting now.")
-        #     game.extracted = self.extract_package(game)
-        #     assert game.extracted is not None
-        #     game_folder = game.extracted
-        #     self.decompiler(game, game_folder, options)
+        if game_folder is None:
+            self.log_message(f"No game folder found for {game.title}")
+            self.log_message("Game not Extracted or Archived. Extracting now.")
+            game.extracted = self.extract_package(game)
+            assert game.extracted is not None
+            game_folder = game.extracted
+            self.decompiler(game, game_folder, options)
 
         game.executables = list(game_folder.rglob("*.exe"))
         resx_files, game.dll_files = get_game_resources(game_folder)
@@ -3564,10 +3564,11 @@ class XBLIGDialog(QDialog):
         if clear_console: self.log_window.clear()
         if color is None:
             color = RAINBOW_COLORS[self._rainbow_index]
-            self._rainbow_index = (
-                                          self._rainbow_index + 1
-                                  ) % len(RAINBOW_COLORS)
-
+            self._rainbow_index = (self._rainbow_index + 1) % len(RAINBOW_COLORS)
+        if color == "info":
+            color = "white"
+        if color == "success":
+            color = "green"
         self.log_window.appendHtml(
             f'<span style="color: {color};">{message}</span>'
         )
