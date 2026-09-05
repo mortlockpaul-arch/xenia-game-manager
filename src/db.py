@@ -81,8 +81,7 @@ class XBLIGGame(Game):
     platform: Platform = field(default=Platform.INDIE, init=False, )
 
     title: str = ""
-    icon: Path | None = None
-
+    icon: Path = Path()
     folder_title: str | None = None
     title_id: str | None = None
     virtual_title_id: str | None = None
@@ -94,15 +93,16 @@ class XBLIGGame(Game):
     content_converted: str = "No"
     content_format: str = "xnb content"
 
-    package: Path | None = None
-    extracted: Path | None = None
-    game_root: Path | None = None
+    package: Path = Path()
+    extracted: Path = Path()
+    decompiled: Path = Path()
+    archived: Path = Path()
+    game_root: Path = Path()
 
     executables: list[Path] = field(default_factory=list)
     dll_files: list[Path] = field(default_factory=list)
-    xml: Path | None = None
-    decompiled: Path | None = None
-    archived: Path | None = None
+    xml: Path = Path()
+
 
     def __post_init__(self):
         for name in (

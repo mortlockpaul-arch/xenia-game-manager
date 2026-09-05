@@ -20,7 +20,7 @@ def tools_setup():
         print("Vgmstream is complete.")
 
 if __name__ == "__main__":
-    # tools_setup()
+    tools_setup()
     #
     ensure_tool_extracted("ilspy", None)
     ensure_tool_extracted("ilspycmd", None)
