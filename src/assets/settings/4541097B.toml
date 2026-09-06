@@ -1,6 +1,0 @@
-# Title Name: Fifa Street
-# Title ID: 4541097B
-
-[GPU]
-readback_resolve = "full" # Fixes the textures at the cost of performance
-vsync = false # Unlocks framerate (Combined with framerate limit set to 0)

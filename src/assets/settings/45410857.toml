@@ -1,5 +1,0 @@
-# Title Name: Dead Space
-# Title ID: 45410857
-
-[GPU]
-framerate_limit = 120 # Caps the framerate to 60

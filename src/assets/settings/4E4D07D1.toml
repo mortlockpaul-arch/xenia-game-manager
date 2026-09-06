@@ -1,9 +1,0 @@
-# Title Name: Ace Combat 6
-# Title ID: 4E4D07D1
-
-[GPU]
-framerate_limit = 120 # Caps the FPS to 60
-vsync = false # Unlocks the framerate
-
-[HACKS]
-ac6_ground_fix = true # Fixes the ground textures being black

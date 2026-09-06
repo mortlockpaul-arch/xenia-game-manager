@@ -7,7 +7,6 @@ from enum import Enum
 from typing import Any, Literal
 from pathlib import Path
 import requests
-from config import load_config_file, get_app_dir
 from edge_import import import_edge_games, XeniaEdgeGame
 from logging_setup import logger
 from utils import detect_disc_number, strip_disc_suffix, smart_title_case

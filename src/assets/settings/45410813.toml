@@ -1,5 +1,0 @@
-# Title Name: skate.
-# Title ID: 45410813
-
-[GPU]
-vsync = false # Unlocks framerate (Combined with framerate limit set to 0)

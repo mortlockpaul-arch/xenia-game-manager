@@ -1,6 +1,0 @@
-# Title Name: Forza Motorsport 3
-# Title ID: 4D53084D
-
-[GPU]
-readback_resolve = "full" # Fixes road texture and thumbnails of cars
-vsync = false # Unlocks framerate (Combined with framerate limit set to 0)

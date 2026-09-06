@@ -1,8 +1,0 @@
-# Title Name: Tom Clancy's Splinter Cell Double Agent
-# Title ID: 555307D7
-
-[GPU]
-framerate_limit = 120 # Caps the framerate to 60
-
-[Memory]
-protect_zero = false # Stops the game from crashing

@@ -1,5 +1,0 @@
-# Title Name: Snoopy Flying Ace
-# Title ID: 584109B5
-
-[GPU]
-render_target_path_d3d12 = "rov" # Fixes the decals

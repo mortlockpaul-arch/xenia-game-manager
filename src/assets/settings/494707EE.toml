@@ -1,5 +1,0 @@
-# Title Name: Assault on Dark Athena
-# Title ID: 494707EE
-
-[GPU]
-occlusion_query = "fast-alt" # Fixes autoexposure issue (brightness)

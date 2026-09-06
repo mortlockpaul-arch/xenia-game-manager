@@ -1,5 +1,0 @@
-# Title Name: Ninja Gaiden 2
-# Title ID: 544307D5
-
-[GPU]
-clear_memory_page_state = true # Fixes warped graphics in game

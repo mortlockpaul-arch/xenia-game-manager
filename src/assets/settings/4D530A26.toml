@@ -1,6 +1,0 @@
-# Title Name: Gears of War - Judgement
-# Title ID: 4D530A26
-
-[GPU]
-vsync = false # Unlocks framerate (Combined with framerate limit set to 0)
-occlusion_query = "strict" # Fixes unoccluded lens flares

@@ -1474,11 +1474,7 @@ class ConvertXnaProjects(QObject):
         "debug": "#C678DD",  # Purple
     }
 
-    def move_project_to_archive(
-            self,
-            project_path: Path,
-            destination_dir: Path,
-    ) -> Path:
+    def move_project_to_archive(self, project_path: Path, destination_dir: Path,) -> None:
         """
         Move a decompiled project to the archive.
 
@@ -1556,15 +1552,12 @@ class ConvertXnaProjects(QObject):
                     str(destination),
                 )
 
-                self.log_message(
-                    f"Moved: {source.name}"
-                )
+                self.log_message(f"Moved: {source.name} to {destination}")
 
         except OSError as exc:
             self.log_message(
                 f"Error moving project files: {exc}"
             )
-            return None
 
         # ---------------------------------------------------------
         # Verify project
@@ -1574,13 +1567,11 @@ class ConvertXnaProjects(QObject):
             self.log_message(
                 "Error: No .csproj found in destination."
             )
-            return None
 
         self.log_message(
             f"Project moved successfully: {destination_project.name}"
         )
 
-        return
 
     def add_project_to_solution(self, solution_path: Path, project_path: Path, game=None, add_to_solution_archive_folder=False, move_decompiled_project=False,) -> bool:
 
@@ -1998,37 +1989,29 @@ class IconButtonDelegate(QStyledItemDelegate):
         )
 
 
-def folder_status(game: XBLIGGame) -> tuple[Path | None, list[Path]]:
-    global cs_proj_files_extracted
-    extracted_state = bool(any(p.is_file() for p in game.extracted.rglob("*")))
-    decompile_state = bool(any(p.is_file() for p in game.decompiled.rglob("*")))
-    archived_state = bool(any(p.is_file() for p in game.archived.rglob("*")))
+def folder_status(game: XBLIGGame) -> tuple[bool, bool, bool, Path, list[Path]]:
+    cs_proj_files_extracted = []
+    game_folder = Path()
+
+    extracted_state = bool(game.extracted and game.extracted.exists() and any(p.is_file() for p in game.extracted.rglob("*")))
+    decompile_state = bool(game.decompiled is not None and game.decompiled.exists() and any(p.is_file() for p in game.decompiled.rglob("*")))
+    archived_state = (game.archived is not None and game.archived.exists() and any(p.is_file() for p in game.archived.rglob("*")))
 
     # Order of Game Folder State -> extracted->decompiled->archived
     if archived_state:
-        cs_proj_files = list(game.archived.rglob("*.csproj"))
-        cs_proj_files_archived = cs_proj_files
-        if len(cs_proj_files_archived) > 0:
-            game_folder = game.archived
-            return game_folder, cs_proj_files_archived
-    if decompile_state:
-        files = list(game.decompiled.rglob("*.csproj"))
-        cs_proj_files_decompiled = files
-        if len(cs_proj_files_decompiled) > 0:
-            game_folder = game.decompiled
-            return game_folder, cs_proj_files_decompiled
-    if extracted_state:
-        proj_files = list(game.extracted.rglob("*.csproj"))
-        cs_proj_files_extracted = proj_files
-        if len(cs_proj_files_extracted) > 0:
-            game_folder = game.extracted
-            game.executables = list(game_folder.rglob("*.exe"))
-            files1 = list(game_folder.rglob("*.resx"))
-            files2 = list(game_folder.rglob("*.dll"))
-            result = files1, files2
-            resx_files, game.dll_files = result
-            return game_folder, cs_proj_files_extracted
-    return game.extracted, cs_proj_files_extracted
+        game_folder = game.archived
+    elif decompile_state:
+        game_folder = game.decompiled
+    elif extracted_state:
+        game_folder = game.extracted
+
+    game.executables = list(game_folder.rglob("*.exe"))
+    files1 = list(game_folder.rglob("*.resx"))
+    files2 = list(game_folder.rglob("*.dll"))
+    result = files1, files2
+    resx_files, game.dll_files = result
+    cs_proj_files_extracted = list(game_folder.rglob("*.csproj"))
+    return archived_state,decompile_state,extracted_state, game_folder, cs_proj_files_extracted
 
 class XBLIGDialog(QDialog):
 
@@ -2863,7 +2846,7 @@ class XBLIGDialog(QDialog):
         if not dlg.exec():
             return
 
-        game_folder_status, cs_proj_files_extracted = folder_status(game)
+        archived_state,decompile_state,extracted_state, game_folder_status, cs_proj_files_extracted = folder_status(game)
         options = dlg.options()
         converter = self.method_name()
 
@@ -2884,15 +2867,7 @@ class XBLIGDialog(QDialog):
 
         folder_title = game.folder_title
         solution_path = Path(self.config["indie-game-solution-location"])
-        game_folder_status, cs_proj_files_extracted = folder_status(game)
-        # dest_content_folder = (solution_path.parent / "indie-game-archive" / folder_title)
-        #
-        # if not isinstance(game_folder, Path):
-        #     raise ValueError(f"No folder title for {game.title}")
-        # if game_folder is None:
-        #     raise ValueError(f"No game folder found for {game.title}")
-        # self.log_message(f"Decompressing Project Content Archives: {game_folder}")
-        # decompress_content_archives(source_content_root_folder=game_folder, log_callback=self.log_message)
+        archived_state, decompile_state, extracted_state, game_folder_status, cs_proj_files_extracted = folder_status(game)
 
         if options["convert_csproj"]:
             cs_proj_files = cs_proj_files_extracted
@@ -2910,7 +2885,7 @@ class XBLIGDialog(QDialog):
                     except Exception as e:
                         self.log_message(f"Failed to Convert: {csproj_file}: {e}")
 
-        game_folder_status, cs_proj_files_extracted = folder_status(game)
+        archived_state, decompile_state, extracted_state, game_folder_status, cs_proj_files_extracted = folder_status(game)
         destination_dir = game.archived
 
         move_decompiled_project = options["archive_project"]
@@ -2918,8 +2893,8 @@ class XBLIGDialog(QDialog):
         for csproj_file in cs_proj_files_extracted:
             self.log_message(f"  Processing: {csproj_file}")
             if move_decompiled_project:
-                project_path = converter.move_project_to_archive(csproj_file, destination_dir)
-                self.log_message(f"  Project moved: {project_path} -> {destination_dir}")
+                converter.move_project_to_archive(csproj_file, destination_dir)
+                self.log_message(f"  Project moved: {csproj_file} -> {destination_dir}")
 
 
         if options["add_to_solution"]:

@@ -1,5 +1,0 @@
-# Title Name: Chaotic - Shadow Warriors
-# Title ID: 4156085A
-
-[GPU]
-vsync = false # Unlocks framerate (Combined with framerate limit set to 0)

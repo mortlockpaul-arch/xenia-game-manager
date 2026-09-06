@@ -1,6 +1,0 @@
-# Title Name: Crash of the Titans
-# Title ID: 565507E4
-
-[GPU]
-clear_memory_page_state = true # Fixes the warped graphics in game
-vsync = false # Unlocks framerate (Combined with framerate limit set to 0)
