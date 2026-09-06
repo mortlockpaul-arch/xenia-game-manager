@@ -1999,6 +1999,7 @@ class IconButtonDelegate(QStyledItemDelegate):
 
 
 def folder_status(game: XBLIGGame) -> tuple[Path | None, list[Path]]:
+    global cs_proj_files_extracted
     extracted_state = bool(any(p.is_file() for p in game.extracted.rglob("*")))
     decompile_state = bool(any(p.is_file() for p in game.decompiled.rglob("*")))
     archived_state = bool(any(p.is_file() for p in game.archived.rglob("*")))
@@ -2010,15 +2011,13 @@ def folder_status(game: XBLIGGame) -> tuple[Path | None, list[Path]]:
         if len(cs_proj_files_archived) > 0:
             game_folder = game.archived
             return game_folder, cs_proj_files_archived
-        return game.archived, cs_proj_files_archived
-    elif decompile_state:
+    if decompile_state:
         files = list(game.decompiled.rglob("*.csproj"))
         cs_proj_files_decompiled = files
         if len(cs_proj_files_decompiled) > 0:
             game_folder = game.decompiled
             return game_folder, cs_proj_files_decompiled
-        return game.decompiled, cs_proj_files_decompiled
-    elif extracted_state:
+    if extracted_state:
         proj_files = list(game.extracted.rglob("*.csproj"))
         cs_proj_files_extracted = proj_files
         if len(cs_proj_files_extracted) > 0:
@@ -2029,8 +2028,7 @@ def folder_status(game: XBLIGGame) -> tuple[Path | None, list[Path]]:
             result = files1, files2
             resx_files, game.dll_files = result
             return game_folder, cs_proj_files_extracted
-        return game.extracted, cs_proj_files_extracted
-    return None, []
+    return game.extracted, cs_proj_files_extracted
 
 class XBLIGDialog(QDialog):
 
@@ -2925,20 +2923,11 @@ class XBLIGDialog(QDialog):
 
 
         if options["add_to_solution"]:
-            if game_folder_status is None:
-                raise ValueError(f"No Game Folder for {game.title}")
-            if not isinstance(folder_title, str):
-                raise ValueError(f"No folder title for {game.title}")
-            if game_folder_status is None:
-                raise ValueError(f"Game has no project files.")
-
-            for csproj_file in cs_proj_files:
+            for csproj_file in cs_proj_files_extracted:
                 add_to_archive = (game.folder_title is not None and (
                         game.title.lower() in csproj_file.stem.lower() or any(
                     csproj_file.stem.lower() == executable.stem.lower() for executable in game.executables)))
                 try:
-
-
                     converter.add_project_to_solution(solution_path, csproj_file, game, add_to_solution_archive_folder=add_to_archive, move_decompiled_project=options["archive_project"])
                 except Exception as e:
                     self.log_message(f"Failed to Add Project to Solution {e}")
