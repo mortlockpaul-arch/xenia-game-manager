@@ -46,8 +46,9 @@ from PySide6.QtWidgets import (
 from keyring.backends.Windows import WinVaultKeyring
 
 import xboxunity_api
+from archive_window import ArchiveBrowser
 from git_actions import DownloadArtifact
-from config import save_config, load_config_file, load_xenia_manager_config, get_app_dir
+from config import save_config, load_xenia_manager_config, get_app_dir, load_config
 from db import Database, Compatibility, XboxGame, Xbox360Game, Platform, GameSource
 from edge_import import use_xenia_manager_content_folder_for_edge
 from extract import extract_archives, ExtractWorker
@@ -446,7 +447,7 @@ class GameLauncher(QMainWindow):
         self.xenia_mousehook_installed: QCheckBox = QCheckBox()
 
         self.extract_downloaded_archives_btn = None
-        self.config = load_config_file()
+        self.config = load_config()
         self.archive_button = None
         # self.launch_edge = QPushButton()
         # self.launch_manager = QPushButton()
@@ -596,23 +597,7 @@ class GameLauncher(QMainWindow):
 
         # ---------------- XENIA MANAGER PATH ----------------
         layout = QVBoxLayout(self.settings_drawer)
-        # layout.addWidget(QLabel("Xenia Manager Folder"))
-        #
-        # xenia_row = QHBoxLayout()
-        # self.xenia_manager_path = QLineEdit()
-        # self.xenia_manager_path.setPlaceholderText("Xenia Manager location...")
-        # self.xenia_manager_installed = QCheckBox()
-        # self.xenia_manager_installed.stateChanged.connect(partial(self.checkbox_changed, checkbox_name="manager"))
-        # self.browse_btn_xenia = QPushButton("Browse")
-        # self.browse_btn_xenia.clicked.connect(partial(self.pick_emulator_path, button_name="manager"))
-        # xenia_row.addWidget(self.xenia_manager_installed)
-        # xenia_row.addWidget(self.xenia_manager_path)
-        # xenia_row.addWidget(self.browse_btn_xenia)
-        #
-        # layout.addLayout(xenia_row)
 
-
-        # for name in ("Xenia Canary", "Xenia Netplay", "Xenia Mousehook", "Xenia Edge", "Xemu"):
         for key, widget in self.widgets.items():
             display = widget.name
             layout.addWidget(QLabel(f"{display} Folder"))
@@ -929,17 +914,15 @@ class GameLauncher(QMainWindow):
 
             finally:
                 self.finished.emit()
+
     def download_experimental_releases(self):
-        config = load_config_file()
+        config = load_config()
         self.log_message(clear_console=True)
         github_environment_variable = keyring.get_password("Xenia Game Manager", "github_token")
         if not github_environment_variable:
             self.log_message("Generate a Personal Github Token before downloading experimental releases.")
             self.log_message("Make sure it has Update GitHub Action workflows scope enabled.")
             return
-
-        def log(message):
-            self.log_message(message)
 
         releases = [
             {
@@ -1006,7 +989,7 @@ class GameLauncher(QMainWindow):
             save_config(config)
 
             try:
-                downloader = DownloadArtifact(github_environment_variable, log_callback=log)
+                downloader = DownloadArtifact(github_environment_variable, log_callback=self.log_message)
                 downloader.OWNER = release["owner"]
                 downloader.REPO = release["repo"]
 
@@ -1018,7 +1001,7 @@ class GameLauncher(QMainWindow):
                     self.log_message(message)
                     break
 
-                log(f"Downloading {release['name']}...")
+                self.log_message(f"Downloading {release['name']}...")
                 result = downloader.download(output_dir=folder)
                 zip_file = result["path"]
                 version = result["version"]
@@ -1038,9 +1021,9 @@ class GameLauncher(QMainWindow):
                 self.log_message(f"version {version} is {days} days, {hours} hours, {minutes} minutes old")
 
                 if extract_archives(folder=folder, log_callback=self.log_message) != 1:
-                    log(f"Failed extracting {zip_file}")
+                    self.log_message(f"Failed extracting {zip_file}")
                 else:
-                    log(f"Finished {release['name']}")
+                    self.log_message(f"Finished {release['name']}")
                     config[release["version_key"]] = version
                     save_config(config)
                 self.load_saved_config()
@@ -1093,18 +1076,8 @@ class GameLauncher(QMainWindow):
             f"Removed {count} empty folder(s)."
         )
 
-    def set_checkbox(
-            self,
-            checkbox_name,
-            checked,
-            save=True,
-            *,
-            placeholder=None,
-            text=None,
-            path_enabled=None,
-            button_enabled=None,
-    ):
-        config = load_config_file()
+    def set_checkbox(self, checkbox_name, checked, save=True, *, placeholder=None, text=None, path_enabled=None, button_enabled=None,):
+        config = load_config()
 
         widget_info = next(
             (
@@ -1123,6 +1096,7 @@ class GameLauncher(QMainWindow):
         assert widget_info.version is not None
         assert widget_info.path is not None
         assert widget_info.checkbox is not None
+        assert widget_info.button is not None
 
         widget_info.checkbox.setChecked(checked)
 
@@ -1148,7 +1122,7 @@ class GameLauncher(QMainWindow):
 
     def checkbox_changed(self, state, checkbox_name):
         checked = bool(state)
-        config = load_config_file()
+        config = load_config()
         self.set_checkbox(checkbox_name, checked)
 
         if checkbox_name != "manager":
@@ -1156,7 +1130,7 @@ class GameLauncher(QMainWindow):
         try:
             manager_config, xenia_manager_path = load_xenia_manager_config()
             if manager_config == {}:
-                self.log_message("Configure Xenia Manager No Configuration Exists")
+                self.log_message("Configure Xenia Manager. No Configuration Exists")
                 return
         except Exception as e:
             self.log_message(f"Config Load Error: {e}")
@@ -1332,7 +1306,7 @@ class GameLauncher(QMainWindow):
         self.browser_close_button.hide()
         self.browser_button.show()
 
-    def build_ui(self, downloaders_enabled=False):
+    def build_ui(self, downloaders_enabled=True):
         central = QWidget()
         self.setCentralWidget(central)
 
@@ -1378,7 +1352,7 @@ class GameLauncher(QMainWindow):
         refresh_btn = QPushButton("Load Xbox Games")
         refresh_btn.clicked.connect(partial(self.refresh, "xbox"))
 
-        self.config = load_config_file()
+        self.config = load_config()
         xenia_manager_installed = self.config["xenia_manager_installed"]
         button_text = "Launch Xenia Manager"
         self.launch_manager = QPushButton(button_text)
@@ -1676,7 +1650,7 @@ class GameLauncher(QMainWindow):
 
     def pick_emulator_path(self, button_name):
 
-        config = load_config_file()
+        config = load_config()
         config_folder = config[button_name]
 
         folder = QFileDialog.getExistingDirectory(
@@ -1694,8 +1668,9 @@ class GameLauncher(QMainWindow):
 
         config[f"{key}"] = folder
         save_config(config)
-        if button_name == "indie":
-            print("indie")
+        if button_name == "indie_games_path":
+            self.model.reload_config()
+            self.model.refresh_artwork()
         if button_name == "edge":
             xenia_edge_installed = config["xenia_edge_installed"]
             button_text = "Launch Xenia Edge" if xenia_edge_installed else "Install Xenia Edge"
@@ -1706,27 +1681,10 @@ class GameLauncher(QMainWindow):
             self.checkbox_changed(Qt.CheckState.Checked, "manager")
 
             self.model.reload_config()
-
-            # Refresh only the artwork column
-            artwork_col = next(
-                i for i, (key, _) in enumerate(self.model.COLUMNS)
-                if key == "artwork_path"
-            )
-
-            top_left = self.model.index(0, artwork_col)
-            bottom_right = self.model.index(
-                self.model.rowCount() - 1,
-                artwork_col
-            )
-
-            self.model.dataChanged.emit(
-                top_left,
-                bottom_right,
-                [Qt.ItemDataRole.DecorationRole]
-            )
+            self.model.refresh_artwork()
 
     def load_saved_config(self):
-        self.config = load_config_file()
+        self.config = load_config()
 
         for widget in self.widgets.values():
             checked = self.config.get(

@@ -12,7 +12,7 @@ from packaging.version import Version, InvalidVersion
 from requests import Timeout, Session
 from requests.exceptions import HTTPError, RequestException
 
-from config import load_config_file, save_config, get_app_dir
+from config import load_config, save_config, get_app_dir
 from extract import extract_archives
 
 
@@ -65,7 +65,7 @@ class UpdateManager(QObject):
         self.session.headers.update({
             "Accept": "application/vnd.github+json",
         })
-        self.config = load_config_file()
+        self.config = load_config()
 
     def _progress(self, done: int, total: int | None):
         self.progress.emit((done, total or 0))

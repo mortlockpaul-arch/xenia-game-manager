@@ -6,7 +6,7 @@ from typing import cast, Any
 from PySide6.QtCore import ( Qt, QModelIndex )
 from PySide6.QtGui import QBrush, QColor, QFont, QIcon
 
-from config import load_config_file
+from config import load_config
 from db import Database, Xbox360Game, Platform
 from models.model_bases import DiscGameTableModel
 from utils import star, format_disc_type
@@ -32,17 +32,38 @@ class Xbox360GameTableModel(DiscGameTableModel):
         ("platform", "Platform")
     ]
 
+    def refresh_artwork(self) -> None:
+        row_count = self.rowCount()
+
+        if row_count == 0:
+            return
+
+        artwork_col = next(
+            i
+            for i, (key, _) in enumerate(self.COLUMNS)
+            if key == "artwork_path"
+        )
+
+        top_left = self.index(0, artwork_col)
+        bottom_right = self.index(row_count - 1, artwork_col)
+
+        self.dataChanged.emit(
+            top_left,
+            bottom_right,
+            [Qt.ItemDataRole.DecorationRole],
+        )
+
     def __init__(self):
         super().__init__()
 
         self.db = Database()
         self.games: list[Xbox360Game] = []
-        self.config = load_config_file()
+        self.config = load_config()
         self.xenia_manager_path = Path(self.config["xenia_manager_path"])
         self.load()
 
     def reload_config(self):
-        self.config = load_config_file()
+        self.config = load_config()
         self.xenia_manager_path = Path(self.config["xenia_manager_path"])
 
     @staticmethod

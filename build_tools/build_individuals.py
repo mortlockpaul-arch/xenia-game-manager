@@ -7,7 +7,7 @@ import zipfile
 from pathlib import Path
 
 from build_tools.tools import tools_setup
-from config import get_app_dir, load_config_file, save_config
+from config import get_app_dir, load_config, save_config
 from logging_setup import setup_logger
 
 root = get_app_dir()

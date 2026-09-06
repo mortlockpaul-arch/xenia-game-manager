@@ -7,7 +7,7 @@ from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex, Signal, QSize
 from PySide6.QtGui import QBrush, QColor, QFont, QIcon
 from PySide6.QtWidgets import QPushButton
 
-from config import load_config_file
+from config import load_config
 from db import Database, XBLIGGame, XboxGame, Platform, Game
 from models.model_bases import BaseGameTableModel
 from utils import star, format_disc_type
@@ -34,7 +34,7 @@ class IndieGameTableModel(BaseGameTableModel):
     def __init__(self, games=None, parent=None):
         super().__init__(games or [], parent)
 
-        self.config = load_config_file()
+        self.config = load_config()
         self.indie_games_path = Path(
             self.config["indie_games_path"]
         )
@@ -45,7 +45,7 @@ class IndieGameTableModel(BaseGameTableModel):
         return self.games[index.row()]
 
     def reload_config(self):
-        self.config = load_config_file()
+        self.config = load_config()
         self.indie_games_path = Path(
             self.config["indie_games_path"]
         )
@@ -149,8 +149,8 @@ class IndieGameTableModel(BaseGameTableModel):
 
             if key == "decompiled":
                 return (
-                    game.decompiled.name
-                    if game.decompiled
+                    game.archived.name
+                    if game.archived
                     else ""
                 )
 

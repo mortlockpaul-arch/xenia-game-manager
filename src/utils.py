@@ -1,7 +1,5 @@
 # utils.py
 
-from config import load_config_file, get_app_dir
-
 KEEP_UPPER = {
     "DLC", "HD", "XBLA", "USA", "PAL",
     "NTSC", "GTA", "NBA", "NHL", "UFC",

@@ -1,11 +1,11 @@
 import shutil
 from dataclasses import dataclass
 
-from config import load_config_file, load_xenia_manager_config
+from config import load_config, load_xenia_manager_config
 
 
 def use_xenia_manager_content_folder_for_edge(log_callback=None):
-    config = load_config_file()
+    config = load_config()
     manager_config, xenia_manager_path = load_xenia_manager_config()
     if manager_config == {}:
         raise RuntimeError("Configure Xenia Manager No Configuration Exists")

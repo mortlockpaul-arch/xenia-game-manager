@@ -4,438 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.5 Optimisations to many things.">
+    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.6 Development Build and Compiler Fixes.">
       <change afterPath="$PROJECT_DIR$/../XBLA-Extract/.idea/xbla-extract.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/archive.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/archive_content_window.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/archive_digital_window.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/archive_indie_window.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/archive.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/icons/app.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/415407D2.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/415607D4.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/415607E1.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/41560845.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/41560857.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4156085A.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/41560893.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/415608AF.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/415608D2.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/415608FD.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/415688D0.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/424107D6.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/424107DD.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/425307E3.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/425407D1.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/42560816.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/434307D2.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/434D0819.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/434D0839.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/445007F1.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/454107D6.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/454107EC.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/454107F1.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/454107F2.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/454107F7.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/454107F8.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4541080F.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/45410813.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/45410820.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/45410821.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4541082B.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/45410830.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4541083B.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4541083F.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/45410845.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/45410850.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/45410857.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/45410866.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/45410870.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/45410872.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4541087F.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/454108BA.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/454108CE.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/454108D4.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/454108D8.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/454108DF.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/454108E6.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/454108FD.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/45410912.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/45410915.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/45410919.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4541095D.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/45410964.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4541096D.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4541096E.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4541097B.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4541099D.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/454109B6.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/454109BE.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/454109C1.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/454109EC.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/464F07DA.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/465307D6.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/465307D7.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/475007D4.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/494707EE.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/494F07D1.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4B4D07F5.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4B4E0802.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4B4E0810.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4B4E081F.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4B4E0822.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4B4E0823.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4B4E0840.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4B4E085C.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4B4F07FA.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4C4107D4.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307D1.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307D2.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307D3.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307D5.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307DB.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307DC.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307DE.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307DF.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307E6.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307E8.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307EA.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307ED.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307F1.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307F9.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307FA.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D53082D.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D53084D.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D53085B.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D53085F.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D530877.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5308AB.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D530910.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D530919.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5309B1.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5309C9.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D530A26.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D530AA4.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4E4D07D1.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4E4D07D3.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4E4D07E4.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4E4D0800.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4E4D080B.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4E4D0834.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4E4D084F.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4E4D0859.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4E4D085B.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4E4D0864.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4F4807D1.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/534307D4.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/534307E7.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/534307EA.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/534307EC.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/534507D4.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/534507F5.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/53450812.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5345082A.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5345084D.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/544307D1.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/544307D5.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/544307DC.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/545107D1.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/545107FC.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5451080D.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5451082C.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5451083B.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/54510842.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/54510846.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5451087B.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5451087D.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/54510890.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/545108B4.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/545407EE.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/545407F2.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/545407F8.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5454082B.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/54540845.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5454085D.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/545408B2.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/555307D4.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/555307D7.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/555307E5.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/555307EA.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/555307F0.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/55530808.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5553080F.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/55530825.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5553083B.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5553084C.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5553085D.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5553087E.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/555308AE.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/555308C2.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/565507E4.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/565507F9.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/565507FA.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/565707D0.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/57520802.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/58410811.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/58410837.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/58410957.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5841095A.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/58410960.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/58410964.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5841096A.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/58410991.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/584109B4.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/584109B5.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/58410A22.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/58410AA3.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/58410B39.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/58410B3A.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/58410B86.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/584111E0.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/584111F7.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/584111F9.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/58411202.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5841125A.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/584113CF.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/584113FC.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/58411411.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/584114BB.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion.7z" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspy.7z" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd.7z" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/ilspycmd.11.0.0.9331-rc.nupkg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/ilspycmd.11.0.0.9384.nupkg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/ICSharpCode.BamlDecompiler.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/ICSharpCode.Decompiler.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/ICSharpCode.Decompiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/ICSharpCode.ILSpyX.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/K4os.Compression.LZ4.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/McMaster.Extensions.CommandLineUtils.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/McMaster.Extensions.Hosting.CommandLine.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Configuration.Abstractions.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Configuration.Binder.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Configuration.CommandLine.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Configuration.EnvironmentVariables.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Configuration.FileExtensions.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Configuration.Json.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Configuration.UserSecrets.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Configuration.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.DependencyInjection.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Diagnostics.Abstractions.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Diagnostics.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.FileProviders.Abstractions.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.FileProviders.Physical.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.FileSystemGlobbing.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Hosting.Abstractions.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Hosting.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Logging.Abstractions.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Logging.Configuration.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Logging.Console.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Logging.Debug.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Logging.EventLog.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Logging.EventSource.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Logging.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Options.ConfigurationExtensions.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Options.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Microsoft.Extensions.Primitives.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Mono.Cecil.Mdb.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Mono.Cecil.Pdb.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Mono.Cecil.Rocks.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Mono.Cecil.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/Newtonsoft.Json.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/NuGet.Common.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/NuGet.Configuration.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/NuGet.Frameworks.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/NuGet.Packaging.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/NuGet.Protocol.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/NuGet.Versioning.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/System.Composition.AttributedModel.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/System.Diagnostics.EventLog.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/System.Security.Cryptography.Pkcs.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/System.Security.Cryptography.ProtectedData.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/ilspycmd.deps.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/ilspycmd.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/ilspycmd.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/ilspycmd.pdb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/ilspycmd.runtimeconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/ICSharpCode.BamlDecompiler.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/ICSharpCode.Decompiler.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/ICSharpCode.Decompiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/ICSharpCode.ILSpyX.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/K4os.Compression.LZ4.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/McMaster.Extensions.CommandLineUtils.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/McMaster.Extensions.Hosting.CommandLine.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Configuration.Abstractions.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Configuration.Binder.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Configuration.CommandLine.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Configuration.EnvironmentVariables.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Configuration.FileExtensions.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Configuration.Json.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Configuration.UserSecrets.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Configuration.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.DependencyInjection.Abstractions.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.DependencyInjection.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Diagnostics.Abstractions.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Diagnostics.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.FileProviders.Abstractions.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.FileProviders.Physical.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.FileSystemGlobbing.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Hosting.Abstractions.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Hosting.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Logging.Abstractions.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Logging.Configuration.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Logging.Console.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Logging.Debug.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Logging.EventLog.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Logging.EventSource.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Logging.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Options.ConfigurationExtensions.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Options.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Microsoft.Extensions.Primitives.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Mono.Cecil.Mdb.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Mono.Cecil.Pdb.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Mono.Cecil.Rocks.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Mono.Cecil.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/Newtonsoft.Json.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/NuGet.Common.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/NuGet.Configuration.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/NuGet.Frameworks.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/NuGet.Packaging.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/NuGet.Protocol.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/NuGet.Versioning.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/System.Composition.AttributedModel.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/System.Diagnostics.EventLog.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/System.Security.Cryptography.Pkcs.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/System.Security.Cryptography.ProtectedData.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/ilspycmd.deps.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/ilspycmd.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/ilspycmd.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/ilspycmd.pdb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/ilspycmd.runtimeconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/runtimes/win/lib/net10.0/System.Diagnostics.EventLog.Messages.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/runtimes/win/lib/net10.0/System.Diagnostics.EventLog.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/publish/runtimes/win/lib/net10.0/System.Security.Cryptography.Pkcs.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/runtimes/win/lib/net10.0/System.Diagnostics.EventLog.Messages.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/runtimes/win/lib/net10.0/System.Diagnostics.EventLog.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/ilspycmd/Release/net10.0/runtimes/win/lib/net10.0/System.Security.Cryptography.Pkcs.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/tools/vgmstream.7z" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/7-zip.chm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/7-zip.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/7-zip32.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/7z.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/7z.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/7z.sfx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/7zCon.sfx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/7zFM.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/7zG.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/af.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/an.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ar.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ast.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/az.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ba.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/be.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/bg.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/bn.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/br.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ca.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/co.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/cs.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/cy.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/da.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/de.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/el.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/en.ttt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/eo.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/es.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/et.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/eu.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ext.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/fa.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/fi.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/fr.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/fur.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/fy.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ga.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/gl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/gu.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/he.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/hi.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/hr.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/hu.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/hy.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/id.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/io.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/is.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/it.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ja.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ka.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/kaa.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/kab.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/kk.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ko.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ku-ckb.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ku.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ky.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/lij.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/lt.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/lv.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/mk.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/mn.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/mng.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/mng2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/mr.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ms.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/nb.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ne.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/nl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/nn.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/pa-in.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/pl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ps.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/pt-br.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/pt.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ro.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ru.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/sa.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/si.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/sk.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/sl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/sq.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/sr-spc.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/sr-spl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/sv.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/sw.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ta.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/tg.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/th.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/tk.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/tr.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/tt.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/ug.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/uk.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/uz-cyrl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/uz.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/va.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/vi.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/yo.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/zh-cn.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/zip/Lang/zh-tw.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/disc-info.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/game-manager-config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/games.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/netplay.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/portable.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/xemu_compatibility.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/xenia_compatibility.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/convert_xna_projects.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/crypto.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -443,7 +13,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="1265" />
+    <option name="cachedIndexableFilesCount" value="5989" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -481,61 +51,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0" />
-      <entry key="S5" value="1.0" />
-      <entry key="S10" value="1.0000000000076517" />
-      <entry key="S30" value="1.0005847907694212" />
-      <entry key="S60" value="1.0695596717547335" />
-      <entry key="M2" value="1.8389218216934524" />
-      <entry key="M5" value="4.889422565088783" />
-      <entry key="M10" value="7.58303576971375" />
-      <entry key="M15" value="9.047520114288677" />
-      <entry key="M30" value="11.809483325720537" />
-      <entry key="H1" value="15.326654789603756" />
-      <entry key="H2" value="20.02214712999741" />
-      <entry key="H4" value="29.51794770649831" />
-      <entry key="D1" value="202.96700944574994" />
-      <entry key="W1" value="1474.496534222467" />
+      <entry key="MS100" value="2.5342670709543463E-6" />
+      <entry key="MS500" value="0.07607273924970108" />
+      <entry key="S2" value="0.6464663378947912" />
+      <entry key="S5" value="1.3981410570076598" />
+      <entry key="S10" value="2.023130104670642" />
+      <entry key="S30" value="3.532892794836733" />
+      <entry key="S60" value="5.942228122239383" />
+      <entry key="M2" value="9.161702094767229" />
+      <entry key="M5" value="12.81541674826106" />
+      <entry key="M10" value="15.168876491157274" />
+      <entry key="M15" value="16.597958996407677" />
+      <entry key="M30" value="20.117659240536597" />
+      <entry key="H1" value="26.086261726070298" />
+      <entry key="H2" value="33.264058432937325" />
+      <entry key="H4" value="41.65985433640691" />
+      <entry key="D1" value="193.37498155795652" />
+      <entry key="W1" value="1458.8894602081255" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="1.9896855028258055E-215" />
-      <entry key="S2" value="2.1370157646012148E-54" />
-      <entry key="S5" value="4.2336485812789994E-22" />
-      <entry key="S10" value="3.231145758978107E-11" />
-      <entry key="S30" value="7.715640986243884E-4" />
-      <entry key="S60" value="0.05949417338467288" />
-      <entry key="M2" value="0.5383024834570576" />
-      <entry key="M5" value="2.043524674307311" />
-      <entry key="M10" value="3.2485893959464756" />
-      <entry key="M15" value="3.981431192369473" />
-      <entry key="M30" value="5.718566867101496" />
-      <entry key="H1" value="8.162377952273996" />
-      <entry key="H2" value="11.17039107221707" />
-      <entry key="H4" value="15.404751468854727" />
-      <entry key="D1" value="55.048659264152775" />
-      <entry key="W1" value="302.64002637214656" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0000169424260503" />
+      <entry key="S5" value="1.0123478185879633" />
+      <entry key="S10" value="1.111125472384406" />
+      <entry key="S30" value="1.4975543697194105" />
+      <entry key="S60" value="1.8229500809504657" />
+      <entry key="M2" value="2.193289513098197" />
+      <entry key="M5" value="2.69470942445422" />
+      <entry key="M10" value="3.3402588955574277" />
+      <entry key="M15" value="3.9063428834230236" />
+      <entry key="M30" value="5.378180051255436" />
+      <entry key="H1" value="7.478977007781786" />
+      <entry key="H2" value="9.553272397365951" />
+      <entry key="H4" value="11.551256861212584" />
+      <entry key="D1" value="45.92260702454958" />
+      <entry key="W1" value="302.1660670268946" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="3.203481090158285E-5" />
-      <entry key="MS500" value="0.1262189121995857" />
-      <entry key="S2" value="0.5960478259295473" />
-      <entry key="S5" value="0.8130409935659162" />
-      <entry key="S10" value="0.9016878582010328" />
-      <entry key="S30" value="0.9673663529605004" />
-      <entry key="S60" value="1.1081155873106405" />
-      <entry key="M2" value="2.349163025617613" />
-      <entry key="M5" value="6.897489798591147" />
-      <entry key="M10" value="10.803830087564076" />
-      <entry key="M15" value="13.006556433754353" />
-      <entry key="M30" value="17.512638182785476" />
-      <entry key="H1" value="23.478454564792813" />
-      <entry key="H2" value="31.185455849717155" />
-      <entry key="H4" value="44.91768734053895" />
-      <entry key="D1" value="258.0109539443868" />
-      <entry key="W1" value="1777.1320818063732" />
+      <entry key="MS100" value="2.445319868006099E-5" />
+      <entry key="MS500" value="0.14261260317484598" />
+      <entry key="S2" value="1.0323860166027803" />
+      <entry key="S5" value="1.9795801152003987" />
+      <entry key="S10" value="2.83473334882689" />
+      <entry key="S30" value="4.878120393264355" />
+      <entry key="S60" value="7.671205630807484" />
+      <entry key="M2" value="11.300135645149332" />
+      <entry key="M5" value="15.483446493941726" />
+      <entry key="M10" value="18.490965704235332" />
+      <entry key="M15" value="20.48900072479201" />
+      <entry key="M30" value="25.483359360713486" />
+      <entry key="H1" value="33.55484324683856" />
+      <entry key="H2" value="42.80975962766618" />
+      <entry key="H4" value="53.20585739644868" />
+      <entry key="D1" value="239.2924239563552" />
+      <entry key="W1" value="1761.0508246628735" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -573,7 +143,7 @@
     "Python.main.executor": "Run",
     "Python.main_updater.executor": "Run",
     "Python.netplay.executor": "Run",
-    "Python.package window.executor": "Debug",
+    "Python.package window.executor": "Run",
     "Python.package.executor": "Run",
     "Python.package_window.executor": "Debug",
     "Python.setup.executor": "Run",
@@ -593,7 +163,7 @@
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "C:/PycharmProjects/xenia-game-manager/src/assets",
+    "last_opened_file_path": "C:/PycharmProjects/xenia-game-manager/src",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.jshint": "true",
     "node.js.detected.package.tslint": "true",
@@ -601,14 +171,15 @@
     "node.js.selected.package.jshint": "",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "python.packages.toolwindow.project.migrated.to.right.top.v2": "true",
     "settings.editor.selected.configurable": "Errors",
     "to.speed.mode.migration.done": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\PycharmProjects\xenia-game-manager\src\assets" />
       <recent name="C:\PycharmProjects\xenia-game-manager\src" />
+      <recent name="C:\PycharmProjects\xenia-game-manager\src\assets" />
       <recent name="C:\PycharmProjects\xenia-game-manager\src\models" />
       <recent name="C:\PycharmProjects\xenia-game-manager\src\meta_data_import" />
       <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\tools\conversion\conversion\xnb-extractor" />
@@ -621,7 +192,7 @@
       <recent name="C:\PycharmProjects\xenia-game-manager\src\models" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.package window">
+  <component name="RunManager">
     <configuration name="Unnamed" type="BatchConfigurationType" factoryName="Batch" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -743,6 +314,9 @@
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="SDK_NAME" value="uv (xenia-game-manager) (2)" />
       <option name="WORKING_DIRECTORY" value="C:\PycharmProjects\xenia-game-manager\src" />
@@ -772,6 +346,13 @@
       <item itemvalue="Python.package window" />
     </list>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-eff1e8def5f5-5bd6d13a2a75-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-262.10315.174" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="" />
@@ -779,110 +360,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00118" summary="1.2.0 Toolbar Compact Layout">
-      <option name="closed" value="true" />
-      <created>1787916410426</created>
-      <option name="number" value="00118" />
-      <option name="presentableId" value="LOCAL-00118" />
-      <option name="project" value="LOCAL" />
-      <updated>1787916410426</updated>
-    </task>
-    <task id="LOCAL-00119" summary="1.2.0 Toolbar Compact Layout">
-      <option name="closed" value="true" />
-      <created>1787919348790</created>
-      <option name="number" value="00119" />
-      <option name="presentableId" value="LOCAL-00119" />
-      <option name="project" value="LOCAL" />
-      <updated>1787919348790</updated>
-    </task>
-    <task id="LOCAL-00120" summary="1.2.0 Log Colors">
-      <option name="closed" value="true" />
-      <created>1787919991993</created>
-      <option name="number" value="00120" />
-      <option name="presentableId" value="LOCAL-00120" />
-      <option name="project" value="LOCAL" />
-      <updated>1787919991996</updated>
-    </task>
-    <task id="LOCAL-00121" summary="1.2.0 Log Colors">
-      <option name="closed" value="true" />
-      <created>1787921275619</created>
-      <option name="number" value="00121" />
-      <option name="presentableId" value="LOCAL-00121" />
-      <option name="project" value="LOCAL" />
-      <updated>1787921275620</updated>
-    </task>
-    <task id="LOCAL-00122" summary="1.2.0 Log Colors">
-      <option name="closed" value="true" />
-      <created>1787921744745</created>
-      <option name="number" value="00122" />
-      <option name="presentableId" value="LOCAL-00122" />
-      <option name="project" value="LOCAL" />
-      <updated>1787921744746</updated>
-    </task>
-    <task id="LOCAL-00123" summary="1.2.1 Log Colors and Bug Fixing">
-      <option name="closed" value="true" />
-      <created>1787922315907</created>
-      <option name="number" value="00123" />
-      <option name="presentableId" value="LOCAL-00123" />
-      <option name="project" value="LOCAL" />
-      <updated>1787922315908</updated>
-    </task>
-    <task id="LOCAL-00124" summary="1.2.1 Log Colors and Bug Fixing">
-      <option name="closed" value="true" />
-      <created>1787922412896</created>
-      <option name="number" value="00124" />
-      <option name="presentableId" value="LOCAL-00124" />
-      <option name="project" value="LOCAL" />
-      <updated>1787922412900</updated>
-    </task>
-    <task id="LOCAL-00125" summary="1.2.1 Log Colors and Bug Fixing">
-      <option name="closed" value="true" />
-      <created>1787923018001</created>
-      <option name="number" value="00125" />
-      <option name="presentableId" value="LOCAL-00125" />
-      <option name="project" value="LOCAL" />
-      <updated>1787923018004</updated>
-    </task>
-    <task id="LOCAL-00126" summary="1.2.1 Open ILSpy Button">
-      <option name="closed" value="true" />
-      <created>1787926844010</created>
-      <option name="number" value="00126" />
-      <option name="presentableId" value="LOCAL-00126" />
-      <option name="project" value="LOCAL" />
-      <updated>1787926844011</updated>
-    </task>
-    <task id="LOCAL-00127" summary="1.2.1 Open ILSpy Capture Tool Extract and Cleanup">
-      <option name="closed" value="true" />
-      <created>1787927363546</created>
-      <option name="number" value="00127" />
-      <option name="presentableId" value="LOCAL-00127" />
-      <option name="project" value="LOCAL" />
-      <updated>1787927363546</updated>
-    </task>
-    <task id="LOCAL-00128" summary="1.2.1 Open ILSpy Capture Tool Extract and Cleanup">
-      <option name="closed" value="true" />
-      <created>1787946531700</created>
-      <option name="number" value="00128" />
-      <option name="presentableId" value="LOCAL-00128" />
-      <option name="project" value="LOCAL" />
-      <updated>1787946531705</updated>
-    </task>
-    <task id="LOCAL-00129" summary="1.2.2 Decompile Optimize and Solution Configuration">
-      <option name="closed" value="true" />
-      <created>1787951132445</created>
-      <option name="number" value="00129" />
-      <option name="presentableId" value="LOCAL-00129" />
-      <option name="project" value="LOCAL" />
-      <updated>1787951132447</updated>
-    </task>
-    <task id="LOCAL-00130" summary="1.2.2 Decompile Optimize and Solution Configuration">
-      <option name="closed" value="true" />
-      <created>1787951320687</created>
-      <option name="number" value="00130" />
-      <option name="presentableId" value="LOCAL-00130" />
-      <option name="project" value="LOCAL" />
-      <updated>1787951320687</updated>
     </task>
     <task id="LOCAL-00131" summary="1.2.2 Decompile Optimize and Solution Configuration">
       <option name="closed" value="true" />
@@ -1172,7 +649,111 @@
       <option name="project" value="LOCAL" />
       <updated>1788656248838</updated>
     </task>
-    <option name="localTasksCounter" value="167" />
+    <task id="LOCAL-00167" summary="1.2.5 Optimisations to many things.">
+      <option name="closed" value="true" />
+      <created>1788721112902</created>
+      <option name="number" value="00167" />
+      <option name="presentableId" value="LOCAL-00167" />
+      <option name="project" value="LOCAL" />
+      <updated>1788721112903</updated>
+    </task>
+    <task id="LOCAL-00168" summary="1.2.5 Optimisations to many things.">
+      <option name="closed" value="true" />
+      <created>1788722694152</created>
+      <option name="number" value="00168" />
+      <option name="presentableId" value="LOCAL-00168" />
+      <option name="project" value="LOCAL" />
+      <updated>1788722694153</updated>
+    </task>
+    <task id="LOCAL-00169" summary="1.2.5 Optimisations to many things.">
+      <option name="closed" value="true" />
+      <created>1788727687684</created>
+      <option name="number" value="00169" />
+      <option name="presentableId" value="LOCAL-00169" />
+      <option name="project" value="LOCAL" />
+      <updated>1788727687685</updated>
+    </task>
+    <task id="LOCAL-00170" summary="1.2.5 Optimisations to many things.">
+      <option name="closed" value="true" />
+      <created>1788752740407</created>
+      <option name="number" value="00170" />
+      <option name="presentableId" value="LOCAL-00170" />
+      <option name="project" value="LOCAL" />
+      <updated>1788752740407</updated>
+    </task>
+    <task id="LOCAL-00171" summary="1.2.5 Optimisations to many things.">
+      <option name="closed" value="true" />
+      <created>1788843799681</created>
+      <option name="number" value="00171" />
+      <option name="presentableId" value="LOCAL-00171" />
+      <option name="project" value="LOCAL" />
+      <updated>1788843799684</updated>
+    </task>
+    <task id="LOCAL-00172" summary="1.2.5 Optimisations to many things.">
+      <option name="closed" value="true" />
+      <created>1788964002854</created>
+      <option name="number" value="00172" />
+      <option name="presentableId" value="LOCAL-00172" />
+      <option name="project" value="LOCAL" />
+      <updated>1788964002855</updated>
+    </task>
+    <task id="LOCAL-00173" summary="1.2.5 Optimisations to many things.">
+      <option name="closed" value="true" />
+      <created>1788977868862</created>
+      <option name="number" value="00173" />
+      <option name="presentableId" value="LOCAL-00173" />
+      <option name="project" value="LOCAL" />
+      <updated>1788977868863</updated>
+    </task>
+    <task id="LOCAL-00174" summary="1.2.5 Optimisations to many things.">
+      <option name="closed" value="true" />
+      <created>1788990955883</created>
+      <option name="number" value="00174" />
+      <option name="presentableId" value="LOCAL-00174" />
+      <option name="project" value="LOCAL" />
+      <updated>1788990955883</updated>
+    </task>
+    <task id="LOCAL-00175" summary="1.2.5 Optimisations to many things.">
+      <option name="closed" value="true" />
+      <created>1788991062508</created>
+      <option name="number" value="00175" />
+      <option name="presentableId" value="LOCAL-00175" />
+      <option name="project" value="LOCAL" />
+      <updated>1788991062508</updated>
+    </task>
+    <task id="LOCAL-00176" summary="1.2.5 Optimisations to many things.">
+      <option name="closed" value="true" />
+      <created>1788993516674</created>
+      <option name="number" value="00176" />
+      <option name="presentableId" value="LOCAL-00176" />
+      <option name="project" value="LOCAL" />
+      <updated>1788993516675</updated>
+    </task>
+    <task id="LOCAL-00177" summary="1.2.6 Development Build and Compiler Fixes.">
+      <option name="closed" value="true" />
+      <created>1789153349826</created>
+      <option name="number" value="00177" />
+      <option name="presentableId" value="LOCAL-00177" />
+      <option name="project" value="LOCAL" />
+      <updated>1789153349828</updated>
+    </task>
+    <task id="LOCAL-00178" summary="1.2.6 Development Build and Compiler Fixes.">
+      <option name="closed" value="true" />
+      <created>1789153537140</created>
+      <option name="number" value="00178" />
+      <option name="presentableId" value="LOCAL-00178" />
+      <option name="project" value="LOCAL" />
+      <updated>1789153537141</updated>
+    </task>
+    <task id="LOCAL-00179" summary="1.2.6 Development Build and Compiler Fixes.">
+      <option name="closed" value="true" />
+      <created>1789156797675</created>
+      <option name="number" value="00179" />
+      <option name="presentableId" value="LOCAL-00179" />
+      <option name="project" value="LOCAL" />
+      <updated>1789156797675</updated>
+    </task>
+    <option name="localTasksCounter" value="180" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1194,7 +775,6 @@
       <path value="$PROJECT_DIR$/../XBLA-Extract" />
       <path value="$PROJECT_DIR$/src/compatibility/xemu_compatibility/xdb" />
     </ignored-roots>
-    <MESSAGE value="1.1.3 Fix DLL references when moving decompiled project to source folder." />
     <MESSAGE value="1.1.4 Decompile Optimise" />
     <MESSAGE value="1.1.5 Add distribution files." />
     <MESSAGE value="1.1.5 Remove distribution files." />
@@ -1219,7 +799,8 @@
     <MESSAGE value="1.2.3 Distribution and Build Tools" />
     <MESSAGE value="1.2.4 Compilation Queue and Optimisation" />
     <MESSAGE value="1.2.5 Optimisations to many things." />
-    <option name="LAST_COMMIT_MESSAGE" value="1.2.5 Optimisations to many things." />
+    <MESSAGE value="1.2.6 Development Build and Compiler Fixes." />
+    <option name="LAST_COMMIT_MESSAGE" value="1.2.6 Development Build and Compiler Fixes." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1241,7 +822,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1587</line>
+          <line>1561</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1266,12 +847,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1753</line>
+          <line>1711</line>
           <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1768</line>
+          <line>1726</line>
           <option name="timeStamp" value="78" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1281,32 +862,32 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>983</line>
+          <line>966</line>
           <option name="timeStamp" value="85" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1059</line>
+          <line>1042</line>
           <option name="timeStamp" value="86" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>342</line>
+          <line>343</line>
           <option name="timeStamp" value="88" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>363</line>
+          <line>364</line>
           <option name="timeStamp" value="89" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2257</line>
+          <line>2054</line>
           <option name="timeStamp" value="114" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2486</line>
+          <line>2273</line>
           <option name="timeStamp" value="116" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1331,32 +912,32 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>2255</line>
+          <line>2213</line>
           <option name="timeStamp" value="157" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>2209</line>
+          <line>2167</line>
           <option name="timeStamp" value="162" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>2208</line>
+          <line>2166</line>
           <option name="timeStamp" value="163" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>2213</line>
+          <line>2171</line>
           <option name="timeStamp" value="164" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>2262</line>
+          <line>2220</line>
           <option name="timeStamp" value="165" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1698</line>
+          <line>1673</line>
           <option name="timeStamp" value="173" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1376,38 +957,33 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2275</line>
+          <line>2072</line>
           <option name="timeStamp" value="193" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1187</line>
+          <line>1000</line>
           <option name="timeStamp" value="198" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2280</line>
+          <line>2077</line>
           <option name="timeStamp" value="199" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2913</line>
+          <line>2694</line>
           <option name="timeStamp" value="201" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2285</line>
+          <line>2082</line>
           <option name="timeStamp" value="203" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2695</line>
+          <line>2481</line>
           <option name="timeStamp" value="213" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1681</line>
-          <option name="timeStamp" value="235" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/models/model_indie.py</url>
@@ -1416,33 +992,28 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>3449</line>
+          <line>3232</line>
           <option name="timeStamp" value="245" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>434</line>
+          <line>436</line>
           <option name="timeStamp" value="247" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>3479</line>
+          <line>3262</line>
           <option name="timeStamp" value="252" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>3485</line>
+          <line>3268</line>
           <option name="timeStamp" value="253" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2909</line>
+          <line>2691</line>
           <option name="timeStamp" value="256" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1956</line>
-          <option name="timeStamp" value="286" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/build_tools/build_individuals.py</url>
@@ -1461,75 +1032,107 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>3030</line>
-          <option name="timeStamp" value="298" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2852</line>
-          <option name="timeStamp" value="316" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>309</line>
+          <line>312</line>
           <option name="timeStamp" value="318" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1826</line>
+          <line>1604</line>
           <option name="timeStamp" value="321" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>321</line>
+          <line>323</line>
           <option name="timeStamp" value="322" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>315</line>
+          <line>317</line>
           <option name="timeStamp" value="324" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>346</line>
+          <line>348</line>
           <option name="timeStamp" value="325" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2899</line>
-          <option name="timeStamp" value="328" />
+          <line>2709</line>
+          <option name="timeStamp" value="343" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1490</line>
-          <option name="timeStamp" value="329" />
+          <line>2122</line>
+          <option name="timeStamp" value="344" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/ui.py</url>
+          <line>1669</line>
+          <option name="timeStamp" value="381" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2892</line>
-          <option name="timeStamp" value="333" />
+          <line>2659</line>
+          <option name="timeStamp" value="391" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2890</line>
-          <option name="timeStamp" value="334" />
+          <line>773</line>
+          <option name="timeStamp" value="396" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2000</line>
-          <option name="timeStamp" value="337" />
+          <line>718</line>
+          <option name="timeStamp" value="398" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2895</line>
-          <option name="timeStamp" value="338" />
+          <line>2643</line>
+          <option name="timeStamp" value="410" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1554</line>
-          <option name="timeStamp" value="339" />
+          <line>1802</line>
+          <option name="timeStamp" value="411" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>2458</line>
+          <option name="timeStamp" value="412" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>2639</line>
+          <option name="timeStamp" value="413" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>2476</line>
+          <option name="timeStamp" value="415" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/ui.py</url>
+          <line>639</line>
+          <option name="timeStamp" value="417" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/ui.py</url>
+          <line>1652</line>
+          <option name="timeStamp" value="418" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/ui.py</url>
+          <line>1665</line>
+          <option name="timeStamp" value="419" />
         </line-breakpoint>
       </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">

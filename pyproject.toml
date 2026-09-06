@@ -26,4 +26,6 @@ dependencies = [
     "jaraco-text==4.3.0",
     "pyqt6==6.11.0",
     "openpyxl>=3.1.5",
+    "pillow>=12.3.0",
+    "path>=17.1.1",
 ]

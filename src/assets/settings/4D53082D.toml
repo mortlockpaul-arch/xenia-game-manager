@@ -1,0 +1,9 @@
+# Title Name: Gears of War 2
+# Title ID: 4D53082D
+
+[GPU]
+vsync = false # Unlocks framerate (Combined with framerate limit set to 0)
+occlusion_query = "strict" # Fixes unoccluded lens flares
+
+[Kernel]
+cl = "-NoStartupMovies" # Skips intro

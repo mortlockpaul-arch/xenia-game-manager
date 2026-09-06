@@ -7,6 +7,8 @@ from enum import Enum
 from typing import Any, Literal
 from pathlib import Path
 import requests
+
+from config import get_app_dir, load_config
 from edge_import import import_edge_games, XeniaEdgeGame
 from logging_setup import logger
 from utils import detect_disc_number, strip_disc_suffix, smart_title_case
@@ -66,9 +68,9 @@ class ConversionResult:
 
 @dataclass
 class Game:
-    game_id: str
-    title: str
-    platform: Platform
+    game_id: str| None = None
+    title: str| None = None
+    platform: Platform = Platform.INDIE
     favourite: bool = False
     last_played: str | None = None
     play_count: int = 0
@@ -93,15 +95,14 @@ class XBLIGGame(Game):
     content_format: str = "xnb content"
 
     package: Path = Path()
-    extracted: Path = Path()
-    decompiled: Path = Path()
-    archived: Path = Path()
+    extracted: Path | None = None
+    archived: Path | None = None
     game_root: Path = Path()
 
     executables: list[Path] = field(default_factory=list)
     dll_files: list[Path] = field(default_factory=list)
+    resx_files: list[Path] = field(default_factory=list)
     xml: Path = Path()
-
 
     def __post_init__(self):
         for name in (
@@ -109,7 +110,6 @@ class XBLIGGame(Game):
                 "extracted",
                 "game_root",
                 "xml",
-                "decompiled",
                 "archived",
                 "icon",
         ):
@@ -124,13 +124,13 @@ class XBLIGGame(Game):
             "extracted",
             "game_root",
             "xml",
-            "decompiled",
             "icon",
         }
 
         list_path_fields = {
             "executables",
             "dll_files",
+            "resx_files",
         }
 
         values = {}
@@ -330,7 +330,7 @@ class Compatibility:
             "Accept": "application/vnd.github+json",
             "User-Agent": "XeniaGameManager"
         }
-        config = load_config_file()
+        config = load_config()
         api = config["xenia_game_compatibility_url"]
         release = requests.get(api, headers=headers, timeout=30)
         release.raise_for_status()
@@ -1184,7 +1184,7 @@ class Database:
     from typing import Literal
 
     def import_games_from_source(self, source: GameSource, xbox_game_list: list[XboxRom] | None = None, log_callback=None, indie_game_list: list[XBLIGGame] | None = None,):
-        config = load_config_file()
+        config = load_config()
 
         if source == "indie":
             assert indie_game_list is not None
@@ -1321,10 +1321,11 @@ class Database:
 
         platform = game.platform.value
 
-        config_path = getattr(game, "config_path", None)
-        emulator = getattr(game, "emulator", None)
+        config_path = getattr(game, "config_path", "None")
+        emulator = getattr(game, "emulator", "None")
         discs = getattr(game, "discs", [])
-
+        if game.game_id is None:
+            game.game_id = game.title
         with self.conn as con:
 
             # ----------------------------------------
@@ -1347,7 +1348,7 @@ class Database:
                 platform,
                 game.game_id,
                 game.title,
-                str(config_path) if config_path else None,
+                str(config_path),
             ))
 
             # ----------------------------------------

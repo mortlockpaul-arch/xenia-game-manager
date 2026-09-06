@@ -1,0 +1,5 @@
+# Title Name: Halo 3 ODST
+# Title ID: 4D530877
+
+[GPU]
+readback_resolve = "full" # Fixes excessive brightness

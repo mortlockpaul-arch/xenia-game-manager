@@ -3,13 +3,14 @@ from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
 from config import get_app_dir
+
 def setup_logger() -> logging.Logger:
-    logger = logging.getLogger("xenia_manager")
+    logger_current = logging.getLogger("xenia_manager")
 
-    if logger.handlers:
-        return logger
+    if logger_current.handlers:
+        return logger_current
 
-    logger.setLevel(logging.DEBUG)
+    logger_current.setLevel(logging.DEBUG)
 
     log_dir = get_app_dir() / "logs"
     log_dir.mkdir(parents=True, exist_ok=True)
@@ -28,14 +29,14 @@ def setup_logger() -> logging.Logger:
         encoding="utf-8",
     )
     file_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
+    logger_current.addHandler(file_handler)
 
     # Console logging
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(formatter)
-    logger.addHandler(console_handler)
+    logger_current.addHandler(console_handler)
 
-    return logger
+    return logger_current
 
 
 logger = setup_logger()

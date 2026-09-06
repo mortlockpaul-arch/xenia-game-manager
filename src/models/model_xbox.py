@@ -10,7 +10,6 @@ from PySide6.QtCore import (
 )
 from PySide6.QtGui import QBrush, QColor, QFont, QIcon
 
-from config import load_config_file
 from db import Database, XboxGame, Platform, Game
 from models.model_bases import DiscGameTableModel
 from utils import star, format_disc_type
@@ -19,6 +18,27 @@ DisplayRole = Qt.ItemDataRole.DisplayRole
 ToolTipRole = Qt.ItemDataRole.ToolTipRole
 
 class XboxGameTableModel(DiscGameTableModel):
+
+    def refresh_artwork(self) -> None:
+        row_count = self.rowCount()
+
+        if row_count == 0:
+            return
+
+        artwork_col = next(
+            i
+            for i, (key, _) in enumerate(self.COLUMNS)
+            if key == "artwork_path"
+        )
+
+        top_left = self.index(0, artwork_col)
+        bottom_right = self.index(row_count - 1, artwork_col)
+
+        self.dataChanged.emit(
+            top_left,
+            bottom_right,
+            [Qt.ItemDataRole.DecorationRole],
+        )
 
     COLUMNS = [
         ("favourite", "Fav"),

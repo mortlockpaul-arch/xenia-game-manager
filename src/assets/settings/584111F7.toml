@@ -1,0 +1,5 @@
+# Title Name: Minecraft Xbox 360 Edition
+# Title ID: 584111F7
+
+[GPU]
+vsync = false # Unlocks framerate (Combined with framerate limit set to 0)

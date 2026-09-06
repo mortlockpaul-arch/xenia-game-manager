@@ -1,0 +1,6 @@
+# Title Name: Tiger Woods PGA Tour 09
+# Title ID: 45410870
+
+[GPU]
+readback_resolve = "full" # Fixes the clothes at the cost of performance
+vsync = false # Unlocks framerate (Combined with framerate limit set to 0)
