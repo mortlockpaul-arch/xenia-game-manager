@@ -161,6 +161,7 @@
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "git-widget-placeholder": "master",
+    "git.auto.fetch.suggestion.counter": "2",
     "ignore.virus.scanning.warn.message": "true",
     "junie.onboarding.icon.badge.shown": "true",
     "last_opened_file_path": "C:/PycharmProjects/xenia-game-manager/src",
@@ -360,22 +361,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00131" summary="1.2.2 Decompile Optimize and Solution Configuration">
-      <option name="closed" value="true" />
-      <created>1787951659686</created>
-      <option name="number" value="00131" />
-      <option name="presentableId" value="LOCAL-00131" />
-      <option name="project" value="LOCAL" />
-      <updated>1787951659687</updated>
-    </task>
-    <task id="LOCAL-00132" summary="1.2.2 Decompile Optimize and Solution Configuration">
-      <option name="closed" value="true" />
-      <created>1787951840274</created>
-      <option name="number" value="00132" />
-      <option name="presentableId" value="LOCAL-00132" />
-      <option name="project" value="LOCAL" />
-      <updated>1787951840275</updated>
     </task>
     <task id="LOCAL-00133" summary="1.2.2 Decompile Optimize and Solution Configuration">
       <option name="closed" value="true" />
@@ -753,7 +738,23 @@
       <option name="project" value="LOCAL" />
       <updated>1789156797675</updated>
     </task>
-    <option name="localTasksCounter" value="180" />
+    <task id="LOCAL-00180" summary="1.2.6 Development Build and Compiler Fixes.">
+      <option name="closed" value="true" />
+      <created>1789157107360</created>
+      <option name="number" value="00180" />
+      <option name="presentableId" value="LOCAL-00180" />
+      <option name="project" value="LOCAL" />
+      <updated>1789157107360</updated>
+    </task>
+    <task id="LOCAL-00181" summary="1.2.6 Development Build and Compiler Fixes.">
+      <option name="closed" value="true" />
+      <created>1789157383065</created>
+      <option name="number" value="00181" />
+      <option name="presentableId" value="LOCAL-00181" />
+      <option name="project" value="LOCAL" />
+      <updated>1789157383067</updated>
+    </task>
+    <option name="localTasksCounter" value="182" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
