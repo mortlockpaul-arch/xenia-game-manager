@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.6 Development Build and Compiler Fixes.">
       <change afterPath="$PROJECT_DIR$/../XBLA-Extract/.idea/xbla-extract.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,7 +147,7 @@
     "Python.netplay.executor": "Run",
     "Python.package window.executor": "Run",
     "Python.package.executor": "Run",
-    "Python.package_window.executor": "Debug",
+    "Python.package_window.executor": "Run",
     "Python.setup.executor": "Run",
     "Python.stfs_extract.executor": "Debug",
     "Python.stfs_extract_gui.executor": "Run",
@@ -361,22 +363,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00133" summary="1.2.2 Decompile Optimize and Solution Configuration">
-      <option name="closed" value="true" />
-      <created>1787953082526</created>
-      <option name="number" value="00133" />
-      <option name="presentableId" value="LOCAL-00133" />
-      <option name="project" value="LOCAL" />
-      <updated>1787953082526</updated>
-    </task>
-    <task id="LOCAL-00134" summary="1.2.2 Decompile Optimize and Solution Configuration">
-      <option name="closed" value="true" />
-      <created>1787953107008</created>
-      <option name="number" value="00134" />
-      <option name="presentableId" value="LOCAL-00134" />
-      <option name="project" value="LOCAL" />
-      <updated>1787953107009</updated>
     </task>
     <task id="LOCAL-00135" summary="1.2.2 Decompile Optimize and Solution Configuration">
       <option name="closed" value="true" />
@@ -754,7 +740,23 @@
       <option name="project" value="LOCAL" />
       <updated>1789157383067</updated>
     </task>
-    <option name="localTasksCounter" value="182" />
+    <task id="LOCAL-00182" summary="1.2.6 Development Build and Compiler Fixes.">
+      <option name="closed" value="true" />
+      <created>1789157640662</created>
+      <option name="number" value="00182" />
+      <option name="presentableId" value="LOCAL-00182" />
+      <option name="project" value="LOCAL" />
+      <updated>1789157640663</updated>
+    </task>
+    <task id="LOCAL-00183" summary="1.2.6 Development Build and Compiler Fixes.">
+      <option name="closed" value="true" />
+      <created>1789157698394</created>
+      <option name="number" value="00183" />
+      <option name="presentableId" value="LOCAL-00183" />
+      <option name="project" value="LOCAL" />
+      <updated>1789157698394</updated>
+    </task>
+    <option name="localTasksCounter" value="184" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1125,6 +1127,11 @@
           <url>file://$PROJECT_DIR$/src/ui.py</url>
           <line>1665</line>
           <option name="timeStamp" value="419" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>2104</line>
+          <option name="timeStamp" value="420" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

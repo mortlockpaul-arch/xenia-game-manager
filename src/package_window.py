@@ -15,6 +15,7 @@ from io import StringIO
 from pathlib import Path
 from typing import Callable, cast
 
+from PIL import Image
 from PySide6.QtCore import QPropertyAnimation, QEasingCurve, QThread, Signal, QObject, QModelIndex, \
     Slot, QProcess, QEvent
 from PySide6.QtGui import QFont, QMouseEvent
