@@ -1111,7 +1111,7 @@ class ConvertXnaProjects(QObject):
             "Platforms": "x86;x64",
             "RootNameSpace": f"{rns}",
             "StartupObject": f"{rns}.{suo}",
-            "ApplicationIcon": "gamethumbnail.ico"
+            "ApplicationIcon": "DashboardIcon.ico"
         }
 
         def png_to_ico(png_path: Path, ico_path: Path | None = None) -> Path:
@@ -1123,7 +1123,8 @@ class ConvertXnaProjects(QObject):
 
             return ico_path
 
-        png_to_ico(Path("gamethumbnail.png"), Path("gamethumbnail.ico"))
+        self.log_message("Creating game thumbnail icon")
+        png_to_ico(Path(project_path.parent.parent / "DashboardIcon.png"), Path(project_path.parent.parent / "DashboardIcon.ico"))
 
         # < RootNamespace > Manic_Miner_360 < / RootNamespace >
         # < StartupObject > Manic_Miner_360.Program < / StartupObject >
@@ -1786,7 +1787,7 @@ class IconButtonDelegate(QStyledItemDelegate):
         )
 
 
-def folder_status(game: XBLIGGame) -> tuple[bool, bool, Path, list[Path]]:
+def folder_status(game: XBLIGGame, moving=False) -> tuple[bool, bool, Path, list[Path]]:
     cs_proj_files_extracted = []
     game_folder = Path()
     config = load_config()
@@ -1796,10 +1797,12 @@ def folder_status(game: XBLIGGame) -> tuple[bool, bool, Path, list[Path]]:
         p.is_file() for p in game.archived.rglob("*")))
     folder = Path(config["indie_games_path"])
     solution_folder = Path(config["indie-game-solution-location"]).parent / "indie-game-archive"
-    if archived_state:
+    if archived_state or moving:
         game_folder = solution_folder / game.title
+        game.archived = game_folder
     elif extracted_state:
         game_folder = folder / game.extracted
+        game.extracted = game_folder
 
     game.dll_files = list(game_folder.rglob("*.dll"))
     game.executables = list(game_folder.rglob("*.exe"))
@@ -2655,7 +2658,7 @@ class XBLIGDialog(QDialog):
                         self.log_message(f"  ERROR renaming {file}: {e1}")
 
             solution_path = Path(self.config["indie-game-solution-location"])
-            archived_state, extracted_state, game_folder_status, cs_proj_files_extracted = folder_status(game)
+            archived_state, extracted_state, game_folder_status, cs_proj_files_extracted = folder_status(game, moving=True)
             destination_dir = game_folder_status
 
             if options["archive_project"]:
