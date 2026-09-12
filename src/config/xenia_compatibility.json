@@ -456,7 +456,7 @@
     "issue": 1173,
     "id": "584113FB",
     "title": "Fireburst",
-    "updated": "2026-08-06T23:52:52Z",
+    "updated": "2026-09-12T07:27:47Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -6831,7 +6831,7 @@
     "issue": 739,
     "id": "415607D4",
     "title": "Tony Hawk's American Wasteland",
-    "updated": "2026-07-20T15:48:00Z",
+    "updated": "2026-09-12T18:14:21Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -6848,7 +6848,7 @@
     "issue": 738,
     "id": "5841096A",
     "title": "Hydro Thunder Hurricane",
-    "updated": "2026-08-18T11:54:37Z",
+    "updated": "2026-09-12T07:20:32Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -8384,13 +8384,14 @@
     "issue": 632,
     "id": "535107F1",
     "title": "MindJack",
-    "updated": "2026-09-09T16:33:17Z",
+    "updated": "2026-09-11T13:25:23Z",
     "state": "Playable",
     "labels": {
       "state": [
         "state-playable"
       ],
       "others": [
+        "gpu-drawing-corrupt",
         "regression"
       ]
     },
@@ -8913,7 +8914,7 @@
     "issue": 598,
     "id": "55530801",
     "title": "Beowulf",
-    "updated": "2026-06-04T20:46:30Z",
+    "updated": "2026-09-12T07:38:42Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -15887,7 +15888,7 @@
     "issue": 169,
     "id": "4B4F07D9",
     "title": "Warriors Orochi 1",
-    "updated": "2026-09-08T11:24:55Z",
+    "updated": "2026-09-12T10:48:56Z",
     "state": "Loads",
     "labels": {
       "state": [
@@ -17629,7 +17630,7 @@
     "issue": 41,
     "id": "4D5607D1",
     "title": "Deadly Premonition",
-    "updated": "2026-08-21T19:36:37Z",
+    "updated": "2026-09-12T18:16:07Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -18068,7 +18069,7 @@
     "issue": 6,
     "id": "4D5307DF",
     "title": "Blue Dragon",
-    "updated": "2026-09-11T12:45:45Z",
+    "updated": "2026-09-11T12:52:10Z",
     "state": "Gameplay",
     "labels": {
       "state": [

@@ -24,7 +24,7 @@ import keyring
 import requests
 from PySide6.QtCore import QEasingCurve, QPropertyAnimation, QRect, QThread, Signal, QObject, Slot, QTimer, QSize, QUrl
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QGuiApplication, QIcon, QFont
+from PySide6.QtGui import QGuiApplication, QIcon, QFont, QPainter, QPixmap
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import (
     QDialog,
@@ -408,6 +408,19 @@ class GameLauncher(QMainWindow):
             percent = int((done / total) * 100)
             self.progress_current.setValue(percent)
 
+    def paintEvent(self, event):
+        painter = QPainter(self)
+
+        painter.drawPixmap(
+            self.rect(),
+            self.background.scaled(
+                self.size(),
+                Qt.AspectRatioMode.KeepAspectRatioByExpanding,
+                Qt.TransformationMode.SmoothTransformation,
+            ),
+        )
+        super().paintEvent(event)
+
     def __init__(self):
         super().__init__()
 
@@ -415,7 +428,7 @@ class GameLauncher(QMainWindow):
         self.platform = None
         self.scanner = None
         self.xbox_unity_api = None
-
+        self.background = QPixmap(get_app_dir() / "assets/images/img.png")
         self.model: XboxGameTableModel | Xbox360GameTableModel = None
         self.xbox_game_list: list[xiso.XboxRom] = []
         self.launch_edge = None
@@ -1259,7 +1272,7 @@ class GameLauncher(QMainWindow):
             )
 
     def launch_program(self, program):
-        self.config = load_config_file()
+        self.config = load_config()
         programs = {
             "manager": Path(self.config["xenia_manager_path"]) / "XeniaManager.exe",
             "edge": Path(self.config["xenia_edge_path"]) / "xenia_edge.exe",
