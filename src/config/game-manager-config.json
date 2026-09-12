@@ -23,5 +23,6 @@
     "xemu_installed": true,
     "xemu_games_installed": true,
     "xemu_games_path": "H:/roms/xbox",
-    "xemu_path": "D:/RetroBat/emulators/xemu"
+    "xemu_path": "D:/RetroBat/emulators/xemu",
+    "indie_installed": true
 }

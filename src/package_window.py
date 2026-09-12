@@ -1786,7 +1786,6 @@ class IconButtonDelegate(QStyledItemDelegate):
             index,
         )
 
-
 def folder_status(game: XBLIGGame, moving=False) -> tuple[bool, bool, Path, list[Path]]:
     cs_proj_files_extracted = []
     game_folder = Path()
@@ -2640,35 +2639,32 @@ class XBLIGDialog(QDialog):
                 self.log_message(f"Skipping {game.title} because it has not been extracted")
                 continue
             content_dir = game.extracted
-            archived_state, extracted_state, game_folder_status, cs_proj_files_extracted = folder_status(game)
             if options["decompile"]:
                 self.log_message(f"Decompiling {game.title} at {content_dir}", clear_console=True)
                 self.decompiler(game, content_dir, options)
-            archived_state, extracted_state, game_folder_status, cs_proj_files_extracted = folder_status(game)
-            for file in cs_proj_files_extracted:
-                if game.folder_title is not None and (game.title.lower() in file.stem.lower() or any(
-                        file.stem.lower() == executable1.stem.lower() for executable1 in game.executables)):
-                    new_csproj_file = file.with_name(f"{game.folder_title}.csproj")
-                    try:
-                        if not new_csproj_file.exists():
-                            file.rename(new_csproj_file)
-                            self.log_message(f"  Renamed project: {file.name} -> {new_csproj_file.name}")
-
-                    except OSError as e1:
-                        self.log_message(f"  ERROR renaming {file}: {e1}")
-
-            solution_path = Path(self.config["indie-game-solution-location"])
-            archived_state, extracted_state, game_folder_status, cs_proj_files_extracted = folder_status(game, moving=True)
-            destination_dir = game_folder_status
 
             if options["archive_project"]:
-                for csproj_file in cs_proj_files_extracted:
+                archived_state, extracted_state, game_folder_status, cs_proj_files = folder_status(game, moving=True)
+                destination_dir = game_folder_status
+                for csproj_file in cs_proj_files:
                     self.log_message(f"Processing: {csproj_file}")
+                    if game.folder_title is not None and (game.title.lower() in csproj_file.stem.lower() or any(
+                            csproj_file.stem.lower() == executable1.stem.lower() for executable1 in game.executables)):
+                        new_csproj_file = csproj_file.with_name(f"{game.folder_title}.csproj")
+                        try:
+                            if not new_csproj_file.exists():
+                                csproj_file.rename(new_csproj_file)
+                                self.log_message(f"  Renamed project: {csproj_file.name} -> {new_csproj_file.name}")
+
+                        except OSError as e1:
+                            self.log_message(f"  ERROR renaming {csproj_file}: {e1}")
+
                     converter.move_project_to_archive(csproj_file, destination_dir)
                     self.log_message(f"Project Moved: {csproj_file} -> {destination_dir}")
 
             if options["convert_csproj"]:
-                cs_proj_files = cs_proj_files_extracted
+                solution_path = Path(self.config["indie-game-solution-location"])
+                archived_state, extracted_state, game_folder_status, cs_proj_files = folder_status(game, moving=False)
                 if len(cs_proj_files) != 0:
                     self.log_message(f"Found {len(cs_proj_files)} csproj files in {game_folder_status}")
                     if game_folder_status is None:
@@ -2680,9 +2676,10 @@ class XBLIGDialog(QDialog):
                         except Exception as e:
                             self.log_message(f"Failed to Convert: {csproj_file}: {e}")
 
-
             if options["add_to_solution"]:
-                for csproj_file in cs_proj_files_extracted:
+                solution_path = Path(self.config["indie-game-solution-location"])
+                archived_state, extracted_state, game_folder_status, cs_proj_files = folder_status(game, moving=False)
+                for csproj_file in cs_proj_files:
                     add_to_archive = (game.folder_title is not None and (
                             game.title.lower() in csproj_file.stem.lower() or any(
                         csproj_file.stem.lower() == executable.stem.lower() for executable in game.executables)))
