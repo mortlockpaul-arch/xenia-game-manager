@@ -5,13 +5,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.7 Many fixes and improvements.">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build_tools/build_individuals.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/build_individuals.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/415607E1.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/415607E1.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/434D0819.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/434D0819.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/454108CE.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/454108CE.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/45410912.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/45410912.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/4541095D.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4541095D.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/4541096E.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4541096E.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/494707EE.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/494707EE.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/4B4E085C.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4B4E085C.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307D3.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D5307D3.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307D5.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D5307D5.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307E6.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D5307E6.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307E8.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D5307E8.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307FA.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D5307FA.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D53082D.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D53082D.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D53085B.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D53085B.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D530877.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D530877.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5308AB.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D5308AB.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D530919.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D530919.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5309B1.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D5309B1.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D530A26.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D530A26.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/545107D1.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/545107D1.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/5451080D.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/5451080D.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/5451083B.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/5451083B.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/5454082B.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/5454082B.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/565707D0.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/565707D0.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/5841095A.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/5841095A.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/settings/58410960.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/58410960.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/config/game-manager-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/game-manager-config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,60 +82,60 @@
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
       <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0" />
-      <entry key="S5" value="1.0" />
-      <entry key="S10" value="1.0" />
-      <entry key="S30" value="1.0" />
-      <entry key="S60" value="1.0" />
-      <entry key="M2" value="1.0000000000054876" />
-      <entry key="M5" value="1.0000572096919176" />
-      <entry key="M10" value="1.0131476656677747" />
-      <entry key="M15" value="1.085982773965698" />
-      <entry key="M30" value="1.714857142461742" />
-      <entry key="H1" value="3.7837167342927955" />
-      <entry key="H2" value="8.586580973455947" />
-      <entry key="H4" value="21.535965720471783" />
-      <entry key="D1" value="161.27533689263117" />
-      <entry key="W1" value="1382.7236383219076" />
+      <entry key="MS500" value="1.0000003993065298" />
+      <entry key="S2" value="1.0251377615919348" />
+      <entry key="S5" value="1.2291556878093346" />
+      <entry key="S10" value="1.478702102430576" />
+      <entry key="S30" value="1.7847728815087884" />
+      <entry key="S60" value="1.9345157258120829" />
+      <entry key="M2" value="2.1641909360744798" />
+      <entry key="M5" value="2.5251801090411887" />
+      <entry key="M10" value="2.7387613661451216" />
+      <entry key="M15" value="2.881296209995498" />
+      <entry key="M30" value="3.547862351622607" />
+      <entry key="H1" value="5.5974628676720775" />
+      <entry key="H2" value="10.373932302865144" />
+      <entry key="H4" value="23.268409442965226" />
+      <entry key="D1" value="162.94021548995318" />
+      <entry key="W1" value="1384.312904074487" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
       <entry key="MS500" value="0.0" />
       <entry key="S2" value="0.0" />
-      <entry key="S5" value="4.382950235783091E-235" />
-      <entry key="S10" value="6.620385363242151E-118" />
-      <entry key="S30" value="8.715542465489737E-40" />
-      <entry key="S60" value="2.952209759737566E-20" />
-      <entry key="M2" value="1.7181995692434133E-10" />
-      <entry key="M5" value="1.2417707102252366E-4" />
-      <entry key="M10" value="0.011224407977482462" />
-      <entry key="M15" value="0.052239119471469066" />
-      <entry key="M30" value="0.29208875448839516" />
-      <entry key="H1" value="0.8611656786305505" />
-      <entry key="H2" value="1.7580140011731944" />
-      <entry key="H4" value="3.5720151008907495" />
-      <entry key="D1" value="29.895018957353425" />
-      <entry key="W1" value="279.23711544517613" />
+      <entry key="S5" value="1.0847959683707867E-250" />
+      <entry key="S10" value="1.0415353898791852E-125" />
+      <entry key="S30" value="2.183859413316802E-42" />
+      <entry key="S60" value="1.4777886903467632E-21" />
+      <entry key="M2" value="3.8442017251337265E-11" />
+      <entry key="M5" value="6.822356934852529E-5" />
+      <entry key="M10" value="0.008319743871123091" />
+      <entry key="M15" value="0.04278519573019164" />
+      <entry key="M30" value="0.2643404800658661" />
+      <entry key="H1" value="0.8192399674943496" />
+      <entry key="H2" value="1.7146857512336107" />
+      <entry key="H4" value="3.5277223040036336" />
+      <entry key="D1" value="29.83291453374388" />
+      <entry key="W1" value="279.15417128912213" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="5.576194751164547E-10" />
-      <entry key="MS500" value="0.014101573866600462" />
-      <entry key="S2" value="0.3446012882439077" />
-      <entry key="S5" value="0.6530204151217542" />
-      <entry key="S10" value="0.8080967857390315" />
-      <entry key="S30" value="0.9314390891937049" />
-      <entry key="S60" value="0.9651109206685545" />
-      <entry key="M2" value="0.9824005909059371" />
-      <entry key="M5" value="0.9931032786207205" />
-      <entry key="M10" value="1.0207800957174809" />
-      <entry key="M15" value="1.1356888983068405" />
-      <entry key="M30" value="2.0051481261248965" />
-      <entry key="H1" value="4.643013441979519" />
-      <entry key="H2" value="10.342307421816823" />
-      <entry key="H4" value="25.105072127800437" />
-      <entry key="D1" value="191.16647295005205" />
-      <entry key="W1" value="1661.9562866226058" />
+      <entry key="MS100" value="0.001306569877720812" />
+      <entry key="MS500" value="0.2649883303391115" />
+      <entry key="S2" value="0.7366249239029282" />
+      <entry key="S5" value="1.081161096472349" />
+      <entry key="S10" value="1.3891041074917387" />
+      <entry key="S30" value="1.7486493983784634" />
+      <entry key="S60" value="1.9137784393345392" />
+      <entry key="M2" value="2.150480307270773" />
+      <entry key="M5" value="2.517380443071999" />
+      <entry key="M10" value="2.7424171600110188" />
+      <entry key="M15" value="2.920669803688251" />
+      <entry key="M30" value="3.809905998775762" />
+      <entry key="H1" value="6.414589593393088" />
+      <entry key="H2" value="12.086219165629862" />
+      <entry key="H4" value="26.79317524246441" />
+      <entry key="D1" value="192.76924120747194" />
+      <entry key="W1" value="1663.462607548445" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -367,14 +391,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00139" summary="1.2.3 Simplify and Remove All Checkbox">
-      <option name="closed" value="true" />
-      <created>1788038228996</created>
-      <option name="number" value="00139" />
-      <option name="presentableId" value="LOCAL-00139" />
-      <option name="project" value="LOCAL" />
-      <updated>1788038228997</updated>
     </task>
     <task id="LOCAL-00140" summary="1.2.3 Simplify and Remove All Checkbox">
       <option name="closed" value="true" />
@@ -760,7 +776,15 @@
       <option name="project" value="LOCAL" />
       <updated>1789254842899</updated>
     </task>
-    <option name="localTasksCounter" value="188" />
+    <task id="LOCAL-00188" summary="1.2.7 Many fixes and improvements.">
+      <option name="closed" value="true" />
+      <created>1789413676734</created>
+      <option name="number" value="00188" />
+      <option name="presentableId" value="LOCAL-00188" />
+      <option name="project" value="LOCAL" />
+      <updated>1789413676735</updated>
+    </task>
+    <option name="localTasksCounter" value="189" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

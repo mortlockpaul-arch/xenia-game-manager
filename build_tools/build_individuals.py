@@ -279,7 +279,7 @@ def build_msi():
 
     setup(
         name="Xenia Game Manager",
-        version="1.2.1",
+        version="1.2.7",
         description="Xenia Game Manager",
         author="Xenia Game Manager",
         options={
@@ -299,6 +299,6 @@ if __name__ == "__main__":
             build_portables()
         else:
             build_all()
-            create_defaults(version="1.2.4")
+            create_defaults(version="1.2.7")
             tools_setup()
             copy_optimized_settings()
