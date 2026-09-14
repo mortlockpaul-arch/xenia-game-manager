@@ -676,25 +676,29 @@ class ConvertXnaProjects(QObject):
                 return {}
 
             try:
-                tree = ET.parse(xml_file)
-                root_element = tree.getroot()
-
-                title_info = root_element.find(".//TitleInfo")
-
-                if title_info is None:
-                    return {}
-
-                image_path = title_info.findtext("ImagePath")
-
-                return {
-                    "title": title_info.findtext("Title"),
-                    "virtual_title_id": title_info.findtext("VirtualTitleId"),
-                    "xml_title_id": title_info.findtext("TitleId"),
-                    "image_path": image_path,
-                }
-
+                root_element = ET.parse(xml_file).getroot()
             except (ET.ParseError, OSError):
                 return {}
+
+            title_info = root_element.find(".//TitleInfo")
+            if title_info is None:
+                return {}
+
+            return {
+                "title": title_info.get("Name"),
+                "virtual_title_id": title_info.get("VirtualTitleID"),
+                "xml_title_id": title_info.get("TitleID"),
+                "image_path": title_info.get("ImagePath"),
+            }
+
+        target_dirs = {
+            "4D530888",
+            "584E07D2",
+            "00000002",
+            "584E07D1",
+            "BIN",
+            "CONTENT",
+        }
 
         for root in root_folders:
             root = Path(root)
@@ -706,23 +710,33 @@ class ConvertXnaProjects(QObject):
 
                 total_folders += len(dirs)
                 total_files += len(files)
+
+                found = False
+
                 for directory in list(dirs):
-                    if directory.upper() == "4D530888" or directory.upper() == "584E07D2" or directory.upper() == "00000002" or directory.upper() == "584E07D1" or directory.upper() == "bin" or directory.upper() == "Content":
+                    if directory.upper() in target_dirs:
                         title_folders.append(current_path)
-                        dirs.remove(directory)
-                self.progress_signal.emit(files_scanned, max(total_files, 1),)
-                if total_files and total_files % 1000 == 0:
-                    self.signal_log_message(f"Scanner: {total_files} files, {total_folders} folders", "info")
+                        dirs.clear()
+                        found = True
+                        break
 
-            self.total_files_signal.emit(total_files)
+                if found:
+                    continue
 
-            self.signal_log_message(f"Found {len(title_folders):,} Indie Game Folders", "info")
+                self.progress_signal.emit(
+                    files_scanned,
+                    max(total_files, 1),
+                )
+
+        self.total_files_signal.emit(total_files)
+
+        self.signal_log_message(f"Found {len(title_folders):,} Indie Game Folders", "info",)
 
         for index, package in enumerate(title_folders, start=1):
 
-                folder_title = package.parent.name
+                folder_title = package.name
 
-                game_info = package.parent / "GameInfo.xml"
+                game_info = package / "GameInfo.xml"
                 xml_data = parse_xml(game_info)
 
                 title = xml_data.get("title") or folder_title
@@ -732,7 +746,7 @@ class ConvertXnaProjects(QObject):
                 # Runtime profile
                 # -----------------------------------------------------
 
-                profile_file = package.parent / "Microsoft.Xna.Framework.RuntimeProfile"
+                profile_file = package / "Microsoft.Xna.Framework.RuntimeProfile"
 
                 content_format = ""
 
@@ -766,13 +780,13 @@ class ConvertXnaProjects(QObject):
                 extracted = indie_games_path / folder_title
                 archived = archive_base / folder_title
 
-                game.extracted = extracted
+                game.extracted = package
                 game.archived = archived
-                game.game_root = package.parent
+                game.game_root = package
 
                 archived_state, extracted_state, game_folder_status, cs_proj_files_extracted = folder_status(game)
-                if not archived_state: game.archived = None
-                if not extracted_state: game.extracted = None
+                # if not archived_state: game.archived = None
+                # if not extracted_state: game.extracted = None
                 games.append(game)
 
                 self.progress_signal.emit(index, max(len(title_folders), 1))
@@ -830,6 +844,7 @@ class ConvertXnaProjects(QObject):
             root = Path(root)
 
             self.signal_log_message(f"Scanning: {root} for Packages", "info")
+            target_dirs = {"4D530888", "584E07D2", "00000002"}
 
             for current_root, dirs, files in os.walk(root):
                 current_path = Path(current_root)
@@ -837,15 +852,30 @@ class ConvertXnaProjects(QObject):
                 total_folders += len(dirs)
                 total_files += len(files)
 
-                for filename in files:
-                    path = current_path / filename
-                    files_scanned += 1
-                    if is_package(path):
-                        packages.append(path)
-                        self.signal_log_message(f"Found package: {path}", "info")
-                self.progress_signal.emit(files_scanned, max(total_files, 1),)
+                if current_path.name.upper() in target_dirs:
+                    for filename in files:
+                        path = current_path / filename
+
+                        print(f"Scanning file: {path}")
+                        files_scanned += 1
+
+                        if is_package(path):
+                            packages.append(path)
+                            self.signal_log_message(
+                                f"Found package: {path}",
+                                "info",
+                            )
+
+                self.progress_signal.emit(
+                    files_scanned,
+                    max(total_files, 1),
+                )
+
                 if total_files and total_files % 1000 == 0:
-                    self.signal_log_message(f"Scanner: {total_files} files, {total_folders} folders", "info")
+                    self.signal_log_message(
+                        f"Scanner: {total_files} files, {total_folders} folders",
+                        "info",
+                    )
 
             self.total_files_signal.emit(total_files)
 
@@ -860,7 +890,8 @@ class ConvertXnaProjects(QObject):
                     package=package,
                     game_root=package.parent.parent.parent
                 )
-                self.extract_package(game, False, overwrite=True)
+                self.signal_log_message(f"Extracting {game.title}", "info")
+                self.extract_package(game, False, overwrite=False)
                 games.append(game)
 
         self.signal_log_message(f"Scanner complete: {len(games):,} games", "info")
@@ -871,7 +902,7 @@ class ConvertXnaProjects(QObject):
         assert game.package is not None
         package = Path(game.package)
 
-        self.signal_log_message(f"Extracting {game.title}")
+        self.signal_log_message(f"Extracting {game.title}", "info")
         from stfs_extract import extract_live_pirs
         assert game.folder_title is not None
 
@@ -886,7 +917,7 @@ class ConvertXnaProjects(QObject):
         #     return
         #
         if not overwrite and extracted_path.exists() and (extracted_path / "584E07D1").exists() and any((extracted_path / "584E07D1").iterdir()):
-            self.signal_log_message(f"Not Extracting {game.title} it has already been extracted. Check Overwrite if required.")
+            self.signal_log_message(f"Not Extracting {game.title} it has already been extracted. Check Overwrite if required.", "info")
             return game.game_root
         extracted_path.mkdir(parents=True, exist_ok=True)
 
@@ -900,11 +931,11 @@ class ConvertXnaProjects(QObject):
                 # extract_live_pirs(package, extracted_path, log = self.log_message, selected_ids=None)
                 run_powershell_script(game, script=2, log_message=self.signal_log_message)
 
-            self.signal_log_message(f"Extracted to: {extracted_path}")
+            self.signal_log_message(f"Extracted to: {extracted_path}", "info")
 
         except Exception as e:
-            self.signal_log_message(f"Extraction failed for {game.title}: {type(e).__name__}: {e}")
-            self.signal_log_message(traceback.format_exc())
+            self.signal_log_message(f"Extraction failed for {game.title}: {type(e).__name__}: {e}", "info")
+            self.signal_log_message(traceback.format_exc(), "info")
             return extracted_path
 
         return extracted_path
@@ -1164,15 +1195,15 @@ class ConvertXnaProjects(QObject):
         suo = "Program"
         properties = {
             "GenerateAssemblyInfo": "false",
-            "TargetFramework": "net8.0-windows",
+            "TargetFramework": "net9.0-windows",
             "ImplicitUsings": "enable",
             "Nullable": "enable",
             "OutputType": "WinExe",
-            "LangVersion": "14.0",
+            "LangVersion": "13.0",
             "AllowUnsafeBlocks": "True",
             "CheckForOverflowUnderflow": "False",
             "EnableDefaultEmbeddedResourceItems": "False",
-            "PlatformTarget": "x64",
+            "PlatformTarget": "x86",
             "Platforms": "x86;x64",
             "RootNameSpace": f"{rns}",
             "StartupObject": f"{rns}.{suo}",
@@ -1201,16 +1232,13 @@ class ConvertXnaProjects(QObject):
         # Contents.csproj
         # ---------------------------------------------------------
 
-        content_project = Path(r"..\..\Content-References\FNA.Contents.csproj")
+        content_project = Path(r"C:\source\Indie-Games\Content-References\FNA.Contents.csproj")
+        self.signal_log_message(f"Adding project reference: {content_project}")
 
-        self.signal_log_message(
-            f"  Adding project reference: {content_project}"
-        )
-
-        itemgroup = ET.SubElement(root, tag("ItemGroup"))
+        item_group = ET.SubElement(root, tag("ItemGroup"))
 
         reference = ET.SubElement(
-            itemgroup,
+            item_group,
             tag("ProjectReference"),
             {"Include": str(content_project)},
         )
@@ -1783,8 +1811,8 @@ class ScanWorker(QObject):
                 # ---------------------------------------------
 
                 game_paths = [downloads_path,archive_path]
-                games = self.converter.extract_packages([downloads_path])
-                # games = self.converter.find_packages(game_paths)
+                _ = self.converter.extract_packages(game_paths)
+                games = self.converter.find_packages(game_paths)
                 self.signal_log_message(f"Found {len(games)} games.")
 
                 save_cache(games)
@@ -2588,25 +2616,25 @@ class XBLIGDialog(QDialog):
             self.log_message(f"No game selected.")
             return
         games, _ = result
-        for self.game in games:
-            self.log_message(f"Extracting Game {self.game.title} Package", clear_console=True)
-            if not self.game.package:
-                self.log_message(f"{self.game.title} has no package.")
+        for game in games:
+            self.log_message(f"Extracting Game {game.title} Package", clear_console=True)
+            if not game.package:
+                self.log_message(f"{game.title} has no package.")
                 return
             # if not overwrite and self.game.extracted is not None:
             #     self.log_message(f"{self.game.title} Already Extracted")
             #     return
             try:
-                extracted = self.converter.extract_package(self.game, False, overwrite=overwrite)
-                self.game.extracted = extracted
-                self.game.executables = list(extracted.rglob("*.exe"))
-                self.log_message(f"Extracted {self.game.title} successfully")
+                extracted = self.converter.extract_package(game, False, overwrite=overwrite)
+                # game.extracted = extracted
+                # game.executables = list(extracted.rglob("*.exe"))
+                archived_state, extracted_state, game_folder_status, cs_proj_files_extracted = folder_status(game)
+                self.log_message(f"Extracted {game.title} successfully")
                 save_cache(self.games)
-                self.load_games(self.games)
-                self.drawer_update_labels(self.game)
+                self.drawer_update_labels(game)
 
             except Exception as e:
-                self.log_message(f"Error extracting {self.game.title}: {type(e).__name__}: {e}")
+                self.log_message(f"Error extracting {game.title}: {type(e).__name__}: {e}")
             self.load_games(self.games, refresh_only=True)
 
     def load_games(self, games: list[XBLIGGame], refresh_only: bool = False, ):
@@ -2760,6 +2788,7 @@ class XBLIGDialog(QDialog):
                 continue
             content_dir = game.extracted
             if options["decompile"]:
+                archived_state, extracted_state, game_folder_status, cs_proj_files = folder_status(game, moving=False)
                 self.log_message(f"Decompiling {game.title} at {content_dir}", clear_console=True)
                 self.decompiler(game, content_dir, options)
 
@@ -2768,16 +2797,7 @@ class XBLIGDialog(QDialog):
                 destination_dir = game_folder_status
                 for csproj_file in cs_proj_files:
                     self.log_message(f"Processing: {csproj_file}")
-                    if game.folder_title is not None and (game.title.lower() in csproj_file.stem.lower() or any(
-                            csproj_file.stem.lower() == executable1.stem.lower() for executable1 in game.executables)):
-                        new_csproj_file = csproj_file.with_name(f"{game.folder_title}.csproj")
-                        try:
-                            if not new_csproj_file.exists():
-                                csproj_file.rename(new_csproj_file)
-                                self.log_message(f"  Renamed project: {csproj_file.name} -> {new_csproj_file.name}")
 
-                        except OSError as e1:
-                            self.log_message(f"  ERROR renaming {csproj_file}: {e1}")
 
                     self.converter.move_project_to_archive(csproj_file, destination_dir)
                     self.log_message(f"Project Moved: {csproj_file} -> {destination_dir}")
@@ -2792,6 +2812,17 @@ class XBLIGDialog(QDialog):
 
                     for csproj_file in cs_proj_files:
                         try:
+                            if game.folder_title is not None and (game.title.lower() in csproj_file.stem.lower() or any(
+                                    csproj_file.stem.lower() == executable1.stem.lower() for executable1 in
+                                    game.executables)):
+                                new_csproj_file = csproj_file.with_name(f"{game.folder_title}.csproj")
+                                try:
+                                    if not new_csproj_file.exists():
+                                        csproj_file.rename(new_csproj_file)
+                                        self.log_message(f"Renamed project: {csproj_file.name} -> {new_csproj_file.name}")
+                                        csproj_file = new_csproj_file
+                                except OSError as e1:
+                                    self.log_message(f"  ERROR renaming {csproj_file}: {e1}")
                             self.converter.clean_csproj(csproj_file, game.dll_files, game, game.resx_files)
                         except Exception as e:
                             self.log_message(f"Failed to Convert: {csproj_file}: {e}")
@@ -3151,7 +3182,7 @@ class XBLIGDialog(QDialog):
 
         self.root_edit = QLineEdit()
         self.root_edit.setPlaceholderText("Indie Games Root folder...")
-        self.root_edit.setMaximumWidth(500)
+        self.root_edit.setFixedWidth(100)
         root_folder = self.config["indie_games_path"]
         self.root_edit.setText(root_folder)
 
@@ -3172,17 +3203,23 @@ class XBLIGDialog(QDialog):
         self.root_solution_browse_btn.setFixedWidth(32)
         self.root_solution_browse_btn.clicked.connect(partial(self.browse_root_folder, "indie-game-solution-location"))
 
+        self.root_solution_arch = QLineEdit()
+        self.root_solution_arch.setPlaceholderText("Indie Games Archive folder...")
+        self.root_solution_arch.setMaximumWidth(500)
+        root_folder_arch = Path(self.config["indie-game-solution-location"]).parent / "indie-game-archive"
+        self.root_solution_arch.setText(str(root_folder_arch))
+
         self.open_ilspy_btn = QPushButton("Open ILSpy")
         self.open_ilspy_btn.clicked.connect(self.open_ilspy)
 
         # options_row.addWidget(self.all_checkbox)
         options_row.addWidget(self.overwrite_check)
         options_row.addWidget(self.cache_check)
-        options_row.addWidget(self.root_edit, 1)
+        options_row.addWidget(self.root_edit,1)
         options_row.addWidget(self.root_browse_btn)
         options_row.addWidget(self.root_solution_edit, 1)
         options_row.addWidget(self.root_solution_browse_btn)
-
+        options_row.addWidget(self.root_solution_arch, 1)
         options_row.addWidget(self.open_ilspy_btn)
 
         options_row.addStretch()

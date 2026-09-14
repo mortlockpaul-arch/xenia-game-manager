@@ -102,14 +102,14 @@ def create_defaults(version):
         logger.info(f"  Backing up {path.name} -> {backup}")
         shutil.copy2(path, backup)
 
-    config = load_config_file()
+    config = load_config()
     config["game_manager_version"] = version
     save_config(config)
     logger.info("Done.")
 
 def copy_optimized_settings():
     settings_dest = root / "assets" / "settings"
-    settings_source_dir = Path(r"C:\Users\mortl\Documents\GitHub\optimized-settings\settings")
+    settings_source_dir = Path(r"C:\PycharmProjects\optimized-settings\settings")
 
     settings_dest.mkdir(parents=True, exist_ok=True)
 
