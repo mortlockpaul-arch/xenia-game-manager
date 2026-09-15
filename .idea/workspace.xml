@@ -5,37 +5,56 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.7 Many fixes and improvements.">
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/FNA.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/FNA.dll.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/FNA.pdb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/Microsoft.Bcl.AsyncInterfaces.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/Microsoft.Win32.Registry.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/NAudio.Asio.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/NAudio.Core.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/NAudio.Midi.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/NAudio.Wasapi.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/NAudio.WinForms.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/NAudio.WinMM.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/NAudio.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/Newtonsoft.Json.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Buffers.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Drawing.Common.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.IO.Pipelines.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Memory.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Numerics.Vectors.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Resources.Extensions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Runtime.CompilerServices.Unsafe.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Security.AccessControl.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Security.Principal.Windows.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Text.Encodings.Web.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Text.Json.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Threading.Tasks.Extensions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/XnbExtractor.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/XnbExtractor.exe.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/XnbExtractor.pdb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/logs/xnbextractor.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/COPYING" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/USAGE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/avcodec-vgmstream-59.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/avformat-vgmstream-59.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/avutil-vgmstream-57.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/libatrac9.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/libcelt-0061.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/libcelt-0110.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/libg719_decode.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/libmpg123-0.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/libspeex-1.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/libvorbis.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/swresample-vgmstream-4.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/vgmstream-cli.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/vgmstream.vgmstream_Microsoft.Winget.Source_8wekyb3d8bbwe.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/easyxnb_gui.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build_tools/build_individuals.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/build_individuals.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/415607E1.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/415607E1.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/434D0819.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/434D0819.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/454108CE.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/454108CE.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/45410912.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/45410912.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4541095D.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4541095D.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4541096E.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4541096E.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/494707EE.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/494707EE.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4B4E085C.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4B4E085C.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307D3.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D5307D3.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307D5.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D5307D5.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307E6.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D5307E6.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307E8.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D5307E8.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5307FA.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D5307FA.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D53082D.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D53082D.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D53085B.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D53085B.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D530877.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D530877.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5308AB.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D5308AB.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D530919.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D530919.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D5309B1.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D5309B1.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/4D530A26.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/4D530A26.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/545107D1.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/545107D1.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5451080D.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/5451080D.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5451083B.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/5451083B.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5454082B.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/5454082B.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/565707D0.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/565707D0.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/5841095A.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/5841095A.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/settings/58410960.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/settings/58410960.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/game-manager-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/game-manager-config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build_tools/tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/tools.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +62,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="1597" />
+    <option name="cachedIndexableFilesCount" value="1606" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -81,61 +100,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0000003993065298" />
-      <entry key="S2" value="1.0251377615919348" />
-      <entry key="S5" value="1.2291556878093346" />
-      <entry key="S10" value="1.478702102430576" />
-      <entry key="S30" value="1.7847728815087884" />
-      <entry key="S60" value="1.9345157258120829" />
-      <entry key="M2" value="2.1641909360744798" />
-      <entry key="M5" value="2.5251801090411887" />
-      <entry key="M10" value="2.7387613661451216" />
-      <entry key="M15" value="2.881296209995498" />
-      <entry key="M30" value="3.547862351622607" />
-      <entry key="H1" value="5.5974628676720775" />
-      <entry key="H2" value="10.373932302865144" />
-      <entry key="H4" value="23.268409442965226" />
-      <entry key="D1" value="162.94021548995318" />
-      <entry key="W1" value="1384.312904074487" />
+      <entry key="MS100" value="1.0000000046616035" />
+      <entry key="MS500" value="1.032465570166681" />
+      <entry key="S2" value="1.9125863336427253" />
+      <entry key="S5" value="3.0416697377721897" />
+      <entry key="S10" value="3.7990710375572267" />
+      <entry key="S30" value="4.53197297898893" />
+      <entry key="S60" value="4.756140311896324" />
+      <entry key="M2" value="4.888801380408574" />
+      <entry key="M5" value="5.133372290502474" />
+      <entry key="M10" value="5.4751717509490705" />
+      <entry key="M15" value="5.775685056285184" />
+      <entry key="M30" value="6.8115205468522335" />
+      <entry key="H1" value="8.967001431820599" />
+      <entry key="H2" value="12.920597211710424" />
+      <entry key="H4" value="22.74859410203105" />
+      <entry key="D1" value="156.25278836264" />
+      <entry key="W1" value="1371.8863374605285" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
       <entry key="MS500" value="0.0" />
       <entry key="S2" value="0.0" />
-      <entry key="S5" value="1.0847959683707867E-250" />
-      <entry key="S10" value="1.0415353898791852E-125" />
-      <entry key="S30" value="2.183859413316802E-42" />
-      <entry key="S60" value="1.4777886903467632E-21" />
-      <entry key="M2" value="3.8442017251337265E-11" />
-      <entry key="M5" value="6.822356934852529E-5" />
-      <entry key="M10" value="0.008319743871123091" />
-      <entry key="M15" value="0.04278519573019164" />
-      <entry key="M30" value="0.2643404800658661" />
-      <entry key="H1" value="0.8192399674943496" />
-      <entry key="H2" value="1.7146857512336107" />
-      <entry key="H4" value="3.5277223040036336" />
-      <entry key="D1" value="29.83291453374388" />
-      <entry key="W1" value="279.15417128912213" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="1.5552275157391916E-186" />
+      <entry key="S30" value="1.1585940944390135E-62" />
+      <entry key="S60" value="1.0763961631832542E-31" />
+      <entry key="M2" value="3.302492888172818E-16" />
+      <entry key="M5" value="8.059280955846421E-7" />
+      <entry key="M10" value="0.0015046399984456663" />
+      <entry key="M15" value="0.02003604159829376" />
+      <entry key="M30" value="0.27821835657235566" />
+      <entry key="H1" value="1.0784063775008261" />
+      <entry key="H2" value="2.3675914700086618" />
+      <entry key="H4" value="4.386024457673988" />
+      <entry key="D1" value="29.72448781745474" />
+      <entry key="W1" value="277.6044721414421" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.001306569877720812" />
-      <entry key="MS500" value="0.2649883303391115" />
-      <entry key="S2" value="0.7366249239029282" />
-      <entry key="S5" value="1.081161096472349" />
-      <entry key="S10" value="1.3891041074917387" />
-      <entry key="S30" value="1.7486493983784634" />
-      <entry key="S60" value="1.9137784393345392" />
-      <entry key="M2" value="2.150480307270773" />
-      <entry key="M5" value="2.517380443071999" />
-      <entry key="M10" value="2.7424171600110188" />
-      <entry key="M15" value="2.920669803688251" />
-      <entry key="M30" value="3.809905998775762" />
-      <entry key="H1" value="6.414589593393088" />
-      <entry key="H2" value="12.086219165629862" />
-      <entry key="H4" value="26.79317524246441" />
-      <entry key="D1" value="192.76924120747194" />
-      <entry key="W1" value="1663.462607548445" />
+      <entry key="MS100" value="4.871681999736079E-7" />
+      <entry key="MS500" value="0.07066628502288809" />
+      <entry key="S2" value="1.2184200531231375" />
+      <entry key="S5" value="2.5790853118482695" />
+      <entry key="S10" value="3.4925056111370933" />
+      <entry key="S30" value="4.401722038929981" />
+      <entry key="S60" value="4.686382311327148" />
+      <entry key="M2" value="4.852649127305119" />
+      <entry key="M5" value="5.118550243691795" />
+      <entry key="M10" value="5.469126493597772" />
+      <entry key="M15" value="5.790408916602456" />
+      <entry key="M30" value="7.085564850714535" />
+      <entry key="H1" value="10.041132553772066" />
+      <entry key="H2" value="15.284311205314358" />
+      <entry key="H4" value="27.1310910383678" />
+      <entry key="D1" value="185.97341954092917" />
+      <entry key="W1" value="1649.4863593693028" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -171,6 +190,7 @@
     "Python.build portables.executor": "Run",
     "Python.build.executor": "Run",
     "Python.convert_xna_projects.executor": "Debug",
+    "Python.easyxnb_gui.executor": "Run",
     "Python.import_xblig_metadata.executor": "Run",
     "Python.main-updater.executor": "Run",
     "Python.main.executor": "Run",
@@ -197,7 +217,7 @@
     "git.auto.fetch.suggestion.counter": "2",
     "ignore.virus.scanning.warn.message": "true",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "C:/PycharmProjects/xenia-game-manager/src",
+    "last_opened_file_path": "C:/PycharmProjects/xenia-game-manager/src/assets/tools/conversion",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.jshint": "true",
     "node.js.detected.package.tslint": "true",
@@ -212,21 +232,21 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\tools\conversion" />
       <recent name="C:\PycharmProjects\xenia-game-manager\src" />
       <recent name="C:\PycharmProjects\xenia-game-manager\src\assets" />
       <recent name="C:\PycharmProjects\xenia-game-manager\src\models" />
       <recent name="C:\PycharmProjects\xenia-game-manager\src\meta_data_import" />
-      <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\tools\conversion\conversion\xnb-extractor" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\tools\conversion\xnb-extractor\release" />
       <recent name="C:\PycharmProjects\xenia-game-manager\src\scripts" />
       <recent name="C:\PycharmProjects\xenia-game-manager\build_tools" />
       <recent name="C:\PycharmProjects\xenia-game-manager\src" />
       <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\tools" />
-      <recent name="C:\PycharmProjects\xenia-game-manager\src\models" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.package window">
+  <component name="RunManager">
     <configuration name="Unnamed" type="BatchConfigurationType" factoryName="Batch" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -391,14 +411,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00140" summary="1.2.3 Simplify and Remove All Checkbox">
-      <option name="closed" value="true" />
-      <created>1788039276331</created>
-      <option name="number" value="00140" />
-      <option name="presentableId" value="LOCAL-00140" />
-      <option name="project" value="LOCAL" />
-      <updated>1788039276333</updated>
     </task>
     <task id="LOCAL-00141" summary="1.2.3 Simplify and Remove All Checkbox">
       <option name="closed" value="true" />
@@ -784,7 +796,15 @@
       <option name="project" value="LOCAL" />
       <updated>1789413676735</updated>
     </task>
-    <option name="localTasksCounter" value="189" />
+    <task id="LOCAL-00189" summary="1.2.7 Many fixes and improvements.">
+      <option name="closed" value="true" />
+      <created>1789423223841</created>
+      <option name="number" value="00189" />
+      <option name="presentableId" value="LOCAL-00189" />
+      <option name="project" value="LOCAL" />
+      <updated>1789423223841</updated>
+    </task>
+    <option name="localTasksCounter" value="190" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -913,7 +933,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2272</line>
+          <line>2318</line>
           <option name="timeStamp" value="114" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -983,27 +1003,27 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2288</line>
+          <line>2335</line>
           <option name="timeStamp" value="193" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1097</line>
+          <line>1092</line>
           <option name="timeStamp" value="198" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2293</line>
+          <line>2340</line>
           <option name="timeStamp" value="199" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2850</line>
+          <line>2896</line>
           <option name="timeStamp" value="201" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2298</line>
+          <line>2345</line>
           <option name="timeStamp" value="203" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1013,7 +1033,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>3355</line>
+          <line>3402</line>
           <option name="timeStamp" value="245" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1023,17 +1043,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>3385</line>
+          <line>3432</line>
           <option name="timeStamp" value="252" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>3391</line>
+          <line>3438</line>
           <option name="timeStamp" value="253" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2847</line>
+          <line>2893</line>
           <option name="timeStamp" value="256" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1058,7 +1078,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1711</line>
+          <line>1755</line>
           <option name="timeStamp" value="321" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1078,12 +1098,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2865</line>
+          <line>2911</line>
           <option name="timeStamp" value="343" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2341</line>
+          <line>2388</line>
           <option name="timeStamp" value="344" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1093,12 +1113,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2794</line>
+          <line>2840</line>
           <option name="timeStamp" value="391" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2789</line>
+          <line>2835</line>
           <option name="timeStamp" value="413" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1118,33 +1138,58 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1222</line>
+          <line>1267</line>
           <option name="timeStamp" value="421" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2320</line>
+          <line>2367</line>
           <option name="timeStamp" value="424" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2809</line>
+          <line>2854</line>
           <option name="timeStamp" value="425" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1127</line>
+          <line>1122</line>
           <option name="timeStamp" value="426" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2627</line>
+          <line>2673</line>
           <option name="timeStamp" value="428" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1814</line>
+          <line>1857</line>
           <option name="timeStamp" value="429" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>1279</line>
+          <option name="timeStamp" value="430" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>1255</line>
+          <option name="timeStamp" value="431" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>1238</line>
+          <option name="timeStamp" value="432" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>658</line>
+          <option name="timeStamp" value="434" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>3464</line>
+          <option name="timeStamp" value="435" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

@@ -112,7 +112,7 @@ def open_solution(project_dir: Path):
 
 
 DECOMPILER = get_app_dir() / "assets" / "tools"
-ILSPY_GUI = DECOMPILER / "ILSpy" / "release" / "win-x64"/ "ILSpy.exe"
+ILSPY_GUI = DECOMPILER / "ILSpy" / "release" / "win-x64" / "ILSpy.exe"
 ILSPY_CMD = DECOMPILER / "ILSpyCmd" / "Release" / "net10.0" / "ilspycmd.exe"
 
 
@@ -511,127 +511,129 @@ def create_launch_settings(project_path: Path, game_title=None):
     }
     launch_settings_path.write_text(json.dumps(settings, indent=2), encoding="utf-8", )
 
+
 RAINBOW_COLORS = [
-        # ── Reds ─────────────────────────────────────────────
-        "#FF4D4D",
-        "#FF5252",
-        "#FF5C5C",
-        "#FF6666",
-        "#FF7070",
-        "#FF7A7A",
-        "#FF4757",
-        "#FF3F4F",
-        "#FF3850",
-        "#FF3048",
+    # ── Reds ─────────────────────────────────────────────
+    "#FF4D4D",
+    "#FF5252",
+    "#FF5C5C",
+    "#FF6666",
+    "#FF7070",
+    "#FF7A7A",
+    "#FF4757",
+    "#FF3F4F",
+    "#FF3850",
+    "#FF3048",
 
-        # ── Red → Orange ─────────────────────────────────────
-        "#FF493D",
-        "#FF5138",
-        "#FF5933",
-        "#FF6130",
-        "#FF692B",
-        "#FF7025",
-        "#FF7820",
-        "#FF801B",
-        "#FF8816",
-        "#FF9011",
+    # ── Red → Orange ─────────────────────────────────────
+    "#FF493D",
+    "#FF5138",
+    "#FF5933",
+    "#FF6130",
+    "#FF692B",
+    "#FF7025",
+    "#FF7820",
+    "#FF801B",
+    "#FF8816",
+    "#FF9011",
 
-        # ── Oranges ───────────────────────────────────────────
-        "#FF9810",
-        "#FFA00F",
-        "#FFA80E",
-        "#FFB00D",
-        "#FFB80C",
-        "#FFC00B",
-        "#FFC70A",
-        "#FFCE0A",
-        "#FFD50A",
-        "#FFDC0A",
+    # ── Oranges ───────────────────────────────────────────
+    "#FF9810",
+    "#FFA00F",
+    "#FFA80E",
+    "#FFB00D",
+    "#FFB80C",
+    "#FFC00B",
+    "#FFC70A",
+    "#FFCE0A",
+    "#FFD50A",
+    "#FFDC0A",
 
-        # ── Yellows ──────────────────────────────────────────
-        "#FFE20A",
-        "#FFE80A",
-        "#FFEE0A",
-        "#FFF30A",
-        "#FFF80A",
-        "#FFFC12",
-        "#F8FF18",
-        "#EEFF20",
-        "#E4FF27",
-        "#DAFF2E",
+    # ── Yellows ──────────────────────────────────────────
+    "#FFE20A",
+    "#FFE80A",
+    "#FFEE0A",
+    "#FFF30A",
+    "#FFF80A",
+    "#FFFC12",
+    "#F8FF18",
+    "#EEFF20",
+    "#E4FF27",
+    "#DAFF2E",
 
-        # ── Yellow → Green ───────────────────────────────────
-        "#D0FF35",
-        "#C4FF3C",
-        "#B8FF43",
-        "#ACFF4A",
-        "#A0FF51",
-        "#94FF58",
-        "#88FF5F",
-        "#7CFF66",
-        "#70FF6D",
-        "#64FF74",
+    # ── Yellow → Green ───────────────────────────────────
+    "#D0FF35",
+    "#C4FF3C",
+    "#B8FF43",
+    "#ACFF4A",
+    "#A0FF51",
+    "#94FF58",
+    "#88FF5F",
+    "#7CFF66",
+    "#70FF6D",
+    "#64FF74",
 
-        # ── Greens ───────────────────────────────────────────
-        "#58FF7B",
-        "#4CFF82",
-        "#40FF89",
-        "#34FF90",
-        "#28FF97",
-        "#20FF9E",
-        "#18FFA5",
-        "#10FFAC",
-        "#08FFB3",
-        "#00FFBA",
+    # ── Greens ───────────────────────────────────────────
+    "#58FF7B",
+    "#4CFF82",
+    "#40FF89",
+    "#34FF90",
+    "#28FF97",
+    "#20FF9E",
+    "#18FFA5",
+    "#10FFAC",
+    "#08FFB3",
+    "#00FFBA",
 
-        # ── Cyan ─────────────────────────────────────────────
-        "#00F8C4",
-        "#00F0CE",
-        "#00E8D8",
-        "#00E0E2",
-        "#00D8EC",
-        "#00D0F6",
-        "#00C8FF",
-        "#00BFFF",
-        "#18B7FF",
-        "#30AFFF",
+    # ── Cyan ─────────────────────────────────────────────
+    "#00F8C4",
+    "#00F0CE",
+    "#00E8D8",
+    "#00E0E2",
+    "#00D8EC",
+    "#00D0F6",
+    "#00C8FF",
+    "#00BFFF",
+    "#18B7FF",
+    "#30AFFF",
 
-        # ── Blues ────────────────────────────────────────────
-        "#48A7FF",
-        "#60A0FF",
-        "#7898FF",
-        "#9090FF",
-        "#8888FF",
-        "#8080FF",
-        "#7878FF",
-        "#7070FF",
-        "#6868FF",
-        "#6060FF",
+    # ── Blues ────────────────────────────────────────────
+    "#48A7FF",
+    "#60A0FF",
+    "#7898FF",
+    "#9090FF",
+    "#8888FF",
+    "#8080FF",
+    "#7878FF",
+    "#7070FF",
+    "#6868FF",
+    "#6060FF",
 
-        # ── Blue → Purple ────────────────────────────────────
-        "#6858FF",
-        "#7050FF",
-        "#7848FF",
-        "#8040FF",
-        "#8838FF",
-        "#9030FF",
-        "#9828FF",
-        "#A020FF",
-        "#A818FF",
-        "#B010FF",
+    # ── Blue → Purple ────────────────────────────────────
+    "#6858FF",
+    "#7050FF",
+    "#7848FF",
+    "#8040FF",
+    "#8838FF",
+    "#9030FF",
+    "#9828FF",
+    "#A020FF",
+    "#A818FF",
+    "#B010FF",
 
-        # ── Purples / Magentas ───────────────────────────────
-        "#B818FF",
-        "#C020FF",
-        "#C828FF",
-        "#D030FF",
-        "#D838FF",
-        "#E040FF",
-        "#E848FF",
-        "#F050FF",
-        "#F858FF",
-        "#FF60FF",
-    ]
+    # ── Purples / Magentas ───────────────────────────────
+    "#B818FF",
+    "#C020FF",
+    "#C828FF",
+    "#D030FF",
+    "#D838FF",
+    "#E040FF",
+    "#E848FF",
+    "#F050FF",
+    "#F858FF",
+    "#FF60FF",
+]
+
 
 class ConvertXnaProjects(QObject):
     log_signal = Signal(str, str, bool)
@@ -649,7 +651,6 @@ class ConvertXnaProjects(QObject):
         self.options: dict[str, QCheckBox] = options
         self.project_path = Path(project_path)
         self.games = games
-
 
     def signal_log_message(self, message, color=None):
         if color is None:
@@ -730,66 +731,66 @@ class ConvertXnaProjects(QObject):
 
         self.total_files_signal.emit(total_files)
 
-        self.signal_log_message(f"Found {len(title_folders):,} Indie Game Folders", "info",)
+        self.signal_log_message(f"Found {len(title_folders):,} Indie Game Folders", "info", )
 
         for index, package in enumerate(title_folders, start=1):
 
-                folder_title = package.name
+            folder_title = package.name
 
-                game_info = package / "GameInfo.xml"
-                xml_data = parse_xml(game_info)
+            game_info = package / "GameInfo.xml"
+            xml_data = parse_xml(game_info)
 
-                title = xml_data.get("title") or folder_title
-                title_id = xml_data.get("xml_title_id") or folder_title
-                game_id = xml_data.get("game_id") or folder_title
-                # -----------------------------------------------------
-                # Runtime profile
-                # -----------------------------------------------------
+            title = xml_data.get("title") or folder_title
+            title_id = xml_data.get("xml_title_id") or folder_title
+            game_id = xml_data.get("game_id") or folder_title
+            # -----------------------------------------------------
+            # Runtime profile
+            # -----------------------------------------------------
 
-                profile_file = package / "Microsoft.Xna.Framework.RuntimeProfile"
+            profile_file = package / "Microsoft.Xna.Framework.RuntimeProfile"
 
-                content_format = ""
+            content_format = ""
 
-                if profile_file.is_file():
-                    try:
-                        content_format = profile_file.read_text(encoding="utf-8").strip()
-                    except OSError:
-                        pass
+            if profile_file.is_file():
+                try:
+                    content_format = profile_file.read_text(encoding="utf-8").strip()
+                except OSError:
+                    pass
 
-                # -----------------------------------------------------
-                # Create game
-                # -----------------------------------------------------
+            # -----------------------------------------------------
+            # Create game
+            # -----------------------------------------------------
 
-                game = XBLIGGame(
-                    title=title,
-                    folder_title=folder_title,
-                    title_id=title_id,
-                    game_id=str(game_id),
-                    virtual_title_id=xml_data.get("virtual_title_id"),
-                    xml_title_id=xml_data.get("xml_title_id"),
-                    content_type=content_format,
-                    content_name="Xbox Live Indie Game",
-                    content_format=content_format,
-                    package=package,
-                )
+            game = XBLIGGame(
+                title=title,
+                folder_title=folder_title,
+                title_id=title_id,
+                game_id=str(game_id),
+                virtual_title_id=xml_data.get("virtual_title_id"),
+                xml_title_id=xml_data.get("xml_title_id"),
+                content_type=content_format,
+                content_name="Xbox Live Indie Game",
+                content_format=content_format,
+                package=package,
+            )
 
-                # -----------------------------------------------------
-                # Set paths
-                # -----------------------------------------------------
+            # -----------------------------------------------------
+            # Set paths
+            # -----------------------------------------------------
 
-                extracted = indie_games_path / folder_title
-                archived = archive_base / folder_title
+            extracted = indie_games_path / folder_title
+            archived = archive_base / folder_title
 
-                game.extracted = package
-                game.archived = archived
-                game.game_root = package
+            game.extracted = package
+            game.archived = archived
+            game.game_root = package
 
-                archived_state, extracted_state, game_folder_status, cs_proj_files_extracted = folder_status(game)
-                # if not archived_state: game.archived = None
-                # if not extracted_state: game.extracted = None
-                games.append(game)
+            archived_state, extracted_state, game_folder_status, cs_proj_files_extracted = folder_status(game)
+            # if not archived_state: game.archived = None
+            # if not extracted_state: game.extracted = None
+            games.append(game)
 
-                self.progress_signal.emit(index, max(len(title_folders), 1))
+            self.progress_signal.emit(index, max(len(title_folders), 1))
 
         self.signal_log_message(f"Scanner complete: {len(games):,} games", "info")
         return games
@@ -861,10 +862,7 @@ class ConvertXnaProjects(QObject):
 
                         if is_package(path):
                             packages.append(path)
-                            self.signal_log_message(
-                                f"Found package: {path}",
-                                "info",
-                            )
+                            self.signal_log_message(f"Found package: {path}")
 
                 self.progress_signal.emit(
                     files_scanned,
@@ -872,14 +870,11 @@ class ConvertXnaProjects(QObject):
                 )
 
                 if total_files and total_files % 1000 == 0:
-                    self.signal_log_message(
-                        f"Scanner: {total_files} files, {total_folders} folders",
-                        "info",
-                    )
+                    self.signal_log_message(f"Scanner: {total_files} files, {total_folders} folders")
 
             self.total_files_signal.emit(total_files)
 
-            self.signal_log_message(f"Found {len(packages)} Indie Game Packages", "info")
+            self.signal_log_message(f"Found {len(packages)} Indie Game Packages")
 
             for index, package in enumerate(packages):
                 folder_title = package.parent.parent.parent.name
@@ -890,19 +885,18 @@ class ConvertXnaProjects(QObject):
                     package=package,
                     game_root=package.parent.parent.parent
                 )
-                self.signal_log_message(f"Extracting {game.title}", "info")
+                self.signal_log_message(f"Extracting {game.title}")
                 self.extract_package(game, False, overwrite=False)
                 games.append(game)
 
-        self.signal_log_message(f"Scanner complete: {len(games):,} games", "info")
+        self.signal_log_message(f"Scanner complete: {len(games):,} games")
         return games
-
 
     def extract_package(self, game: XBLIGGame, worker: bool = False, overwrite=False):
         assert game.package is not None
         package = Path(game.package)
 
-        self.signal_log_message(f"Extracting {game.title}", "info")
+        self.signal_log_message(f"Extracting {game.title}")
         from stfs_extract import extract_live_pirs
         assert game.folder_title is not None
 
@@ -916,8 +910,9 @@ class ConvertXnaProjects(QObject):
         #     self.signal_log_message(f"{game.title} Already Extracted")
         #     return
         #
-        if not overwrite and extracted_path.exists() and (extracted_path / "584E07D1").exists() and any((extracted_path / "584E07D1").iterdir()):
-            self.signal_log_message(f"Not Extracting {game.title} it has already been extracted. Check Overwrite if required.", "info")
+        if not overwrite and extracted_path.exists() and (extracted_path / "584E07D1").exists() and any(
+                (extracted_path / "584E07D1").iterdir()):
+            self.signal_log_message(f"Not Extracting {game.title} it has already been extracted. Check Overwrite if required.")
             return game.game_root
         extracted_path.mkdir(parents=True, exist_ok=True)
 
@@ -931,10 +926,10 @@ class ConvertXnaProjects(QObject):
                 # extract_live_pirs(package, extracted_path, log = self.log_message, selected_ids=None)
                 run_powershell_script(game, script=2, log_message=self.signal_log_message)
 
-            self.signal_log_message(f"Extracted to: {extracted_path}", "info")
+            self.signal_log_message(f"Extracted to: {extracted_path}")
 
         except Exception as e:
-            self.signal_log_message(f"Extraction failed for {game.title}: {type(e).__name__}: {e}", "info")
+            self.signal_log_message(f"Extraction failed for {game.title}: {type(e).__name__}: {e}")
             self.signal_log_message(traceback.format_exc(), "info")
             return extracted_path
 
@@ -960,7 +955,7 @@ class ConvertXnaProjects(QObject):
 
         save_cache(self.games)
         # self.load_games(self.games)
-        
+
     def convert_xnb_folder_tools(self, game: XBLIGGame, tool_id: int = 1):
 
         if game.extracted is None:
@@ -1185,14 +1180,62 @@ class ConvertXnaProjects(QObject):
         # Properties
         # ---------------------------------------------------------
 
-        propgroup = ET.SubElement(root, tag("PropertyGroup"))
+        prop_group = ET.SubElement(root, tag("PropertyGroup"))
 
         assembly_name = game.title
         if assembly_name:
-            ET.SubElement(propgroup, tag("AssemblyName")).text = assembly_name
+            ET.SubElement(prop_group, tag("AssemblyName")).text = assembly_name
 
-        rns = game.title
-        suo = "Program"
+        import re
+
+        def find_startup_object(game: XBLIGGame) -> tuple[str | None, str | None]:
+            self.signal_log_message(
+                f"Finding startup object for {game.title}",
+                color="blue",
+            )
+
+            program = next(game.game_root.rglob("Program.cs"), None)
+
+            if program:
+                text = program.read_text(encoding="utf-8", errors="ignore")
+
+                namespace = re.search(r"\bnamespace\s+([\w.]+)", text)
+                main_class = re.search(
+                    r"\b(?:static\s+)?class\s+(\w+).*?\bstatic\s+void\s+Main\s*\(",
+                    text,
+                    re.DOTALL,
+                )
+
+                if namespace and main_class:
+                    return namespace.group(1), f"{namespace.group(1)}.{main_class.group(1)}"
+
+            # Fallback: find the class inheriting from Game
+            for source in game.game_root.rglob("*.cs"):
+                text = source.read_text(encoding="utf-8", errors="ignore")
+
+                namespace = re.search(r"\bnamespace\s+([\w.]+)", text)
+                game_class = re.search(
+                    r"\bclass\s+(\w+)\s*:\s*(?:[\w.]+\.)?Game\b",
+                    text,
+                )
+
+                if game_class:
+                    rns = namespace.group(1) if namespace else None
+                    class_name = game_class.group(1)
+
+                    suo = f"{rns}.{class_name}" if rns else class_name
+
+                    self.signal_log_message(
+                        f"Found Game class: {suo} ({source.name})",
+                        color="blue",
+                    )
+
+                    return rns, suo
+
+            return None, None
+
+        rns, suo = find_startup_object(game)
+
         properties = {
             "GenerateAssemblyInfo": "false",
             "TargetFramework": "net9.0-windows",
@@ -1205,10 +1248,12 @@ class ConvertXnaProjects(QObject):
             "EnableDefaultEmbeddedResourceItems": "False",
             "PlatformTarget": "x86",
             "Platforms": "x86;x64",
-            "RootNameSpace": f"{rns}",
-            "StartupObject": f"{rns}.{suo}",
-            "ApplicationIcon": "DashboardIcon.ico"
+            "RootNamespace": rns or game.title,
+            "ApplicationIcon": "DashboardIcon.ico",
         }
+
+        if suo:
+            properties["StartupObject"] = suo
 
         def png_to_ico(png_path: Path, ico_path: Path | None = None) -> Path:
             png_path = Path(png_path)
@@ -1222,17 +1267,16 @@ class ConvertXnaProjects(QObject):
         self.signal_log_message("Creating game thumbnail icon")
         png_to_ico(Path(project_path.parent / "DashboardIcon.png"), Path(project_path.parent / "DashboardIcon.ico"))
 
-        # < RootNamespace > Manic_Miner_360 < / RootNamespace >
-        # < StartupObject > Manic_Miner_360.Program < / StartupObject >
         for name, value in properties.items():
-            ET.SubElement(propgroup, tag(name)).text = value
+            ET.SubElement(prop_group, tag(name)).text = value
             self.signal_log_message(f"    {name} = {value}")
 
         # ---------------------------------------------------------
         # Contents.csproj
         # ---------------------------------------------------------
 
-        content_project = Path(r"C:\source\Indie-Games\Content-References\FNA.Contents.csproj")
+        solution_path = Path(self.config["indie-game-solution-location"])
+        content_project = solution_path.parent / "Content-References/FNA.Contents.csproj"
         self.signal_log_message(f"Adding project reference: {content_project}")
 
         item_group = ET.SubElement(root, tag("ItemGroup"))
@@ -1587,7 +1631,7 @@ class ConvertXnaProjects(QObject):
         # Add project
         # ---------------------------------------------------------
 
-        ET.SubElement(folder, "Project", {"Path": project_path_value},)
+        ET.SubElement(folder, "Project", {"Path": project_path_value}, )
 
         self.signal_log_message(f"Added {project_path.name} to {folder_name}")
 
@@ -1777,7 +1821,6 @@ class ScanWorker(QObject):
         # self.converter.log_signal.connect(self.log_signal)
         # self.converter.progress_signal.connect(self.progress_signal)
 
-
     def signal_log_message(self, message, color=None, clear=False):
         if color is None:
             color = RAINBOW_COLORS[self._rainbow_index]
@@ -1810,14 +1853,14 @@ class ScanWorker(QObject):
                 # Scan original XBLIG downloads/content
                 # ---------------------------------------------
 
-                game_paths = [downloads_path,archive_path]
+                game_paths = [downloads_path, archive_path]
                 _ = self.converter.extract_packages(game_paths)
                 games = self.converter.find_packages(game_paths)
                 self.signal_log_message(f"Found {len(games)} games.")
 
                 save_cache(games)
 
-                self.signal_log_message(f"Cache updated: {len(games)} games.", "info",)
+                self.signal_log_message(f"Cache updated: {len(games)} games.", "info", )
 
             self.finished_signal.emit(games)
 
@@ -1828,8 +1871,10 @@ class ScanWorker(QObject):
             )
             raise
 
+
 from PySide6.QtWidgets import QStyledItemDelegate
 from PySide6.QtCore import QRect, QSize, Qt
+
 
 class IconButtonDelegate(QStyledItemDelegate):
 
@@ -1900,6 +1945,7 @@ class IconButtonDelegate(QStyledItemDelegate):
             index,
         )
 
+
 def folder_status(game: XBLIGGame, moving=False) -> tuple[bool, bool, Path, list[Path]]:
     cs_proj_files_extracted = []
     game_folder = Path()
@@ -1922,8 +1968,8 @@ def folder_status(game: XBLIGGame, moving=False) -> tuple[bool, bool, Path, list
     cs_proj_files_extracted = list(game_folder.rglob("*.csproj"))
     return archived_state, extracted_state, game_folder, cs_proj_files_extracted
 
-def run_powershell_script(game: XBLIGGame, script=1, log_message=None):
 
+def run_powershell_script(game: XBLIGGame, script=1, log_message=None):
     def log_message_callback(message, color=None):
         if log_message is not None:
             log_message(message, color)
@@ -2274,11 +2320,12 @@ class XBLIGDialog(QDialog):
         self.validate3_btn.setDisabled(True)
         if (result := self.get_selected_games()) is None:
             return
-        game, indexes = result
-        if game:
-            ensure_tool_extracted("conversion", None)
-            self.progress_bar.setRange(0, 0)  # Busy animation
-            run_in_background(self.converter.convert_xnb_folder_tools, game, tool_id)
+        games, indexes = result
+        for game in games:
+            if game:
+                ensure_tool_extracted("conversion", None)
+                self.progress_bar.setRange(0, 0)  # Busy animation
+                run_in_background(self.converter.convert_xnb_folder_tools, game, tool_id)
 
     def tool_finished(self, result: ConversionResult):
         self.progress_bar.setRange(0, 100)
@@ -2361,10 +2408,10 @@ class XBLIGDialog(QDialog):
         if use_gui:
             arguments = [str(target)]
         else:
-            arguments = ["-p", "-o", str(output_dir),]
+            arguments = ["-p", "-o", str(output_dir), ]
             if is_executable:
-                arguments.extend(["-r", str(target.parent),])
-            arguments.extend(["--nested-directories", str(target),])
+                arguments.extend(["-r", str(target.parent), ])
+            arguments.extend(["--nested-directories", str(target), ])
 
         process = QProcess(parent)
         self._ilspy_process = process
@@ -2396,7 +2443,7 @@ class XBLIGDialog(QDialog):
 
         process.finished.connect(
             lambda exit_code, exit_status, target=target:
-            self._decompile_process_finished(target, exit_code, exit_status,)
+            self._decompile_process_finished(target, exit_code, exit_status, )
         )
 
         self.log_message(f"Starting ILSpy: {target.name}")
@@ -2467,7 +2514,6 @@ class XBLIGDialog(QDialog):
         self.progress_bar.setFormat(f"Scanner {current:,}")
 
     def rescan_games_responsive(self, force=False):
-
 
         self.progress_bar.setRange(0, 100)
         self.progress_bar.setValue(0)
@@ -2798,7 +2844,6 @@ class XBLIGDialog(QDialog):
                 for csproj_file in cs_proj_files:
                     self.log_message(f"Processing: {csproj_file}")
 
-
                     self.converter.move_project_to_archive(csproj_file, destination_dir)
                     self.log_message(f"Project Moved: {csproj_file} -> {destination_dir}")
 
@@ -2819,7 +2864,8 @@ class XBLIGDialog(QDialog):
                                 try:
                                     if not new_csproj_file.exists():
                                         csproj_file.rename(new_csproj_file)
-                                        self.log_message(f"Renamed project: {csproj_file.name} -> {new_csproj_file.name}")
+                                        self.log_message(
+                                            f"Renamed project: {csproj_file.name} -> {new_csproj_file.name}")
                                         csproj_file = new_csproj_file
                                 except OSError as e1:
                                     self.log_message(f"  ERROR renaming {csproj_file}: {e1}")
@@ -2863,7 +2909,8 @@ class XBLIGDialog(QDialog):
             folder_title = game.folder_title
             self.log_message(f"Decompiling {folder_title} to {game_folder}", clear_console=True)
             try:
-                decompiled = self.decompile_project(game, parent=self, use_gui=options["decompile_gui"], output_dir=game_folder, include_dlls=True)
+                decompiled = self.decompile_project(game, parent=self, use_gui=options["decompile_gui"],
+                                                    output_dir=game_folder, include_dlls=True)
             except Exception as e:
                 self.log_message(f"Failed to Decompile: {game.title}: {e}")
 
@@ -3006,7 +3053,7 @@ class XBLIGDialog(QDialog):
 
         self.settings_drawer = QFrame(self)
         self.settings_drawer.setObjectName("settingsDrawer")
-        self.settings_drawer.setFixedWidth(750)
+        self.settings_drawer.setFixedWidth(950)
 
         drawer_layout = QVBoxLayout(self.settings_drawer)
         drawer_layout.setContentsMargins(20, 20, 20, 20)
@@ -3215,7 +3262,7 @@ class XBLIGDialog(QDialog):
         # options_row.addWidget(self.all_checkbox)
         options_row.addWidget(self.overwrite_check)
         options_row.addWidget(self.cache_check)
-        options_row.addWidget(self.root_edit,1)
+        options_row.addWidget(self.root_edit, 1)
         options_row.addWidget(self.root_browse_btn)
         options_row.addWidget(self.root_solution_edit, 1)
         options_row.addWidget(self.root_solution_browse_btn)
@@ -3420,16 +3467,12 @@ class XBLIGDialog(QDialog):
         if color is None:
             color = RAINBOW_COLORS[self._rainbow_index]
             self._rainbow_index = (self._rainbow_index + 1) % len(RAINBOW_COLORS)
-            self.log_window.appendHtml(f'<span style="color: {color};">{message}</span>')
-            logger_current.info(f"{message}")
-        if color == "info":
-            color = "white"
-            logger_current.info(f"{message}")
-            self.log_window.appendHtml(f'<span style="color: {color};">{message}</span>')
-        if color == "success":
+        if color == "debug":
             color = "green"
             logger_current.debug(f"{message}")
-            self.log_window.appendHtml(f'<span style="color: {color};">{message}</span>')
+        logger_current.info(f"{message}")
+        self.log_window.appendHtml(f'<span style="color: {color};">{message}</span>')
+
 
 if __name__ == "__main__":
     logger = setup_logger()
