@@ -1969,20 +1969,28 @@ def folder_status(game: XBLIGGame, moving=False) -> tuple[bool, bool, Path, list
     return archived_state, extracted_state, game_folder, cs_proj_files_extracted
 
 
-def run_powershell_script(game: XBLIGGame, script=1, log_message=None):
+def run_powershell_script(game: XBLIGGame | None, script=1, log_message=None, config=None):
     def log_message_callback(message, color=None):
         if log_message is not None:
             log_message(message, color)
 
     if script == 1:
         script = get_app_dir() / "scripts" / "build_projects_clean.ps1"
+        root = Path(config["indie-game-solution-location"]).parent
+        args = [
+            "powershell.exe",
+            "-ExecutionPolicy", "Bypass",
+            "-File", str(script),
+            "-Root", str(root),
+        ]
+
+        if game is not None:
+            args.extend([
+                "-Folder", str(game.folder_title),
+                "-Game",
+            ])
         process = subprocess.Popen(
-            [
-                "powershell.exe",
-                "-ExecutionPolicy", "Bypass",
-                "-File", str(script),
-                "-Folder", str(game.archived),
-            ],
+            args,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
@@ -2214,7 +2222,7 @@ class XBLIGDialog(QDialog):
         self.columns = None
         self.game = None
         self.extracted = None
-        self.overwrite_check = None
+        self.overwrite_check = QCheckBox()
         self.compress_worker: CompressWorker | None = None
         self.worker = None
         self.compress_thread = None
@@ -3007,7 +3015,11 @@ class XBLIGDialog(QDialog):
                     if game.archived is None:
                         self.log_message("Game has not been archived.")
                         return
-                    run_powershell_script(game, 1, log_message=self.log_message)
+                    self.log_message("Removing Bin and Obj")
+                    if self.overwrite_check.isChecked():
+                        run_powershell_script(game, 1, log_message=self.log_message, config=self.config)
+                    else:
+                        run_powershell_script(None, 1, log_message=self.log_message, config=self.config)
                 else:
                     try:
                         attr_name, path, attr_path_value = attrs[files]
@@ -3030,9 +3042,6 @@ class XBLIGDialog(QDialog):
                 self.log_message(f"Unable to delete '{str(game.title)} bin and obj': {e}")
                 return
 
-            except PermissionError as e:
-                self.log_message(f"Unable to delete '{str(game.title)} bin and obj': {e}")
-                return
 
             self.drawer_update_labels(game)
             self.load_games(self.games)
