@@ -5,54 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.7 Many fixes and improvements.">
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/FNA.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/FNA.dll.config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/FNA.pdb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/Microsoft.Bcl.AsyncInterfaces.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/Microsoft.Win32.Registry.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/NAudio.Asio.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/NAudio.Core.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/NAudio.Midi.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/NAudio.Wasapi.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/NAudio.WinForms.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/NAudio.WinMM.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/NAudio.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/Newtonsoft.Json.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Buffers.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Drawing.Common.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.IO.Pipelines.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Memory.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Numerics.Vectors.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Resources.Extensions.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Runtime.CompilerServices.Unsafe.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Security.AccessControl.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Security.Principal.Windows.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Text.Encodings.Web.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Text.Json.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/System.Threading.Tasks.Extensions.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/XnbExtractor.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/XnbExtractor.exe.config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/XnbExtractor.pdb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/logs/xnbextractor.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/COPYING" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/USAGE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/avcodec-vgmstream-59.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/avformat-vgmstream-59.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/avutil-vgmstream-57.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/libatrac9.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/libcelt-0061.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/libcelt-0110.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/libg719_decode.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/libmpg123-0.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/libspeex-1.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/libvorbis.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/swresample-vgmstream-4.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/vgmstream-cli.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/release/net481/tools/vgmstream/vgmstream.vgmstream_Microsoft.Winget.Source_8wekyb3d8bbwe.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/easyxnb_gui.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build_tools/tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/tools.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
     </list>
@@ -246,7 +199,7 @@
       <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\tools" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.package window">
     <configuration name="Unnamed" type="BatchConfigurationType" factoryName="Batch" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -411,14 +364,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00141" summary="1.2.3 Simplify and Remove All Checkbox">
-      <option name="closed" value="true" />
-      <created>1788041184309</created>
-      <option name="number" value="00141" />
-      <option name="presentableId" value="LOCAL-00141" />
-      <option name="project" value="LOCAL" />
-      <updated>1788041184309</updated>
     </task>
     <task id="LOCAL-00142" summary="1.2.3 Simplify and Remove All Checkbox">
       <option name="closed" value="true" />
@@ -804,7 +749,15 @@
       <option name="project" value="LOCAL" />
       <updated>1789423223841</updated>
     </task>
-    <option name="localTasksCounter" value="190" />
+    <task id="LOCAL-00190" summary="1.2.7 Many fixes and improvements.">
+      <option name="closed" value="true" />
+      <created>1789503187218</created>
+      <option name="number" value="00190" />
+      <option name="presentableId" value="LOCAL-00190" />
+      <option name="project" value="LOCAL" />
+      <updated>1789503187219</updated>
+    </task>
+    <option name="localTasksCounter" value="191" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

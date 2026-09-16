@@ -704,7 +704,7 @@ class ConvertXnaProjects(QObject):
         for root in root_folders:
             root = Path(root)
 
-            self.signal_log_message(f"Scanning: {root}", "info")
+            self.signal_log_message(f"Scanning: {root}")
 
             for current_root, dirs, files in os.walk(root):
                 current_path = Path(current_root)
@@ -731,7 +731,7 @@ class ConvertXnaProjects(QObject):
 
         self.total_files_signal.emit(total_files)
 
-        self.signal_log_message(f"Found {len(title_folders):,} Indie Game Folders", "info", )
+        self.signal_log_message(f"Found {len(title_folders):,} Indie Game Folders")
 
         for index, package in enumerate(title_folders, start=1):
 
@@ -792,7 +792,7 @@ class ConvertXnaProjects(QObject):
 
             self.progress_signal.emit(index, max(len(title_folders), 1))
 
-        self.signal_log_message(f"Scanner complete: {len(games):,} games", "info")
+        self.signal_log_message(f"Scanner complete: {len(games):,} games")
         return games
 
     def extract_packages(self, root_folders: list[Path]) -> list[XBLIGGame]:
@@ -844,7 +844,7 @@ class ConvertXnaProjects(QObject):
         for root in root_folders:
             root = Path(root)
 
-            self.signal_log_message(f"Scanning: {root} for Packages", "info")
+            self.signal_log_message(f"Scanning: {root} for Packages")
             target_dirs = {"4D530888", "584E07D2", "00000002"}
 
             for current_root, dirs, files in os.walk(root):
@@ -930,7 +930,7 @@ class ConvertXnaProjects(QObject):
 
         except Exception as e:
             self.signal_log_message(f"Extraction failed for {game.title}: {type(e).__name__}: {e}")
-            self.signal_log_message(traceback.format_exc(), "info")
+            self.signal_log_message(traceback.format_exc())
             return extracted_path
 
         return extracted_path
@@ -1860,7 +1860,7 @@ class ScanWorker(QObject):
 
                 save_cache(games)
 
-                self.signal_log_message(f"Cache updated: {len(games)} games.", "info", )
+                self.signal_log_message(f"Cache updated: {len(games)} games.")
 
             self.finished_signal.emit(games)
 
