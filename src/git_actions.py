@@ -73,31 +73,29 @@ class DownloadArtifact:
             f"https://api.github.com/repos/{self.OWNER}/{self.REPO}/actions/runs",
             params={
                 "status": "success",
-                "per_page": 1,
+                # "per_page": 1,
             },
         )
         r.raise_for_status()
 
-        run = r.json()["workflow_runs"][0]
-        run_id = run["id"]
+        runs = r.json()["workflow_runs"]
+        for run in runs:
+            run_id = run["id"]
+            self.log(f"Checking Run has Required Artifacts: {run_id}")
 
-        self.log(f"Latest run: {run_id}")
+            r = self.session.get(f"https://api.github.com/repos/{self.OWNER}/{self.REPO}/actions/runs/{run_id}/artifacts")
+            r.raise_for_status()
 
-        r = self.session.get(
-            f"https://api.github.com/repos/{self.OWNER}/{self.REPO}/actions/runs/{run_id}/artifacts"
-        )
-        r.raise_for_status()
+            artifacts = r.json()["artifacts"]
 
-        artifacts = r.json()["artifacts"]
-
-        for artifact in artifacts:
-            if name_contains.lower() in artifact["name"].lower():
-                return artifact, run
+            for artifact in artifacts:
+                if name_contains.lower() in artifact["name"].lower():
+                    return artifact, run
 
         raise RuntimeError(f"No artifact containing '{name_contains}' found.")
 
-    def download(self, output_dir="."):
-        artifact, run = self.latest_artifact()
+    def download(self, output_dir=".", name_contains="windows"):
+        artifact, run = self.latest_artifact(name_contains=name_contains)
 
         version = f"build-{run['run_number']}"
 

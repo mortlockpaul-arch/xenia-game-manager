@@ -799,7 +799,7 @@ class GameLauncher(QMainWindow):
         self.extract_downloaded_archives_btn = QPushButton("Extract Downloaded Archives")
         self.extract_downloaded_archives_btn.clicked.connect(self.extract_downloaded_archives)
 
-        self.download_experimental_releases_btn = QPushButton("Download Experimental Releases")
+        self.download_experimental_releases_btn = QPushButton("Download Latest Emulator Releases")
         self.download_experimental_releases_btn.clicked.connect(self.download_experimental_releases)
         self.use_xenia_manager_content_for_edge_btn = QPushButton("Unify Xenia Content Folders")
         self.use_xenia_manager_content_for_edge_btn.clicked.connect(self.use_xenia_manager_content_for_edge)
@@ -939,6 +939,16 @@ class GameLauncher(QMainWindow):
 
         releases = [
             {
+                "name": "Xemu",
+                "owner": "xemu-project",
+                "repo": "xemu",
+                "path_key": "xemu_path",
+                "installed_key": "xemu_installed",
+                "version_key": "xemu_version",
+                "default": r"C:\xemu",
+                "name_contains": "xemu-windows-x86_64-release",
+            },
+            {
                 "name": "Canary",
                 "owner": "xenia-canary",
                 "repo": "xenia-canary",
@@ -946,6 +956,7 @@ class GameLauncher(QMainWindow):
                 "installed_key": "xenia_canary_installed",
                 "version_key": "xenia_canary_version",
                 "default": r"C:\xenia_canary",
+                "name_contains": "windows",
             },
             {
                 "name": "Netplay",
@@ -955,6 +966,7 @@ class GameLauncher(QMainWindow):
                 "installed_key": "xenia_netplay_installed",
                 "version_key": "xenia_netplay_version",
                 "default": r"C:\xenia_netplay",
+                "name_contains": "windows",
             },
             {
                 "name": "Mousehook",
@@ -964,6 +976,7 @@ class GameLauncher(QMainWindow):
                 "installed_key": "xenia_mousehook_installed",
                 "version_key": "xenia_mousehook_version",
                 "default": r"C:\xenia_mousehook",
+                "name_contains": "windows",
             },
             {
                 "name": "Edge",
@@ -973,6 +986,7 @@ class GameLauncher(QMainWindow):
                 "installed_key": "xenia_edge_installed",
                 "version_key": "xenia_edge_version",
                 "default": r"C:\xenia_edge",
+                "name_contains": "windows",
             },
         ]
 
@@ -980,7 +994,7 @@ class GameLauncher(QMainWindow):
             xenia_version = release["name"].lower()
             xenia_manager_installed = config["xenia_manager_installed"]
             folder = Path(config.get(release["path_key"]) or release["default"])
-            if xenia_manager_installed and xenia_version != "edge":
+            if xenia_manager_installed and xenia_version != "edge" and xenia_version != "xemu":
                 xenia_manager_config, xenia_manager_path = load_xenia_manager_config()
                 if not xenia_manager_config:
                     self.log_message(f"Config Load Error: No such file or directory: {xenia_manager_path} for {xenia_version}")
@@ -1015,7 +1029,7 @@ class GameLauncher(QMainWindow):
                     break
 
                 self.log_message(f"Downloading {release['name']}...")
-                result = downloader.download(output_dir=folder)
+                result = downloader.download(output_dir=folder, name_contains=release["name_contains"])
                 zip_file = result["path"]
                 version = result["version"]
                 from datetime import datetime, timezone
@@ -1343,7 +1357,6 @@ class GameLauncher(QMainWindow):
         self.search.setFixedWidth(250)
         toolbar.addWidget(self.search)
 
-
         self.refresh_xbox_btn = QPushButton("Scan for XBox Xisos")
         self.refresh_xbox_btn.clicked.connect(self.scan_for_xisos)
 
@@ -1385,7 +1398,7 @@ class GameLauncher(QMainWindow):
             self.launch_edge.setText(button_text)
         else:
             self.launch_edge.clicked.connect(partial(self.launch_program, "edge"))
-
+        options_row = QHBoxLayout()
         if downloaders_enabled:
             self.btn_tu = QPushButton("Title Update Downloader")
             self.btn_tu.clicked.connect(self.search_and_download_tus)
@@ -1407,9 +1420,10 @@ class GameLauncher(QMainWindow):
         toolbar.addWidget(self.launch_edge)
         toolbar.addWidget(self.archive_xbligemu_button)
         if downloaders_enabled:
-            toolbar.addWidget(self.archive_button)
-            toolbar.addWidget(self.archive_xblig_button)
-            toolbar.addWidget(self.btn_tu)
+            options_row.addWidget(self.archive_button)
+            options_row.addWidget(self.archive_xblig_button)
+            options_row.addWidget(self.btn_tu)
+            main_layout.addLayout(options_row)
         # ================= PROGRESS =================
         self.progress_overall = QProgressBar()
         self.progress_current = QProgressBar()
@@ -1723,7 +1737,7 @@ class GameLauncher(QMainWindow):
 
     def install_xenia_manager_and_xenia_edge(self, name="manager"):
         if name == "manager":
-            self.config = load_config_file()
+            self.config = load_config()
             install_path:Path = Path(self.config.get( "xenia_manager_path", ""))
 
             xenia_manager_installed = self.config.get("xenia_manager_installed", False)
@@ -1746,7 +1760,7 @@ class GameLauncher(QMainWindow):
                 self.config["xenia_manager_path"] = str(install_path)
                 save_config(self.config)
 
-            self.config = load_config_file()
+            self.config = load_config()
             xenia_manager_installed = self.config.get("xenia_manager_installed", False)
 
             button_text = "Launch Xenia Manager" if xenia_manager_installed else "Install Xenia Manager"
@@ -1755,7 +1769,7 @@ class GameLauncher(QMainWindow):
             self.launch_manager.repaint()
 
         if name == "edge":
-            self.config = load_config_file()
+            self.config = load_config()
             install_path: Path = Path(self.config.get("xenia_edge_path", ""))
             xenia_edge_installed = self.config.get("xenia_edge_installed", False)
             if not xenia_edge_installed:
@@ -1787,7 +1801,7 @@ class GameLauncher(QMainWindow):
                 save_config(self.config)
 
             # Refresh config state
-            self.config = load_config_file()
+            self.config = load_config()
             xenia_edge_installed = self.config.get("xenia_edge_installed", False)
 
             button_text = "Launch Xenia Edge" if xenia_edge_installed else "Install Xenia Edge"
@@ -2176,7 +2190,7 @@ class GameLauncher(QMainWindow):
         if row is None:
             return
 
-        config = load_config_file()
+        config = load_config()
         if self.platform == Platform.XBOX:
             xemu_exe_location = Path(config["xemu_path"])
 

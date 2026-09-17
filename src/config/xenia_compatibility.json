@@ -1,5 +1,35 @@
 [
   {
+    "issue": 1214,
+    "id": "415607E5",
+    "title": "Cabela's African Safari",
+    "updated": "2026-09-16T10:16:00Z",
+    "state": "Gameplay",
+    "labels": {
+      "state": [
+        "state-gameplay"
+      ],
+      "others": []
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1214"
+  },
+  {
+    "issue": 1213,
+    "id": "58410B11",
+    "title": "X-MEN",
+    "updated": "2026-09-15T11:34:34Z",
+    "state": "Playable",
+    "labels": {
+      "state": [
+        "state-playable"
+      ],
+      "others": [
+        "vsync-off-speedup"
+      ]
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1213"
+  },
+  {
     "issue": 1212,
     "id": "5841145B",
     "title": "Trivial Pursuit Live!",
@@ -50,7 +80,7 @@
     "issue": 1208,
     "id": "4E4D0827",
     "title": "Dr. Kawashima's Body and Brain Exercises",
-    "updated": "2026-08-29T23:10:43Z",
+    "updated": "2026-09-16T20:43:44Z",
     "state": "Loads",
     "labels": {
       "state": [
@@ -318,7 +348,7 @@
     "issue": 1184,
     "id": "554F07D3",
     "title": "Way of the Samurai 3",
-    "updated": "2026-08-08T13:30:29Z",
+    "updated": "2026-09-13T10:16:46Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -938,7 +968,7 @@
     "issue": 1137,
     "id": "584111E8",
     "title": "State of Decay",
-    "updated": "2026-08-25T16:32:23Z",
+    "updated": "2026-09-13T10:18:25Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -973,7 +1003,7 @@
     "issue": 1135,
     "id": "465307E4",
     "title": "Dark Souls II",
-    "updated": "2026-09-09T00:56:12Z",
+    "updated": "2026-09-13T13:51:58Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -1185,15 +1215,13 @@
     "issue": 1120,
     "id": "4B4F07D5",
     "title": "SAMURAI WARRIORS 2",
-    "updated": "2026-09-08T11:22:57Z",
+    "updated": "2026-09-16T17:43:35Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
-      "others": [
-        "crash-always"
-      ]
+      "others": []
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/1120"
   },
@@ -1840,15 +1868,13 @@
     "issue": 1073,
     "id": "415607DA",
     "title": "Marvel Ultimate Alliance",
-    "updated": "2026-08-17T20:48:46Z",
-    "state": "Gameplay",
+    "updated": "2026-09-14T23:54:34Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
       "others": [
-        "apu-garbage",
-        "requires_protect_zero_false",
         "crash-random"
       ]
     },
@@ -2730,15 +2756,13 @@
     "issue": 1005,
     "id": "4B4F07D1",
     "title": "Shin Sangoku Musou 4 Special",
-    "updated": "2026-09-08T10:43:44Z",
+    "updated": "2026-09-15T12:48:57Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
-      "others": [
-        "apu-garbage"
-      ]
+      "others": []
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/1005"
   },
@@ -3046,14 +3070,13 @@
     "issue": 981,
     "id": "4D53085B",
     "title": "Halo Reach",
-    "updated": "2026-08-27T19:53:29Z",
+    "updated": "2026-09-17T04:33:35Z",
     "state": "Playable",
     "labels": {
       "state": [
         "state-playable"
       ],
       "others": [
-        "gpu-drawing-missing",
         "tech-engine-blam",
         "gpu-readback",
         "vsync-off-speedup",
@@ -3289,7 +3312,7 @@
     "issue": 964,
     "id": "555308CE",
     "title": "Assassin's Creed Rogue",
-    "updated": "2026-08-26T21:17:52Z",
+    "updated": "2026-09-14T10:51:17Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -3297,7 +3320,7 @@
       ],
       "others": [
         "gpu-drawing-corrupt",
-        "gpu-drawing-missing",
+        "gpu-readback",
         "crash-random",
         "gpu-xps"
       ]
@@ -3405,15 +3428,16 @@
     "issue": 957,
     "id": "4B4E0820",
     "title": "Def Jam: Rapstar",
-    "updated": "2026-08-05T00:14:33Z",
+    "updated": "2026-09-17T04:32:30Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
-        "gpu-drawing-missing",
-        "tech-microphone-required"
+        "gpu-readback",
+        "tech-microphone-required",
+        "gpu-occlusion-query"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/957"
@@ -3807,13 +3831,15 @@
     "issue": 931,
     "id": "45410894",
     "title": "Fight Night Round 4",
-    "updated": "2026-02-03T18:47:10Z",
+    "updated": "2026-09-15T10:47:58Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
-      "others": []
+      "others": [
+        "crash-random"
+      ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/931"
   },
@@ -4610,11 +4636,11 @@
     "issue": 880,
     "id": "4B4F07D3",
     "title": "Dynasty Warriors 5 Empires",
-    "updated": "2026-01-20T18:28:20Z",
-    "state": "Loads",
+    "updated": "2026-09-15T22:35:37Z",
+    "state": "Gameplay",
     "labels": {
       "state": [
-        "state-menus"
+        "state-gameplay"
       ],
       "others": [
         "marketplace-delisted",
@@ -6831,14 +6857,14 @@
     "issue": 739,
     "id": "415607D4",
     "title": "Tony Hawk's American Wasteland",
-    "updated": "2026-09-12T18:14:21Z",
-    "state": "Gameplay",
+    "updated": "2026-09-16T18:08:45Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
       "others": [
-        "gpu-drawing-corrupt",
+        "gpu-drawing-missing",
         "vsync-off-speedup"
       ]
     },
@@ -8309,7 +8335,7 @@
     "issue": 638,
     "id": "4343081D",
     "title": "Resident Evil: ORC (Operation Raccoon City)",
-    "updated": "2026-08-24T13:31:37Z",
+    "updated": "2026-09-13T10:23:27Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -8563,13 +8589,15 @@
     "issue": 620,
     "id": "445007EA",
     "title": "Onechanbara: Bikini Samurai Squad (vorteX)",
-    "updated": "2026-08-16T02:41:26Z",
+    "updated": "2026-09-15T11:00:04Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
-      "others": []
+      "others": [
+        "gpu-async-compile-issues"
+      ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/620"
   },
@@ -10336,13 +10364,14 @@
     "issue": 508,
     "id": "454108E3",
     "title": "Crysis 2",
-    "updated": "2026-07-08T14:08:07Z",
-    "state": "Gameplay",
+    "updated": "2026-09-13T18:48:04Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
       "others": [
+        "gpu-drawing-corrupt",
         "tech-engine-cry"
       ]
     },
@@ -11713,14 +11742,13 @@
     "issue": 423,
     "id": "4541088F",
     "title": "The Saboteur",
-    "updated": "2026-07-13T13:00:27Z",
+    "updated": "2026-09-14T10:34:07Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
       "others": [
-        "gpu-drawing-corrupt",
         "tech-middleware-havok",
         "tech-middleware-wwise",
         "gpu-readback",
@@ -12419,11 +12447,11 @@
     "issue": 382,
     "id": "434D083D",
     "title": "DiRT 3",
-    "updated": "2026-06-05T17:03:41Z",
-    "state": "Gameplay",
+    "updated": "2026-09-16T17:45:27Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
       "others": [
         "tech-engine-ego",
@@ -13449,7 +13477,7 @@
     "issue": 321,
     "id": "4156091D",
     "title": "Call Of Duty: Black Ops III",
-    "updated": "2026-08-05T01:42:21Z",
+    "updated": "2026-09-16T20:11:49Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -15291,11 +15319,11 @@
     "issue": 213,
     "id": "4E4D07E5",
     "title": "Dynasty Warriors - Gundam",
-    "updated": "2026-09-08T11:41:29Z",
-    "state": "Loads",
+    "updated": "2026-09-15T22:35:11Z",
+    "state": "Gameplay",
     "labels": {
       "state": [
-        "state-title"
+        "state-gameplay"
       ],
       "others": [
         "backwards-compatibility-unsupported",
@@ -15568,7 +15596,7 @@
     "issue": 193,
     "id": "415608C3",
     "title": "Call of Duty: Black Ops II",
-    "updated": "2026-08-05T02:06:33Z",
+    "updated": "2026-09-16T18:54:05Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -15576,7 +15604,6 @@
       ],
       "others": [
         "gpu-drawing-corrupt",
-        "apu-silent",
         "tech-engine-iw",
         "tech-middleware-demonware",
         "tech-xboxlivevision-optional",
@@ -15888,14 +15915,13 @@
     "issue": 169,
     "id": "4B4F07D9",
     "title": "Warriors Orochi 1",
-    "updated": "2026-09-12T10:48:56Z",
-    "state": "Loads",
+    "updated": "2026-09-15T22:33:53Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-menus"
+        "state-playable"
       ],
       "others": [
-        "apu-garbage",
         "backwards-compatibility-unsupported",
         "vsync-off-speedup"
       ]
@@ -16639,7 +16665,7 @@
     "issue": 120,
     "id": "45410811",
     "title": "UEFA Champions League 2006\u20132007",
-    "updated": "2026-08-02T08:22:57Z",
+    "updated": "2026-09-16T20:41:42Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -16867,7 +16893,7 @@
     "issue": 103,
     "id": "555308B6",
     "title": "Tom Clancy's Splinter Cell: Blacklist",
-    "updated": "2026-08-06T18:16:03Z",
+    "updated": "2026-09-14T13:46:55Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -16997,11 +17023,11 @@
     "issue": 88,
     "id": "584111F7",
     "title": "Minecraft Xbox 360 Edition",
-    "updated": "2026-09-05T22:01:10Z",
-    "state": "Gameplay",
+    "updated": "2026-09-17T09:59:28Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
       "others": [
         "no-disc-install"
@@ -17539,7 +17565,7 @@
     "issue": 46,
     "id": "4D53082D",
     "title": "Gears of War 2",
-    "updated": "2026-06-18T21:28:36Z",
+    "updated": "2026-09-13T10:40:28Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -17557,14 +17583,13 @@
     "issue": 45,
     "id": "4D530A26",
     "title": "Gears of War: Judgment",
-    "updated": "2026-09-01T16:47:32Z",
+    "updated": "2026-09-13T04:35:56Z",
     "state": "Playable",
     "labels": {
       "state": [
         "state-playable"
       ],
       "others": [
-        "gpu-drawing-corrupt",
         "tech-engine-unreal",
         "gpu-readback",
         "gpu-occlusion-query"
@@ -17576,7 +17601,7 @@
     "issue": 44,
     "id": "4D5307D5",
     "title": "Gears of War",
-    "updated": "2026-08-17T17:16:03Z",
+    "updated": "2026-09-13T10:13:31Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -17630,7 +17655,7 @@
     "issue": 41,
     "id": "4D5607D1",
     "title": "Deadly Premonition",
-    "updated": "2026-09-12T18:16:07Z",
+    "updated": "2026-09-13T02:30:10Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -17703,13 +17728,15 @@
     "issue": 36,
     "id": "485507D2",
     "title": "\u5929\u5916\u9b54\u5883\uff3a\uff29\uff32\uff29\uff21",
-    "updated": "2026-09-08T19:01:22Z",
+    "updated": "2026-09-15T10:47:35Z",
     "state": "Gameplay",
     "labels": {
       "state": [
         "state-gameplay"
       ],
-      "others": []
+      "others": [
+        "gpu-drawing-missing"
+      ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/36"
   },
@@ -17833,15 +17860,13 @@
     "issue": 27,
     "id": "415607E1",
     "title": "Call of Duty 3",
-    "updated": "2026-08-12T13:57:52Z",
-    "state": "Gameplay",
+    "updated": "2026-09-16T20:47:08Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
       "others": [
-        "gpu-drawing-corrupt",
-        "gpu-drawing-missing",
         "tech-middleware-demonware",
         "gpu-readback",
         "gpu-viz-query"

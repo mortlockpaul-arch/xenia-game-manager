@@ -1276,7 +1276,7 @@ class ConvertXnaProjects(QObject):
         # ---------------------------------------------------------
 
         solution_path = Path(self.config["indie-game-solution-location"])
-        content_project = solution_path.parent / "Content-References/FNA.Contents.csproj"
+        content_project = solution_path.parent / "library-projects/fna.contents.libraries/FNA.Contents.csproj"
         self.signal_log_message(f"Adding project reference: {content_project}")
 
         item_group = ET.SubElement(root, tag("ItemGroup"))
@@ -1434,24 +1434,20 @@ class ConvertXnaProjects(QObject):
         "debug": "#C678DD",  # Purple
     }
 
-    def move_project_to_archive(
-            self,
-            project_path: Path,
-            destination_dir: Path,
-    ) -> None:
-        """Move a decompiled project to the archive, flattening 584E07D1."""
+    def move_project_to_archive(self, destination_dir: Path, game: XBLIGGame) -> None:
 
-        project_dir = Path(project_path).parent
+        assert game.extracted is not None
+        project_dir = game.extracted
         destination_dir = Path(destination_dir)
         destination_dir.mkdir(parents=True, exist_ok=True)
 
         def move_tree(source_dir: Path, target_dir: Path) -> None:
             for source in list(source_dir.iterdir()):
-                if source.is_dir() and source.name == "584E07D1":
-                    for child in list(source.iterdir()):
-                        shutil.move(str(child), str(destination_dir / child.name))
-                    source.rmdir()
-                    continue
+                # if source.is_dir() and source.name == "584E07D1":
+                #     for child in list(source.iterdir()):
+                #         shutil.move(str(child), str(destination_dir / child.name))
+                #     source.rmdir()
+                #     continue
 
                 target = target_dir / source.name
 
@@ -1464,23 +1460,19 @@ class ConvertXnaProjects(QObject):
                 else:
                     shutil.move(str(source), str(target))
 
-        self.signal_log_message(
-            f"Moving project files\n"
-            f"  Source:      {project_dir}\n"
-            f"  Destination: {destination_dir}"
-        )
+        self.signal_log_message(f"Moving project files, Source: {project_dir} Destination: {destination_dir}")
 
         try:
             move_tree(project_dir, destination_dir)
 
-            if not list(destination_dir.rglob("*.csproj")):
-                self.signal_log_message("ERROR: No .csproj found in destination.")
-                return
+            # if not list(destination_dir.rglob("*.csproj")):
+            #     self.signal_log_message("ERROR: No .csproj found in destination.")
+            #     return
 
-            if list(destination_dir.rglob("584E07D1")):
-                self.signal_log_message("WARNING: 584E07D1 still exists.")
-            else:
-                self.signal_log_message("Verified: 584E07D1 completely flattened.")
+            # if list(destination_dir.rglob("584E07D1")):
+            #     self.signal_log_message("WARNING: 584E07D1 still exists.")
+            # else:
+            #     self.signal_log_message("Verified: 584E07D1 completely flattened.")
 
             self.signal_log_message(f"Project moved successfully: {destination_dir}")
 
@@ -1947,26 +1939,32 @@ class IconButtonDelegate(QStyledItemDelegate):
 
 
 def folder_status(game: XBLIGGame, moving=False) -> tuple[bool, bool, Path, list[Path]]:
-    cs_proj_files_extracted = []
+    cs_proj_files = []
     game_folder = Path()
     config = load_config()
-    extracted_state = bool(
+    assert game.folder_title is not None
+    extracted_state = bool(game.folder_title is not None and
         game.extracted and game.extracted.exists() and any(p.is_file() for p in game.extracted.rglob("*")))
-    archived_state = bool(game.archived is not None and game.archived.exists() and any(
-        p.is_file() for p in game.archived.rglob("*")))
+    archived_state = bool(game.folder_title is not None and
+        game.archived is not None and game.archived.exists() and any(p.is_file() for p in game.archived.rglob("*")))
     folder = Path(config["indie_games_path"])
     solution_folder = Path(config["indie-game-solution-location"]).parent / "indie-game-archive"
     if archived_state or moving:
-        game_folder = solution_folder / game.title
+        game_folder = solution_folder / game.folder_title
         game.archived = game_folder
     elif extracted_state:
         game_folder = folder / game.extracted
         game.extracted = game_folder
 
-    game.dll_files = list(game_folder.rglob("*.dll"))
-    game.executables = list(game_folder.rglob("*.exe"))
-    cs_proj_files_extracted = list(game_folder.rglob("*.csproj"))
-    return archived_state, extracted_state, game_folder, cs_proj_files_extracted
+    if (game_folder / "584E07D1").exists():
+        game.dll_files = list((game_folder / "584E07D1").glob("*.dll"))
+        game.executables = list((game_folder / "584E07D1").glob("*.exe"))
+        cs_proj_files = list(game_folder.glob("*.csproj"))
+    else:
+        game.dll_files = list(game_folder.glob("*.dll"))
+        game.executables = list(game_folder.glob("*.exe"))
+        cs_proj_files = list(game_folder.glob("*.csproj"))
+    return archived_state, extracted_state, game_folder, cs_proj_files
 
 
 def run_powershell_script(game: XBLIGGame | None, script=1, log_message=None, config=None):
@@ -2446,7 +2444,7 @@ class XBLIGDialog(QDialog):
 
         process.started.connect(
             lambda target=target:
-            self.log_message(f"ILSpy started: {target.name}")
+            self.log_message(f"ILSpy started: {target}")
         )
 
         process.finished.connect(
@@ -2454,7 +2452,7 @@ class XBLIGDialog(QDialog):
             self._decompile_process_finished(target, exit_code, exit_status, )
         )
 
-        self.log_message(f"Starting ILSpy: {target.name}")
+        self.log_message(f"Starting ILSpy: {target}")
 
         process.start()
 
@@ -2849,11 +2847,11 @@ class XBLIGDialog(QDialog):
             if options["archive_project"]:
                 archived_state, extracted_state, game_folder_status, cs_proj_files = folder_status(game, moving=True)
                 destination_dir = game_folder_status
-                for csproj_file in cs_proj_files:
-                    self.log_message(f"Processing: {csproj_file}")
+                # for csproj_file in cs_proj_files:
+                #     self.log_message(f"Processing: {csproj_file}")
 
-                    self.converter.move_project_to_archive(csproj_file, destination_dir)
-                    self.log_message(f"Project Moved: {csproj_file} -> {destination_dir}")
+                self.converter.move_project_to_archive(destination_dir, game)
+                self.log_message(f"Game Project Folder Moved: {game.extracted} -> {destination_dir}")
 
             if options["convert_csproj"]:
                 solution_path = Path(self.config["indie-game-solution-location"])
