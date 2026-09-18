@@ -376,8 +376,22 @@ class XboxGameTableModel(BaseGameTableModel):
                 """
             params = ()
             rows = con.execute(query, params)
-            self.games = [
-                XboxGame.from_dict(dict(row))
-                for row in rows
-            ]
+            self.games = [XboxGame.from_dict(dict(row)) for row in rows]
         self.layoutChanged.emit()
+
+    def get_game_path(self, row_index: int) -> Path | None:
+        game = self.get_game(row_index)
+
+        if not game.discs:
+            return None
+
+        return game.discs[0].file_path
+
+    def get_game(self, row_index: int) -> XboxGame:
+        return self.games[row_index]
+
+    def get_game_title(self, row_index: int) -> str | None:
+        return self.get_game(row_index).title
+
+    def get_game_id(self, row_index: int) -> str | None:
+        return self.get_game(row_index).game_id

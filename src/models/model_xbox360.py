@@ -3,7 +3,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import cast, Any
 
-from PySide6.QtCore import ( Qt, QModelIndex )
+from PySide6.QtCore import (Qt, QModelIndex)
 from PySide6.QtGui import QBrush, QColor, QFont, QIcon
 
 from config import load_config
@@ -211,8 +211,6 @@ class Xbox360GameTableModel(BaseGameTableModel):
         row = self.games[index.row()]
         key = self.COLUMNS[index.column()][0]
 
-
-
         # Compatibility column special roles
         if key == "compatibility_rating":
             rating = get_value(row, key=key)
@@ -296,6 +294,15 @@ class Xbox360GameTableModel(BaseGameTableModel):
 
         return game.discs[0].file_path
 
+    def get_game(self, row_index: int) -> Xbox360Game:
+        return self.games[row_index]
+
+    def get_game_title(self, row_index: int) -> str | None:
+        return self.get_game(row_index).title
+
+    def get_game_id(self, row_index: int) -> str | None:
+        return self.get_game(row_index).game_id
+
     def get_media_id(self, row_index: int) -> str | None:
         game = self.get_game(row_index)
 
@@ -352,9 +359,6 @@ class Xbox360GameTableModel(BaseGameTableModel):
                 game_id
             ))
 
-    def get_game(self, row_index: int) -> Xbox360Game:
-        return self.games[row_index]
-
     def get_config_path(self, row_index: int) -> Path | None:
         game = self.get_game(row_index)
         return game.config_path
@@ -397,3 +401,7 @@ class Xbox360GameTableModel(BaseGameTableModel):
                 for row in rows
             ]
         self.layoutChanged.emit()
+
+    def get_emulator_version(self, row_index: int) -> str | None:
+        game = self.get_game(row_index)
+        return game.emulator

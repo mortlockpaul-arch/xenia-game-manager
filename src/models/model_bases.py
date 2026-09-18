@@ -26,11 +26,3 @@ class BaseGameTableModel(QAbstractTableModel):
             return 0
         return len(self.COLUMNS)
 
-    def get_game(self, row_index: int) -> Game:
-        return self.games[row_index]
-
-    def get_game_title(self, row_index: int) -> str | None:
-        return self.get_game(row_index).title
-
-    def get_game_id(self, row_index: int) -> str | None:
-        return self.get_game(row_index).game_id

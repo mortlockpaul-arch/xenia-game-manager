@@ -2196,11 +2196,11 @@ class GameLauncher(QMainWindow):
 
         self.config = load_config()
         if self.platform == Platform.XBOX:
-            xemu_exe_location = Path(config["xemu_path"])
+            xemu_exe_location = Path(self.config["xemu_path"])
 
-            game = self.model.get_game_title(row)
-            game_path = self.model.get_game_path(row)
-            game_id = self.model.get_game_id(row)
+            game = self.model_1.get_game_title(row)
+            game_path = self.model_1.get_game_path(row)
+            game_id = self.model_1.get_game_id(row)
 
             if game_path is None:
                 self.log_message(f"No game path configured for: {game}")
@@ -2213,30 +2213,18 @@ class GameLauncher(QMainWindow):
                 import subprocess
                 import time
                 self.start_time = time.time()
-                xemu_exe_location = Path(config["xemu_path"])
+                xemu_exe_location = Path(self.config["xemu_path"])
 
                 cmd = [
                     str(xemu_exe_location),
                     "-dvd_path",
                     str(game_path),
                 ]
-
-                self.log_message("Launching xemu:\n"
-                                 + " ".join(
-                    f'"{arg}"' if " " in str(arg) else str(arg)
-                    for arg in cmd
-                ))
-
+                self.log_message("Launching Xemu: " + " ".join(f'"{arg}"' if " " in str(arg) else str(arg) for arg in cmd))
                 self.process = subprocess.Popen(cmd)
-
-                # self.process = subprocess.Popen(
-                #     cmd,
-                #     cwd=os.path.dirname(xemu_exe_location)
-                # )
-
                 threading.Thread(
                     target=self.monitor_game,
-                    args=(game_id,),
+                    args=(game_id,self.model_1),
                     daemon=True
                 ).start()
 
@@ -2246,12 +2234,12 @@ class GameLauncher(QMainWindow):
 
         if self.platform == Platform.XBOX360:
 
-            db_game_config_source = self.model.get_config_path(row)
-            xenia_version = self.model.get_emulator_version(row)
+            db_game_config_source = self.model_2.get_config_path(row)
+            xenia_version = self.model_2.get_emulator_version(row)
 
-            game = self.model.get_game_title(row)
-            game_path = self.model.get_game_path(row)
-            game_id = self.model.get_game_id(row)
+            game = self.model_2.get_game_title(row)
+            game_path = self.model_2.get_game_path(row)
+            game_id = self.model_2.get_game_id(row)
 
             xenia_exe_location = self.config["xenia_canary_path"]
             xenia_canary_installed = self.config["xenia_canary_installed"]
@@ -2343,13 +2331,12 @@ class GameLauncher(QMainWindow):
                 import time
                 self.start_time = time.time()
                 self.process = subprocess.Popen(
-                    [xenia_exe_path, game_path],
-                    cwd=os.path.dirname(xenia_exe_location)
+                    [str(xenia_exe_path), str(game_path)],
+                    cwd=str(Path(xenia_exe_location).parent),
                 )
-
                 threading.Thread(
                     target=self.monitor_game,
-                    args=(game_id,),
+                    args=(game_id,self.model_2),
                     daemon=True
                 ).start()
 
@@ -2361,16 +2348,16 @@ class GameLauncher(QMainWindow):
                     str(e)
                 )
 
-    def monitor_game(self, game_id):
+    def monitor_game(self, game_id, model):
         while self.process.poll() is None:
             time.sleep(1)  # don’t burn CPU
 
         end_time = time.time()
         minutes = int((end_time - self.start_time) / 60)
 
-        self.model.add_play_time(game_id, minutes)
-        self.model.mark_played(game_id)
-        self.model.load()
+        model.add_play_time(game_id, minutes)
+        model.mark_played(game_id)
+        model.load()
 
     # -------------------------
     # Fix Titles

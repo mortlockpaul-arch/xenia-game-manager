@@ -201,7 +201,7 @@ class GameDisc:
 @dataclass
 class Xbox360Game(Game):
     platform: Platform = field(default=Platform.XBOX360, init=False)
-    emulator: str = field(default="xenia", init=False)
+    emulator: str = field(default="canary", init=False)
     config_path: Path | None = None
     discs: list[GameDisc] = field(default_factory=list)
 
@@ -232,7 +232,8 @@ class Xbox360Game(Game):
 class XboxGame(Game):
     platform: Platform = field(default=Platform.XBOX, init=False, )
     emulator: str = field(default="xemu", init=False, )
-    config_path: Path | None = None
+    config_path: Path | None = Path()
+    discs: list[GameDisc] = field(default_factory=list)
 
     @classmethod
     def from_row(cls, row):
@@ -257,21 +258,14 @@ class XboxGame(Game):
 
     @classmethod
     def from_dict(cls, data: dict) -> "XboxGame":
-        config_path:str = data.get("config_path")
-
+        config_path = data.get("config_path")
         discs = [
             GameDisc(
                 media_id=disc.get("media_id"),
-                file_path=(
-                    Path(disc["file_path"])
-                    if disc.get("file_path")
-                    else None
-                ),
+                file_path=(Path(disc["file_path"]) if disc.get("file_path") else None),
                 disc_count=disc.get("disc_count", 1),
                 disc_type=disc.get("disc_type"),
-                disc_swap_required=bool(
-                    disc.get("disc_swap_required", False)
-                ),
+                disc_swap_required=bool(disc.get("disc_swap_required", False)),
                 disc_number=disc.get("disc_number", 1),
                 label=disc.get("label"),
             )
@@ -281,11 +275,7 @@ class XboxGame(Game):
         return cls(
             game_id=data["game_id"],
             title=data.get("title", ""),
-            config_path=(
-                Path(config_path)
-                if config_path
-                else None
-            ),
+            config_path=Path(config_path) if isinstance(config_path, str) else None,
             favourite=bool(data.get("favourite", False)),
             last_played=data.get("last_played"),
             play_count=data.get("play_count", 0),
