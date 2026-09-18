@@ -429,7 +429,13 @@ class GameLauncher(QMainWindow):
         self.scanner = None
         self.xbox_unity_api = None
         self.background = QPixmap(get_app_dir() / "assets/images/img.png")
-        self.model: XboxGameTableModel | Xbox360GameTableModel = None
+
+        self.model_1: XboxGameTableModel = XboxGameTableModel()
+        self.model_2: Xbox360GameTableModel = Xbox360GameTableModel()
+
+        self.model_1.log.connect(self.log_message)
+        self.model_2.log.connect(self.log_message)
+
         self.xbox_game_list: list[xiso.XboxRom] = []
         self.launch_edge = None
         self.extract_worker = None
@@ -500,8 +506,6 @@ class GameLauncher(QMainWindow):
         self.db = Database()
         self.db.init_db()
 
-        self.model = Xbox360GameTableModel()
-        self.model.log.connect(self.log_message)
 
         self.setFixedSize(1640, 950)
 
@@ -929,7 +933,7 @@ class GameLauncher(QMainWindow):
                 self.finished.emit()
 
     def download_experimental_releases(self):
-        config = load_config()
+        self.config = load_config()
         self.log_message(clear_console=True)
         github_environment_variable = keyring.get_password("Xenia Game Manager", "github_token")
         if not github_environment_variable:
@@ -992,8 +996,8 @@ class GameLauncher(QMainWindow):
 
         for release in releases:
             xenia_version = release["name"].lower()
-            xenia_manager_installed = config["xenia_manager_installed"]
-            folder = Path(config.get(release["path_key"]) or release["default"])
+            xenia_manager_installed = self.config["xenia_manager_installed"]
+            folder = Path(self.config.get(release["path_key"]) or release["default"])
             if xenia_manager_installed and xenia_version != "edge" and xenia_version != "xemu":
                 xenia_manager_config, xenia_manager_path = load_xenia_manager_config()
                 if not xenia_manager_config:
@@ -1011,9 +1015,9 @@ class GameLauncher(QMainWindow):
 
             folder.mkdir(parents=True, exist_ok=True)
 
-            config[release["path_key"]] = str(folder)
-            config[release["installed_key"]] = True
-            save_config(config)
+            self.config[release["path_key"]] = str(folder)
+            self.config[release["installed_key"]] = True
+            save_config(self.config)
 
             try:
                 downloader = DownloadArtifact(github_environment_variable, log_callback=self.log_message)
@@ -1051,8 +1055,8 @@ class GameLauncher(QMainWindow):
                     self.log_message(f"Failed extracting {zip_file}")
                 else:
                     self.log_message(f"Finished {release['name']}")
-                    config[release["version_key"]] = version
-                    save_config(config)
+                    self.config[release["version_key"]] = version
+                    save_config(self.config)
                 self.load_saved_config()
             except requests.exceptions.RequestException as e:
                 self.log_message(f"Network error: {e}")
@@ -1104,7 +1108,7 @@ class GameLauncher(QMainWindow):
         )
 
     def set_checkbox(self, checkbox_name, checked, save=True, *, placeholder=None, text=None, path_enabled=None, button_enabled=None,):
-        config = load_config()
+        self.config = load_config()
 
         widget_info = next(
             (
@@ -1140,8 +1144,8 @@ class GameLauncher(QMainWindow):
             widget_info.button.setEnabled(button_enabled)
 
         if save:
-            config[widget_info.config_key_installed] = checked
-            save_config(config)
+            self.config[widget_info.config_key_installed] = checked
+            save_config(self.config)
 
         if widget_info.name == "Xenia Edge": self.launch_edge.setEnabled(checked if button_enabled is None else button_enabled)
         if widget_info.name == "Xenia Manager": self.launch_manager.setEnabled(checked if button_enabled is None else button_enabled)
@@ -1149,7 +1153,7 @@ class GameLauncher(QMainWindow):
 
     def checkbox_changed(self, state, checkbox_name):
         checked = bool(state)
-        config = load_config()
+        self.config = load_config()
         self.set_checkbox(checkbox_name, checked)
 
         if checkbox_name != "manager":
@@ -1185,7 +1189,7 @@ class GameLauncher(QMainWindow):
 
                 self.set_checkbox(
                     emulator,
-                    config[widget.config_key_installed],
+                    self.config[widget.config_key_installed],
                     placeholder=f"Not Using Xenia Manager {widget.name} location...",
                     text=config[widget.config_key_path],
                     path_enabled=config[widget.config_key_installed],
@@ -1677,8 +1681,8 @@ class GameLauncher(QMainWindow):
 
     def pick_emulator_path(self, button_name):
 
-        config = load_config()
-        config_folder = config[button_name]
+        self.config = load_config()
+        config_folder = self.config[button_name]
 
         folder = QFileDialog.getExistingDirectory(
             self,
@@ -1693,13 +1697,13 @@ class GameLauncher(QMainWindow):
         getattr(self, key).setText(folder)
 
 
-        config[f"{key}"] = folder
-        save_config(config)
+        self.config[f"{key}"] = folder
+        save_config(self.config)
         if button_name == "indie_games_path":
             self.model.reload_config()
             self.model.refresh_artwork()
         if button_name == "edge":
-            xenia_edge_installed = config["xenia_edge_installed"]
+            xenia_edge_installed = self.config["xenia_edge_installed"]
             button_text = "Launch Xenia Edge" if xenia_edge_installed else "Install Xenia Edge"
             self.launch_edge.setText(button_text)
             self.launch_edge.clicked.connect(partial(self.launch_program, "edge"))
@@ -2100,16 +2104,16 @@ class GameLauncher(QMainWindow):
         # width = self.table.columnWidth(2)
         # print(width)
         if platform == "xbox360":
-            self.model = Xbox360GameTableModel()
-            self.model.log.connect(self.log_message)
-            self.table.setModel(self.model)
-            self.model.load()
+            self.model_2 = Xbox360GameTableModel()
+            self.model_2.log.connect(self.log_message)
+            self.table.setModel(self.model_2)
+            self.model_2.load()
             self.platform = Platform.XBOX360
         if platform == "xbox":
-            self.model = XboxGameTableModel()
-            self.model.log.connect(self.log_message)
-            self.table.setModel(self.model)
-            self.model.load()
+            self.model_1 = XboxGameTableModel()
+            self.model_1.log.connect(self.log_message)
+            self.table.setModel(self.model_1)
+            self.model_1.load()
             self.platform = Platform.XBOX
         self.load_saved_config()
 
@@ -2190,7 +2194,7 @@ class GameLauncher(QMainWindow):
         if row is None:
             return
 
-        config = load_config()
+        self.config = load_config()
         if self.platform == Platform.XBOX:
             xemu_exe_location = Path(config["xemu_path"])
 
@@ -2249,16 +2253,16 @@ class GameLauncher(QMainWindow):
             game_path = self.model.get_game_path(row)
             game_id = self.model.get_game_id(row)
 
-            xenia_exe_location = config["xenia_canary_path"]
-            xenia_canary_installed = config["xenia_canary_installed"]
-            xenia_edge_installed = config["xenia_edge_installed"]
-            xenia_netplay_installed = config["xenia_netplay_installed"]
-            xenia_mousehook_installed = config["xenia_mousehook_installed"]
-            xenia_manager_installed = config["xenia_manager_installed"]
-            xenia_edge_path = config["xenia_edge_path"]
-            xenia_canary_path = config["xenia_canary_path"]
-            xenia_netplay_path = config["xenia_netplay_path"]
-            xenia_mousehook_path = config["xenia_mousehook_path"]
+            xenia_exe_location = self.config["xenia_canary_path"]
+            xenia_canary_installed = self.config["xenia_canary_installed"]
+            xenia_edge_installed = self.config["xenia_edge_installed"]
+            xenia_netplay_installed = self.config["xenia_netplay_installed"]
+            xenia_mousehook_installed = self.config["xenia_mousehook_installed"]
+            xenia_manager_installed = self.config["xenia_manager_installed"]
+            xenia_edge_path = self.config["xenia_edge_path"]
+            xenia_canary_path = self.config["xenia_canary_path"]
+            xenia_netplay_path = self.config["xenia_netplay_path"]
+            xenia_mousehook_path = self.config["xenia_mousehook_path"]
             xenia_version = str(xenia_version).lower()
             if xenia_manager_installed and xenia_version != "edge":
                 xenia_manager_config, xenia_manager_path = load_xenia_manager_config()

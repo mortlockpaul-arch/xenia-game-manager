@@ -8,13 +8,34 @@ from PySide6.QtGui import QBrush, QColor, QFont, QIcon
 
 from config import load_config
 from db import Database, Xbox360Game, Platform
-from models.model_bases import DiscGameTableModel
+from models.model_bases import BaseGameTableModel
 from utils import star, format_disc_type
 
 DisplayRole = Qt.ItemDataRole.DisplayRole
 ToolTipRole = Qt.ItemDataRole.ToolTipRole
 
-class Xbox360GameTableModel(DiscGameTableModel):
+
+def get_value(game: Xbox360Game, key: str):
+    disc_fields = {
+        "media_id",
+        "file_path",
+        "disc_count",
+        "disc_type",
+        "disc_swap_required",
+        "disc_number",
+        "label",
+    }
+
+    if key in disc_fields:
+        if not game.discs:
+            return None
+
+        return getattr(game.discs[0], key, None)
+
+    return getattr(game, key, None)
+
+
+class Xbox360GameTableModel(BaseGameTableModel):
     COLUMNS = [
         ("favourite", "Fav"),
         ("artwork_path", ""),
@@ -173,25 +194,6 @@ class Xbox360GameTableModel(DiscGameTableModel):
 
         return section + 1
 
-    def get_value(self, game: Xbox360Game, key: str):
-        disc_fields = {
-            "media_id",
-            "file_path",
-            "disc_count",
-            "disc_type",
-            "disc_swap_required",
-            "disc_number",
-            "label",
-        }
-
-        if key in disc_fields:
-            if not game.discs:
-                return None
-
-            return getattr(game.discs[0], key, None)
-
-        return getattr(game, key, None)
-
     def data(self, index, role=Qt.ItemDataRole.DisplayRole):
         compatibility = {
             "Perfect": ("Perfect", "#2ecc71"),
@@ -213,7 +215,7 @@ class Xbox360GameTableModel(DiscGameTableModel):
 
         # Compatibility column special roles
         if key == "compatibility_rating":
-            rating = self.get_value(row, key=key)
+            rating = get_value(row, key=key)
             text, colour = compatibility.get(rating, compatibility[None])
 
             if role == Qt.ItemDataRole.DisplayRole:
@@ -238,7 +240,7 @@ class Xbox360GameTableModel(DiscGameTableModel):
                     return QIcon(str(icon_path))
 
         if role == Qt.ItemDataRole.DisplayRole:
-            value = self.get_value(row, key=key)
+            value = get_value(row, key=key)
 
             if value is None:
                 return ""
@@ -277,7 +279,7 @@ class Xbox360GameTableModel(DiscGameTableModel):
                 return "\n".join(str(path) for path in paths)
         return None
 
-    def get_game_paths(self, row_index: int) -> list[Path]:
+    def get_game_paths(self, row_index: int) -> list[Path] | None:
         game = self.get_game(row_index)
 
         return [
@@ -285,6 +287,22 @@ class Xbox360GameTableModel(DiscGameTableModel):
             for disc in game.discs
             if disc.file_path is not None
         ]
+
+    def get_game_path(self, row_index: int) -> Path | None:
+        game = self.get_game(row_index)
+
+        if not game.discs:
+            return None
+
+        return game.discs[0].file_path
+
+    def get_media_id(self, row_index: int) -> str | None:
+        game = self.get_game(row_index)
+
+        if not game.discs:
+            return None
+
+        return game.discs[0].media_id
 
     def toggle_favourite(self, row_index):
         if row_index < 0 or row_index >= len(self.games):
@@ -334,6 +352,12 @@ class Xbox360GameTableModel(DiscGameTableModel):
                 game_id
             ))
 
+    def get_game(self, row_index: int) -> Xbox360Game:
+        return self.games[row_index]
+
+    def get_config_path(self, row_index: int) -> Path | None:
+        game = self.get_game(row_index)
+        return game.config_path
 
     def sort(self, column, order=Qt.SortOrder.AscendingOrder):
 

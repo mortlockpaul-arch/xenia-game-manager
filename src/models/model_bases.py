@@ -6,32 +6,8 @@ from PySide6.QtCore import Signal, QAbstractTableModel, QModelIndex
 
 from db import Game, XboxGame, Xbox360Game
 
-class GameModel(Protocol):
-    games: list[Game]
-
-    def get_game(self, row_index: int) -> Game:
-        ...
-
-    def get_game_title(self, row_index: int) -> str:
-        ...
-
-    def get_game_id(self, row_index: int) -> str:
-        ...
-
-    def get_game_path(self, row_index: int) -> Path | None:
-        ...
-
-    def get_game_paths(self, row_index: int) -> list[Path]:
-        ...
-
-    def get_media_id(self, row_index: int) -> str | None:
-        ...
-
-    def get_config_path(self, row_index: int) -> Path | None:
-        ...
 
 class BaseGameTableModel(QAbstractTableModel):
-
     log = Signal(str, bool, bool, bool)
 
     COLUMNS = []
@@ -53,30 +29,8 @@ class BaseGameTableModel(QAbstractTableModel):
     def get_game(self, row_index: int) -> Game:
         return self.games[row_index]
 
-    def get_game_title(self, row_index: int) -> str:
+    def get_game_title(self, row_index: int) -> str | None:
         return self.get_game(row_index).title
 
-    def get_game_id(self, row_index: int) -> str:
+    def get_game_id(self, row_index: int) -> str | None:
         return self.get_game(row_index).game_id
-
-
-
-class DiscGameTableModel(BaseGameTableModel):
-
-    def get_game_path(self, row_index: int) -> Path | None:
-        game = self.get_game(row_index)
-
-        if not game.discs:
-            return None
-
-        return game.discs[0].file_path
-
-
-
-    def get_media_id(self, row_index: int) -> str | None:
-        game = self.get_game(row_index)
-
-        if not game.discs:
-            return None
-
-        return game.discs[0].media_id

@@ -10,14 +10,15 @@ from PySide6.QtCore import (
 )
 from PySide6.QtGui import QBrush, QColor, QFont, QIcon
 
+from config import load_config
 from db import Database, XboxGame, Platform, Game
-from models.model_bases import DiscGameTableModel
+from models.model_bases import BaseGameTableModel
 from utils import star, format_disc_type
 
 DisplayRole = Qt.ItemDataRole.DisplayRole
 ToolTipRole = Qt.ItemDataRole.ToolTipRole
 
-class XboxGameTableModel(DiscGameTableModel):
+class XboxGameTableModel(BaseGameTableModel):
 
     def refresh_artwork(self) -> None:
         row_count = self.rowCount()
@@ -61,12 +62,12 @@ class XboxGameTableModel(DiscGameTableModel):
 
         self.db = Database()
         self.games: list[XboxGame] = []
-        self.config = load_config_file()
+        self.config = load_config()
         self.xenia_manager_path = Path(self.config["xenia_manager_path"])
         self.load()
 
     def reload_config(self):
-        self.config = load_config_file()
+        self.config = load_config()
         self.xenia_manager_path = Path(self.config["xenia_manager_path"])
 
     @staticmethod
