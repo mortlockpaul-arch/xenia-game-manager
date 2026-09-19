@@ -967,10 +967,6 @@ class ConvertXnaProjects(QObject):
             self.signal_log_message(f"Content folder not found: {content_dir}")
             return None
 
-        # alba = (get_app_dir() / "assets/tools/conversion/Alba.XnaConvert.0.1.2/Alba.XnaConvert.exe")
-        # xnb_cli = (get_app_dir() / "assets/tools/conversion/xnbcli-windows-x64/xnbcli.exe")
-        # xnb_extractor = (get_app_dir() / "assets/tools/conversion/xnb-extractor/Release/net481/XnbExtractor.exe")
-
         failed_folders = []
 
         if tool_id == 1:
@@ -1018,23 +1014,25 @@ class ConvertXnaProjects(QObject):
 
             with subprocess.Popen(
                     cmd,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
+                    # stdout=subprocess.PIPE,
+                    # stderr=subprocess.PIPE,
                     text=True,
             ) as process:
 
-                assert process.stdout is not None
-                assert process.stderr is not None
+                # assert process.stdout is not None
+                # assert process.stderr is not None
 
-                for line in process.stdout:
-                    line = line.rstrip()
-                    stdout_lines.append(line)
-                    self.signal_log_message(line)
+                if process.stdout is not None:
+                    for line in process.stdout:
+                        line = line.rstrip()
+                        stdout_lines.append(line)
+                        self.signal_log_message(line)
 
-                for line in process.stderr:
-                    line = line.rstrip()
-                    stderr_lines.append(line)
-                    self.signal_log_message(f"ERR: {line}")
+                if process.stderr is not None:
+                    for line in process.stderr:
+                        line = line.rstrip()
+                        stderr_lines.append(line)
+                        self.signal_log_message(f"ERR: {line}")
 
                 process.wait()
 
@@ -2329,6 +2327,11 @@ class XBLIGDialog(QDialog):
             if game:
                 ensure_tool_extracted("conversion", None)
                 self.progress_bar.setRange(0, 0)  # Busy animation
+                self.converter = ConvertXnaProjects(get_app_dir(), self.games, self.options)
+                self.converter.log_signal.connect(self.log_message)
+                self.converter.progress_signal.connect(self.update_scan_progress)
+                self.converter.finished_signal.connect(self.tool_finished)
+                self.converter.total_files_signal.connect(self.total_files_progress)
                 run_in_background(self.converter.convert_xnb_folder_tools, game, tool_id)
 
     def tool_finished(self, result: ConversionResult):
