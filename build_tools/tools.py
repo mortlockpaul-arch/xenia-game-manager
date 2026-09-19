@@ -22,8 +22,8 @@ if __name__ == "__main__":
     # with ToolManager("conversion"):
     #     print("Conversion is complete.")
 
-    # tools_setup()
+    tools_setup()
     # ensure_tool_extracted("ilspy", None)
     # ensure_tool_extracted("ilspycmd", None)
     # ensure_tool_extracted("vgmstream", None)
-    ensure_tool_extracted("conversion", None)
+    # ensure_tool_extracted("conversion", None)

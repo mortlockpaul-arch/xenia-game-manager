@@ -5,58 +5,55 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.9 Updated xnb-extractor to latest version">
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/FNA.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/FNA.dll.config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/FNA.pdb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/Microsoft.Win32.SystemEvents.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/NAudio.Asio.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/NAudio.Core.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/NAudio.Dmo.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/NAudio.Midi.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/NAudio.Wasapi.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/NAudio.WinForms.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/NAudio.WinMM.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/NAudio.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/Newtonsoft.Json.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/Spectre.Console.Ansi.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/Spectre.Console.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/System.Drawing.Common.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/System.IO.Pipelines.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/System.Numerics.Tensors.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/System.Private.Windows.Core.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/System.Private.Windows.GdiPlus.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/System.Text.Encodings.Web.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/System.Text.Json.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/XnbExtractor.deps.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/XnbExtractor.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/XnbExtractor.dll.config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/XnbExtractor.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/XnbExtractor.pdb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/XnbExtractor.runtimeconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/runtimes/browser/lib/net8.0/System.Text.Encodings.Web.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/runtimes/win/lib/net9.0/Microsoft.Win32.SystemEvents.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/runtimes/win/lib/net9.0/System.Text.Encodings.Web.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/RemoveRegions.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/COPYING" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/USAGE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/avcodec-vgmstream-59.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/avformat-vgmstream-59.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/avutil-vgmstream-57.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/libatrac9.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/libcelt-0061.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/libcelt-0110.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/libg719_decode.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/libmpg123-0.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/libspeex-1.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/libvorbis.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/swresample-vgmstream-4.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/vgmstream-cli.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/vgmstream.vgmstream_Microsoft.Winget.Source_8wekyb3d8bbwe.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build_tools/tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/tools.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/FNA.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/FNA.dll.config" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/FNA.pdb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/Microsoft.Win32.SystemEvents.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/NAudio.Asio.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/NAudio.Core.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/NAudio.Dmo.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/NAudio.Midi.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/NAudio.Wasapi.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/NAudio.WinForms.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/NAudio.WinMM.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/NAudio.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/Newtonsoft.Json.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/Spectre.Console.Ansi.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/Spectre.Console.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/System.Drawing.Common.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/System.IO.Pipelines.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/System.Numerics.Tensors.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/System.Private.Windows.Core.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/System.Private.Windows.GdiPlus.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/System.Text.Encodings.Web.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/System.Text.Json.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/XnbExtractor.deps.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/XnbExtractor.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/XnbExtractor.dll.config" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/XnbExtractor.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/XnbExtractor.pdb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/XnbExtractor.runtimeconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/runtimes/browser/lib/net8.0/System.Text.Encodings.Web.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/runtimes/win/lib/net9.0/Microsoft.Win32.SystemEvents.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/runtimes/win/lib/net9.0/System.Text.Encodings.Web.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/RemoveRegions.ps1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/COPYING" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/USAGE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/avcodec-vgmstream-59.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/avformat-vgmstream-59.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/avutil-vgmstream-57.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/libatrac9.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/libcelt-0061.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/libcelt-0110.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/libg719_decode.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/libmpg123-0.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/libspeex-1.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/libvorbis.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/swresample-vgmstream-4.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/vgmstream-cli.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/publish/tools/vgmstream/vgmstream.vgmstream_Microsoft.Winget.Source_8wekyb3d8bbwe.db" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -413,14 +410,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00150" summary="1.2.3 Add Reference-Projects">
-      <option name="closed" value="true" />
-      <created>1788082429662</created>
-      <option name="number" value="00150" />
-      <option name="presentableId" value="LOCAL-00150" />
-      <option name="project" value="LOCAL" />
-      <updated>1788082429663</updated>
     </task>
     <task id="LOCAL-00151" summary="1.2.3 Add Reference-Projects">
       <option name="closed" value="true" />
@@ -806,7 +795,15 @@
       <option name="project" value="LOCAL" />
       <updated>1789795676477</updated>
     </task>
-    <option name="localTasksCounter" value="199" />
+    <task id="LOCAL-00199" summary="1.2.9 Updated xnb-extractor to latest version">
+      <option name="closed" value="true" />
+      <created>1789835863178</created>
+      <option name="number" value="00199" />
+      <option name="presentableId" value="LOCAL-00199" />
+      <option name="project" value="LOCAL" />
+      <updated>1789835863179</updated>
+    </task>
+    <option name="localTasksCounter" value="200" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
