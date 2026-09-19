@@ -5,33 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.9 Updated xnb-extractor to latest version">
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/FNA.dll.config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/FNA.pdb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/XnbExtractor.dll.config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/XnbExtractor.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/XnbExtractor.pdb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/RemoveRegions.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/COPYING" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/USAGE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/avcodec-vgmstream-59.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/avformat-vgmstream-59.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/avutil-vgmstream-57.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/libatrac9.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/libcelt-0061.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/libcelt-0110.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/libg719_decode.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/libmpg123-0.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/libspeex-1.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/libvorbis.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/swresample-vgmstream-4.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/vgmstream-cli.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/vgmstream.vgmstream_Microsoft.Winget.Source_8wekyb3d8bbwe.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/game-manager-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/game-manager-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/xenia_compatibility.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/xenia_compatibility.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,7 +150,7 @@
     "Python.netplay.executor": "Run",
     "Python.package window.executor": "Run",
     "Python.package.executor": "Run",
-    "Python.package_window.executor": "Debug",
+    "Python.package_window.executor": "Run",
     "Python.setup.executor": "Run",
     "Python.stfs_extract.executor": "Debug",
     "Python.stfs_extract_gui.executor": "Run",
@@ -223,7 +198,7 @@
       <recent name="C:\PycharmProjects\xenia-game-manager\src" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.build individuals">
     <configuration name="Unnamed" type="BatchConfigurationType" factoryName="Batch" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -388,14 +363,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00154" summary="1.2.3 Downloader Setup">
-      <option name="closed" value="true" />
-      <created>1788205251682</created>
-      <option name="number" value="00154" />
-      <option name="presentableId" value="LOCAL-00154" />
-      <option name="project" value="LOCAL" />
-      <updated>1788205251685</updated>
     </task>
     <task id="LOCAL-00155" summary="1.2.3 Downloader Setup">
       <option name="closed" value="true" />
@@ -781,7 +748,15 @@
       <option name="project" value="LOCAL" />
       <updated>1789841858367</updated>
     </task>
-    <option name="localTasksCounter" value="203" />
+    <task id="LOCAL-00203" summary="1.2.9 Updated xnb-extractor to latest version">
+      <option name="closed" value="true" />
+      <created>1789853169637</created>
+      <option name="number" value="00203" />
+      <option name="presentableId" value="LOCAL-00203" />
+      <option name="project" value="LOCAL" />
+      <updated>1789853169637</updated>
+    </task>
+    <option name="localTasksCounter" value="204" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
