@@ -1,5 +1,52 @@
 [
   {
+    "issue": 1217,
+    "id": "58410B92",
+    "title": "HELL YEAH Wrath of the Dead Rabbit",
+    "updated": "2026-09-19T09:30:15Z",
+    "state": "Unplayable",
+    "labels": {
+      "state": [
+        "state-nothing"
+      ],
+      "others": []
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1217"
+  },
+  {
+    "issue": 1216,
+    "id": "58411495",
+    "title": "Masquerade: The Baubles of Doom",
+    "updated": "2026-09-19T10:24:05Z",
+    "state": "Gameplay",
+    "labels": {
+      "state": [
+        "state-gameplay"
+      ],
+      "others": [
+        "apu-garbage",
+        "crash-random"
+      ]
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1216"
+  },
+  {
+    "issue": 1215,
+    "id": "415608BE",
+    "title": "Cabela's Survival: Shadows of Katmai",
+    "updated": "2026-09-18T01:33:19Z",
+    "state": "Playable",
+    "labels": {
+      "state": [
+        "state-playable"
+      ],
+      "others": [
+        "gpu-readback"
+      ]
+    },
+    "url": "https://github.com/xenia-canary/game-compatibility/issues/1215"
+  },
+  {
     "issue": 1214,
     "id": "415607E5",
     "title": "Cabela's African Safari",
@@ -931,7 +978,7 @@
     "issue": 1140,
     "id": "545408A7",
     "title": "Grand Theft Auto V",
-    "updated": "2026-09-10T04:40:09Z",
+    "updated": "2026-09-17T13:49:12Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -3377,7 +3424,7 @@
     "issue": 960,
     "id": "58410B66",
     "title": "Bastion",
-    "updated": "2026-01-21T06:37:43Z",
+    "updated": "2026-09-19T09:45:08Z",
     "state": "Unplayable",
     "labels": {
       "state": [
@@ -6611,7 +6658,7 @@
     "issue": 755,
     "id": "434307D2",
     "title": "Dead Rising",
-    "updated": "2026-08-27T22:56:09Z",
+    "updated": "2026-09-19T15:03:30Z",
     "state": "Playable",
     "labels": {
       "state": [
@@ -6874,11 +6921,11 @@
     "issue": 738,
     "id": "5841096A",
     "title": "Hydro Thunder Hurricane",
-    "updated": "2026-09-12T07:20:32Z",
-    "state": "Gameplay",
+    "updated": "2026-09-19T11:03:07Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
       "others": [
         "gpu-occlusion-query"
@@ -9614,7 +9661,7 @@
     "issue": 553,
     "id": "465607D1",
     "title": "Ketsui Kizuna Jigoku Tachi Extra",
-    "updated": "2026-07-10T15:35:59Z",
+    "updated": "2026-09-19T11:18:44Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -14618,7 +14665,7 @@
     "issue": 256,
     "id": "454107E9",
     "title": "The Godfather",
-    "updated": "2026-07-29T11:40:27Z",
+    "updated": "2026-09-19T12:49:51Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -15336,7 +15383,7 @@
     "issue": 212,
     "id": "5841125A",
     "title": "Counter-Strike: GO",
-    "updated": "2026-06-02T19:58:05Z",
+    "updated": "2026-09-18T16:52:29Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -16252,7 +16299,7 @@
     "issue": 149,
     "id": "454107D2",
     "title": "Madden NFL 06",
-    "updated": "2026-05-21T16:39:21Z",
+    "updated": "2026-09-18T16:19:34Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -16261,8 +16308,7 @@
       "others": [
         "gpu-drawing-corrupt",
         "apu-garbage",
-        "backwards-compatibility-unsupported",
-        "crash-random"
+        "backwards-compatibility-unsupported"
       ]
     },
     "url": "https://github.com/xenia-canary/game-compatibility/issues/149"
@@ -16378,18 +16424,15 @@
     "issue": 141,
     "id": "45410912",
     "title": "Portal 2",
-    "updated": "2026-08-15T23:01:40Z",
-    "state": "Gameplay",
+    "updated": "2026-09-18T14:09:05Z",
+    "state": "Playable",
     "labels": {
       "state": [
-        "state-gameplay"
+        "state-playable"
       ],
       "others": [
-        "kernel-unimplemented-feature",
         "gpu-drawing-corrupt",
-        "gpu-drawing-missing",
         "tech-engine-source",
-        "cpu-unimplemented-instruction",
         "tech-middleware-havok",
         "gpu-readback",
         "gpu-occlusion-query"
@@ -16629,7 +16672,7 @@
     "issue": 122,
     "id": "4E4D07D8",
     "title": "Afro Samurai",
-    "updated": "2026-05-13T13:36:39Z",
+    "updated": "2026-09-18T00:26:00Z",
     "state": "Gameplay",
     "labels": {
       "state": [
@@ -16665,7 +16708,7 @@
     "issue": 120,
     "id": "45410811",
     "title": "UEFA Champions League 2006\u20132007",
-    "updated": "2026-09-16T20:41:42Z",
+    "updated": "2026-09-17T14:27:06Z",
     "state": "Gameplay",
     "labels": {
       "state": [

@@ -5,10 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.9 Updated xnb-extractor to latest version">
-      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion.7z" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/FNA.dll.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/FNA.pdb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/XnbExtractor.dll.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/XnbExtractor.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/XnbExtractor.pdb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/RemoveRegions.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/COPYING" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/USAGE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/avcodec-vgmstream-59.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/avformat-vgmstream-59.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/avutil-vgmstream-57.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/libatrac9.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/libcelt-0061.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/libcelt-0110.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/libg719_decode.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/libmpg123-0.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/libspeex-1.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/libvorbis.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/swresample-vgmstream-4.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/vgmstream-cli.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/tools/conversion/xnb-extractor/win-x64/tools/vgmstream/vgmstream.vgmstream_Microsoft.Winget.Source_8wekyb3d8bbwe.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/game-manager-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/game-manager-config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/xenia_compatibility.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/xenia_compatibility.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/model_indie.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/model_indie.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -124,67 +146,67 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;Batch.Unnamed.executor&quot;: &quot;Run&quot;,
-    &quot;Batch.cleanup_repo.executor&quot;: &quot;Run&quot;,
-    &quot;Batch.start.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;PowerShell.Unnamed.executor&quot;: &quot;Run&quot;,
-    &quot;PowerShell.build_projects.ps1.executor&quot;: &quot;Run&quot;,
-    &quot;PowerShell.build_projects_clean.ps1.executor&quot;: &quot;Run&quot;,
-    &quot;PowerShell.cleanup_repo.ps1.executor&quot;: &quot;Run&quot;,
-    &quot;PowerShell.dotnet-install.ps1.executor&quot;: &quot;Run&quot;,
-    &quot;Python.a.executor&quot;: &quot;Run&quot;,
-    &quot;Python.archive_content_window.executor&quot;: &quot;Run&quot;,
-    &quot;Python.archive_digital_window.executor&quot;: &quot;Run&quot;,
-    &quot;Python.archive_indie_window.executor&quot;: &quot;Run&quot;,
-    &quot;Python.build individuals.executor&quot;: &quot;Run&quot;,
-    &quot;Python.build msi.executor&quot;: &quot;Run&quot;,
-    &quot;Python.build portables.executor&quot;: &quot;Run&quot;,
-    &quot;Python.build.executor&quot;: &quot;Run&quot;,
-    &quot;Python.convert_xna_projects.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.easyxnb_gui.executor&quot;: &quot;Run&quot;,
-    &quot;Python.import_xblig_metadata.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main-updater.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.main_updater.executor&quot;: &quot;Run&quot;,
-    &quot;Python.netplay.executor&quot;: &quot;Run&quot;,
-    &quot;Python.package window.executor&quot;: &quot;Run&quot;,
-    &quot;Python.package.executor&quot;: &quot;Run&quot;,
-    &quot;Python.package_window.executor&quot;: &quot;Run&quot;,
-    &quot;Python.setup.executor&quot;: &quot;Run&quot;,
-    &quot;Python.stfs_extract.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.stfs_extract_gui.executor&quot;: &quot;Run&quot;,
-    &quot;Python.tools.executor&quot;: &quot;Run&quot;,
-    &quot;Python.utils.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.xiso.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;git.auto.fetch.suggestion.counter&quot;: &quot;2&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/PycharmProjects/xenia-game-manager/src/assets/tools/conversion/xnb-extractor&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;python.packages.toolwindow.project.migrated.to.right.top.v2&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "Batch.Unnamed.executor": "Run",
+    "Batch.cleanup_repo.executor": "Run",
+    "Batch.start.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "PowerShell.Unnamed.executor": "Run",
+    "PowerShell.build_projects.ps1.executor": "Run",
+    "PowerShell.build_projects_clean.ps1.executor": "Run",
+    "PowerShell.cleanup_repo.ps1.executor": "Run",
+    "PowerShell.dotnet-install.ps1.executor": "Run",
+    "Python.a.executor": "Run",
+    "Python.archive_content_window.executor": "Run",
+    "Python.archive_digital_window.executor": "Run",
+    "Python.archive_indie_window.executor": "Run",
+    "Python.build individuals.executor": "Run",
+    "Python.build msi.executor": "Run",
+    "Python.build portables.executor": "Run",
+    "Python.build.executor": "Run",
+    "Python.convert_xna_projects.executor": "Debug",
+    "Python.easyxnb_gui.executor": "Run",
+    "Python.import_xblig_metadata.executor": "Run",
+    "Python.main-updater.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.main_updater.executor": "Run",
+    "Python.netplay.executor": "Run",
+    "Python.package window.executor": "Run",
+    "Python.package.executor": "Run",
+    "Python.package_window.executor": "Debug",
+    "Python.setup.executor": "Run",
+    "Python.stfs_extract.executor": "Debug",
+    "Python.stfs_extract_gui.executor": "Run",
+    "Python.tools.executor": "Run",
+    "Python.utils.executor": "Debug",
+    "Python.xiso.executor": "Run",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "master",
+    "git.auto.fetch.suggestion.counter": "2",
+    "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "C:/PycharmProjects/xenia-game-manager/src/assets/tools/conversion/xnb-extractor",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.jshint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.jshint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "python.packages.toolwindow.project.migrated.to.right.top.v2": "true",
+    "settings.editor.selected.configurable": "Errors",
+    "to.speed.mode.migration.done": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\tools\conversion\xnb-extractor" />
@@ -366,14 +388,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00153" summary="1.2.3 Downloader Setup">
-      <option name="closed" value="true" />
-      <created>1788134659896</created>
-      <option name="number" value="00153" />
-      <option name="presentableId" value="LOCAL-00153" />
-      <option name="project" value="LOCAL" />
-      <updated>1788134659897</updated>
     </task>
     <task id="LOCAL-00154" summary="1.2.3 Downloader Setup">
       <option name="closed" value="true" />
@@ -759,7 +773,15 @@
       <option name="project" value="LOCAL" />
       <updated>1789837593731</updated>
     </task>
-    <option name="localTasksCounter" value="202" />
+    <task id="LOCAL-00202" summary="1.2.9 Updated xnb-extractor to latest version">
+      <option name="closed" value="true" />
+      <created>1789841858367</created>
+      <option name="number" value="00202" />
+      <option name="presentableId" value="LOCAL-00202" />
+      <option name="project" value="LOCAL" />
+      <updated>1789841858367</updated>
+    </task>
+    <option name="localTasksCounter" value="203" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -882,11 +904,6 @@
           <option name="timeStamp" value="89" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2320</line>
-          <option name="timeStamp" value="114" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/xiso.py</url>
           <line>354</line>
           <option name="timeStamp" value="133" />
@@ -923,7 +940,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2901</line>
+          <line>2898</line>
           <option name="timeStamp" value="201" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -933,27 +950,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>3408</line>
+          <line>3405</line>
           <option name="timeStamp" value="245" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>437</line>
-          <option name="timeStamp" value="247" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>3438</line>
+          <line>3435</line>
           <option name="timeStamp" value="252" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>3444</line>
+          <line>3441</line>
           <option name="timeStamp" value="253" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2898</line>
+          <line>2895</line>
           <option name="timeStamp" value="256" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -978,7 +990,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1736</line>
+          <line>1733</line>
           <option name="timeStamp" value="321" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -998,12 +1010,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2916</line>
+          <line>2913</line>
           <option name="timeStamp" value="343" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2395</line>
+          <line>2392</line>
           <option name="timeStamp" value="344" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1013,12 +1025,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2845</line>
+          <line>2842</line>
           <option name="timeStamp" value="391" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2840</line>
+          <line>2837</line>
           <option name="timeStamp" value="413" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1033,68 +1045,58 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1256</line>
+          <line>1253</line>
           <option name="timeStamp" value="421" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2374</line>
+          <line>2371</line>
           <option name="timeStamp" value="424" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2859</line>
+          <line>2856</line>
           <option name="timeStamp" value="425" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1111</line>
+          <line>1108</line>
           <option name="timeStamp" value="426" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>2678</line>
+          <line>2675</line>
           <option name="timeStamp" value="428" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1842</line>
+          <line>1839</line>
           <option name="timeStamp" value="429" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1268</line>
+          <line>1265</line>
           <option name="timeStamp" value="430" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1244</line>
+          <line>1241</line>
           <option name="timeStamp" value="431" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1227</line>
+          <line>1224</line>
           <option name="timeStamp" value="432" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>656</line>
-          <option name="timeStamp" value="434" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1977</line>
+          <line>1974</line>
           <option name="timeStamp" value="438" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1967</line>
+          <line>1964</line>
           <option name="timeStamp" value="439" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/package_window.py</url>
-          <line>1959</line>
-          <option name="timeStamp" value="441" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/git_actions.py</url>
@@ -1110,6 +1112,16 @@
           <url>file://$PROJECT_DIR$/src/ui.py</url>
           <line>2254</line>
           <option name="timeStamp" value="447" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>1052</line>
+          <option name="timeStamp" value="448" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/package_window.py</url>
+          <line>2331</line>
+          <option name="timeStamp" value="449" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="powershell">
           <url>file://$PROJECT_DIR$/src/scripts/build_projects_clean.ps1</url>

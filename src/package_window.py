@@ -494,7 +494,7 @@ def add_xna_compat(project_folder):
 
 alba = (get_app_dir() / "assets/tools/conversion/Alba.XnaConvert.0.1.2/Alba.XnaConvert.exe")
 xnb_cli = (get_app_dir() / "assets/tools/conversion/xnbcli-windows-x64/xnbcli.exe")
-xnb_extractor = (get_app_dir() / "assets/tools/conversion/xnb-extractor/publish/XnbExtractor.exe")
+xnb_extractor = (get_app_dir() / "assets/tools/conversion/xnb-extractor/win-x64/XnbExtractor.exe")
 
 def create_launch_settings(project_path: Path, game_title=None):
     launch_settings_path = project_path / "Properties" / "launchSettings.json"
@@ -1050,10 +1050,7 @@ class ConvertXnaProjects(QObject):
                 else []
             )
 
-            success = (
-                    process.returncode == 0
-                    and bool(output_files)
-            )
+            success = (process.returncode == 0)
 
             result = ConversionResult(
                 tool=tool_name,
