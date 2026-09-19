@@ -954,7 +954,7 @@ class ConvertXnaProjects(QObject):
         save_cache(self.games)
         # self.load_games(self.games)
 
-    def convert_xnb_folder_tools(self, game: XBLIGGame, tool_id: int = 1):
+    def convert_xnb_folder_tools(self, game: XBLIGGame, tool_id: int = 1, console:bool=False):
 
         if game.extracted is None:
             self.signal_log_message(f"Game not extracted: {game}")
@@ -967,12 +967,10 @@ class ConvertXnaProjects(QObject):
             self.signal_log_message(f"Content folder not found: {content_dir}")
             return None
 
-        failed_folders = []
-
         if tool_id == 1:
             tool_name = "Alba"
-            cmd = [
-                str(alba),
+            executable = str(alba)
+            args = [
                 "convert",
                 "-v", "4",
                 "-d", str(content_dir),
@@ -982,23 +980,26 @@ class ConvertXnaProjects(QObject):
 
         elif tool_id == 2:
             tool_name = "xnbcli"
-            cmd = [
-                str(xnb_cli),
+            executable = str(xnb_cli)
+            args = [
                 "unpack",
                 str(content_dir),
                 str(output_dir),
             ]
+
         elif tool_id == 3:
             tool_name = "xnb_extractor"
-            cmd = [
-                str(xnb_extractor),
+            console=True
+            executable = str(xnb_extractor)
+            args = [
                 "--input", str(content_dir),
                 "--output", str(output_dir),
             ]
 
             for option, checkbox in self.options.items():
                 if checkbox.isChecked():
-                    cmd.append(f"--{option}")
+                    args.append(f"--{option}")
+
         else:
             self.signal_log_message(f"Unknown tool id: {tool_id}")
             return None
@@ -1006,52 +1007,52 @@ class ConvertXnaProjects(QObject):
         self.signal_log_message(f"Running {tool_name}...")
 
         try:
+            self.signal_log_message(
+                f"Full command: {executable} {' '.join(args)}"
+            )
+
             stdout_lines = []
-            stderr_lines = []
-
-            self.signal_log_message("Full command:")
-            self.signal_log_message(" ".join(cmd))
-
-            with subprocess.Popen(
-                    cmd,
-                    # stdout=subprocess.PIPE,
-                    # stderr=subprocess.PIPE,
+            if console:
+                process = subprocess.Popen(
+                    [executable, *args],
+                    creationflags=subprocess.CREATE_NEW_CONSOLE,
+                )
+            else:
+                process = subprocess.Popen(
+                    [executable, *args],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
                     text=True,
-            ) as process:
+                    bufsize=1,
+                )
 
-                # assert process.stdout is not None
-                # assert process.stderr is not None
+            with process:
+                if console:
+                    process.wait()
+                else:
+                    assert process.stdout is not None
 
-                if process.stdout is not None:
                     for line in process.stdout:
                         line = line.rstrip()
                         stdout_lines.append(line)
                         self.signal_log_message(line)
 
-                if process.stderr is not None:
-                    for line in process.stderr:
-                        line = line.rstrip()
-                        stderr_lines.append(line)
-                        self.signal_log_message(f"ERR: {line}")
-
-                process.wait()
+                    process.wait()
 
             stdout = "\n".join(stdout_lines)
-            stderr = "\n".join(stderr_lines)
 
-            # Find generated files
-            output_files = []
-
-            if output_dir.exists():
-                output_files = [
+            output_files = (
+                [
                     f for f in output_dir.rglob("*")
                     if f.is_file()
                 ]
+                if output_dir.exists()
+                else []
+            )
 
-            # Determine success
             success = (
                     process.returncode == 0
-                    and len(output_files) > 0
+                    and bool(output_files)
             )
 
             result = ConversionResult(
@@ -1060,26 +1061,24 @@ class ConvertXnaProjects(QObject):
                 input_file=content_dir,
                 output_files=output_files,
                 stdout=stdout,
-                stderr=stderr,
+                stderr="",
             )
 
             self.signal_log_message(
                 f"{tool_name}: {'SUCCESS' if success else 'FAILED'}"
             )
-
             self.signal_log_message(
                 f"Generated files: {len(output_files)}"
             )
 
             if not success:
-                failed_folders.append(content_dir)
+                self.signal_log_message(
+                    f"Failed folder: {content_dir}"
+                )
 
             self.finished_signal.emit(result)
 
         except Exception as e:
-
-            failed_folders.append(content_dir)
-
             self.signal_log_message(
                 f"ERROR running {tool_name}: {e}"
             )
@@ -1098,12 +1097,6 @@ class ConvertXnaProjects(QObject):
 
         self.signal_log_message("===================")
         self.signal_log_message("Conversion complete")
-        self.signal_log_message(
-            f"Failed folders: {len(failed_folders)}"
-        )
-
-        for folder in failed_folders:
-            self.signal_log_message(str(folder))
 
         return result
 
@@ -1788,19 +1781,23 @@ class ScanWorker(QObject):
 
     def __init__(self, force: bool = False):
         super().__init__()
+        self.converter = None
         self.options = None
         self.games = None
         self._rainbow_index = 1
 
+        self.method_name()
+
+        self.total_files = 0
+        self.config = load_config()
+        self.force = force
+
+    def method_name(self):
         self.converter = ConvertXnaProjects(get_app_dir(), self.games, self.options)
         self.converter.log_signal.connect(self.log_signal.emit)
         self.converter.progress_signal.connect(self.progress_signal.emit)
         self.converter.finished_signal.connect(self.finished_signal.emit)
         self.converter.total_files_signal.connect(self.total_files_signal.emit)
-
-        self.total_files = 0
-        self.config = load_config()
-        self.force = force
 
     def _set_total_files(self, total: int):
         self.total_files = total
@@ -2166,7 +2163,6 @@ class XBLIGDialog(QDialog):
     def tool_finished(self, result: ConversionResult):
         self.progress_bar.setRange(0, 100)
         self.progress_bar.setValue(100)
-        # todo: copy log files when xnb-extractor has run
         if result.tool == "xnb_extractor":
             source = xnb_extractor.parent / "logs"
             destination = get_app_dir() / "logs"
@@ -2195,14 +2191,11 @@ class XBLIGDialog(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.converter = None
         self.games: list[XBLIGGame] = []
         self.options = None
 
-        self.converter = ConvertXnaProjects(get_app_dir(), self.games, self.options)
-        self.converter.log_signal.connect(self.log_message)
-        self.converter.progress_signal.connect(self.update_scan_progress)
-        self.converter.finished_signal.connect(self.tool_finished)
-        self.converter.total_files_signal.connect(self.total_files_progress)
+        # self.method_name()
 
         self.background = QPixmap(get_app_dir() / "assets/images/img.png")
 
@@ -2238,6 +2231,13 @@ class XBLIGDialog(QDialog):
         self.load_games(self.games)
         self.create_settings_drawer()
         self.apply_style()
+
+    def method_name(self):
+        self.converter = ConvertXnaProjects(get_app_dir(), self.games, self.options)
+        self.converter.log_signal.connect(self.log_message)
+        self.converter.progress_signal.connect(self.update_scan_progress)
+        self.converter.finished_signal.connect(self.tool_finished)
+        self.converter.total_files_signal.connect(self.total_files_progress)
 
     def print_games(self):
         for i, game in enumerate(self.games, 1):
@@ -2325,44 +2325,44 @@ class XBLIGDialog(QDialog):
         games, indexes = result
         for game in games:
             if game:
-                ensure_tool_extracted("conversion", None)
+                # ensure_tool_extracted("conversion", None)
                 self.progress_bar.setRange(0, 0)  # Busy animation
-                self.converter = ConvertXnaProjects(get_app_dir(), self.games, self.options)
-                self.converter.log_signal.connect(self.log_message)
-                self.converter.progress_signal.connect(self.update_scan_progress)
-                self.converter.finished_signal.connect(self.tool_finished)
-                self.converter.total_files_signal.connect(self.total_files_progress)
-                run_in_background(self.converter.convert_xnb_folder_tools, game, tool_id)
+                self.method_name()
+                with ToolManager("conversion"):
+                    # run_in_background(self.converter.convert_xnb_folder_tools, game, tool_id)
+                    result = self.converter.convert_xnb_folder_tools( game, tool_id)
 
-    def tool_finished(self, result: ConversionResult):
-        self.progress_bar.setRange(0, 100)
-        self.progress_bar.setValue(100)
-        # todo: copy log files when xnb-extractor has run
-        if result.tool == "xnb_extractor":
-            source = xnb_extractor.parent / "logs"
-            destination = get_app_dir() / "logs"
-            if source.exists():
-                shutil.copytree(source, destination, dirs_exist_ok=True)
-        cleanup_tool("conversion", None)
-        self.validate1_btn.setDisabled(False)
-        self.validate2_btn.setDisabled(False)
-        self.validate3_btn.setDisabled(False)
 
-        if result.success:
-            self.log_message(
-                f"{result.tool}: SUCCESS - "
-                f"{len(result.output_files)} files created."
-            )
-        else:
-            self.log_message(
-                f"{result.tool}: FAILED"
-            )
 
-            if result.error:
-                self.log_message(result.error)
-
-            if result.stderr:
-                self.log_message(result.stderr)
+    # def tool_finished(self, result: ConversionResult):
+    #     self.progress_bar.setRange(0, 100)
+    #     self.progress_bar.setValue(100)
+    #     # todo: copy log files when xnb-extractor has run
+    #     if result.tool == "xnb_extractor":
+    #         source = xnb_extractor.parent / "logs"
+    #         destination = get_app_dir() / "logs"
+    #         if source.exists():
+    #             shutil.copytree(source, destination, dirs_exist_ok=True)
+    #     cleanup_tool("conversion", None)
+    #     self.validate1_btn.setDisabled(False)
+    #     self.validate2_btn.setDisabled(False)
+    #     self.validate3_btn.setDisabled(False)
+    #
+    #     if result.success:
+    #         self.log_message(
+    #             f"{result.tool}: SUCCESS - "
+    #             f"{len(result.output_files)} files created."
+    #         )
+    #     else:
+    #         self.log_message(
+    #             f"{result.tool}: FAILED"
+    #         )
+    #
+    #         if result.error:
+    #             self.log_message(result.error)
+    #
+    #         if result.stderr:
+    #             self.log_message(result.stderr)
 
     def decompile_project(self, game: XBLIGGame, parent, use_gui: bool, output_dir: Path, include_dlls=False) -> Path:
         ensure_tool_extracted("ilspy" if use_gui else "ilspycmd", None, )
