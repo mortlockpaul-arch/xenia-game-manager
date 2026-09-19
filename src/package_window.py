@@ -954,17 +954,17 @@ class ConvertXnaProjects(QObject):
         save_cache(self.games)
         # self.load_games(self.games)
 
-    def convert_xnb_folder_tools(self, game: XBLIGGame, tool_id: int = 1, console:bool=False):
+    def convert_xnb_folder_tools(self, game: XBLIGGame, tool_id: int = 1, console: bool = False, input_folder=None, output_folder=None):
 
         if game.extracted is None:
             self.signal_log_message(f"Game not extracted: {game}")
             return None
 
-        content_dir = game.extracted / "584E07D1" / "Content"
-        output_dir = content_dir.parent / "Content_Output"
+        input_folder = Path(input_folder)
+        output_folder = Path(output_folder)
 
-        if not content_dir.exists():
-            self.signal_log_message(f"Content folder not found: {content_dir}")
+        if not input_folder.exists():
+            self.signal_log_message(f"Content folder not found: {input_folder}")
             return None
 
         if tool_id == 1:
@@ -973,8 +973,8 @@ class ConvertXnaProjects(QObject):
             args = [
                 "convert",
                 "-v", "4",
-                "-d", str(content_dir),
-                "-o", str(output_dir),
+                "-d", str(input_folder),
+                "-o", str(output_folder),
                 "-r",
             ]
 
@@ -983,8 +983,8 @@ class ConvertXnaProjects(QObject):
             executable = str(xnb_cli)
             args = [
                 "unpack",
-                str(content_dir),
-                str(output_dir),
+                str(input_folder),
+                str(output_folder),
             ]
 
         elif tool_id == 3:
@@ -992,8 +992,8 @@ class ConvertXnaProjects(QObject):
             console=True
             executable = str(xnb_extractor)
             args = [
-                "--input", str(content_dir),
-                "--output", str(output_dir),
+                "--input", str(input_folder),
+                "--output", str(output_folder),
             ]
 
             for option, checkbox in self.options.items():
@@ -1043,10 +1043,10 @@ class ConvertXnaProjects(QObject):
 
             output_files = (
                 [
-                    f for f in output_dir.rglob("*")
+                    f for f in output_folder.rglob("*")
                     if f.is_file()
                 ]
-                if output_dir.exists()
+                if output_folder.exists()
                 else []
             )
 
@@ -1058,7 +1058,7 @@ class ConvertXnaProjects(QObject):
             result = ConversionResult(
                 tool=tool_name,
                 success=success,
-                input_file=content_dir,
+                input_file=input_folder,
                 output_files=output_files,
                 stdout=stdout,
                 stderr="",
@@ -1073,7 +1073,7 @@ class ConvertXnaProjects(QObject):
 
             if not success:
                 self.signal_log_message(
-                    f"Failed folder: {content_dir}"
+                    f"Failed folder: {input_folder}"
                 )
 
             self.finished_signal.emit(result)
@@ -1086,7 +1086,7 @@ class ConvertXnaProjects(QObject):
             result = ConversionResult(
                 tool=tool_name,
                 success=False,
-                input_file=content_dir,
+                input_file=input_folder,
                 output_files=[],
                 stdout="",
                 stderr="",
@@ -2330,9 +2330,9 @@ class XBLIGDialog(QDialog):
                 self.method_name()
                 with ToolManager("conversion"):
                     # run_in_background(self.converter.convert_xnb_folder_tools, game, tool_id)
-                    result = self.converter.convert_xnb_folder_tools( game, tool_id)
-
-
+                    input_folder = self.input_folder.text()
+                    output_folder = self.output_folder.text()
+                    result = self.converter.convert_xnb_folder_tools( game, tool_id, input_folder=input_folder, output_folder=output_folder)
 
     # def tool_finished(self, result: ConversionResult):
     #     self.progress_bar.setRange(0, 100)
@@ -2601,14 +2601,12 @@ class XBLIGDialog(QDialog):
         else:
             self.xml_lbl.setText("-")
 
-        if game.extracted is not None:
-            content_dir = game.extracted / "584E07D1" / "Content"
-            output_dir = content_dir.parent / "Content_Output"
-            self.input_folder.setText(str(content_dir))
-            self.output_folder.setText(str(output_dir))
-        else:
-            self.input_folder.setText(str("-"))
-            self.output_folder.setText(str("-"))
+        archived_state, extracted_state, game_folder_status, cs_proj_files_extracted = folder_status(game)
+
+        content_dir = game_folder_status
+        output_dir = game_folder_status / "Content_Output"
+        self.input_folder.setText(str(content_dir))
+        self.output_folder.setText(str(output_dir))
 
         # if game.decompiled:
         #     self.decompiled_lbl.setText(str(game.decompiled))

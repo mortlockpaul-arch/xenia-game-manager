@@ -177,7 +177,7 @@ class IndieGameTableModel(BaseGameTableModel):
         if role == Qt.ItemDataRole.ToolTipRole:
 
             if key == "title":
-                paths = self.get_game_paths(index.row())
+                paths = self.get_game_paths(index)
 
                 if paths:
                     return "\n".join(
@@ -190,8 +190,8 @@ class IndieGameTableModel(BaseGameTableModel):
 
         return None
 
-    def get_game_paths(self, row_index: int) -> list[Path]:
-        game = self.get_game(row_index)
+    def get_game_paths(self, row_index: QModelIndex) -> list[Path]:
+        game = self.get_game_from_index(row_index)
 
         paths = []
 
@@ -242,3 +242,6 @@ class IndieGameTableModel(BaseGameTableModel):
         )
 
         self.layoutChanged.emit()
+
+    def get_game(self, row_index):
+        pass
