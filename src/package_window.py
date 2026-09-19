@@ -492,11 +492,9 @@ def add_xna_compat(project_folder):
         "Added XNA compatibility layer"
     )
 
-
 alba = (get_app_dir() / "assets/tools/conversion/Alba.XnaConvert.0.1.2/Alba.XnaConvert.exe")
 xnb_cli = (get_app_dir() / "assets/tools/conversion/xnbcli-windows-x64/xnbcli.exe")
-xnb_extractor = (get_app_dir() / "assets/tools/conversion/xnb-extractor/Release/net481/XnbExtractor.exe")
-
+xnb_extractor = (get_app_dir() / "assets/tools/conversion/xnb-extractor/publish/XnbExtractor.exe")
 
 def create_launch_settings(project_path: Path, game_title=None):
     launch_settings_path = project_path / "Properties" / "launchSettings.json"
@@ -885,7 +883,7 @@ class ConvertXnaProjects(QObject):
                     package=package,
                     game_root=package.parent.parent.parent
                 )
-                self.signal_log_message(f"Extracting {game.title}")
+                # self.signal_log_message(f"Extracting {game.title}")
                 self.extract_package(game, False, overwrite=False)
                 games.append(game)
 
@@ -896,7 +894,6 @@ class ConvertXnaProjects(QObject):
         assert game.package is not None
         package = Path(game.package)
 
-        self.signal_log_message(f"Extracting {game.title}")
         from stfs_extract import extract_live_pirs
         assert game.folder_title is not None
 
@@ -915,6 +912,7 @@ class ConvertXnaProjects(QObject):
             self.signal_log_message(f"Not Extracting {game.title} it has already been extracted. Check Overwrite if required.")
             return game.game_root
         extracted_path.mkdir(parents=True, exist_ok=True)
+        self.signal_log_message(f"Extracting {game.title}")
 
         try:
             from contextlib import redirect_stdout
@@ -3149,10 +3147,10 @@ class XBLIGDialog(QDialog):
 
         self.options = {x: QCheckBox(x) for x in (
             "loader", "parser", "extract", "compress",
-            "convert-to-windows", "overwrite", "playaudio"
+            "convert-to-windows", "overwrite", "playaudio", "scan-cs", "scan-content"
         )}
 
-        checkboxes = QHBoxLayout()
+        checkboxes = QVBoxLayout()
         for option in self.options.values():
             checkboxes.addWidget(option)
 
