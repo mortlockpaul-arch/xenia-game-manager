@@ -4,17 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.9 Bug Fixes">
-      <change afterPath="$PROJECT_DIR$/src/assets/default/xenia-canary-mousehook.config.toml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/default/xenia-canary-netplay.config.toml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/default/xenia-canary.config.toml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/default/xenia-edge.config.toml" afterDir="false" />
+    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.2.9 Launch with Optimized Configuration and Fixes.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/model_bases.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/model_bases.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/model_xbox.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/model_xbox.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/model_xbox360.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/model_xbox360.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build_tools/tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/tools.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,60 +54,60 @@
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
       <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0" />
-      <entry key="S5" value="1.0000000620325211" />
-      <entry key="S10" value="1.000249063287303" />
-      <entry key="S30" value="1.0629172750872857" />
-      <entry key="S60" value="1.2508332070593668" />
-      <entry key="M2" value="1.5010451734401795" />
-      <entry key="M5" value="1.7948998011727835" />
-      <entry key="M10" value="2.1853515019779564" />
-      <entry key="M15" value="2.7882408342841254" />
-      <entry key="M30" value="5.291043265581931" />
-      <entry key="H1" value="9.725758604627298" />
-      <entry key="H2" value="14.564365967865477" />
-      <entry key="H4" value="20.65000887160157" />
-      <entry key="D1" value="125.10698804437249" />
-      <entry key="W1" value="1275.3529899795717" />
+      <entry key="MS500" value="1.0000000084924152" />
+      <entry key="S2" value="1.0207167545487972" />
+      <entry key="S5" value="1.5111335376024568" />
+      <entry key="S10" value="2.71369233153614" />
+      <entry key="S30" value="5.254819895338366" />
+      <entry key="S60" value="6.464824991009913" />
+      <entry key="M2" value="7.3924989173672735" />
+      <entry key="M5" value="8.49863569441718" />
+      <entry key="M10" value="9.325040612558494" />
+      <entry key="M15" value="10.053101816669917" />
+      <entry key="M30" value="12.610109928228653" />
+      <entry key="H1" value="17.107053868579516" />
+      <entry key="H2" value="22.101652753146425" />
+      <entry key="H4" value="28.32262852236723" />
+      <entry key="D1" value="132.78063144338634" />
+      <entry key="W1" value="1282.8788301447296" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
       <entry key="MS500" value="0.0" />
       <entry key="S2" value="0.0" />
-      <entry key="S5" value="1.3359064446721731E-200" />
-      <entry key="S10" value="1.1558141912401725E-100" />
-      <entry key="S30" value="4.871125747142324E-34" />
-      <entry key="S60" value="2.2070982456331266E-17" />
-      <entry key="M2" value="4.7167930886449406E-9" />
-      <entry key="M5" value="5.177110953080423E-4" />
-      <entry key="M10" value="0.028784307098943692" />
-      <entry key="M15" value="0.11556654022794531" />
-      <entry key="M30" value="0.5005233011054679" />
-      <entry key="H1" value="1.1378895640242963" />
-      <entry key="H2" value="1.8151525075939665" />
-      <entry key="H4" value="2.7349955506836867" />
-      <entry key="D1" value="22.317732714846265" />
-      <entry key="W1" value="255.38991147536623" />
+      <entry key="S5" value="3.969014616302754E-220" />
+      <entry key="S10" value="1.9922385942207707E-110" />
+      <entry key="S30" value="2.7109017826358268E-37" />
+      <entry key="S60" value="5.206715962857075E-19" />
+      <entry key="M2" value="7.244658793596673E-10" />
+      <entry key="M5" value="2.4470109731735204E-4" />
+      <entry key="M10" value="0.019789280373635403" />
+      <entry key="M15" value="0.09002191760894476" />
+      <entry key="M30" value="0.4417559159507717" />
+      <entry key="H1" value="1.0690035597414733" />
+      <entry key="H2" value="1.759351592601966" />
+      <entry key="H4" value="2.692628159992628" />
+      <entry key="D1" value="22.259737157373245" />
+      <entry key="W1" value="255.29499654448344" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="5.28377330059404E-6" />
-      <entry key="MS500" value="0.08802151418200506" />
-      <entry key="S2" value="0.5446872491752796" />
-      <entry key="S5" value="0.7842579138959546" />
-      <entry key="S10" value="0.8858013154745953" />
-      <entry key="S30" value="1.0204879957921245" />
-      <entry key="S60" value="1.2252716954625544" />
-      <entry key="M2" value="1.4854352182874793" />
-      <entry key="M5" value="1.7879891798065561" />
-      <entry key="M10" value="2.20976829267571" />
-      <entry key="M15" value="2.8999576935745477" />
-      <entry key="M30" value="5.787416492818598" />
-      <entry key="H1" value="10.859595513274211" />
-      <entry key="H2" value="16.376426179619767" />
-      <entry key="H4" value="23.382742359284556" />
-      <entry key="D1" value="147.4217469697567" />
-      <entry key="W1" value="1530.7387314981106" />
+      <entry key="MS100" value="0.8408964152537145" />
+      <entry key="MS500" value="0.9659363373526395" />
+      <entry key="S2" value="1.012016986217945" />
+      <entry key="S5" value="1.5064303563074986" />
+      <entry key="S10" value="2.7091909932738174" />
+      <entry key="S30" value="5.25147164012258" />
+      <entry key="S60" value="6.462107610183541" />
+      <entry key="M2" value="7.388902793612847" />
+      <entry key="M5" value="8.494851604898226" />
+      <entry key="M10" value="9.341561571939502" />
+      <entry key="M15" value="10.139946346096812" />
+      <entry key="M30" value="13.048112944189613" />
+      <entry key="H1" value="18.1722048713293" />
+      <entry key="H2" value="23.85798444184722" />
+      <entry key="H4" value="31.01301831303643" />
+      <entry key="D1" value="155.03740064610355" />
+      <entry key="W1" value="1538.1696580116713" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -206,7 +199,7 @@
       <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\tools" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager">
     <configuration name="Unnamed" type="BatchConfigurationType" factoryName="Batch" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -371,14 +364,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00146" summary="1.2.3 Add Resource Files to csproj files.">
-      <option name="closed" value="true" />
-      <created>1788071309617</created>
-      <option name="number" value="00146" />
-      <option name="presentableId" value="LOCAL-00146" />
-      <option name="project" value="LOCAL" />
-      <updated>1788071309617</updated>
     </task>
     <task id="LOCAL-00147" summary="1.2.3 Platform Target">
       <option name="closed" value="true" />
@@ -764,7 +749,15 @@
       <option name="project" value="LOCAL" />
       <updated>1789746927086</updated>
     </task>
-    <option name="localTasksCounter" value="195" />
+    <task id="LOCAL-00195" summary="1.2.9 Launch with Optimized Configuration and Fixes.">
+      <option name="closed" value="true" />
+      <created>1789753121968</created>
+      <option name="number" value="00195" />
+      <option name="presentableId" value="LOCAL-00195" />
+      <option name="project" value="LOCAL" />
+      <updated>1789753121969</updated>
+    </task>
+    <option name="localTasksCounter" value="196" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -786,7 +779,6 @@
       <path value="$PROJECT_DIR$/../XBLA-Extract" />
       <path value="$PROJECT_DIR$/src/compatibility/xemu_compatibility/xdb" />
     </ignored-roots>
-    <MESSAGE value="1.1.6 Multiple Executables and Seperate Assembly Decompile. Add References properly." />
     <MESSAGE value="1.1.7 Executables List" />
     <MESSAGE value="1.1.8 Progress Update Refactor. Non Default Folders. Scanner optimization." />
     <MESSAGE value="1.1.8 Column Sorting Enabled." />
@@ -811,7 +803,8 @@
     <MESSAGE value="1.2.7 Many fixes and improvements." />
     <MESSAGE value="1.2.8 Many fixes and improvements." />
     <MESSAGE value="1.2.9 Bug Fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.2.9 Bug Fixes" />
+    <MESSAGE value="1.2.9 Launch with Optimized Configuration and Fixes." />
+    <option name="LAST_COMMIT_MESSAGE" value="1.2.9 Launch with Optimized Configuration and Fixes." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -913,7 +906,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>2247</line>
+          <line>2239</line>
           <option name="timeStamp" value="165" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1133,7 +1126,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>2262</line>
+          <line>2254</line>
           <option name="timeStamp" value="447" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="powershell">
