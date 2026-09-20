@@ -299,6 +299,6 @@ if __name__ == "__main__":
             build_portables()
         else:
             build_all()
-            create_defaults(version="1.2.7")
+            create_defaults(version="1.3.0")
             tools_setup()
             copy_optimized_settings()
