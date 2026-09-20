@@ -995,6 +995,9 @@ class ConvertXnaProjects(QObject):
                 "--input", str(input_folder),
                 "--output", str(output_folder),
             ]
+            limit = 50
+            if limit is not None:
+                args.append(f"--limit {limit}")
 
             for option, checkbox in self.options.items():
                 if checkbox.isChecked():
@@ -2219,7 +2222,7 @@ class XBLIGDialog(QDialog):
         self.setWindowTitle(
             f"XBLIG Rebuilder {self.config["game_manager_version"]}"
         )
-        self.resize(1100, 750)
+        self.resize(1100, 850)
 
         db = Database()
         self.db = db
