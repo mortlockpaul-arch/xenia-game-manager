@@ -796,8 +796,7 @@ class ConvertXnaProjects(QObject):
     def extract_packages(self, root_folders: list[Path]) -> list[XBLIGGame]:
 
         games: list[XBLIGGame] = []
-        packages: list[Path] = []
-
+        packages: list[tuple[Path, Path]] = []
         headers = {b"CON ", b"LIVE", b"PIRS"}
         indie_games_path = Path(self.config["indie_games_path"])
         solution_path = Path(self.config["indie-game-solution-location"])
@@ -851,7 +850,7 @@ class ConvertXnaProjects(QObject):
                 total_folders += len(dirs)
                 total_files += len(files)
 
-                if current_path.name.upper() in target_dirs:
+                if current_path.parent == root or current_path.name.upper() in target_dirs:
                     for filename in files:
                         path = current_path / filename
 
@@ -859,7 +858,20 @@ class ConvertXnaProjects(QObject):
                         files_scanned += 1
 
                         if is_package(path):
-                            packages.append(path)
+                            game_root = root / path.relative_to(root).parts[0]
+
+                            if path.parent.name.upper() not in target_dirs:
+                                target_dir = game_root / "584E07D2" / "00000002"
+                                target_dir.mkdir(parents=True, exist_ok=True)
+
+                                target_path = target_dir / path.name
+
+                                if target_path != path:
+                                    path.replace(target_path)
+                                    path = target_path
+                                    self.signal_log_message(f"Moved package to: {path}")
+
+                            packages.append((path, game_root))
                             self.signal_log_message(f"Found package: {path}")
 
                 self.progress_signal.emit(
@@ -874,16 +886,16 @@ class ConvertXnaProjects(QObject):
 
             self.signal_log_message(f"Found {len(packages)} Indie Game Packages")
 
-            for index, package in enumerate(packages):
-                folder_title = package.parent.parent.parent.name
-                title = folder_title
+            for package, game_root in packages:
+                folder_title = game_root.name
+
                 game = XBLIGGame(
-                    title=title,
+                    title=folder_title,
                     folder_title=folder_title,
                     package=package,
-                    game_root=package.parent.parent.parent
+                    game_root=game_root,
                 )
-                # self.signal_log_message(f"Extracting {game.title}")
+
                 self.extract_package(game, False, overwrite=False)
                 games.append(game)
 
