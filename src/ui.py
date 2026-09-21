@@ -19,6 +19,7 @@ from datetime import datetime
 from functools import partial
 from glob import escape
 from pathlib import Path
+from typing import Any
 
 import keyring
 import requests
@@ -49,7 +50,7 @@ import xboxunity_api
 from archive_window import ArchiveBrowser
 from git_actions import DownloadArtifact
 from config import save_config, load_xenia_manager_config, get_app_dir, load_config
-from db import Database, Compatibility, XboxGame, Xbox360Game, Platform, GameSource
+from db import Database, Compatibility, XboxGame, Xbox360Game, Platform, GameSource, Emulator
 from edge_import import use_xenia_manager_content_folder_for_edge
 from extract import extract_archives, ExtractWorker
 from logging_setup import setup_logger
@@ -424,6 +425,7 @@ class GameLauncher(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.xiso_scan_result_folders = None
         self._rainbow_index = 1
         self.platform = None
         self.scanner = None
@@ -496,7 +498,7 @@ class GameLauncher(QMainWindow):
         self.import_btn = None
         self.fix_titles_btn = None
         self.search = None
-        self.table = None
+        self.game_table:QTableView = QTableView()
         self.setWindowTitle(
             f"Xenia Game Manager {self.config["game_manager_version"]}"
         )
@@ -808,9 +810,8 @@ class GameLauncher(QMainWindow):
         self.use_xenia_manager_content_for_edge_btn = QPushButton("Unify Xenia Content Folders")
         self.use_xenia_manager_content_for_edge_btn.clicked.connect(self.use_xenia_manager_content_for_edge)
 
-        self.reset_btn = QPushButton("Reset Game List")
-        self.reset_btn.clicked.connect(self.reset_database)
-
+        # self.reset_btn = QPushButton("Reset Game List")
+        # self.reset_btn.clicked.connect(self.reset_database)
 
         self.reorg_btn = QPushButton("Re-Organize Downloads")
         self.reorg_btn.clicked.connect(self.re_org_downloads)
@@ -843,7 +844,7 @@ class GameLauncher(QMainWindow):
             self.check_manager_update_btn,
             self.extract_downloaded_archives_btn,
             self.download_experimental_releases_btn,
-            self.reset_btn,
+            # self.reset_btn,
             self.reorg_btn
         ]
 
@@ -990,6 +991,16 @@ class GameLauncher(QMainWindow):
                 "installed_key": "xenia_edge_installed",
                 "version_key": "xenia_edge_version",
                 "default": r"C:\xenia_edge",
+                "name_contains": "windows",
+            },
+            {
+                "name": "indie-games",
+                "owner": "mortlock-paularch",
+                "repo": "indie-games",
+                "path_key": "indie-games",
+                "installed_key": "indie-games_installed",
+                "version_key": "indie-games_version",
+                "default": r"C:\indie-games",
                 "name_contains": "windows",
             },
         ]
@@ -1394,14 +1405,14 @@ class GameLauncher(QMainWindow):
             self.launch_manager.clicked.connect(partial(self.launch_program, "manager"))
 
         xenia_edge_installed = self.config["xenia_edge_installed"]
-        button_text = "Launch Xenia Edge"
+        button_text = "Launch with Xenia Edge"
         self.launch_edge = QPushButton(button_text)
         if not xenia_edge_installed:
             button_text = "Install Xenia Edge"
             self.launch_edge.clicked.connect(partial(self.install_xenia_manager_and_xenia_edge, "edge"))
             self.launch_edge.setText(button_text)
         else:
-            self.launch_edge.clicked.connect(partial(self.launch_program, "edge"))
+            self.launch_edge.clicked.connect(partial(self.launch_game, "edge"))
         options_row = QHBoxLayout()
         if downloaders_enabled:
             self.btn_tu = QPushButton("Title Update Downloader")
@@ -1494,23 +1505,23 @@ class GameLauncher(QMainWindow):
         # Table
         # -------------------------
 
-        self.table = QTableView()
+        self.game_table = QTableView()
 
-        self.table.setSortingEnabled(True)
-        self.table.setAlternatingRowColors(True)
+        self.game_table.setSortingEnabled(True)
+        self.game_table.setAlternatingRowColors(True)
 
-        self.table.setIconSize(QSize(24, 24))
-        self.table.verticalHeader().setDefaultSectionSize(32)
+        self.game_table.setIconSize(QSize(24, 24))
+        self.game_table.verticalHeader().setDefaultSectionSize(32)
 
-        self.table.doubleClicked.connect(
+        self.game_table.doubleClicked.connect(
             self.launch_game_double_clicked
         )
 
-        self.table.clicked.connect(
+        self.game_table.clicked.connect(
             self.table_clicked
         )
 
-        header = self.table.horizontalHeader()
+        header = self.game_table.horizontalHeader()
 
         header.setSectionResizeMode(
             QHeaderView.ResizeMode.Interactive
@@ -1529,28 +1540,28 @@ class GameLauncher(QMainWindow):
             )
 
         # Widths
-        self.table.setColumnWidth(0, 32)  # Favourite
-        self.table.setColumnWidth(1, 32)  # Icon
-        self.table.setColumnWidth(2, 460)  # Title
-        self.table.setColumnWidth(3, 85)  # Title ID
-        self.table.setColumnWidth(4, 85)  # Media ID
-        self.table.setColumnWidth(5, 60)  # Discs
-        self.table.setColumnWidth(6, 120)  # Type
-        self.table.setColumnWidth(7, 130)  # Last Played
-        self.table.setColumnWidth(8, 60)  # Plays
-        self.table.setColumnWidth(9, 85)  # Play Time
-        self.table.setColumnWidth(10, 120)  # Disc
-        self.table.setColumnWidth(11, 160)  # Xenia Version
-        self.table.setColumnWidth(12, 120)  # Compatibility
+        self.game_table.setColumnWidth(0, 32)  # Favourite
+        self.game_table.setColumnWidth(1, 32)  # Icon
+        self.game_table.setColumnWidth(2, 460)  # Title
+        self.game_table.setColumnWidth(3, 85)  # Title ID
+        self.game_table.setColumnWidth(4, 85)  # Media ID
+        self.game_table.setColumnWidth(5, 60)  # Discs
+        self.game_table.setColumnWidth(6, 120)  # Type
+        self.game_table.setColumnWidth(7, 130)  # Last Played
+        self.game_table.setColumnWidth(8, 60)  # Plays
+        self.game_table.setColumnWidth(9, 85)  # Play Time
+        self.game_table.setColumnWidth(10, 120)  # Disc
+        self.game_table.setColumnWidth(11, 160)  # Xenia Version
+        self.game_table.setColumnWidth(12, 120)  # Compatibility
 
         self.search.setClearButtonEnabled(True)
 
-        self.table.verticalHeader().hide()
+        self.game_table.verticalHeader().hide()
 
-        page_layout.addWidget(self.table)
+        page_layout.addWidget(self.game_table)
 
-        self.table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-        self.table.customContextMenuRequested.connect(self.show_table_menu)
+        self.game_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.game_table.customContextMenuRequested.connect(self.show_table_menu)
 
 
         self.log_window = QPlainTextEdit()
@@ -1596,7 +1607,7 @@ class GameLauncher(QMainWindow):
 
     def launch_game_double_clicked(self):
         try:
-            self.launch_game()
+            self.launch_game(None)
         except Exception as e:
             self.log_message(f"Error: {e}")
 
@@ -1880,7 +1891,7 @@ class GameLauncher(QMainWindow):
         #     self.log("Login Failed: Invalid credentials")
 
     def show_table_menu(self, pos):
-        index = self.table.indexAt(pos)
+        index = self.game_table.indexAt(pos)
         if not index.isValid():
             return
 
@@ -1890,12 +1901,16 @@ class GameLauncher(QMainWindow):
         copy_row_action = menu.addAction("Copy Row")
         copy_column_action = menu.addAction("Copy Column")
 
-        action = menu.exec(self.table.viewport().mapToGlobal(pos))
+        emulators = self.get_emulators()
+        for emulator in emulators:
+            launch_with_action = menu.addAction(f"Launch with {emulator}")
+
+        action = menu.exec(self.game_table.viewport().mapToGlobal(pos))
 
         if not action:
             return
 
-        model = self.table.model()
+        model = self.game_table.model()
         clipboard = QGuiApplication.clipboard()
 
         # -------------------------
@@ -2079,8 +2094,8 @@ class GameLauncher(QMainWindow):
             )
 
     def search_changed(self, text):
-
-        self.model.load(text)
+        model = self.model_1 if self.platform == Platform.XBOX else self.model_2
+        model.load(text)
 
     # -------------------------
     # Refresh
@@ -2101,18 +2116,16 @@ class GameLauncher(QMainWindow):
         self.log_message(message)
 
     def refresh(self, platform="xbox360"):
-        # width = self.table.columnWidth(2)
-        # print(width)
         if platform == "xbox360":
             self.model_2 = Xbox360GameTableModel()
             self.model_2.log.connect(self.log_message)
-            self.table.setModel(self.model_2)
+            self.game_table.setModel(self.model_2)
             self.model_2.load()
             self.platform = Platform.XBOX360
         if platform == "xbox":
             self.model_1 = XboxGameTableModel()
             self.model_1.log.connect(self.log_message)
-            self.table.setModel(self.model_1)
+            self.game_table.setModel(self.model_1)
             self.model_1.load()
             self.platform = Platform.XBOX
         self.load_saved_config()
@@ -2124,7 +2137,8 @@ class GameLauncher(QMainWindow):
     def table_clicked(self, index):
 
         if index.column() == 0:
-            self.model.toggle_favourite(
+            model = self.model_1 if self.platform == Platform.XBOX else self.model_2
+            model.toggle_favourite(
                 index.row()
             )
 
@@ -2137,8 +2151,9 @@ class GameLauncher(QMainWindow):
             # scanner.start()
 
         # Refresh table
-        if self.model is not None:
-            self.model.load()
+        # self.game_table.model()
+        # self.refresh("xbox360")
+        self.reset_database()
         self.log_message(f"Importing {game_source} games...")
         try:
             # Import games
@@ -2154,7 +2169,7 @@ class GameLauncher(QMainWindow):
     # -------------------------
 
     def get_selected_row(self) -> int | None:
-        index = self.table.selectionModel().currentIndex()
+        index = self.game_table.selectionModel().currentIndex()
 
         if not index.isValid():
             return None
@@ -2162,7 +2177,7 @@ class GameLauncher(QMainWindow):
         return index.row()
 
     def get_selected_game(self) -> None | Xbox360Game | list[Xbox360Game]| XboxGame | list[XboxGame]:
-        index = self.table.selectionModel().currentIndex()
+        index = self.game_table.selectionModel().currentIndex()
 
         if not index.isValid():
             return None
@@ -2186,7 +2201,7 @@ class GameLauncher(QMainWindow):
         with config_path.open("rb") as f:
             return tomllib.load(f)
 
-    def launch_game(self):
+    def launch_game(self, emulator):
         xenia_exe_configuration_location = ""
         xenia_exe_path = ""
         row = self.get_selected_row()
@@ -2235,28 +2250,26 @@ class GameLauncher(QMainWindow):
         if self.platform == Platform.XBOX360:
 
             db_game_config_source = self.model_2.get_config_path(row)
-            xenia_version = self.model_2.get_emulator_version(row)
+            game = self.model_2.get_game(row)
+            if emulator is None:
+                xenia_version = self.model_2.get_emulator_version(row)
+            else:
+                xenia_version = emulator
+                game.emulator = emulator
 
-            game = self.model_2.get_game_title(row)
             game_path = self.model_2.get_game_path(row)
             game_id = self.model_2.get_game_id(row)
 
-            xenia_exe_location = self.config["xenia_canary_path"]
-            xenia_canary_installed = self.config["xenia_canary_installed"]
-            xenia_edge_installed = self.config["xenia_edge_installed"]
-            xenia_netplay_installed = self.config["xenia_netplay_installed"]
-            xenia_mousehook_installed = self.config["xenia_mousehook_installed"]
-            xenia_manager_installed = self.config["xenia_manager_installed"]
-            xenia_edge_path = self.config["xenia_edge_path"]
-            xenia_canary_path = self.config["xenia_canary_path"]
-            xenia_netplay_path = self.config["xenia_netplay_path"]
-            xenia_mousehook_path = self.config["xenia_mousehook_path"]
+            xenia_canary_installed, xenia_edge_installed, xenia_manager_installed, xenia_mousehook_installed, xenia_netplay_installed = self.get_xenia_installation_status()
+            xenia_canary_path, xenia_edge_path, xenia_exe_path, xenia_mousehook_path, xenia_netplay_path = self.get_xenia_executable_paths()
+
             xenia_version = str(xenia_version).lower()
+
             if xenia_manager_installed and xenia_version != "edge":
                 xenia_manager_config, xenia_manager_path = load_xenia_manager_config()
                 configuration_location = xenia_manager_config["emulators"][f"{xenia_version}"]["configuration_location"]
                 xenia_canary_path = Path(xenia_manager_config["emulators"][f"{xenia_version}"]["emulator_location"])
-                xenia_exe_location = Path.joinpath(xenia_manager_path, xenia_manager_config["emulators"][f"{xenia_version}"]["executable_location"]).parent
+                xenia_exe_path = Path.joinpath(xenia_manager_path, xenia_manager_config["emulators"][f"{xenia_version}"]["executable_location"]).parent
                 xenia_exe_path = Path.joinpath(xenia_manager_path, xenia_manager_config["emulators"][f"{xenia_version}"]["executable_location"])
                 db_game_config_source = Path(xenia_manager_path) / db_game_config_source
                 xenia_exe_configuration_location = Path.joinpath(xenia_manager_path, configuration_location)
@@ -2268,7 +2281,7 @@ class GameLauncher(QMainWindow):
                     raise Exception("Canary not installed")
                 datadir = Path(get_app_dir())
                 mini_config_dir = datadir / "assets" / "settings"
-                xenia_exe_location = Path(xenia_canary_path)
+                xenia_exe_path = Path(xenia_canary_path)
                 xenia_exe_path = Path(xenia_canary_path) / "xenia_canary.exe"
                 xenia_exe_configuration_location = Path(xenia_canary_path) / "xenia-canary.config.toml"
                 db_game_config_source = Path(xenia_canary_path).parent.parent / db_game_config_source
@@ -2277,7 +2290,7 @@ class GameLauncher(QMainWindow):
                     raise Exception("Netplay not installed")
                 datadir = Path(get_app_dir())
                 mini_config_dir = datadir / "assets" / "settings"
-                xenia_exe_location = Path(xenia_netplay_path)
+                xenia_exe_path = Path(xenia_netplay_path)
                 xenia_exe_path = Path(xenia_netplay_path) / "xenia_canary_netplay.exe"
                 xenia_exe_configuration_location = Path(xenia_netplay_path) / "xenia-canary-netplay.config.toml"
                 db_game_config_source = Path(xenia_netplay_path).parent.parent / db_game_config_source
@@ -2286,7 +2299,7 @@ class GameLauncher(QMainWindow):
                     raise Exception("Mousehook not installed")
                 datadir = Path(get_app_dir())
                 mini_config_dir = datadir / "assets" / "settings"
-                xenia_exe_location = Path(xenia_mousehook_path)
+                xenia_exe_path = Path(xenia_mousehook_path)
                 xenia_exe_path = Path(xenia_mousehook_path) / "xenia_canary_mousehook.exe"
                 xenia_exe_configuration_location = Path(xenia_mousehook_path) / "xenia-canary-mousehook.config.toml"
                 db_game_config_source = Path(xenia_mousehook_path).parent.parent / db_game_config_source
@@ -2295,7 +2308,7 @@ class GameLauncher(QMainWindow):
                     raise Exception("Edge not installed")
                 datadir = Path(get_app_dir())
                 mini_config_dir = datadir / "assets" / "settings"
-                xenia_exe_location = Path(xenia_edge_path)
+                xenia_exe_path = Path(xenia_edge_path)
                 xenia_edge_path = Path(xenia_edge_path)
                 xenia_exe_path = xenia_edge_path / "xenia_edge.exe"
 
@@ -2332,7 +2345,7 @@ class GameLauncher(QMainWindow):
                 self.start_time = time.time()
                 self.process = subprocess.Popen(
                     [str(xenia_exe_path), str(game_path)],
-                    cwd=str(Path(xenia_exe_location).parent),
+                    cwd=str(Path(xenia_exe_path).parent),
                 )
                 threading.Thread(
                     target=self.monitor_game,
@@ -2347,6 +2360,76 @@ class GameLauncher(QMainWindow):
                     "Launch Error",
                     str(e)
                 )
+
+    from pathlib import Path
+
+    # @dataclass(frozen=True)
+    # class Emulator:
+    #     name: str
+    #     executable: Path
+
+    @dataclass(frozen=True)
+    class Emulator:
+        id: str
+        name: str
+        executable: Path
+
+    XENIA_EMULATORS = {
+        "canary": "Xenia Canary",
+        "edge": "Xenia Edge",
+        "xenia manager": "Xenia Manager",
+        "mousehook": "Xenia MouseHook",
+        "netplay": "Xenia Netplay",
+    }
+
+    def get_xenia_installation_status(self) -> tuple[bool, bool, bool, bool, bool]:
+        return (
+            self.config["xenia_canary_installed"],
+            self.config["xenia_edge_installed"],
+            self.config["xenia_manager_installed"],
+            self.config["xenia_mousehook_installed"],
+            self.config["xenia_netplay_installed"],
+        )
+
+    def get_xenia_executable_paths(self) -> dict[str, Path | None]:
+        return {
+            "canary": Path(self.config["xenia_canary_path"]) if self.config["xenia_canary_path"] else None,
+            "edge": Path(self.config["xenia_edge_path"]) if self.config["xenia_edge_path"] else None,
+            "xenia": Path(self.config["xenia_exe_path"]) if self.config["xenia_exe_path"] else None,
+            "mousehook": Path(self.config["xenia_mousehook_path"]) if self.config["xenia_mousehook_path"] else None,
+            "netplay": Path(self.config["xenia_netplay_path"]) if self.config["xenia_netplay_path"] else None,
+        }
+
+    def get_installed_emulators(self) -> list[Emulator]:
+        paths = self.get_xenia_executable_paths()
+
+        (
+            canary_installed,
+            edge_installed,
+            xenia_manager_installed,
+            mousehook_installed,
+            netplay_installed,
+        ) = self.get_xenia_installation_status()
+
+        installed = {
+            "canary": canary_installed,
+            "edge": edge_installed,
+            "xenia manager": xenia_manager_installed,
+            "mousehook": mousehook_installed,
+            "netplay": netplay_installed,
+        }
+
+        emulators = []
+
+        for key, name in self.XENIA_EMULATORS.items():
+            path = paths.get(key)
+
+            if not installed[key] or path is None or not path.is_file():
+                continue
+
+            emulators.append(Emulator(key, name, path))
+
+        return emulators
 
     def monitor_game(self, game_id, model):
         while self.process.poll() is None:
@@ -2491,3 +2574,6 @@ class GameLauncher(QMainWindow):
             background-color: #0078d7;
         }
         """)
+
+    def get_emulators(self):
+        pass

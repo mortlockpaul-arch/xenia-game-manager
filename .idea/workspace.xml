@@ -4,14 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.3.1 Include Version in Builds">
+    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.3.2 Compress Builds with Maximum Compression">
+      <change afterPath="$PROJECT_DIR$/src/assets/images/xbox-indie-selects-dynamic-backgrounds-2026 (1).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/xbox-indie-selects-dynamic-backgrounds-2026 (2).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/images/xbox-indie-selects-dynamic-backgrounds-2026.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build_tools/build_individuals.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/build_individuals.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build_tools/tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/build_tools/tools.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/game-manager-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/game-manager-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/xenia_compatibility.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/xenia_compatibility.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/games.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/games.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/model_xbox360.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/model_xbox360.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,7 +22,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="1610" />
+    <option name="cachedIndexableFilesCount" value="1524" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -62,56 +65,56 @@
       <entry key="S2" value="1.0" />
       <entry key="S5" value="1.0" />
       <entry key="S10" value="1.0" />
-      <entry key="S30" value="1.00000001262772" />
-      <entry key="S60" value="1.0002059203107019" />
-      <entry key="M2" value="1.0282337657132896" />
-      <entry key="M5" value="1.6023812028347781" />
-      <entry key="M10" value="2.8247924672792424" />
-      <entry key="M15" value="3.7217783656304206" />
-      <entry key="M30" value="5.229508508327458" />
-      <entry key="H1" value="6.559311435657314" />
-      <entry key="H2" value="8.258493357398525" />
-      <entry key="H4" value="15.364534570151484" />
-      <entry key="D1" value="126.582513175319" />
-      <entry key="W1" value="1230.1393795159008" />
+      <entry key="S30" value="1.0000000126101152" />
+      <entry key="S60" value="1.0002052912703807" />
+      <entry key="M2" value="1.0333973832964678" />
+      <entry key="M5" value="1.8127649466924876" />
+      <entry key="M10" value="3.707924844980862" />
+      <entry key="M15" value="5.686418633617568" />
+      <entry key="M30" value="11.46964415071095" />
+      <entry key="H1" value="20.238068669821295" />
+      <entry key="H2" value="31.192445431440316" />
+      <entry key="H4" value="44.5462913425007" />
+      <entry key="D1" value="156.374618705095" />
+      <entry key="W1" value="1251.1859554556283" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
       <entry key="MS500" value="0.0" />
-      <entry key="S2" value="4.1674137334484794E-130" />
-      <entry key="S5" value="1.7698915158700204E-52" />
-      <entry key="S10" value="1.3303726981075718E-26" />
-      <entry key="S30" value="2.369506079955127E-9" />
-      <entry key="S60" value="4.869454701065141E-5" />
-      <entry key="M2" value="0.007107228268388376" />
-      <entry key="M5" value="0.16515903451403194" />
-      <entry key="M10" value="0.5375568646899092" />
-      <entry key="M15" value="0.8192033453788033" />
-      <entry key="M30" value="1.2724230660463207" />
-      <entry key="H1" value="1.6487785528442849" />
-      <entry key="H2" value="2.079188276549461" />
-      <entry key="H4" value="2.9784442562668327" />
-      <entry key="D1" value="16.658186047085778" />
-      <entry key="W1" value="233.79549683129764" />
+      <entry key="S2" value="2.474879088550221E-148" />
+      <entry key="S5" value="9.066122744676381E-60" />
+      <entry key="S10" value="3.0110571440262774E-30" />
+      <entry key="S30" value="1.482462531304327E-10" />
+      <entry key="S60" value="1.3977623810005565E-5" />
+      <entry key="M2" value="0.004866845082594343" />
+      <entry key="M5" value="0.17656044042370478" />
+      <entry key="M10" value="0.6347525451773524" />
+      <entry key="M15" value="1.0857952824683716" />
+      <entry key="M30" value="2.33621493777758" />
+      <entry key="H1" value="4.1163896076456785" />
+      <entry key="H2" value="6.0588723184211375" />
+      <entry key="H4" value="8.099907570985177" />
+      <entry key="D1" value="22.312913031594295" />
+      <entry key="W1" value="236.19843244637158" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.4873844691125247E-17" />
-      <entry key="MS500" value="4.3100732240754615E-4" />
-      <entry key="S2" value="0.14408579334985802" />
-      <entry key="S5" value="0.460732093099352" />
-      <entry key="S10" value="0.6787724899400034" />
-      <entry key="S30" value="0.8788364956386754" />
-      <entry key="S60" value="0.9376904995826348" />
-      <entry key="M2" value="1.0015007889842884" />
-      <entry key="M5" value="1.7373389602082745" />
-      <entry key="M10" value="3.3315620187053696" />
-      <entry key="M15" value="4.513669948632844" />
-      <entry key="M30" value="6.483346676483171" />
-      <entry key="H1" value="8.197046660230507" />
-      <entry key="H2" value="10.331352215079281" />
-      <entry key="H4" value="18.338816678375835" />
-      <entry key="D1" value="143.2378160558937" />
-      <entry key="W1" value="1463.930908697574" />
+      <entry key="MS100" value="0.007238969233518523" />
+      <entry key="MS500" value="0.37319459582423825" />
+      <entry key="S2" value="0.7815987147102728" />
+      <entry key="S5" value="0.9061363123937859" />
+      <entry key="S10" value="0.9519119247040588" />
+      <entry key="S30" value="0.9837066213802934" />
+      <entry key="S60" value="0.9920367816313594" />
+      <entry key="M2" value="1.0338917542919634" />
+      <entry key="M5" value="1.9844384408876974" />
+      <entry key="M10" value="4.335846242321875" />
+      <entry key="M15" value="6.764186497950897" />
+      <entry key="M30" value="13.796259343998937" />
+      <entry key="H1" value="24.344726262272104" />
+      <entry key="H2" value="37.24285043259339" />
+      <entry key="H4" value="52.63960994791334" />
+      <entry key="D1" value="178.68398724656947" />
+      <entry key="W1" value="1487.3803535229147" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -150,7 +153,7 @@
     "Python.easyxnb_gui.executor": "Run",
     "Python.import_xblig_metadata.executor": "Run",
     "Python.main-updater.executor": "Run",
-    "Python.main.executor": "Run",
+    "Python.main.executor": "Debug",
     "Python.main_updater.executor": "Run",
     "Python.netplay.executor": "Run",
     "Python.package window.executor": "Run",
@@ -203,7 +206,7 @@
       <recent name="C:\PycharmProjects\xenia-game-manager\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.build individuals">
+  <component name="RunManager" selected="Python.main">
     <configuration name="Unnamed" type="BatchConfigurationType" factoryName="Batch" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -325,6 +328,9 @@
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="SDK_NAME" value="uv (xenia-game-manager) (2)" />
       <option name="WORKING_DIRECTORY" value="C:\PycharmProjects\xenia-game-manager\src" />
@@ -368,14 +374,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00162" summary="1.2.5 Optimisations to many things.">
-      <option name="closed" value="true" />
-      <created>1788538158371</created>
-      <option name="number" value="00162" />
-      <option name="presentableId" value="LOCAL-00162" />
-      <option name="project" value="LOCAL" />
-      <updated>1788538158372</updated>
     </task>
     <task id="LOCAL-00163" summary="1.2.5 Optimisations to many things.">
       <option name="closed" value="true" />
@@ -761,7 +759,15 @@
       <option name="project" value="LOCAL" />
       <updated>1789949708742</updated>
     </task>
-    <option name="localTasksCounter" value="211" />
+    <task id="LOCAL-00211" summary="1.3.2 Compress Builds with Maximum Compression">
+      <option name="closed" value="true" />
+      <created>1790007415838</created>
+      <option name="number" value="00211" />
+      <option name="presentableId" value="LOCAL-00211" />
+      <option name="project" value="LOCAL" />
+      <updated>1790007415839</updated>
+    </task>
+    <option name="localTasksCounter" value="212" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -783,7 +789,6 @@
       <path value="$PROJECT_DIR$/../XBLA-Extract" />
       <path value="$PROJECT_DIR$/src/compatibility/xemu_compatibility/xdb" />
     </ignored-roots>
-    <MESSAGE value="1.1.8 Massive Refactor" />
     <MESSAGE value="1.1.9 Models and Icons" />
     <MESSAGE value="1.2.0 Toolbar Compact Layout" />
     <MESSAGE value="1.2.0 Log Colors" />
@@ -808,7 +813,8 @@
     <MESSAGE value="1.2.9 Updated xnb-extractor to latest version" />
     <MESSAGE value="1.3.0 Scanner and Extract now find packages more reliably and will move it if necessary into the &quot;584E07D2&quot; / &quot;00000002&quot; folder." />
     <MESSAGE value="1.3.1 Include Version in Builds" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.3.1 Include Version in Builds" />
+    <MESSAGE value="1.3.2 Compress Builds with Maximum Compression" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.3.2 Compress Builds with Maximum Compression" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -830,7 +836,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1592</line>
+          <line>1603</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -855,12 +861,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1742</line>
+          <line>1753</line>
           <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1757</line>
+          <line>1768</line>
           <option name="timeStamp" value="78" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -870,17 +876,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1073</line>
+          <line>1084</line>
           <option name="timeStamp" value="86" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>343</line>
+          <line>344</line>
           <option name="timeStamp" value="88" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>364</line>
+          <line>365</line>
           <option name="timeStamp" value="89" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -890,7 +896,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/db.py</url>
-          <line>1170</line>
+          <line>1192</line>
           <option name="timeStamp" value="137" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -900,17 +906,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/db.py</url>
-          <line>1264</line>
+          <line>1286</line>
           <option name="timeStamp" value="154" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>2239</line>
-          <option name="timeStamp" value="165" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1704</line>
+          <line>1715</line>
           <option name="timeStamp" value="173" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -985,7 +986,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1700</line>
+          <line>1711</line>
           <option name="timeStamp" value="381" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1000,12 +1001,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1683</line>
+          <line>1694</line>
           <option name="timeStamp" value="418" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>1696</line>
+          <line>1707</line>
           <option name="timeStamp" value="419" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1070,7 +1071,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/ui.py</url>
-          <line>2254</line>
+          <line>2267</line>
           <option name="timeStamp" value="447" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1102,6 +1103,31 @@
           <url>file://$PROJECT_DIR$/src/package_window.py</url>
           <line>393</line>
           <option name="timeStamp" value="460" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/ui.py</url>
+          <line>2159</line>
+          <option name="timeStamp" value="461" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/db.py</url>
+          <line>1255</line>
+          <option name="timeStamp" value="464" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/db.py</url>
+          <line>1437</line>
+          <option name="timeStamp" value="465" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/models/model_xbox360.py</url>
+          <line>394</line>
+          <option name="timeStamp" value="466" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/models/model_xbox360.py</url>
+          <line>179</line>
+          <option name="timeStamp" value="469" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="powershell">
           <url>file://$PROJECT_DIR$/src/scripts/build_projects_clean.ps1</url>

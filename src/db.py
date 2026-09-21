@@ -76,6 +76,11 @@ class Game:
     play_count: int = 0
     play_time: int = 0
 
+@dataclass(frozen=True)
+class Emulator:
+    id: str
+    name: str
+    executable: Path
 
 @dataclass
 class XBLIGGame(Game):
@@ -202,7 +207,7 @@ class GameDisc:
 @dataclass
 class Xbox360Game(Game):
     platform: Platform = field(default=Platform.XBOX360, init=False)
-    emulator: str = field(default="canary", init=False)
+    emulator: str | None = None
     config_path: Path | None = None
     discs: list[GameDisc] = field(default_factory=list)
 
@@ -226,13 +231,30 @@ class Xbox360Game(Game):
             play_count=row["play_count"] or 0,
             play_time=row["play_time"] or 0,
             discs=discs,
+            emulator=row["emulator_version"],
         )
 
+    @classmethod
+    def from_dict(cls, data: dict) -> "Xbox360Game":
+        return cls(
+            game_id=data["game_id"],
+            title=data["title"],
+            emulator=data.get("emulator"),
+            config_path=(
+                Path(data["config_path"])
+                if data.get("config_path")
+                else None
+            ),
+            favourite=bool(data.get("favourite")),
+            last_played=data.get("last_played"),
+            play_count=data.get("play_count") or 0,
+            play_time=data.get("play_time") or 0,
+        )
 
 @dataclass
 class XboxGame(Game):
     platform: Platform = field(default=Platform.XBOX, init=False, )
-    emulator: str = field(default="xemu", init=False, )
+    emulator: str | None = None
     config_path: Path | None = Path()
     discs: list[GameDisc] = field(default_factory=list)
 
@@ -388,7 +410,7 @@ class Compatibility:
                     ))
 
 
-class Emulator(Enum):
+class EmulatorNames(Enum):
     XEMU = "xemu"
     XENIA = "xenia"
 
@@ -424,7 +446,7 @@ def create_xbox360_game_from_xenia_manager(data, ) -> Xbox360Game:
         title=strip_disc_suffix(data.get("title") or ""),
         config_path=Path(config_path) if config_path else None,
         play_time=data.get("playtime") or 0,
-        emulator_version=data.get("xenia_version"),
+        emulator=data.get("xenia_version"),
         discs=[disc],
     )
 
@@ -534,7 +556,7 @@ def create_xbox_game(data: XboxRom, compatibility=None) -> XboxGame:
         title=strip_disc_suffix(title or ""),
         config_path=Path("D:/RetroBat/emulators/xemu/xemu.toml"),
         play_time=0,
-        emulator_version=xemu_version,
+        emulator=xemu_version,
         discs=[disc],
     )
 
@@ -560,7 +582,7 @@ def xenia_edge_game_from_dict(data) -> Xbox360Game:
     )
 
     edge_path = Path(
-        load_config_file()["xenia_edge_path"]
+        load_config()["xenia_edge_path"]
     )
 
     edge_configs = (
@@ -579,7 +601,7 @@ def xenia_edge_game_from_dict(data) -> Xbox360Game:
         game_id=game_id,
         title=data.get("name") or "",
         config_path=config_path,
-        emulator_version="Edge",
+        emulator="Edge",
         discs=[disc],
     )
 
@@ -619,7 +641,7 @@ def xenia_manager_game_from_dict(data) -> Xbox360Game:
         title=strip_disc_suffix(data.get("title") or ""),
         config_path=Path(config_path) if config_path else None,
         play_time=data.get("playtime") or 0,
-        emulator_version=data.get("xenia_version"),
+        emulator=data.get("xenia_version"),
         discs=[disc],
     )
 
@@ -1411,7 +1433,7 @@ class Database:
             # ----------------------------------------
 
             if emulator:
-                version = getattr(game, "emulator_version", None)
+                version = getattr(game, "emulator", None)
 
                 con.execute("""
                     INSERT INTO emulators (

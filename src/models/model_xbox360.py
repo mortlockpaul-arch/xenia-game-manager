@@ -48,7 +48,7 @@ class Xbox360GameTableModel(BaseGameTableModel):
         ("play_count", "Plays"),
         ("play_time", "Play Time"),
         ("disc_number", "Disc"),
-        ("emulator_version", "Xenia Version"),
+        ("emulator_version", "Emulator"),
         ("compatibility_rating", "Compatibility"),
         ("platform", "Platform")
     ]
@@ -243,6 +243,9 @@ class Xbox360GameTableModel(BaseGameTableModel):
             if value is None:
                 return ""
 
+            if key == "emulator":
+                return row.emulator or ""
+
             if key == "platform":
                 if isinstance(value, Platform):
                     return value.name
@@ -274,7 +277,7 @@ class Xbox360GameTableModel(BaseGameTableModel):
         if role == Qt.ItemDataRole.ToolTipRole:
             if key == "title":
                 paths = self.get_game_paths(index.row())
-                return "\n".join(str(path) for path in paths)
+                return "\n".join(map(str, paths or []))
         return None
 
     def get_game_paths(self, row_index: int) -> list[Path] | None:
@@ -378,7 +381,7 @@ class Xbox360GameTableModel(BaseGameTableModel):
             8: "play_count",
             9: "play_time",
             10: "disc_number",
-            11: "xenia_version",
+            11: "emulator_version",
             12: "compatibility_rating",
         }
 

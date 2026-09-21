@@ -127,17 +127,17 @@ def copy_optimized_settings():
         if not dst.exists() or not filecmp.cmp(src, dst, shallow=False):
             shutil.copy2(src, dst)
             copied += 1
-            logger.info(f"Copied: {dst}")
+            log_message(f"Copied: {dst}")
 
     if copied == 0:
-        logger.info("All optimized settings are already up to date.")
+        log_message("All optimized settings are already up to date.")
     else:
-        logger.info(f"Updated {copied} file(s).")
+        log_message(f"Updated {copied} file(s).")
 
 def cleanup_egg_info():
     for egg_info in current_folder.glob("*.egg-info"):
         shutil.rmtree(egg_info)
-        logger.info(f"Deleted: {egg_info}")
+        log_message(f"Deleted: {egg_info}")
 
 def build_executable(executable, version):
     from cx_Freeze import Executable, setup
@@ -298,7 +298,7 @@ def build_msi(version):
         script_args=["bdist_msi"],
     )
 
-def log_message(message, color):
+def log_message(message, color = None):
     logger_current = setup_logger()
     logger_current.info(f"{message}")
 
