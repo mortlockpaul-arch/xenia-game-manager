@@ -770,6 +770,7 @@ class ConvertXnaProjects(QObject):
                 content_name="Xbox Live Indie Game",
                 content_format=content_format,
                 package=package,
+                icon=indie_games_path / folder_title / "DashboardIcon.png",
             )
 
             # -----------------------------------------------------

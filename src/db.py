@@ -82,7 +82,7 @@ class XBLIGGame(Game):
     platform: Platform = field(default=Platform.INDIE, init=False, )
 
     title: str = ""
-    icon: Path = Path()
+    icon: Path | None = None
     folder_title: str | None = None
     title_id: str | None = None
     virtual_title_id: str | None = None
@@ -124,6 +124,7 @@ class XBLIGGame(Game):
             "extracted",
             "game_root",
             "xml",
+            "archived",
             "icon",
         }
 

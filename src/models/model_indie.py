@@ -114,26 +114,30 @@ class IndieGameTableModel(BaseGameTableModel):
 
             return QBrush(QColor("#483030"))
 
-
-            return QBrush(QColor("#483030"))
-
         if key == "icon":
             if role == Qt.ItemDataRole.DecorationRole:
-                if game.icon and game.icon.exists():
-                    return QIcon(str(game.icon))
+                icon_paths: list[Path] = []
 
-                if game.extracted and game.extracted.exists() and (game.extracted / "DashboardIcon.png").exists():
-                    icon = game.extracted / "DashboardIcon.png"
-                    return QIcon(str(icon))
-                if game.decompiled and game.decompiled.exists() and (game.decompiled / "DashboardIcon.png").exists():
-                    icon = game.decompiled / "DashboardIcon.png"
-                    return QIcon(str(icon))
-                if game.archived and game.archived.exists() and (game.archived / "DashboardIcon.png").exists():
-                    icon = game.archived / "DashboardIcon.png"
-                    return QIcon(str(icon))
+                if game.icon is not None:
+                    icon_paths.append(game.icon)
+
+                if game.extracted is not None:
+                    icon_paths.append(game.extracted / "DashboardIcon.png")
+
+                if game.archived is not None:
+                    icon_paths.append(game.archived / "DashboardIcon.png")
+
+                for path in icon_paths:
+                    if path.is_file():
+                        return QIcon(str(path))
+
+                return QIcon()
 
             if role == Qt.ItemDataRole.DisplayRole:
                 return ""
+
+            if role == Qt.ItemDataRole.ToolTipRole:
+                return str(game.icon) if game.icon else ""
 
         # ----------------------------------------
         # Display
@@ -244,4 +248,4 @@ class IndieGameTableModel(BaseGameTableModel):
         self.layoutChanged.emit()
 
     def get_game(self, row_index):
-        pass
+        return self.get_game_from_index(row_index)

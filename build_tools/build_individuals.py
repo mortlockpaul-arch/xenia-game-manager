@@ -18,37 +18,37 @@ executables = [
     {
         "script": root / "main.py",
         "base": "gui",
-        "target_name": "xbox-game-manager",
+        "target_name": "xenia-game-manager",
     },
     {
         "script": root / "main_updater.py",
         "base": "console",
-        "target_name": "xbox-game-manager-updater",
+        "target_name": "xenia-game-manager-updater",
     },
     {
         "script": root / "archive_digital_window.py",
         "base": "console",
-        "target_name": "xbox-game-manager-digital-downloader",
+        "target_name": "xenia-game-manager-digital-downloader",
     },
     {
         "script": root / "archive_indie_window.py",
         "base": "console",
-        "target_name": "xbox-game-manager-indie-downloader",
+        "target_name": "xenia-game-manager-indie-downloader",
     },
     {
         "script": root / "archive_content_window.py",
         "base": "console",
-        "target_name": "xbox-game-manager-content-downloader",
+        "target_name": "xenia-game-manager-content-downloader",
     },
     {
         "script": root / "xbox_unity_window.py",
         "base": "console",
-        "target_name": "xbox-game-manager-unity-downloader",
+        "target_name": "xenia-game-manager-unity-downloader",
     },
     {
         "script": root / "package_window.py",
         "base": "gui",
-        "target_name": "xbox-game-rebuilder",
+        "target_name": "xenia-game-rebuilder",
     },
 ]
 
@@ -137,9 +137,9 @@ def cleanup_egg_info():
         shutil.rmtree(egg_info)
         logger.info(f"Deleted: {egg_info}")
 
-def build_executable(executable):
+def build_executable(executable, version):
     from cx_Freeze import Executable, setup
-
+    target_name = executable["target_name"] + f"-{version}"
     target_dir = build_dir / executable["target_name"]
 
     if target_dir.exists():
@@ -147,12 +147,12 @@ def build_executable(executable):
 
     print()
     print("=" * 70)
-    print(f"Building {executable['target_name']}")
+    print(f"Building {target_name}")
     print("=" * 70)
 
     setup(
-        name=executable["target_name"],
-        version="1.2.4",
+        name=target_name,
+        version=version,
         description="Xbox Game Manager",
         options={
             "build_exe": {
@@ -171,15 +171,15 @@ def build_executable(executable):
                 script=str(executable["script"]),
                 base=executable["base"],
                 icon=str(icon),
-                target_name=executable["target_name"],
+                target_name=target_name,
             )
         ],
         script_args=["build_exe"],
     )
 
-def zip_portable(executable):
+def zip_portable(executable, version):
     build_dir_current = Path(current_folder) / executable["target_name"]
-    out_zip = Path(current_folder / "dist") / f"{executable['target_name']}-portable.zip"
+    out_zip = Path(current_folder / "dist") / f"{executable['target_name']}-portable-{version}.zip"
     logger.info(f"{build_dir_current}")
     logger.info(f"{out_zip}")
     if out_zip.exists():
@@ -198,27 +198,27 @@ def zip_portable(executable):
 
     logger.info(f"Portable zip created: {out_zip}")
 
-def build_all():
+def build_all(version):
     build_dir.mkdir(exist_ok=True)
     for executable in executables:
-        build_executable(executable)
-        zip_portable(executable)
+        build_executable(executable,version=version)
+        zip_portable(executable,version=version)
     cleanup_egg_info()
 
-def build_portables():
+def build_portables(version):
     build_dir.mkdir(exist_ok=True)
     for executable in executables:
-        zip_portable(executable)
+        zip_portable(executable,version=version)
     cleanup_egg_info()
 
-def build_msi():
+def build_msi(version):
     from cx_Freeze import Executable, setup
 
     main_executable = Executable(
         script=str(root / "main.py"),
         base="gui",
         icon=str(icon),
-        target_name="xbox-game-manager",
+        target_name="xenia-game-manager",
     )
 
     build_exe_options = {
@@ -229,7 +229,7 @@ def build_msi():
             for source, destination in include_files
         ],
         "optimize": optimize,
-        "build_exe": str(build_dir / "xbox-game-manager"),
+        "build_exe": str(build_dir / f"xenia-game-manager-{version}"),
     }
 
     bdist_msi_options = {
@@ -278,10 +278,10 @@ def build_msi():
     }
 
     setup(
-        name="Xenia Game Manager",
-        version="1.2.7",
+        name=f"Xenia Game Manager {version}",
+        version=version,
         description="Xenia Game Manager",
-        author="Xenia Game Manager",
+        author="Paul Mortlock",
         options={
             "build_exe": build_exe_options,
             "bdist_msi": bdist_msi_options,
@@ -291,14 +291,15 @@ def build_msi():
     )
 
 if __name__ == "__main__":
+    current_version = "1.3.0"
     logger = setup_logger()
     if len(sys.argv) > 1 and sys.argv[1].lower() == "msi":
-        build_msi()
+        build_msi(version=current_version)
     else:
         if len(sys.argv) > 1 and sys.argv[1].lower() == "portables":
-            build_portables()
+            build_portables(version=current_version)
         else:
-            build_all()
-            create_defaults(version="1.3.0")
+            build_all(version=current_version)
+            create_defaults(version=current_version)
             tools_setup()
             copy_optimized_settings()
