@@ -1,10 +1,15 @@
-from package_window import compress_tool, ToolManager, ensure_tool_extracted
+from package_window import compress_tool, ToolManager, ensure_tool_extracted, get_actual_tool_path
+
 
 def tools_setup():
-    compress_tool("conversion")
-    compress_tool("ilspycmd")
-    compress_tool("ilspy")
-    compress_tool("vgmstream")
+    if get_actual_tool_path("conversion").exists():
+        compress_tool("conversion")
+    if get_actual_tool_path("ilspycmd").exists():
+        compress_tool("ilspycmd")
+    if get_actual_tool_path("ilspy").exists():
+        compress_tool("ilspy")
+    if get_actual_tool_path("vgmstream").exists():
+        compress_tool("vgmstream")
 
     with ToolManager("conversion"):
         print("Conversion is complete.")

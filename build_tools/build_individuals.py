@@ -4,11 +4,13 @@ import shutil
 import subprocess
 import sys
 import zipfile
+from glob import escape
 from pathlib import Path
 
 from build_tools.tools import tools_setup
 from config import get_app_dir, load_config, save_config
 from logging_setup import setup_logger
+from package_window import compress_folders, RAINBOW_COLORS
 
 root = get_app_dir()
 build_dir = root / "build"
@@ -75,7 +77,7 @@ optimize = 2
 icon = root / "assets" / "icons" / "app.ico"
 
 def create_defaults(version):
-    logger.info("Creating default game manager database and configuration files...")
+    log_message("Creating default game manager database and configuration files...", None)
 
     base_path = root
 
@@ -90,22 +92,22 @@ def create_defaults(version):
 
     def backup_existing(path: Path):
         if not path.exists():
-            logger.info(f"  No existing file to back up: {path.name}")
+            log_message(f"  No existing file to back up: {path.name}", None)
             return
 
         backup = backup_dir / path.name
 
         if backup.exists():
-            logger.info(f"  Removing old backup: {backup.name}")
+            log_message(f"  Removing old backup: {backup.name}", None)
             backup.unlink()
 
-        logger.info(f"  Backing up {path.name} -> {backup}")
+        log_message(f"  Backing up {path.name} -> {backup}", None)
         shutil.copy2(path, backup)
 
     config = load_config()
     config["game_manager_version"] = version
     save_config(config)
-    logger.info("Done.")
+    log_message("Done.", None)
 
 def copy_optimized_settings():
     settings_dest = root / "assets" / "settings"
@@ -180,23 +182,29 @@ def build_executable(executable, version):
 def zip_portable(executable, version):
     build_dir_current = Path(current_folder) / executable["target_name"]
     out_zip = Path(current_folder / "dist") / f"{executable['target_name']}-portable-{version}.zip"
-    logger.info(f"{build_dir_current}")
-    logger.info(f"{out_zip}")
+    log_message(f"{build_dir_current}", None)
+    log_message(f"{out_zip}", None)
     if out_zip.exists():
         out_zip.unlink()
-        logger.info(f"Deleting existing portable zip: {out_zip}")
+        log_message(f"Deleting existing portable zip: {out_zip}", None)
 
     out_zip.parent.mkdir(exist_ok=True)
 
-    with zipfile.ZipFile(out_zip, "w", zipfile.ZIP_DEFLATED) as zipf:
-        for file in build_dir_current.rglob("*"):
-            if file.is_file() and file.name != "portable.txt":
-                zipf.write(file, file.relative_to(build_dir_current))
+    # with zipfile.ZipFile(out_zip, "w", zipfile.ZIP_DEFLATED) as zipf:
+    #     for file in build_dir_current.rglob("*"):
+    #         if file.is_file() and file.name != "portable.txt":
+    #             zipf.write(file, file.relative_to(build_dir_current))
 
-        # Add portable.txt to the root of the ZIP
-        zipf.writestr("portable.txt", "")
+    # Add portable.txt to the root of the ZIP
+    (build_dir_current / "portable.txt").touch()
+    try:
+        log_message(f"Compressing {build_dir_current} Folder", None)
+        compress_folders(root, [build_dir_current], out_zip, False, log_callback=log_message)
+        log_message(f"Compressed {build_dir_current} successfully", None)
+    except Exception as e:
+        log_message(f"Failed to compress {build_dir_current}: {type(e).__name__}: {e}", None)
 
-    logger.info(f"Portable zip created: {out_zip}")
+    log_message(f"Portable zip created: {out_zip}", None)
 
 def build_all(version):
     build_dir.mkdir(exist_ok=True)
@@ -290,16 +298,19 @@ def build_msi(version):
         script_args=["bdist_msi"],
     )
 
+def log_message(message, color):
+    logger_current = setup_logger()
+    logger_current.info(f"{message}")
+
 if __name__ == "__main__":
-    current_version = "1.3.1"
-    logger = setup_logger()
+    current_version = "1.3.2"
     if len(sys.argv) > 1 and sys.argv[1].lower() == "msi":
         build_msi(version=current_version)
     else:
         if len(sys.argv) > 1 and sys.argv[1].lower() == "portables":
             build_portables(version=current_version)
         else:
+            tools_setup()
             build_all(version=current_version)
             create_defaults(version=current_version)
-            tools_setup()
             copy_optimized_settings()

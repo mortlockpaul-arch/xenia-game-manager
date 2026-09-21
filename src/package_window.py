@@ -435,10 +435,7 @@ def get_tool_path(name: str) -> Path:
 
 
 def cleanup_tool(name: str, log=None):
-    tools_root = get_app_dir() / "assets" / "tools"
-
-    relative_path = get_tool_path(name)
-    folder = tools_root / relative_path
+    folder = get_actual_tool_path(name)
 
     if not folder.exists():
         return
@@ -448,6 +445,14 @@ def cleanup_tool(name: str, log=None):
         if log: log(f"Cleaned up: {folder}")
     except PermissionError as e:
         if log: log(f"Cleanup failed for {folder}: {e}")
+
+
+def get_actual_tool_path(name: str) -> Path:
+    tools_root = get_app_dir() / "assets" / "tools"
+
+    relative_path = get_tool_path(name)
+    folder = tools_root / relative_path
+    return folder
 
 
 class ToolManager:
@@ -1973,7 +1978,14 @@ def folder_status(game: XBLIGGame, moving=False) -> tuple[bool, bool, Path, list
     return archived_state, extracted_state, game_folder, cs_proj_files
 
 
-def run_powershell_script(game: XBLIGGame | None, script=1, log_message=None, config=None):
+def run_powershell_script(game: XBLIGGame, script=1, log_message=None, config=None):
+    headers = {b"CON ", b"LIVE", b"PIRS"}
+    def is_package(path: Path) -> bool:
+        try:
+            with path.open("rb") as f:
+                return f.read(4) in headers
+        except (OSError, PermissionError):
+            return False
     def log_message_callback(message, color=None):
         if log_message is not None:
             log_message(message, color)
@@ -2010,6 +2022,12 @@ def run_powershell_script(game: XBLIGGame | None, script=1, log_message=None, co
             log_message_callback(f"PowerShell exited with code {process.returncode}")
     if script == 2:
         script = get_app_dir() / "scripts" / "Extract-STFS.ps1"
+        if game.package and not game.package.is_file():
+            packages = list(game.package.rglob("*"))
+            for package in packages:
+                if is_package(package):
+                    game.package = package
+                    break
         process = subprocess.Popen(
             [
                 "powershell.exe",
@@ -2210,7 +2228,7 @@ class XBLIGDialog(QDialog):
 
         # self.method_name()
 
-        self.background = QPixmap(get_app_dir() / "assets/images/img.png")
+        self.background = QPixmap(get_app_dir() / "assets/images/xbox-indie-selects-dynamic-backgrounds-2026.png")
 
         self._ilspy_queue = None
         self.ilspy_process = None
@@ -2647,9 +2665,9 @@ class XBLIGDialog(QDialog):
         for game in games:
             if compress:
                 self.log_message(f"Compressing Game {game.title}")
-                func = partial(_compress_games, game)
+                func = partial(_compress_games, game, self.log_message)
             else:
-                func = partial(_decompress_games, game)
+                func = partial(_decompress_games, game, self.log_message)
             self.game = game
             self.run_worker(func)
 
@@ -2689,6 +2707,7 @@ class XBLIGDialog(QDialog):
             #     self.log_message(f"{self.game.title} Already Extracted")
             #     return
             try:
+                self.method_name()
                 extracted = self.converter.extract_package(game, False, overwrite=overwrite)
                 # game.extracted = extracted
                 # game.executables = list(extracted.rglob("*.exe"))
@@ -2841,6 +2860,7 @@ class XBLIGDialog(QDialog):
         if (result := self.get_selected_games()) is None:
             return
         games, indexes = result
+        self.method_name()
 
         for game in games:
 
@@ -2866,6 +2886,7 @@ class XBLIGDialog(QDialog):
                 self.log_message(f"Game Project Folder Moved: {game.extracted} -> {destination_dir}")
 
             if options["convert_csproj"]:
+                self.method_name()
                 solution_path = Path(self.config["indie-game-solution-location"])
                 archived_state, extracted_state, game_folder_status, cs_proj_files = folder_status(game, moving=False)
                 if len(cs_proj_files) != 0:
