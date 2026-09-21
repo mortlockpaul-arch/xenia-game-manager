@@ -32,8 +32,10 @@ def get_value(game: Xbox360Game, key: str):
 
         return getattr(game.discs[0], key, None)
 
-    return getattr(game, key, None)
+    if key == "emulator_version":
+        return game.emulator
 
+    return getattr(game, key, None)
 
 class Xbox360GameTableModel(BaseGameTableModel):
     COLUMNS = [
@@ -243,9 +245,6 @@ class Xbox360GameTableModel(BaseGameTableModel):
             if value is None:
                 return ""
 
-            if key == "emulator":
-                return row.emulator or ""
-
             if key == "platform":
                 if isinstance(value, Platform):
                     return value.name
@@ -400,7 +399,7 @@ class Xbox360GameTableModel(BaseGameTableModel):
             params = ()
             rows = con.execute(query, params)
             self.games = [
-                Xbox360Game.from_dict(dict(row))
+                Xbox360Game.from_row(row)
                 for row in rows
             ]
         self.layoutChanged.emit()

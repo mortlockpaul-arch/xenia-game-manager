@@ -967,6 +967,7 @@ class Database:
             );
             """)
 
+            con.execute("DROP VIEW IF EXISTS game_view")
             con.execute("""
             CREATE VIEW IF NOT EXISTS game_view AS
             SELECT
