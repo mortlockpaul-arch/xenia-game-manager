@@ -291,7 +291,7 @@ def build_msi(version):
     )
 
 if __name__ == "__main__":
-    current_version = "1.3.0"
+    current_version = "1.3.1"
     logger = setup_logger()
     if len(sys.argv) > 1 and sys.argv[1].lower() == "msi":
         build_msi(version=current_version)
