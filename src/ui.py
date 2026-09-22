@@ -1377,6 +1377,11 @@ class GameLauncher(QMainWindow):
         self.browser_button = QPushButton("Show Netplay Webpage")
         self.browser_button.clicked.connect(lambda: self.open_web_page(url=self.netplay_api_choice.currentText()))
 
+        self.bmac_button = QPushButton("☕ Buy Me a Coffee")
+        self.bmac_button.clicked.connect(
+            lambda: self.open_web_page(url="https://buymeacoffee.com/polomolo")
+        )
+
         self.browser_close_button = QPushButton("Back to Game Manager")
         self.browser_close_button.clicked.connect(self.close_web_page)
 
@@ -1430,6 +1435,7 @@ class GameLauncher(QMainWindow):
         toolbar.addWidget(self.launch_manager)
         toolbar.addWidget(self.launch_edge)
         toolbar.addWidget(self.archive_xbligemu_button)
+        toolbar.addWidget(self.bmac_button)
         if downloaders_enabled:
             options_row.addWidget(self.archive_button)
             options_row.addWidget(self.archive_xblig_button)
