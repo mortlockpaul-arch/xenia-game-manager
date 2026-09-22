@@ -40,18 +40,17 @@ class XboxScanner(QThread):
 
         self.status.emit(f"Found {len(xbox_folders)} Xbox ROM folders")
 
-        for xbox_folder in xbox_folders:
-            if self._stop_requested:
-                break
-            self.status.emit(f"Scanning: {xbox_folder}")
-            self._scan_xisos(xbox_folder, xbox_game_list, found_files)
+        # for xbox_folder in xbox_folders:
+        # if self._stop_requested:
+        #     break
+        self._scan_xisos(xbox_folders, xbox_game_list, found_files)
 
         xbox_game_list.sort(key=lambda x: str(x.file).lower())
         self.status.emit(f"Xbox XISO scan complete — {len(xbox_game_list)} files found")
         self.finished_scan.emit(xbox_game_list)
 
     def _find_xbox_folders(self):
-        xbox_folders = []
+        xbox_folders: list[Path] = []
         found_folders = set()
 
         for drive_letter in string.ascii_uppercase:
@@ -85,7 +84,7 @@ class XboxScanner(QThread):
         return xbox_folders
 
     def _find_direct_children(self, root, wanted_names):
-        found = []
+        found: list[Path] = []
 
         try:
             with os.scandir(root) as entries:
@@ -111,15 +110,15 @@ class XboxScanner(QThread):
 
         return found
 
-    def _scan_xisos(self, root, xboxrom_list, found_files):
-        directories = [root]
+    def _scan_xisos(self, directories: list[Path], xboxrom_list, found_files):
+        # directories: list[Path] = directories
 
         while directories:
             if self._stop_requested:
                 return
 
             current = directories.pop()
-
+            self.status.emit(f"Scanning: {current}")
             try:
                 with os.scandir(current) as entries:
                     for entry in entries:
@@ -142,9 +141,9 @@ class XboxScanner(QThread):
 
                                 if path in found_files:
                                     continue
-
+                                self.status.emit(f"Found Xbox Game {path}")
                                 found_files.add(path)
-                                xboxrom_list.append(XboxRom(file=path, rom_path=root))
+                                xboxrom_list.append(XboxRom(file=path, rom_path=path))
                                 continue
 
                             if entry.is_dir(follow_symlinks=False):
@@ -348,7 +347,7 @@ def update_xemu_compatibility(output_dir="compatibility/xemu_compatibility"):
         encoding="utf-8"
     )
 
-    return load_xemu_compatibility(output_dir)
+    return load_xemu_compatibility(output)
 
 
 def load_compatibility_test():

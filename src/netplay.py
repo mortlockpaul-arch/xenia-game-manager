@@ -7,9 +7,7 @@ from bs4 import BeautifulSoup
 
 URL = "https://github.com/AdrianCassar/xenia-canary/wiki/Netplay-Compatibility"
 OUT_FILE = Path("config/netplay.json")
-
 TITLE_ID_RE = re.compile(r"\b([0-9A-F]{8})\b", re.IGNORECASE)
-
 
 def clean(text: str) -> str:
     return " ".join(text.replace("\xa0", " ").split())
@@ -83,7 +81,6 @@ def parse_table(table):
 
     return games
 
-
 def build_json():
     r = requests.get(URL, timeout=30)
     r.raise_for_status()
@@ -127,7 +124,6 @@ def build_json():
     )
 
     print(f"Wrote {len(games)} games to {OUT_FILE}")
-
 
 if __name__ == "__main__":
     build_json()

@@ -141,9 +141,9 @@ class UpdateManager(QObject):
 
         r = requests.get(url, headers=headers, cookies=cookies, stream=True)
         total = int(r.headers.get("Content-Length", 0))
-        root = get_app_dir() / "downloads"
-        relative_path = Path(path).relative_to(root.parent)
-        message = f"Downloading: {relative_path} ({self.human_size(total)})"
+        # root = get_app_dir() / "downloads"
+        # relative_path = Path(path).relative_to(root.parent)
+        message = f"Downloading: {path} ({self.human_size(total)})"
         self.log.emit(message, True, True, False)
 
         # self.log.emit(str(r.status_code), False, True, False)

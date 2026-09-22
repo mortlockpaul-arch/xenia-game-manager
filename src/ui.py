@@ -425,6 +425,7 @@ class GameLauncher(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.game_source: str
         self.xiso_scan_result_folders = None
         self._rainbow_index = 1
         self.platform = None
@@ -582,9 +583,8 @@ class GameLauncher(QMainWindow):
         self.load_saved_config()
 
         self.compatibility = Compatibility(self.db, self.log_message)
-
+        self.check_for_updates("Xenia Game Manager")
         setup_logger()
-
 
     def scan_for_xisos(self):
         self.scanner = xiso.XboxScanner()
@@ -796,8 +796,8 @@ class GameLauncher(QMainWindow):
         self.check_edge_update_btn = QPushButton("Check for Xenia Edge Update")
         self.check_edge_update_btn.clicked.connect(lambda: self.check_for_updates("Xenia Edge"))
 
-        self.check_manager_update_btn = QPushButton("Check for Xenia Game Manager Update")
-        self.check_manager_update_btn.clicked.connect(lambda: self.check_for_updates("Xenia Game Manager"))
+        # self.check_manager_update_btn = QPushButton("Check for Xenia Game Manager Update")
+        # self.check_manager_update_btn.clicked.connect(lambda: self.check_for_updates("Xenia Game Manager"))
 
         self.remove_clean_btn = QPushButton("Remove Empty Folders")
         self.remove_clean_btn.clicked.connect(self.remove_clean_folders)
@@ -841,7 +841,7 @@ class GameLauncher(QMainWindow):
             self.use_xenia_manager_content_for_edge_btn,
             self.remove_clean_btn,
             self.check_edge_update_btn,
-            self.check_manager_update_btn,
+            # self.check_manager_update_btn,
             self.extract_downloaded_archives_btn,
             self.download_experimental_releases_btn,
             # self.reset_btn,
@@ -906,10 +906,6 @@ class GameLauncher(QMainWindow):
         )
 
         self.reorg_thread.start()
-
-    def reset_database(self):
-        self.db.clear_db()
-        self.refresh("xbox360")
 
     class ReOrgWorker(QObject):
         log = Signal(str)
@@ -1372,8 +1368,8 @@ class GameLauncher(QMainWindow):
         self.search.setFixedWidth(250)
         toolbar.addWidget(self.search)
 
-        self.refresh_xbox_btn = QPushButton("Scan for XBox Xisos")
-        self.refresh_xbox_btn.clicked.connect(self.scan_for_xisos)
+        # self.refresh_xbox_btn = QPushButton("Scan for XBox Xisos")
+        # self.refresh_xbox_btn.clicked.connect(self.scan_for_xisos)
 
         self.netplay_button = QPushButton("Netplay Compatible Games")
         self.netplay_button.clicked.connect(self.netplay_compatibility)
@@ -1391,7 +1387,7 @@ class GameLauncher(QMainWindow):
         self.refresh_btn.clicked.connect(partial(self.refresh, "xbox360"))
 
         refresh_btn = QPushButton("Load Xbox Games")
-        refresh_btn.clicked.connect(partial(self.refresh, "xbox"))
+        refresh_btn.clicked.connect(partial(self.refresh, "xemu"))
 
         self.config = load_config()
         xenia_manager_installed = self.config["xenia_manager_installed"]
@@ -1428,7 +1424,7 @@ class GameLauncher(QMainWindow):
         toolbar.addWidget(self.netplay_button)
         toolbar.addWidget(self.refresh_btn)
         toolbar.addWidget(refresh_btn)
-        toolbar.addWidget(self.refresh_xbox_btn)
+        # toolbar.addWidget(self.refresh_xbox_btn)
         toolbar.addWidget(self.browser_button)
         toolbar.addWidget(self.browser_close_button)
         toolbar.addWidget(self.launch_manager)
@@ -1575,8 +1571,9 @@ class GameLauncher(QMainWindow):
         self.apply_style()
 
     def netplay_compatibility(self):
-        games = self.model.games
-
+        model = self.model_1 if self.platform == Platform.XBOX else self.model_2
+        # model = self.game_table.model()
+        games = model.games
         config_file = get_app_dir() / "config" / "netplay.json"
 
         try:
@@ -1594,15 +1591,15 @@ class GameLauncher(QMainWindow):
 
         filtered_games = []
 
-        for game in self.model.games:
+        for game in games:
             title_id = game.game_id.upper()
 
             if title_id in netplay_lookup:
                 game.emulator_version = "Netplay"
                 filtered_games.append(game)
 
-        self.model.games = filtered_games
-        self.model.layoutChanged.emit()  # or whatever your model uses
+        self.model_2.games = filtered_games
+        self.model_2.layoutChanged.emit()  # or whatever your model uses
         return
 
     def launch_game_double_clicked(self):
@@ -2101,28 +2098,22 @@ class GameLauncher(QMainWindow):
     # Refresh
     # -------------------------
     def xiso_scan_finished(self, results):
-        # self.on_status("")
-        # self.on_status("XISO FILES:")
-        #
-        # for xiso_file in results:
-        #     self.on_status(f"  {xiso_file.file}")
-        #
-        self.xiso_scan_result_folders = {xiso_file.rom_path for xiso_file in results}
-        for path in sorted(self.xbox_game_list, key=lambda p: str(p).lower()):
-            self.on_status(f"  {path}")
         self.xbox_game_list = results
+        self.db.import_games_from_source(self.game_source, xbox_game_list=self.xbox_game_list, log_callback=self.log_message)
+        self.xiso_scan_result_folders = {xiso_file.rom_path for xiso_file in results}
+        self.refresh(self.game_source)
 
     def on_status(self, message):
         self.log_message(message)
 
-    def refresh(self, platform="xbox360"):
-        if platform == "xbox360":
+    def refresh(self, game_source="xbox360"):
+        if game_source == "xbox360" or game_source == "xenia_manager":
             self.model_2 = Xbox360GameTableModel()
             self.model_2.log.connect(self.log_message)
             self.game_table.setModel(self.model_2)
             self.model_2.load()
             self.platform = Platform.XBOX360
-        if platform == "xbox":
+        if game_source == "xemu":
             self.model_1 = XboxGameTableModel()
             self.model_1.log.connect(self.log_message)
             self.game_table.setModel(self.model_1)
@@ -2143,30 +2134,21 @@ class GameLauncher(QMainWindow):
             )
 
     def import_games(self, game_source: GameSource):
-        # if xenia_version == "xemu":
-            # scanner = xiso.XboxScanner()
-            # scanner.status.connect(self.on_status)
-            # scanner.finished_scan.connect(self.xiso_scan_finished)
-            # # scanner.finished.connect(app.quit)
-            # scanner.start()
-
-        # Refresh table
-        # self.game_table.model()
-        # self.refresh("xbox360")
-        self.reset_database()
         self.log_message(f"Importing {game_source} games...")
+        self.game_source: GameSource = game_source
         try:
             # Import games
-            self.db.import_games_from_source(game_source, xbox_game_list=self.xbox_game_list, log_callback=self.log_message)
-            self.refresh("xbox360")
+            if game_source == "xemu" and not self.xbox_game_list:
+                self.db.clear_db(platform=Platform.XBOX)
+                self.scan_for_xisos()
+            if game_source == "xenia_manager":
+                self.db.clear_db(platform=Platform.XBOX360)
+                self.db.import_games_from_source(game_source, xbox_game_list=self.xbox_game_list, log_callback=self.log_message)
+                self.refresh(self.game_source)
         except FileNotFoundError as e:
             self.log_message("File not found: " + str(e) + " (No games found)")
         except Exception as e:
             self.log_message("Import Failed: " + str(e))
-
-    # -------------------------
-    # Launch Game
-    # -------------------------
 
     def get_selected_row(self) -> int | None:
         index = self.game_table.selectionModel().currentIndex()

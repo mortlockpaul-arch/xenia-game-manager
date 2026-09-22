@@ -832,12 +832,16 @@ class Database:
         finally:
             con.close()
 
-    def clear_db(self, delete_favourites=False, delete_discs=False):
+    def clear_db(self, delete_favourites=False, delete_discs=False, platform=None):
+
         with self.conn as con:
             if delete_discs:
                 con.execute("DELETE FROM discs")
                 con.execute("DELETE FROM sqlite_sequence WHERE name='discs'")
-            con.execute("DELETE FROM games")
+            if platform is not None:
+                con.execute("DELETE FROM games WHERE platform = ?", (platform.value,))
+            else:
+                con.execute("DELETE FROM games")
             if delete_favourites: con.execute("DELETE FROM favourites")
             con.execute("DELETE FROM sqlite_sequence WHERE name='games'")
             con.commit()
@@ -1197,7 +1201,7 @@ class Database:
 
     from typing import Literal
 
-    def import_games_from_source(self, source: GameSource, xbox_game_list: list[XboxRom] | None = None, log_callback=None, indie_game_list: list[XBLIGGame] | None = None,):
+    def import_games_from_source(self, source, xbox_game_list: list[XboxRom], log_callback=None, indie_game_list: list[XBLIGGame] | None = None,):
         config = load_config()
 
         if source == "indie":
@@ -1208,16 +1212,13 @@ class Database:
             )
         elif source == "xemu":
             self.compatibility = load_xemu_compatibility()
-            if xbox_game_list is None:
-                xbox_game_list = []
+
             imported_games = [
                 create_xbox_game(game, compatibility=self.compatibility)
                 for game in xbox_game_list
             ]
 
-            message = (
-                f"Imported {len(imported_games)} .xiso Games from Folders"
-            )
+            message = f"Imported {len(imported_games)} .xiso Games from Folders"
 
         elif source == "xenia_manager":
             if not config["xenia_manager_installed"]:
