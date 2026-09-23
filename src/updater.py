@@ -53,7 +53,7 @@ class UpdateWorker(QThread):
 class UpdateManager(QObject):
 
     log = Signal(str, bool, bool, bool)
-    progress = Signal(object)
+    progress = Signal(int, int)
     finished = Signal()
     error = Signal(str)
     show_message = Signal(str, str)  # title, message

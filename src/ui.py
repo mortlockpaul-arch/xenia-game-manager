@@ -1378,9 +1378,7 @@ class GameLauncher(QMainWindow):
         self.browser_button.clicked.connect(lambda: self.open_web_page(url=self.netplay_api_choice.currentText()))
 
         self.bmac_button = QPushButton("☕ Buy Me a Coffee")
-        self.bmac_button.clicked.connect(
-            lambda: self.open_web_page(url="https://buymeacoffee.com/polomolo")
-        )
+        self.bmac_button.clicked.connect(lambda: self.open_web_page(url="https://buymeacoffee.com/polomolo"))
 
         self.browser_close_button = QPushButton("Back to Game Manager")
         self.browser_close_button.clicked.connect(self.close_web_page)
