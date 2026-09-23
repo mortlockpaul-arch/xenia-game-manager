@@ -2750,6 +2750,7 @@ class XBLIGDialog(QDialog):
 
         self.db.import_games_from_source(
             game_source,
+            xbox_game_list=None,
             indie_game_list=games,
             log_callback=self.log_message,
         )

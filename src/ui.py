@@ -85,7 +85,7 @@ class ClickOverlay(QWidget):
 
 class DownloadWorker(QThread):
     log = Signal(str)
-    overall_progress = Signal(object)
+    overall_progress = Signal(int, int)
     file_progress = Signal(object)
     finished = Signal()
     error = Signal(str)

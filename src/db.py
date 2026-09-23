@@ -1201,9 +1201,12 @@ class Database:
 
     from typing import Literal
 
-    def import_games_from_source(self, source, xbox_game_list: list[XboxRom], log_callback=None, indie_game_list: list[XBLIGGame] | None = None,):
+    def import_games_from_source(self, source, xbox_game_list: list[XboxRom] | None = None, log_callback=None, indie_game_list: list[XBLIGGame] | None = None,):
         config = load_config()
-
+        if xbox_game_list is None:
+            xbox_game_list = []
+        if indie_game_list is None:
+            indie_game_list = []
         if source == "indie":
             assert indie_game_list is not None
             imported_games = indie_game_list
