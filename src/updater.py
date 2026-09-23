@@ -68,7 +68,7 @@ class UpdateManager(QObject):
         self.config = load_config()
 
     def _progress(self, done: int, total: int | None):
-        self.progress.emit((done, total or 0))
+        self.progress.emit(done, total or 0)
     # ---------------------------------------------------------
     # Utilities
     # ---------------------------------------------------------
@@ -339,7 +339,7 @@ class UpdateManager(QObject):
                 save_config(self.config)
 
         if name == "Xenia Game Manager":
-            updater_path = Path(install_path) / "Xenia Game Manager Updater.exe"
+            updater_path = Path(install_path).glob("xenia-game-manager-updater*.exe").__next__()
             if asset_path.suffix.lower() in {".zip", ".7z"}:
                 # self._log(f"Extracting {asset_name}...")
                 # if extract_archives(asset_path.parent) != 1:

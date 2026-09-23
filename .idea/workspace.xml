@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.3.4 Fixed Xbox Game Import. Fixed game manager update.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/updater.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/updater.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -54,60 +54,60 @@
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
       <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0000000000049765" />
-      <entry key="S2" value="1.0014935901151198" />
-      <entry key="S5" value="1.0740785669420196" />
-      <entry key="S10" value="1.2721737807762157" />
-      <entry key="S30" value="1.6480603167259782" />
-      <entry key="S60" value="1.8050219355557824" />
-      <entry key="M2" value="1.897230146370442" />
-      <entry key="M5" value="1.9575724649611903" />
-      <entry key="M10" value="1.9987900034938408" />
-      <entry key="M15" value="2.2022763102096663" />
-      <entry key="M30" value="4.859196997532524" />
-      <entry key="H1" value="14.823955991238812" />
-      <entry key="H2" value="34.43768702656617" />
-      <entry key="H4" value="62.35440165990389" />
-      <entry key="D1" value="199.74426161840947" />
-      <entry key="W1" value="1293.6426002343355" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0000000739948447" />
+      <entry key="S5" value="1.0014050137844592" />
+      <entry key="S10" value="1.0374835135020606" />
+      <entry key="S30" value="1.3346674175246567" />
+      <entry key="S60" value="1.5785542006296231" />
+      <entry key="M2" value="1.770553716464729" />
+      <entry key="M5" value="2.136064128301931" />
+      <entry key="M10" value="2.646236297989085" />
+      <entry key="M15" value="3.0578346414684856" />
+      <entry key="M30" value="5.406212383808331" />
+      <entry key="H1" value="14.435125075712994" />
+      <entry key="H2" value="33.54807491580247" />
+      <entry key="H4" value="61.683090672171936" />
+      <entry key="D1" value="200.29279749656843" />
+      <entry key="W1" value="1294.2957844412788" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
       <entry key="MS500" value="0.0" />
       <entry key="S2" value="0.0" />
       <entry key="S5" value="0.0" />
-      <entry key="S10" value="1.615408588522717E-247" />
-      <entry key="S30" value="7.355410722221413E-83" />
-      <entry key="S60" value="1.1790523687768603E-41" />
-      <entry key="M2" value="4.8200375523928835E-21" />
-      <entry key="M5" value="1.131231727453222E-8" />
-      <entry key="M10" value="1.5388899330880538E-4" />
-      <entry key="M15" value="0.0037963419445035756" />
-      <entry key="M30" value="0.10027921953391651" />
-      <entry key="H1" value="0.5980397376415559" />
-      <entry key="H2" value="2.01015913340641" />
-      <entry key="H4" value="4.792889577730467" />
-      <entry key="D1" value="21.540360209358315" />
-      <entry key="W1" value="233.37177885663317" />
+      <entry key="S10" value="7.069390185255566E-275" />
+      <entry key="S30" value="5.584360547319992E-92" />
+      <entry key="S60" value="3.2487504748583186E-46" />
+      <entry key="M2" value="2.5301254330542502E-23" />
+      <entry key="M5" value="1.3854416176109805E-9" />
+      <entry key="M10" value="5.385498195788646E-5" />
+      <entry key="M15" value="0.001885287294603689" />
+      <entry key="M30" value="0.07066706494807229" />
+      <entry key="H1" value="0.502033960838296" />
+      <entry key="H2" value="1.8417554628577206" />
+      <entry key="H4" value="4.587733554429306" />
+      <entry key="D1" value="21.383875740917393" />
+      <entry key="W1" value="233.12882448389735" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="7.517552033114637E-52" />
-      <entry key="MS500" value="6.361557058573438E-11" />
-      <entry key="S2" value="0.004194421419756997" />
-      <entry key="S5" value="0.16746963502582843" />
-      <entry key="S10" value="0.5774329190597638" />
-      <entry key="S30" value="1.3211987375379062" />
-      <entry key="S60" value="1.625442715762273" />
-      <entry key="M2" value="1.802992749668157" />
-      <entry key="M5" value="1.9187525802563492" />
-      <entry key="M10" value="1.9793230482562394" />
-      <entry key="M15" value="2.192827884888518" />
-      <entry key="M30" value="4.951721178459061" />
-      <entry key="H1" value="15.41536957573562" />
-      <entry key="H2" value="36.44117096501973" />
-      <entry key="H4" value="67.14093436381478" />
-      <entry key="D1" value="221.28069675788015" />
-      <entry key="W1" value="1527.0102998608838" />
+      <entry key="MS100" value="9.207296545348687E-17" />
+      <entry key="MS500" value="6.206209420437825E-4" />
+      <entry key="S2" value="0.15783626112282284" />
+      <entry key="S5" value="0.4791719613200023" />
+      <entry key="S10" value="0.7277537533602476" />
+      <entry key="S30" value="1.2158890289442348" />
+      <entry key="S60" value="1.5162907117555777" />
+      <entry key="M2" value="1.7380637146040865" />
+      <entry key="M5" value="2.118278208245444" />
+      <entry key="M10" value="2.6328664683531198" />
+      <entry key="M15" value="3.048761648301349" />
+      <entry key="M30" value="5.469219278359802" />
+      <entry key="H1" value="14.930497824343918" />
+      <entry key="H2" value="35.383164714991395" />
+      <entry key="H4" value="66.26446453282102" />
+      <entry key="D1" value="221.67273085143424" />
+      <entry key="W1" value="1527.420527394327" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -199,7 +199,7 @@
       <recent name="C:\PycharmProjects\xenia-game-manager\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.build individuals">
+  <component name="RunManager" selected="Python.main">
     <configuration name="Unnamed" type="BatchConfigurationType" factoryName="Batch" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -367,14 +367,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00167" summary="1.2.5 Optimisations to many things.">
-      <option name="closed" value="true" />
-      <created>1788721112902</created>
-      <option name="number" value="00167" />
-      <option name="presentableId" value="LOCAL-00167" />
-      <option name="project" value="LOCAL" />
-      <updated>1788721112903</updated>
     </task>
     <task id="LOCAL-00168" summary="1.2.5 Optimisations to many things.">
       <option name="closed" value="true" />
@@ -760,7 +752,15 @@
       <option name="project" value="LOCAL" />
       <updated>1790120575258</updated>
     </task>
-    <option name="localTasksCounter" value="216" />
+    <task id="LOCAL-00216" summary="1.3.4 Fixed Xbox Game Import. Fixed game manager update.">
+      <option name="closed" value="true" />
+      <created>1790124480446</created>
+      <option name="number" value="00216" />
+      <option name="presentableId" value="LOCAL-00216" />
+      <option name="project" value="LOCAL" />
+      <updated>1790124480446</updated>
+    </task>
+    <option name="localTasksCounter" value="217" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1121,6 +1121,11 @@
           <url>file://$PROJECT_DIR$/src/db.py</url>
           <line>836</line>
           <option name="timeStamp" value="476" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/updater.py</url>
+          <line>342</line>
+          <option name="timeStamp" value="477" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="powershell">
           <url>file://$PROJECT_DIR$/src/scripts/build_projects_clean.ps1</url>
