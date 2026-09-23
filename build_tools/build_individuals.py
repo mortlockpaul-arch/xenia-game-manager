@@ -303,7 +303,7 @@ def log_message(message, color = None):
     logger_current.info(f"{message}")
 
 if __name__ == "__main__":
-    current_version = "1.3.2"
+    current_version = "1.3.4"
     if len(sys.argv) > 1 and sys.argv[1].lower() == "msi":
         build_msi(version=current_version)
     else:

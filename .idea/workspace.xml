@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.3.4 Fixed Xbox Game Import. Fixed game manager update.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/updater.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/updater.py" afterDir="false" />
-    </list>
+    <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.3.4 Fixed Xbox Game Import. Fixed game manager update." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -146,7 +142,7 @@
     "Python.easyxnb_gui.executor": "Run",
     "Python.import_xblig_metadata.executor": "Run",
     "Python.main-updater.executor": "Run",
-    "Python.main.executor": "Debug",
+    "Python.main.executor": "Run",
     "Python.main_updater.executor": "Run",
     "Python.netplay.executor": "Run",
     "Python.package window.executor": "Run",
@@ -367,14 +363,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00168" summary="1.2.5 Optimisations to many things.">
-      <option name="closed" value="true" />
-      <created>1788722694152</created>
-      <option name="number" value="00168" />
-      <option name="presentableId" value="LOCAL-00168" />
-      <option name="project" value="LOCAL" />
-      <updated>1788722694153</updated>
     </task>
     <task id="LOCAL-00169" summary="1.2.5 Optimisations to many things.">
       <option name="closed" value="true" />
@@ -760,7 +748,15 @@
       <option name="project" value="LOCAL" />
       <updated>1790124480446</updated>
     </task>
-    <option name="localTasksCounter" value="217" />
+    <task id="LOCAL-00217" summary="1.3.4 Fixed Xbox Game Import. Fixed game manager update.">
+      <option name="closed" value="true" />
+      <created>1790125950502</created>
+      <option name="number" value="00217" />
+      <option name="presentableId" value="LOCAL-00217" />
+      <option name="project" value="LOCAL" />
+      <updated>1790125950503</updated>
+    </task>
+    <option name="localTasksCounter" value="218" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
