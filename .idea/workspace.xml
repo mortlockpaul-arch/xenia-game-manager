@@ -5,15 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b35ec89-9bcc-4c53-80b4-e9fd6d6caafa" name="Changes" comment="1.3.4 Fixed Xbox Game Import. Fixed game manager update.">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/xenia-game-manager.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/xenia-game-manager.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.run/main.run.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.run/main.run.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/game-manager-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/game-manager-config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/tools/conversion.7z" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/tools/conversion.7z" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/games.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/games.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/package_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/package_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,7 +15,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="1552" />
+    <option name="cachedIndexableFilesCount" value="1895" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -128,67 +122,67 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "Batch.Unnamed.executor": "Run",
-    "Batch.cleanup_repo.executor": "Run",
-    "Batch.start.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "PowerShell.Unnamed.executor": "Run",
-    "PowerShell.build_projects.ps1.executor": "Run",
-    "PowerShell.build_projects_clean.ps1.executor": "Run",
-    "PowerShell.cleanup_repo.ps1.executor": "Run",
-    "PowerShell.dotnet-install.ps1.executor": "Run",
-    "Python.a.executor": "Run",
-    "Python.archive_content_window.executor": "Run",
-    "Python.archive_digital_window.executor": "Run",
-    "Python.archive_indie_window.executor": "Run",
-    "Python.build individuals.executor": "Run",
-    "Python.build msi.executor": "Run",
-    "Python.build portables.executor": "Run",
-    "Python.build.executor": "Run",
-    "Python.convert_xna_projects.executor": "Debug",
-    "Python.easyxnb_gui.executor": "Run",
-    "Python.import_xblig_metadata.executor": "Run",
-    "Python.main-updater.executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.main_updater.executor": "Run",
-    "Python.netplay.executor": "Run",
-    "Python.package window.executor": "Run",
-    "Python.package.executor": "Run",
-    "Python.package_window.executor": "Run",
-    "Python.setup.executor": "Run",
-    "Python.stfs_extract.executor": "Debug",
-    "Python.stfs_extract_gui.executor": "Run",
-    "Python.tools.executor": "Run",
-    "Python.utils.executor": "Debug",
-    "Python.xiso.executor": "Run",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "master",
-    "git.auto.fetch.suggestion.counter": "2",
-    "ignore.virus.scanning.warn.message": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "C:/PycharmProjects/xenia-game-manager/src/assets/tools/conversion/xnb-extractor",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.jshint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.jshint": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "python.packages.toolwindow.project.migrated.to.right.top.v2": "true",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
-    "to.speed.mode.migration.done": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;Batch.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;Batch.cleanup_repo.executor&quot;: &quot;Run&quot;,
+    &quot;Batch.start.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;PowerShell.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;PowerShell.build_projects.ps1.executor&quot;: &quot;Run&quot;,
+    &quot;PowerShell.build_projects_clean.ps1.executor&quot;: &quot;Run&quot;,
+    &quot;PowerShell.cleanup_repo.ps1.executor&quot;: &quot;Run&quot;,
+    &quot;PowerShell.dotnet-install.ps1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.a.executor&quot;: &quot;Run&quot;,
+    &quot;Python.archive_content_window.executor&quot;: &quot;Run&quot;,
+    &quot;Python.archive_digital_window.executor&quot;: &quot;Run&quot;,
+    &quot;Python.archive_indie_window.executor&quot;: &quot;Run&quot;,
+    &quot;Python.build individuals.executor&quot;: &quot;Run&quot;,
+    &quot;Python.build msi.executor&quot;: &quot;Run&quot;,
+    &quot;Python.build portables.executor&quot;: &quot;Run&quot;,
+    &quot;Python.build.executor&quot;: &quot;Run&quot;,
+    &quot;Python.convert_xna_projects.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.easyxnb_gui.executor&quot;: &quot;Run&quot;,
+    &quot;Python.import_xblig_metadata.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main-updater.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main_updater.executor&quot;: &quot;Run&quot;,
+    &quot;Python.netplay.executor&quot;: &quot;Run&quot;,
+    &quot;Python.package window.executor&quot;: &quot;Run&quot;,
+    &quot;Python.package.executor&quot;: &quot;Run&quot;,
+    &quot;Python.package_window.executor&quot;: &quot;Run&quot;,
+    &quot;Python.setup.executor&quot;: &quot;Run&quot;,
+    &quot;Python.stfs_extract.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.stfs_extract_gui.executor&quot;: &quot;Run&quot;,
+    &quot;Python.tools.executor&quot;: &quot;Run&quot;,
+    &quot;Python.utils.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.xiso.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git.auto.fetch.suggestion.counter&quot;: &quot;2&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/PycharmProjects/xenia-game-manager/src/assets/tools/conversion/xnb-extractor&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;python.packages.toolwindow.project.migrated.to.right.top.v2&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\PycharmProjects\xenia-game-manager\src\assets\tools\conversion\xnb-extractor" />
@@ -205,7 +199,7 @@
       <recent name="C:\PycharmProjects\xenia-game-manager\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager">
     <configuration name="Unnamed" type="BatchConfigurationType" factoryName="Batch" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -228,7 +222,6 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="uv (xenia-game-manager) (2)" />
       <option name="WORKING_DIRECTORY" value="C:\PycharmProjects\xenia-game-manager\build_tools" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -277,7 +270,6 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="uv (xenia-game-manager) (2)" />
       <option name="WORKING_DIRECTORY" value="C:\PycharmProjects\xenia-game-manager\build_tools" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -302,7 +294,6 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="uv (xenia-game-manager) (2)" />
       <option name="WORKING_DIRECTORY" value="C:\PycharmProjects\xenia-game-manager\src" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -327,11 +318,8 @@
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="uv (xenia-game-manager) (2)" />
+      <option name="SDK_NAME" value="C:\PycharmProjects\xenia-game-manager\.venv" />
       <option name="WORKING_DIRECTORY" value="C:\PycharmProjects\xenia-game-manager\src" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="false" />
@@ -373,14 +361,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784518928319</updated>
-    </task>
-    <task id="LOCAL-00170" summary="1.2.5 Optimisations to many things.">
-      <option name="closed" value="true" />
-      <created>1788752740407</created>
-      <option name="number" value="00170" />
-      <option name="presentableId" value="LOCAL-00170" />
-      <option name="project" value="LOCAL" />
-      <updated>1788752740407</updated>
     </task>
     <task id="LOCAL-00171" summary="1.2.5 Optimisations to many things.">
       <option name="closed" value="true" />
@@ -766,7 +746,15 @@
       <option name="project" value="LOCAL" />
       <updated>1790126285738</updated>
     </task>
-    <option name="localTasksCounter" value="219" />
+    <task id="LOCAL-00219" summary="1.3.4 Fixed Xbox Game Import. Fixed game manager update.">
+      <option name="closed" value="true" />
+      <created>1790203781340</created>
+      <option name="number" value="00219" />
+      <option name="presentableId" value="LOCAL-00219" />
+      <option name="project" value="LOCAL" />
+      <updated>1790203781345</updated>
+    </task>
+    <option name="localTasksCounter" value="220" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
