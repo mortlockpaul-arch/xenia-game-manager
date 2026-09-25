@@ -583,6 +583,7 @@ class GameLauncher(QMainWindow):
         self.load_saved_config()
 
         self.compatibility = Compatibility(self.db, self.log_message)
+        self.compatibility.update_compatibility()
         self.check_for_updates("Xenia Game Manager")
         setup_logger()
 

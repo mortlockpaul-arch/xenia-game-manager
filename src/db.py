@@ -75,6 +75,7 @@ class Game:
     last_played: str | None = None
     play_count: int = 0
     play_time: int = 0
+    compatibility_rating: str | None = None
 
 @dataclass(frozen=True)
 class Emulator:
@@ -211,6 +212,7 @@ class Xbox360Game(Game):
     config_path: Path | None = None
     discs: list[GameDisc] = field(default_factory=list)
 
+
     @classmethod
     def from_row(cls, row):
         discs = []
@@ -221,17 +223,14 @@ class Xbox360Game(Game):
         return cls(
             game_id=row["game_id"],
             title=row["title"],
-            config_path=(
-                Path(row["config_path"])
-                if row["config_path"]
-                else None
-            ),
+            config_path=(Path(row["config_path"]) if row["config_path"] else None),
             favourite=bool(row["favourite"]),
             last_played=row["last_played"],
             play_count=row["play_count"] or 0,
             play_time=row["play_time"] or 0,
             discs=discs,
             emulator=row["emulator_version"],
+            compatibility_rating=row["compatibility_rating"],
         )
 
     @classmethod
@@ -240,15 +239,12 @@ class Xbox360Game(Game):
             game_id=data["game_id"],
             title=data["title"],
             emulator=data.get("emulator"),
-            config_path=(
-                Path(data["config_path"])
-                if data.get("config_path")
-                else None
-            ),
+            config_path=(Path(data["config_path"]) if data.get("config_path") else None),
             favourite=bool(data.get("favourite")),
             last_played=data.get("last_played"),
             play_count=data.get("play_count") or 0,
             play_time=data.get("play_time") or 0,
+            compatibility=data.get("compatibility_rating"),
         )
 
 @dataclass
@@ -268,11 +264,7 @@ class XboxGame(Game):
         return cls(
             game_id=row["game_id"],
             title=row["title"],
-            config_path=(
-                Path(row["config_path"])
-                if row["config_path"]
-                else None
-            ),
+            config_path=(Path(row["config_path"]) if row["config_path"] else None),
             favourite=bool(row["favourite"]),
             last_played=row["last_played"],
             play_count=row["play_count"] or 0,
@@ -382,29 +374,36 @@ class Compatibility:
 
         with self.db.get_db() as con:
             rows = con.execute(
-                "SELECT game_id FROM games"
+                "SELECT platform, game_id, emulator, title FROM game_view"
             ).fetchall()
 
             for row in rows:
+                platform = row["platform"]
+                emulator = row["emulator"]
                 game_id = row["game_id"].upper()
                 compat = compat_by_title.get(game_id)
-
+                game_title = row["title"]
+                print(f"Processing {platform} {game_id} {emulator} {game_title}")
                 if compat:
                     con.execute("""
                         INSERT INTO compatibility (
+                            platform,
                             game_id,
+                            emulator,
                             compatibility_rating,
                             compatibility_issue,
                             compatibility_updated
                         )
-                        VALUES (?, ?, ?, CURRENT_TIMESTAMP)
-                        ON CONFLICT(game_id)
+                        VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+                        ON CONFLICT(platform, game_id, emulator)
                         DO UPDATE SET
                             compatibility_rating = excluded.compatibility_rating,
                             compatibility_issue = excluded.compatibility_issue,
                             compatibility_updated = CURRENT_TIMESTAMP
                     """, (
+                        row["platform"],
                         row["game_id"],
+                        row["emulator"],
                         compat["state"],
                         compat.get("issue", ""),
                     ))
