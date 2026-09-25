@@ -235,6 +235,10 @@ def load_xemu_compatibility(output_dir= get_app_dir() / "compatibility/xemu_comp
         games=games,
     )
 
+def get_artwork_icon_path(title_id=None):
+    image_dir = Path("compatibility/xemu_compatibility") / "images" / title_id / "xtimage.png"
+    return image_dir
+
 def update_xemu_compatibility(output_dir="compatibility/xemu_compatibility"):
     output = Path(output_dir)
     xdb = output / "xdb"

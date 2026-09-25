@@ -244,7 +244,7 @@ class Xbox360Game(Game):
             last_played=data.get("last_played"),
             play_count=data.get("play_count") or 0,
             play_time=data.get("play_time") or 0,
-            compatibility=data.get("compatibility_rating"),
+            compatibility_rating=data.get("compatibility_rating"),
         )
 
 @dataclass

@@ -14,6 +14,7 @@ from config import load_config
 from db import Database, XboxGame, Platform, Game
 from models.model_bases import BaseGameTableModel
 from utils import star, format_disc_type
+from xiso import get_artwork_icon_path
 
 DisplayRole = Qt.ItemDataRole.DisplayRole
 ToolTipRole = Qt.ItemDataRole.ToolTipRole
@@ -228,8 +229,9 @@ class XboxGameTableModel(BaseGameTableModel):
 
         if role == Qt.ItemDataRole.DecorationRole:
             if key == "artwork_path":
-                icon_path = self.get_artwork_path(row)
-
+                # icon_path = self.get_artwork_path(row)
+                game_id = cast(str, row.game_id)
+                icon_path = get_artwork_icon_path(game_id)
                 if icon_path:
                     return QIcon(str(icon_path))
 
