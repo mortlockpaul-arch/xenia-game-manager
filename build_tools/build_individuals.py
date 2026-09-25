@@ -14,7 +14,7 @@ from package_window import compress_folders, RAINBOW_COLORS
 
 root = get_app_dir()
 build_dir = root / "build"
-current_folder = build_dir
+current_folder = Path(__file__).resolve().parent
 
 executables = [
     {
@@ -27,31 +27,31 @@ executables = [
         "base": "console",
         "target_name": "xenia-game-manager-updater",
     },
-    {
-        "script": root / "archive_digital_window.py",
-        "base": "console",
-        "target_name": "xenia-game-manager-digital-downloader",
-    },
-    {
-        "script": root / "archive_indie_window.py",
-        "base": "console",
-        "target_name": "xenia-game-manager-indie-downloader",
-    },
-    {
-        "script": root / "archive_content_window.py",
-        "base": "console",
-        "target_name": "xenia-game-manager-content-downloader",
-    },
-    {
-        "script": root / "xbox_unity_window.py",
-        "base": "console",
-        "target_name": "xenia-game-manager-unity-downloader",
-    },
-    {
-        "script": root / "package_window.py",
-        "base": "gui",
-        "target_name": "xenia-game-rebuilder",
-    },
+    # {
+    #     "script": root / "archive_digital_window.py",
+    #     "base": "console",
+    #     "target_name": "xenia-game-manager-digital-downloader",
+    # },
+    # {
+    #     "script": root / "archive_indie_window.py",
+    #     "base": "console",
+    #     "target_name": "xenia-game-manager-indie-downloader",
+    # },
+    # {
+    #     "script": root / "archive_content_window.py",
+    #     "base": "console",
+    #     "target_name": "xenia-game-manager-content-downloader",
+    # },
+    # {
+    #     "script": root / "xbox_unity_window.py",
+    #     "base": "console",
+    #     "target_name": "xenia-game-manager-unity-downloader",
+    # },
+    # {
+    #     "script": root / "package_window.py",
+    #     "base": "gui",
+    #     "target_name": "xenia-game-rebuilder",
+    # },
 ]
 
 packages = [
@@ -180,8 +180,8 @@ def build_executable(executable, version):
     )
 
 def zip_portable(executable, version):
-    build_dir_current = Path(current_folder) / executable["target_name"]
-    out_zip = Path(current_folder / "dist") / f"{executable['target_name']}-portable-{version}.zip"
+    build_dir_current = Path(build_dir) / executable["target_name"]
+    out_zip = Path(build_dir / "dist") / f"{executable['target_name']}-portable-{version}.zip"
     log_message(f"{build_dir_current}", None)
     log_message(f"{out_zip}", None)
     if out_zip.exists():
@@ -189,11 +189,6 @@ def zip_portable(executable, version):
         log_message(f"Deleting existing portable zip: {out_zip}", None)
 
     out_zip.parent.mkdir(exist_ok=True)
-
-    # with zipfile.ZipFile(out_zip, "w", zipfile.ZIP_DEFLATED) as zipf:
-    #     for file in build_dir_current.rglob("*"):
-    #         if file.is_file() and file.name != "portable.txt":
-    #             zipf.write(file, file.relative_to(build_dir_current))
 
     # Add portable.txt to the root of the ZIP
     (build_dir_current / "portable.txt").touch()
@@ -211,13 +206,12 @@ def build_all(version):
     for executable in executables:
         build_executable(executable,version=version)
         zip_portable(executable,version=version)
-    cleanup_egg_info()
 
-def build_portables(version):
-    build_dir.mkdir(exist_ok=True)
-    for executable in executables:
-        zip_portable(executable,version=version)
-    cleanup_egg_info()
+# def build_portables(version):
+#     build_dir.mkdir(exist_ok=True)
+#     for executable in executables:
+#         zip_portable(executable,version=version)
+#     cleanup_egg_info()
 
 def build_msi(version):
     from cx_Freeze import Executable, setup
@@ -303,14 +297,13 @@ def log_message(message, color = None):
     logger_current.info(f"{message}")
 
 if __name__ == "__main__":
-    current_version = "1.3.4"
+    current_version = "1.3.5"
+    tools_setup()
+    copy_optimized_settings()
+    create_defaults(version=current_version)
+    cleanup_egg_info()
+
     if len(sys.argv) > 1 and sys.argv[1].lower() == "msi":
         build_msi(version=current_version)
-    else:
-        if len(sys.argv) > 1 and sys.argv[1].lower() == "portables":
-            build_portables(version=current_version)
-        else:
-            tools_setup()
-            build_all(version=current_version)
-            create_defaults(version=current_version)
-            copy_optimized_settings()
+    if len(sys.argv) > 1 and sys.argv[1].lower() == "portables":
+        build_all(version=current_version)

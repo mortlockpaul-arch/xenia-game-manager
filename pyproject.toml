@@ -7,7 +7,7 @@ authors = [
     { name = "Paul Mortlock", email = "mortlock.paul@gmail.com" }
 ]
 dependencies = [
-    "cx-freeze==8.7.0",
+    "cx-freeze==8.7.1",
     "packaging==26.3",
     "pyside6==6.11.2",
     "requests>=2.34.2",
