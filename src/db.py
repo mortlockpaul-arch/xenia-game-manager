@@ -269,6 +269,7 @@ class XboxGame(Game):
             last_played=row["last_played"],
             play_count=row["play_count"] or 0,
             play_time=row["play_time"] or 0,
+            compatibility_rating=row["compatibility_rating"],
         )
 
     @classmethod
@@ -301,28 +302,29 @@ class XboxGame(Game):
 class Compatibility:
 
     def __init__(self, db, log_call_back=None):
-        self.compatibility = None
+        self.compatibility_xbox = None
+        self.compatibility_xbox360 = None
         root = get_app_dir()
-        self.compatibility_file = root / "config" / "xenia_compatibility.json"
-
+        self.compatibility_xbox360_file = root / "config" / "xenia_compatibility.json"
+        self.compatibility_xbox_file = root / "compatibility" / "xemu_compatibility" / "xemu_compatibility.json"
         needs_download = (
-                not self.compatibility_file.exists()
-                or datetime.now() - datetime.fromtimestamp(self.compatibility_file.stat().st_mtime) >= timedelta(days=1)
+                not self.compatibility_xbox360_file.exists()
+                or datetime.now() - datetime.fromtimestamp(self.compatibility_xbox360_file.stat().st_mtime) >= timedelta(days=1)
         )
 
         if needs_download:
-            if self.compatibility_file.exists():
+            if self.compatibility_xbox360_file.exists():
                 (log_call_back or print)(
-                    f"File {self.compatibility_file} is over 1 day old. Downloading compatibility data."
+                    f"File {self.compatibility_xbox360_file} is over 1 day old. Downloading compatibility data."
                 )
             else:
                 (log_call_back or print)(
-                    f"File {self.compatibility_file} does not exist. Downloading compatibility data."
+                    f"File {self.compatibility_xbox360_file} does not exist. Downloading compatibility data."
                 )
 
             self.download_xenia_compatibility()
         else:
-            modified = datetime.fromtimestamp(self.compatibility_file.stat().st_mtime)
+            modified = datetime.fromtimestamp(self.compatibility_xbox360_file.stat().st_mtime)
             (log_call_back or print)(
                 f"Compatibility data is up to date "
                 f"(last updated {modified:%Y-%m-%d %H:%M:%S})."
@@ -357,19 +359,19 @@ class Compatibility:
         response = requests.get(download_url, headers=headers, timeout=60)
         response.raise_for_status()
 
-        self.compatibility = response.json()
+        self.compatibility_xbox360 = response.json()
 
-        with open(self.compatibility_file, "wb") as f:
+        with open(self.compatibility_xbox360_file, "wb") as f:
             f.write(response.content)
 
-    def update_compatibility(self):
-        if self.compatibility is None:
-            with open(self.compatibility_file, "r", encoding="utf-8") as f:
-                self.compatibility = json.load(f)
+    def update_xbox360_compatibility(self):
+        if self.compatibility_xbox360 is None:
+            with open(self.compatibility_xbox360_file, "r", encoding="utf-8") as f:
+                self.compatibility_xbox360 = json.load(f)
 
         compat_by_title: dict[str, dict[str, Any]] = {
             game["id"].upper(): game
-            for game in self.compatibility
+            for game in self.compatibility_xbox360
         }
 
         with self.db.get_db() as con:
@@ -408,6 +410,51 @@ class Compatibility:
                         compat.get("issue", ""),
                     ))
 
+    def update_xbox_compatibility(self):
+        if self.compatibility_xbox is None:
+            with open(self.compatibility_xbox_file, "r", encoding="utf-8") as f:
+                self.compatibility_xbox = json.load(f)
+
+        compat_by_title: dict[str, dict[str, Any]] = {
+            game["title_id"].upper(): game
+            for game in self.compatibility_xbox["games"].values()
+        }
+
+        with self.db.get_db() as con:
+            rows = con.execute(
+                "SELECT platform, game_id, emulator, title FROM game_view"
+            ).fetchall()
+
+            for row in rows:
+                platform = row["platform"]
+                emulator = row["emulator"]
+                game_id = row["game_id"].upper()
+                compat = compat_by_title.get(game_id)
+                game_title = row["title"]
+                print(f"Processing {platform} {game_id} {emulator} {game_title}")
+                if compat:
+                    con.execute("""
+                        INSERT INTO compatibility (
+                            platform,
+                            game_id,
+                            emulator,
+                            compatibility_rating,
+                            compatibility_issue,
+                            compatibility_updated
+                        )
+                        VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+                        ON CONFLICT(platform, game_id, emulator)
+                        DO UPDATE SET
+                            compatibility_rating = excluded.compatibility_rating,
+                            compatibility_issue = excluded.compatibility_issue,
+                            compatibility_updated = CURRENT_TIMESTAMP
+                    """, (
+                        row["platform"],
+                        row["game_id"],
+                        row["emulator"],
+                        compat["status"],
+                        compat.get("status_description", ""),
+                    ))
 
 class EmulatorNames(Enum):
     XEMU = "xemu"

@@ -204,10 +204,7 @@ class XboxGameTableModel(BaseGameTableModel):
 
         if key == "compatibility_rating":
             rating = self.get_value(row, key=key)
-            text, colour = compatibility.get(
-                rating,
-                compatibility[None],
-            )
+            text, colour = compatibility.get(rating, compatibility[None],)
 
             if role == Qt.ItemDataRole.DisplayRole:
                 return text
